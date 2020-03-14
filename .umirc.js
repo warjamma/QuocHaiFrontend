@@ -25,11 +25,11 @@ export default {
       ],
     },
     {
-      path: '/',
+      path: '/login',
       component: '../layouts/AuthenticateLayout/index',
       routes: [
         {
-          path: '/',
+          path: '/login',
           component: '../pages/Login/index',
         },
       ],
@@ -49,7 +49,7 @@ export default {
     // ref: https://umijs.org/plugin/umi-plugin-react.html
     ['umi-plugin-react', {
       antd: true,
-      dva: false,
+      dva: true,
       dynamicImport: false,
       title: 'frontend',
       dll: false,
@@ -61,4 +61,7 @@ export default {
       },
     }],
   ],
+  define: {
+    "APP_ENV": "APP_ENV"
+  },
 }

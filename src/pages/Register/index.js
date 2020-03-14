@@ -1,255 +1,298 @@
-import React, { useState } from 'react';
-import {
-  Form,
-  Input,
-  Tooltip,
-  Cascader,
-  Select,
-  Row,
-  Col,
-  Checkbox,
-  Button,
-  AutoComplete,
-} from 'antd';
-import { QuestionCircleOutlined } from '@ant-design/icons';
+import React, { useState, useEffect } from 'react';
+import { connect } from 'dva';
+import { Form, Input, Button, Checkbox, Tabs, Select, message } from 'antd';
+import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
 import styles from './styles.scss';
 
+const { TabPane } = Tabs;
+
 const { Option } = Select;
-const AutoCompleteOption = AutoComplete.Option;
-const residences = [
-  {
-    value: 'zhejiang',
-    label: 'Zhejiang',
-    children: [
-      {
-        value: 'hangzhou',
-        label: 'Hangzhou',
-        children: [
-          {
-            value: 'xihu',
-            label: 'West Lake',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    value: 'jiangsu',
-    label: 'Jiangsu',
-    children: [
-      {
-        value: 'nanjing',
-        label: 'Nanjing',
-        children: [
-          {
-            value: 'zhonghuamen',
-            label: 'Zhong Hua Men',
-          },
-        ],
-      },
-    ],
-  },
-];
+
 const formItemLayout = {
   labelCol: {
-    xs: {
-      span: 24,
-    },
-    sm: {
-      span: 8,
-    },
+    xs: { span: 24 },
+    sm: { span: 8 },
   },
   wrapperCol: {
-    xs: {
-      span: 24,
-    },
-    sm: {
-      span: 16,
-    },
-  },
-};
-const tailFormItemLayout = {
-  wrapperCol: {
-    xs: {
-      span: 24,
-      offset: 0,
-    },
-    sm: {
-      span: 16,
-      offset: 8,
-    },
+    xs: { span: 24 },
+    sm: { span: 16 },
   },
 };
 
+const warning = (mes) => {
+  message.error(mes);
+};
 
-export default function Register() {
-  // const [count, setCount] = useState(0);
+const success = (mess) => {
+  message.success(mess);
+};
 
-  const [form] = Form.useForm();
+function Register(props) {
+  const [role, setRole] = useState('employers');
+  const { dispatch } = props;
+  useEffect(() => {
+    const { isError, message, history } = props;
+    console.log(process.env)
+    if (localStorage.getItem('token')) {
+      history.push('/dashboard');
+    }
+    if (isError) {
+      warning(message)
+    }
+  });
 
-  const onFinish = values => {
+  const onFinish = async (values) => {
+    const { dispatch } = props;
+    delete values.prefix;
+    Object.keys(values).forEach(item => {
+      if(!values[item]) delete values[item];
+    })
     console.log('Received values of form: ', values);
+    dispatch({
+      type: 'auth/register',
+      payload: values,
+      role,
+    }).then(res => {
+      dispatch({
+        type: 'auth/verifyUser',
+        payload: res,
+        role,
+      })
+    })
+    success('Register successfully')
   };
+  
 
   const prefixSelector = (
     <Form.Item name="prefix" noStyle>
-      <Select
-        style={{
-          width: 70,
-        }}
-      >
-        <Option value="86">+86</Option>
-        <Option value="87">+87</Option>
+      <Select dropdownClassName={styles.dropdownCusstomRegister} showArrow={false} defaultValue={
+        <div className={styles.renderItemSelect}>
+          (+82)
+          <span role="img" aria-label="USA">
+            🇺🇸
+          </span>
+        </div>
+      } style={{ width: 80 }}>
+        <Option value="89" label="China">
+          <div className={styles.renderItemSelect}>
+            (+89) 
+            <span role="img" aria-label="China">
+              🇨🇳
+            </span>
+          </div>
+        </Option>
+        <Option value="82" label="USA">
+          <div className={styles.renderItemSelect}>
+            (+82) 
+            <span role="img" aria-label="USA">
+              🇺🇸
+            </span>
+          </div>
+        </Option>
+        <Option value="81" label="Japan">
+          <div className={styles.renderItemSelect}>
+            (+81) 
+            <span role="img" aria-label="Japan">
+              🇯🇵
+            </span>
+          </div>
+        </Option>
+        <Option value="80" label="Korea">
+          <div className={styles.renderItemSelect}>
+            (+80) 
+            <span role="img" aria-label="Korea">
+              🇰🇷
+            </span>
+          </div>
+        </Option>
       </Select>
     </Form.Item>
   );
-  const [autoCompleteResult, setAutoCompleteResult] = useState([]);
 
-  const onWebsiteChange = value => {
-    if (!value) {
-      setAutoCompleteResult([]);
-    } else {
-      setAutoCompleteResult(['.com', '.org', '.net'].map(domain => `${value}${domain}`));
-    }
-  };
-
-  const websiteOptions = autoCompleteResult.map(website => ({
-    label: website,
-    value: website,
-  }));
-
-  return (
-    <div>
+  function FormRegister(props) {
+    return (
       <Form
         {...formItemLayout}
-        form={form}
-        name="register"
+        name="normal_login"
+        className={styles.customForm}
         onFinish={onFinish}
-        initialValues={{
-          residence: ['zhejiang', 'hangzhou', 'xihu'],
-          prefix: '86',
-        }}
-        scrollToFirstError
-        className={styles.formRegister}
       >
-        <div className={styles.loginLogo}>
-          <img src={require("../../assets/images/logo.svg")} alt="logo" />
-          <div>Register</div>
-        </div>
-        <Form.Item
-          name="email"
-          label="E-mail"
-          rules={[
-            {
-              type: 'email',
-              message: 'The input is not valid E-mail!',
-            },
-            {
-              required: true,
-              message: 'Please input your E-mail!',
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-
-        <Form.Item
-          name="password"
-          label="Password"
-          rules={[
-            {
-              required: true,
-              message: 'Please input your password!',
-            },
-          ]}
-          hasFeedback
-        >
-          <Input.Password />
-        </Form.Item>
-
-        <Form.Item
-          name="confirm"
-          label="Confirm Password"
-          dependencies={['password']}
-          hasFeedback
-          rules={[
-            {
-              required: true,
-              message: 'Please confirm your password!',
-            },
-            ({ getFieldValue }) => ({
-              validator(rule, value) {
-                if (!value || getFieldValue('password') === value) {
-                  return Promise.resolve();
-                }
-                return Promise.reject('The two passwords that you entered do not match!');
-              },
-            }),
-          ]}
-        >
-          <Input.Password />
-        </Form.Item>
-
-        <Form.Item
-          name="nickname"
-          label={
-            <span>
-              Nickname&nbsp;
-              <Tooltip title="What do you want others to call you?">
-                <QuestionCircleOutlined />
-              </Tooltip>
-            </span>
-          }
-          rules={[{ required: true, message: 'Please input your nickname!', whitespace: true }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          name="phone"
-          label="Phone Number"
-          rules={[{ required: true, message: 'Please input your phone number!' }]}
-        >
-          <Input addonBefore={prefixSelector} style={{ width: '100%' }} />
-        </Form.Item>
-
-        <Form.Item
-          name="website"
-          label="Website"
-          rules={[{ required: true, message: 'Please input website!' }]}
-        >
-          <AutoComplete options={websiteOptions} onChange={onWebsiteChange} placeholder="website">
-            <Input />
-          </AutoComplete>
-        </Form.Item>
-
-        <Form.Item label="Captcha" extra="We must make sure that your are a human.">
-          <Row gutter={8}>
-            <Col span={12}>
-              <Form.Item
-                name="captcha"
-                noStyle
-                rules={[{ required: true, message: 'Please input the captcha you got!' }]}
-              >
-                <Input />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Button>Get captcha</Button>
-            </Col>
-          </Row>
-        </Form.Item>
-
-        <Form.Item name="agreement" valuePropName="checked" {...tailFormItemLayout}>
-          <Checkbox>
-            I have read the <a href="">agreement</a>
-          </Checkbox>
-        </Form.Item>
-        <Form.Item {...tailFormItemLayout}>
-          <Button type="primary" htmlType="submit">
+        {props.children}
+        <Form.Item className={styles.groupButtonLogin}>
+          <Button className={styles.buttonLogin} type="primary" htmlType="submit">
             Register
           </Button>
         </Form.Item>
       </Form>
+    )
+  }
+
+  return (
+    <div className={styles.registerForm}>
+      <div className={styles.loginLogo}>
+        <img src={require("../../assets/images/logo.png")} alt="logo" />
+        <div>Register</div>
+      </div>
+      <Tabs defaultActiveKey={role} onChange={(e) => {
+        setRole(e)
+        dispatch({type: 'auth/clear'})
+      }}>
+        <TabPane tab="As Company" key="employers">
+          <FormRegister>
+            <Form.Item
+              name="company_name"
+              label="Company Name"
+              rules={[{ required: true, message: 'Please input your Company Name!' }]}
+              hasFeedback
+            >
+              <Input
+                prefix={<UserOutlined className="site-form-item-icon" />}
+                placeholder="Company name" 
+              />
+            </Form.Item>
+            <Form.Item
+              name="full_name"
+              label="Full Name"
+              rules={[{ required: true, message: 'Please input your Full Name!' }]}
+              hasFeedback
+            >
+              <Input
+                prefix={<UserOutlined className="site-form-item-icon" />}
+                placeholder="Full name"
+              />
+            </Form.Item>
+            <Form.Item
+              name="email"
+              label="Email"
+              rules={[
+                {
+                  type: 'email',
+                  message: 'The input is not valid E-mail!',
+                },
+                {
+                  required: true,
+                  message: 'Please input your E-mail!',
+                },
+              ]}
+              hasFeedback
+            >
+              <Input
+                prefix={<MailOutlined className="site-form-item-icon" />}
+                placeholder="Email"
+              />
+            </Form.Item>
+            <Form.Item
+              name="password"
+              label="Password"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input your password!',
+                },
+              ]}
+              hasFeedback
+            >
+              <Input.Password 
+                prefix={<LockOutlined className="site-form-item-icon" />}
+                placeholder="Password"
+              />
+            </Form.Item>
+            <Form.Item
+              name="phone_number"
+              label="Phone Number"
+              rules={[{ required: true, message: 'Please input your Phone Number!' }]}
+              hasFeedback
+            >
+              <Input addonBefore={prefixSelector} style={{ width: '100%' }} />
+            </Form.Item>
+            <Form.Item name="agreement" valuePropName="checked">
+              <Checkbox>
+                I have read the <a href="">agreement</a>
+              </Checkbox>
+            </Form.Item>
+          </FormRegister>
+        </TabPane>
+        <TabPane tab="As Referrer" key="recruiters">
+          <FormRegister>
+            <Form.Item
+              name="first_name"
+              label="First Name"
+              rules={[{ required: true, message: 'Please input your First Name!' }]}
+              hasFeedback
+            >
+              <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="First name" />
+            </Form.Item>
+            <Form.Item
+              name="last_name"
+              label="Last Name"
+              rules={[{ required: true, message: 'Please input your Last Name!' }]}
+              hasFeedback
+            >
+              <Input
+                prefix={<UserOutlined className="site-form-item-icon" />}
+                placeholder="Last name"
+              />
+            </Form.Item>
+            <Form.Item
+              name="email"
+              label="Email"
+              rules={[
+                {
+                  type: 'email',
+                  message: 'The input is not valid E-mail!',
+                },
+                {
+                  required: true,
+                  message: 'Please input your E-mail!',
+                },
+              ]}
+              hasFeedback
+            >
+              <Input prefix={<MailOutlined className="site-form-item-icon" />} placeholder="Email" />
+            </Form.Item>
+            <Form.Item
+              name="password"
+              label="Password"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input your password!',
+                },
+              ]}
+              hasFeedback
+            >
+               <Input.Password 
+            prefix={<LockOutlined className="site-form-item-icon" />}
+            placeholder="Password"
+          />
+            </Form.Item>
+            <Form.Item
+              name="phone_number"
+              label="Phone Number"
+              rules={[{ required: true, message: 'Please input your Phone Number!' }]}
+              hasFeedback
+            >
+              <Input addonBefore={prefixSelector} style={{ width: '100%' }} />
+            </Form.Item>
+            <Form.Item name="agreement" valuePropName="checked">
+              <Checkbox>
+                I have read the <a href="">agreement</a>
+              </Checkbox>
+            </Form.Item>
+          </FormRegister>
+        </TabPane>
+      </Tabs>
     </div>
   );
 }
+
+function mapStateToProps(state) {
+  const { userProfile, isError, message } = state.auth;
+  return {
+    userProfile,
+    isError,
+    message,
+  };
+}
+
+export default connect(mapStateToProps)(Register);
