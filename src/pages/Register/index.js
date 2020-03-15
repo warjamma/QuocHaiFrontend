@@ -19,10 +19,6 @@ const formItemLayout = {
   },
 };
 
-const warning = (mes) => {
-  message.error(mes);
-};
-
 const success = (mess) => {
   message.success(mess);
 };
@@ -32,12 +28,8 @@ function Register(props) {
   const { dispatch } = props;
   useEffect(() => {
     const { isError, message, history } = props;
-    console.log(process.env)
     if (localStorage.getItem('token')) {
       history.push('/dashboard');
-    }
-    if (isError) {
-      warning(message)
     }
   });
 

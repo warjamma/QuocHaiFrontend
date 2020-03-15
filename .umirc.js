@@ -34,16 +34,36 @@ export default {
         },
       ],
     },
-    // {
-    //   path: '/',
-    //   component: '../layouts/UserLayout/index',
-    //   routes: [
-    //     {
-    //       path: '/',
-    //       component: '../pages/Dashboard/index',
-    //     },
-    //   ],
-    // },
+    {
+      path: '/reset-password',
+      component: '../layouts/AuthenticateLayout/index',
+      routes: [
+        {
+          path: '/reset-password',
+          component: '../pages/ResetPassword/index',
+        },
+      ],
+    },
+    {
+      path: '/forget-password',
+      component: '../layouts/AuthenticateLayout/index',
+      routes: [
+        {
+          path: '/forget-password',
+          component: '../pages/ForgetPassword/index',
+        },
+      ],
+    },
+    {
+      path: '/',
+      component: '../layouts/HomeLayout/index',
+      routes: [
+        {
+          path: '/',
+          component: '../pages/LandingPage/index',
+        },
+      ],
+    },
   ],
   plugins: [
     // ref: https://umijs.org/plugin/umi-plugin-react.html

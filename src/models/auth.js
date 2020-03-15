@@ -38,7 +38,17 @@ export default {
       try {
         const { data } = yield call(auth.VerifyUser, res, role);
         yield put({ type: 'loginSuccess', payload: data.data });
+        localStorage.setItem('token', data.data.token)
       } catch (error) {
+      }
+    },
+    *forgetPassword({ payload: values, role }, { call, put }) {
+      try {
+        const { data } = yield call(auth.ForgetPassword, values, role);
+        yield put({ type: 'forgetPasswordSuccess', payload: data.data });
+      } catch (error) {
+        const { data } = error.response
+        yield put({ type: 'forgetPasswordFailure', payload: data.message });
       }
     },
     *clear({}, { put }) {
@@ -80,9 +90,23 @@ export default {
         message: '',
       }
     },
-    clearError(state, action) {
+    forgetPasswordSuccess(state, action) {
       return {
         userProfile: {},
+        isError: false,
+        message: '',
+      }
+    },
+    forgetPasswordFailure(state, action) {
+      return {
+        userProfile: {},
+        isError: true,
+        message: action.payload,
+      }
+    },
+    clearError(state, action) {
+      return {
+        ...state,
         isError: false,
         message: '',
       }

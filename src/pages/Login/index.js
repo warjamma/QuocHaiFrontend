@@ -20,9 +20,9 @@ function Login(props) {
     if (localStorage.getItem('token')) {
       history.push('/dashboard');
     }
-    if (isError) {
-      warning(message);
-    }
+    // if (isError) {
+    //   warning(message);
+    // }
   });
 
   const onFinish = values => {
@@ -72,9 +72,9 @@ function Login(props) {
           <Form.Item name="remember" valuePropName="checked" noStyle>
             <Checkbox>Remember me</Checkbox>
           </Form.Item>
-          <a className="login-form-forgot" href="/register">
+          <Link className="login-form-forgot" to="/forget-password">
             Forgot password
-          </a>
+          </Link>
         </Form.Item>
         <Form.Item className={styles.groupButtonLogin}>
           <Button className={"login-form-button", styles.buttonLogin} type="primary" htmlType="submit">

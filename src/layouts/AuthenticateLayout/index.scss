@@ -5,5 +5,7 @@
   background: url(../../assets/images/background.svg) no-repeat center 0;
   display: flex;
   justify-content: center;
-  padding-top: calc(100vh/5);
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
 }
