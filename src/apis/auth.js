@@ -10,7 +10,7 @@ const Auth = {
   ResetPassword: (payload, role) =>
     APIService.sendRequest('post', `/${role}/reset_password`, null, null, payload),
   ForgetPassword: (payload, role) =>
-    APIService.sendRequest('post', `/${role}/forget_password`, null, null, payload),
+    APIService.sendRequest('post', `/${role}/forgot_password`, null, null, payload),
 };
 
 export default Auth;

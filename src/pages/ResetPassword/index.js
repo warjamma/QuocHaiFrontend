@@ -1,21 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
 import { Link } from 'react-router-dom';
-import { Form, Input, Button, Checkbox, Tabs, Col } from 'antd';
+import { Form, Input, Button, Checkbox, Tabs, message } from 'antd';
 import { ExceptionOutlined, LockOutlined } from '@ant-design/icons';
+import get from 'lodash/get';
 import styles from './styles.scss';
 
 const { TabPane } = Tabs;
 
+const warning = (mes) => {
+  message.success(mes);
+};
+
 function ResetPassword(props) {
-  const [role, setRole] = useState('employers');
-  const { dispatch } = props
+  const { dispatch, location, isError, history } = props
 
   useEffect(() => {
+    console.log(location)
   });
 
   const onFinish = values => {
-    const { dispatch } = props;
+    dispatch({
+      type: 'auth/resetPassword',
+      payload: {
+        ...values,
+        id: get(location, 'state.id', ''),
+      },
+      role: get(location, 'state.role', ''),
+    }).then(() => {
+      if (!isError) {
+        warning('Reset Password Successfully');
+        history.push('/login');
+      }
+    })
   };
 
   return (
@@ -28,19 +45,17 @@ function ResetPassword(props) {
         name="normal_login"
         className={styles.loginForm}
         onFinish={onFinish}
+        initialValues={{
+          reset_code: get(location, 'state.reset_code', ''),
+        }}
       >
         <Form.Item
           name="reset_code"
-          rules={[
-            {
-              required: true,
-              message: 'Please input your Reset Code!',
-            },
-          ]}
         >
           <Input
             prefix={<ExceptionOutlined className="site-form-item-icon" />}
             placeholder="Reset Code"
+            disabled
           />
         </Form.Item>
         <Form.Item

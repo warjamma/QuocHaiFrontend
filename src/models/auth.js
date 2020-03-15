@@ -46,9 +46,20 @@ export default {
       try {
         const { data } = yield call(auth.ForgetPassword, values, role);
         yield put({ type: 'forgetPasswordSuccess', payload: data.data });
+        return data.data;
       } catch (error) {
         const { data } = error.response
         yield put({ type: 'forgetPasswordFailure', payload: data.message });
+      }
+    },
+    *resetPassword({ payload: values, role }, { call, put }) {
+      try {
+        const { data } = yield call(auth.ResetPassword, values, role);
+        yield put({ type: 'resetPasswordSuccess', payload: data.data });
+        return data;
+      } catch (error) {
+        const { data } = error.response
+        yield put({ type: 'resetPasswordFailure', payload: data.message });
       }
     },
     *clear({}, { put }) {
@@ -92,12 +103,22 @@ export default {
     },
     forgetPasswordSuccess(state, action) {
       return {
-        userProfile: {},
-        isError: false,
-        message: '',
+        ...state,
       }
     },
     forgetPasswordFailure(state, action) {
+      return {
+        userProfile: {},
+        isError: true,
+        message: action.payload,
+      }
+    },
+    resetPasswordSuccess(state, action) {
+      return {
+        ...state,
+      }
+    },
+    resetPasswordFailure(state, action) {
       return {
         userProfile: {},
         isError: true,

@@ -12,6 +12,7 @@ const warning = (mes) => {
 const { TabPane } = Tabs;
 
 function ForgetPassword(props) {
+  const { history } = props;
   const [role, setRole] = useState('employers');
 
   useEffect(() => {
@@ -23,6 +24,13 @@ function ForgetPassword(props) {
       type: 'auth/forgetPassword',
       payload: values,
       role,
+    }).then(res => {
+      if (res.reset_code) {
+        history.push({
+          pathname: '/reset-password',
+          state: { ...res, role }
+        });
+      }
     });
   };
 
