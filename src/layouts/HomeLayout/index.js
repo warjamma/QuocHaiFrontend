@@ -6,7 +6,7 @@ function Home(props) {
       <header>
         RockSearch
       </header>
-      <main>
+      <main className="main">
         {props.children}
       </main>
       <footer>

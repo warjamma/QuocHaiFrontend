@@ -3,7 +3,7 @@ import styles from './styles.scss';
 export default function() {
   return (
     <div>
-      dashboard
+      Refer list
     </div>
   );
 }

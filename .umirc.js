@@ -10,7 +10,15 @@ export default {
       routes: [
         {
           path: '/dashboard',
-          component: '../pages/Dashboard/index'
+          component: '../pages/Company/Dashboard/index'
+        },
+        {
+          path: '/dashboard/job-list',
+          component: '../pages/Company/JobList/index'
+        },
+        {
+          path: '/dashboard/refer-list',
+          component: '../pages/Company/ReferList/index'
         },
       ],
     },

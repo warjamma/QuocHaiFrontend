@@ -10,6 +10,7 @@
   "dependencies": {
     "antd": "^4.0.2",
     "axios": "^0.19.2",
+    "bizcharts": "^3.5.8",
     "dotenv": "^8.2.0",
     "lodash": "^4.17.15",
     "node-sass": "^4.13.1",
