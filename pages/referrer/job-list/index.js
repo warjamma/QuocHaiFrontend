@@ -1,169 +1,86 @@
 import { Table, Tag, Button } from 'antd';
-import './styles.scss';
+import './styles.scss'
 
 export default function() {
   const columns = [
     {
-      title: 'Job name',
+      title: 'Company',
       dataIndex: 'name',
       key: 'name',
-      render: text => <a>{text}</a>,
+      render: text => {
+        return (
+          <div className="item-company">
+            <div className="logo" />
+            <div>
+              <div>Role: {text.role}</div>
+              <div>Vacancy: {text.vacancy}</div>
+              <div>Specilist-level: 
+                {text.specilistLevel.map(tag => {
+                  return (
+                    <Tag color="blue" key={tag}>
+                      {tag}
+                    </Tag>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        )
+      },
     },
     {
-      title: 'Created Date',
-      dataIndex: 'time',
-      key: 'time',
-      width: 120,
+      title: 'Reward',
+      dataIndex: 'reward',
+      key: 'reward',
+      align: 'center',
+      width: 170,
     },
     {
-      title: 'Vacancy',
-      dataIndex: 'vacancy',
-      key: 'vacancy',
-      width: 90,
-      align: 'center'
-    },
-    {
-      title: 'Job level',
-      dataIndex: 'job_level',
-      key: 'job_level',
-      width: 300,
-      render: tags => (
-        <span>
-          {tags.map(tag => {
-            return (
-              <Tag color="blue" key={tag}>
-                {tag}
-              </Tag>
-            );
-          })}
-        </span>
-      ),
-    },
-    {
-      title: 'Job role',
-      key: 'job role',
-      dataIndex: 'job_role',
-      width: 300,
-      render: tags => (
-        <span>
-          {tags.map(tag => {
-            return (
-              <Tag color="blue" key={tag}>
-                {tag}
-              </Tag>
-            );
-          })}
-        </span>
-      ),
-    },
-    {
-      title: 'Salary (USD)',
+      title: 'Salary',
       dataIndex: 'salary',
       key: 'salary',
-      width: 140,
       align: 'center',
-      render: salary => (
-        <span>
-          <Tag color="red">{salary}</Tag>
-        </span>
-      )
+      width: 170,
     },
     {
-      title: 'Status',
-      dataIndex: 'status',
-      key: 'status',
-      width: 120,
+      title: 'Processing',
+      dataIndex: 'processing',
+      key: 'processing',
       align: 'center',
-      render: status => (
-        <span>
-          <Tag color="warning">{status}</Tag>
-        </span>
-      )
+      width: 150,
     },
     {
-      title: 'Candidate',
-      dataIndex: 'candidate',
-      key: 'candidate',
-      width: 100,
-      align: 'center'
-    },
-    {
-      title: 'Action',
-      key: 'action',
-      fixed: 'right',
-      width: 100,
+      title: 'My referred',
+      dataIndex: 'referred',
+      key: 'referred',
       align: 'center',
-      render: (text, record) => (
-        <span>
-          <Button>Edit</Button>
-        </span>
-      ),
+      width: 150,
     },
   ];
   
   const data = [
     {
       key: '1',
-      name: 'Backend Developer',
-      time: '18/03/2020',
-      vacancy: 32,
+      name: {
+        logo: '',
+        name: 'Rockship company',
+        role: 'Back-end developer',
+        vacancy: '02',
+        specilistLevel: ['Senior', 'Junior', 'Fresher']
+      },
       job_level: ['Administration', 'Backend', 'Devops'],
-      job_role: ['Administration', 'Backend', 'Devops'],
+      reward: '100$',
       salary: '1000$ - 1500$',
-      status: 'Pending',
-      candidate: '03'
-    },
-    {
-      key: '2',
-      name: 'Full-stack Developer',
-      time: '18/03/2020',
-      vacancy: 42,
-      job_level: ['Administration', 'Backend', 'Devops'],
-      job_role: ['Front-end', 'Designer'],
-      salary: '1000$ - 1500$',
-      status: 'Pending',
-      candidate: '03'
-    },
-    {
-      key: '3',
-      name: 'React Native Developer',
-      time: '18/03/2020',
-      vacancy: 32,
-      job_level: ['Administration', 'Backend', 'Devops'],
-      job_role: ['Front-end', 'Designer'],
-      salary: '1000$ - 1500$',
-      status: 'Pending',
-      candidate: '03'
-    },
-    {
-      key: '3',
-      name: 'React Native Developer',
-      time: '18/03/2020',
-      vacancy: 32,
-      job_level: ['Administration', 'Backend', 'Devops'],
-      job_role: ['Front-end', 'Designer'],
-      salary: '1000$ - 1500$',
-      status: 'Pending',
-      candidate: '03'
-    },
-    {
-      key: '3',
-      name: 'React Native Developer',
-      time: '18/03/2020',
-      vacancy: 32,
-      job_level: ['Administration', 'Backend', 'Devops'],
-      job_role: ['Front-end', 'Designer'],
-      salary: '1000$ - 1500$',
-      status: 'Pending',
-      candidate: '03'
-    },
+      processing: '05',
+      referred: '03'
+    }
   ];
   
   return (
     <div className="jobListContainer">
       <h1>Danh sách công việc</h1>
       <div className="jobListTable">
-        <Table bordered columns={columns} dataSource={data} scroll={{ x: '1500px' }}/>
+        <Table bordered columns={columns} dataSource={data} />
       </div>
     </div>
   );
