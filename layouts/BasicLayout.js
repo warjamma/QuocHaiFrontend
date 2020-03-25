@@ -28,12 +28,12 @@ const { Header, Sider, Content } = Layout;
 function BasicLayout(props) {
   const { dispatch, history, location, profile } = props;
   const [collapsed, setcollapsed] = useState(true);
-  // useEffect(() => {
-  //   const { profile } = props;
-  //   if (!get(profile, 'data.token', '')) {
-  //     Router.push('/login');
-  //   }
-  // });
+  useEffect(() => {
+    const { profile } = props;
+    if (!get(profile, 'data.token', '')) {
+      Router.push('/login');
+    }
+  });
 
   const toggle = () => {
     setcollapsed(!collapsed)
