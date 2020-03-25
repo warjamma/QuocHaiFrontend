@@ -1,7 +1,7 @@
 import axios from 'axios';
 require('dotenv').config();
 
-axios.defaults.baseURL = `${process.env.NODE_ENV === 'production' ? 'http://18.139.210.185:5222' : 'http://18.139.210.185:5222'}`;
+axios.defaults.baseURL = 'https://rocksearch-api.rockship.co';
 
 const APIService = {
   sendRequest: (
