@@ -1,0 +1,30 @@
+.resetPasswordForm {
+  width: 320px;
+}
+
+.selectRole {
+  margin-bottom: 10px;
+}
+
+.groupButtonLogin {
+  text-align: center;
+  .buttonLogin {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+}
+
+.loginLogo {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  justify-content: center;
+  img {
+    width: 30px;
+  }
+  div {
+    font-size: 1.6rem;
+    margin-left: 7px;
+    font-weight: bold;
+  }
+}

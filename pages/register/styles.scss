@@ -1,0 +1,39 @@
+.registerForm {
+  width: 420px;
+  .loginLogo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    justify-content: center;
+    img {
+      width: 50px;
+    }
+    div {
+      font-size: 1.6rem;
+      margin-left: 7px;
+      font-weight: bold;
+    }
+  }
+  
+  .groupButtonLogin {
+    text-align: center;
+    .buttonLogin {
+      width: 420px;
+    }
+  }
+  .renderItemSelect {
+    span {
+      display: inline-block;
+      margin-left: 5px;
+    }
+  }
+}
+
+.dropdownCusstomRegister {
+  .renderItemSelect {
+    span {
+      display: inline-block;
+      margin-left: 5px;
+    }
+  }
+}
