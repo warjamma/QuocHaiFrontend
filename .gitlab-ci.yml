@@ -27,5 +27,4 @@ deploy_dev:
   only:
     - dev
   script:
-    - npm rebuild node-sass
-    - ssh $SSH_HOST "cd $PROJECT_DIR && npm i && make deploy"
+    - ssh $SSH_HOST "cd $PROJECT_DIR && rm -rf node_modules && npm i && make deploy"
