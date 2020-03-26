@@ -27,4 +27,4 @@ deploy_dev:
   only:
     - dev
   script:
-    - ssh $SSH_HOST "cd $PROJECT_DIR && rm -rf node_modules && npm i && make deploy"
+    - ssh $SSH_HOST "cd $PROJECT_DIR && rm -rf node_modules && git pull && npm install && npm run build && pm2 start pm2.json"
