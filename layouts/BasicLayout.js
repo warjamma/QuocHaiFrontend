@@ -184,8 +184,8 @@ function BasicLayout(props) {
           <Content
             className="sideLayoutBody"
             style={{
-              margin: '24px 16px',
-              padding: 24,
+              margin: '10px',
+              padding: '10px 10px',
               minHeight: 280,
             }}
           >

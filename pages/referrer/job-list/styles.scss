@@ -1,10 +1,150 @@
-.item-company {
-  display: flex;
-  align-items: flex-start;
-  .logo {
-    margin: 0px 10px 0px 0px;
-    height: 90px;
-    width: 90px;
-    background: #001529;
+.job-list-referrer {
+  .title {
+    font-size: 32px;
+    font-weight: normal;
+    span {
+      color: #e24b30;
+      font-weight: bold;
+    }
+  }
+  .list-job {
+    text-align: center;
+    .item {
+      border: 1px solid #ffd8c5;
+      background: #fffbf8;
+      margin: 15px 0px;
+      border-radius: 3px;
+      padding: 10px 10px;
+      align-items: flex-start;
+      .slot {
+        font-weight: bold;
+        font-size: 16px;
+        color: #e24b30;
+      }
+      .logo-company {
+        width: 100%;
+        max-height: 100px;
+        object-fit: contain;
+      }
+      .info-company {
+        text-align: left;
+        .job-name {
+          font-size: 16px;
+          font-weight: bold;
+        }
+        .company-name {
+          font-weight: bold;
+        }
+        .list-required {
+          margin: 5px 0px;
+        }
+        .salary-job {
+          margin: 10px 0px;
+          display: flex;
+          .item-s {
+            color: #777;
+            margin-right: 20px;
+            display: flex;
+            align-items: center;
+            div {
+              margin-left: 5px;
+            }
+            .money {
+              color: #e24b30;
+              font-weight: bold;
+            }
+          }
+        }
+      }
+      .review-of {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-end;
+        &__item {
+          font-weight: bold;
+          button {
+            background-color: #e24b30;
+            font-weight: bold;
+            color: #fff;
+            border: none;
+          }
+        }
+        .reward-m {
+          margin-bottom: 10px;
+          span {
+            font-size: 14px;
+            padding: 3px 10px;
+            margin: 0px;
+          }
+        }
+      }
+    }
+  }
+  .filter-box {
+    padding: 10px 10px;
+    background-color: #324554;
+    color: #fff;
+    border-radius: 3px;
+    position: sticky;
+    top: 0px;
+    .filter-item {
+      .title {
+        font-size: 14px !important;
+        font-weight: bold;
+        margin-bottom: 3px;
+      }
+      margin-bottom: 15px;
+    }
+    .reward-slider {
+      display: flex;
+      align-items: center;
+      div {
+        font-size: 12px;
+        font-weight: bold;
+      }
+      .from {
+        margin-right: 7px;
+      }
+      .to {
+        margin: 0px 7px;
+      }
+    }
+    .title {
+      font-size: 18px;
+      color: #fff;
+    }
+    input {
+      height: 40px;
+      width: 100%;
+      outline: none;
+      border: none;
+      font-size: 12px;
+    }
+    .ant-select-arrow {
+      top: 62%;
+    }
+    .ant-select-selector  {
+      height: 40px;
+      border: none;
+      font-size: 12px !important;
+      input {
+        height: 40px;
+        position: relative;
+        top: 4px;
+      }
+      .ant-select-selection-placeholder, .ant-select-selection-item {
+        display: flex;
+        align-items: center;
+      }
+    }
+    .find-btn {
+      width: 100%;
+      border: none;
+      background-color: #e24b30;
+      font-weight: bold;
+      color: #fff;
+      margin-top: 30px;
+    }
   }
 }
