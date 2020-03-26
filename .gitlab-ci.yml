@@ -1,4 +1,4 @@
-image: kriasoft/node-ci
+image: ubuntu:18.04
 
 # List of ENVVAR
 # - SSH_PRIVATE_KEY
