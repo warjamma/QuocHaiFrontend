@@ -1,3 +1,4 @@
 deploy:
 	- git pull
-	- npm run build && pm2 start pm2.json
+	- docker-compose down
+	- docker-compose up -d --build

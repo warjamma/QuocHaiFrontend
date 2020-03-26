@@ -1,0 +1,5 @@
+node_modules/
+pgdata/
+tmp/
+error/
+data/
