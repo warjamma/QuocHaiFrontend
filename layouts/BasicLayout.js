@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux'
 import Link from 'next/link'
-import Router from 'next/router';
+import Router, { withRouter } from 'next/router';
 import { get } from 'lodash';
 import { Layout, Menu, Dropdown, message, Badge } from 'antd';
 import {
@@ -18,6 +18,8 @@ import {
   InboxOutlined
 } from '@ant-design/icons';
 
+import { requireAuthentication } from "../lib/auth";
+
 import { logOutRequest, clearError } from '../containers/profile/actions'
 
 import './BasicLayout.scss';
@@ -31,7 +33,7 @@ const error = (mess) => {
 };
 
 function BasicLayout(props) {
-  const { dispatch, history, location, profile } = props;
+  const { dispatch, profile, router } = props;
   const [collapsed, setcollapsed] = useState(true);
   const [token, setToken] = useState(null);
 
@@ -122,11 +124,11 @@ function BasicLayout(props) {
               </span>
             </Menu.Item>
             <Menu.Item key="3">
-              <Link href={`${get(profile, 'data.employer', '') ? '/company/candidate-list' : '/referrer/candidate-list'}`}>
+              <Link href={`${get(profile, 'data.employer', '') ? '/company/my-referred' : '/referrer/my-referred'}`}>
                 <UploadOutlined />
               </Link>
               <span>
-                <Link href={`${get(profile, 'data.employer', '') ? '/company/candidate-list' : '/referrer/candidate-list'}`}>
+                <Link href={`${get(profile, 'data.employer', '') ? '/company/my-referred' : '/referrer/my-referred'}`}>
                   <a>Đã giới thiệu</a>
                 </Link>
               </span>
@@ -210,4 +212,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, null)(BasicLayout)
+export default connect(mapStateToProps, null)(withRouter(requireAuthentication(BasicLayout)))

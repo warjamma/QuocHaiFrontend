@@ -42,9 +42,7 @@ class MyApp extends App {
     const { Component, pageProps, reduxStore } = this.props
     const LayoutWrapper = () => {
       return (
-        <BasicLayout>
-          <Component {...pageProps} />
-        </BasicLayout>
+        <Component {...pageProps} />
       )
     }
     return (
@@ -56,7 +54,9 @@ class MyApp extends App {
           <Head>
             <link rel="stylesheet" type="text/css" href="/nprogress.css" />
           </Head>
-          <LayoutWrapper />
+          <BasicLayout>
+            <LayoutWrapper />
+          </BasicLayout>
         </PersistGate>
       </Provider>
     )
