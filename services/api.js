@@ -57,9 +57,9 @@ const APIService = {
   ) => {
     const headers = headerParams || {};
     // eslint-disable-next-line camelcase
-    const { token } = localStorage.getItem('token');
+    const token = localStorage.getItem('token');
     // eslint-disable-next-line camelcase
-    headers.authorization = `Bearer ${token}`;
+    headers.authorization = `JWT ${token}`;
     return APIService.sendRequest(
       method,
       url,

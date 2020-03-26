@@ -5,7 +5,6 @@ import { Provider } from 'react-redux'
 import { persistStore } from 'redux-persist'
 import { PersistGate } from 'redux-persist/integration/react'
 import BasicLayout from '../layouts/BasicLayout'
-import AuthLayout from '../layouts/AuthLayout'
 
 import Head from 'next/head'
 import Router from 'next/router'
@@ -25,6 +24,9 @@ class MyApp extends App {
   constructor(props) {
     super(props)
     this.persistor = persistStore(props.reduxStore)
+    this.state = {
+      token: undefined,
+    };
   }
 
   static async getInitialProps({ Component, ctx }) {
@@ -34,25 +36,17 @@ class MyApp extends App {
       pageProps = await getInitialProps(ctx);
     }
     return { pageProps };
-  }
+  };
 
   render() {
     const { Component, pageProps, reduxStore, router } = this.props
-    const store  = reduxStore.getState()
+    console.log(this.state.token)
     const LayoutWrapper = () => {
-      if (['/login', '/register', '/forgot-password', '/reset-password'].includes(router.pathname)) {
-        return (
-          <AuthLayout>
-            <Component {...pageProps} />
-          </AuthLayout> 
-        )
-      } else {
-        return (
-          <BasicLayout>
-            <Component {...pageProps} />
-          </BasicLayout>
-        )
-      }
+      return (
+        <BasicLayout>
+          <Component {...pageProps} />
+        </BasicLayout>
+      )
     }
     return (
       <Provider store={reduxStore}>
