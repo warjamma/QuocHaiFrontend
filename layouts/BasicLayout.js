@@ -78,8 +78,8 @@ function BasicLayout(props) {
         <UserOutlined />
         Thông tin cá nhân
       </Menu.Item>
-      <Menu.Item key="2" onClick={() => {
-          dispatch(logOutRequest())
+      <Menu.Item key="2" onClick={async () => {
+          await dispatch(logOutRequest())
           Router.push('/login');
         }}
       >

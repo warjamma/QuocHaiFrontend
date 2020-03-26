@@ -20,10 +20,6 @@ const ssrCache = cacheableResponse({
 
 app.prepare().then(() => {
   const server = express();
-  server.get('/', (req, res) => ssrCache({ req, res, pagePath: '/home' }));
-
-  server.get('/:slug', (req, res) => ssrCache({ req, res, pagePath: '/[pid]' }));
-
   server.get('*', (req, res) => handle(req, res));
 
   server.listen(port, (err) => {

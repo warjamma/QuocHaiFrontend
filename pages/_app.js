@@ -39,8 +39,7 @@ class MyApp extends App {
   };
 
   render() {
-    const { Component, pageProps, reduxStore, router } = this.props
-    console.log(this.state.token)
+    const { Component, pageProps, reduxStore } = this.props
     const LayoutWrapper = () => {
       return (
         <BasicLayout>
