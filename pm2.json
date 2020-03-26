@@ -1,0 +1,9 @@
+{
+  "apps": [
+    {
+      "name": "pm2",
+      "script": "npm",
+      "args" : "run production:server"
+    }
+  ]
+}
