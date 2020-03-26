@@ -50,11 +50,13 @@ function BasicLayout(props) {
   };
 
   const renderKey = () => {
-    const path = 'job-list'
-    switch(path) {
+    const path = router.pathname
+    switch(path.split('/')[2]) {
+      case '':
+        return ['1']
       case 'job-list':
         return ['2'];
-      case 'refer-list':
+      case 'my-referred':
         return ['3'];
       default:
         return ['1'];
