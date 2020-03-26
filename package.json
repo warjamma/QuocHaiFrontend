@@ -1,0 +1,35 @@
+{
+  "name": "dtgk-web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start",
+    "production:server": "node index.js",
+    "dev:server": "npm run build && nodemon index.js"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^4.0.0",
+    "@zeit/next-sass": "^1.0.1",
+    "antd": "^4.0.4",
+    "axios": "^0.19.2",
+    "cacheable-response": "^1.10.0",
+    "dotenv": "^8.2.0",
+    "es6-promise": "^4.2.8",
+    "express": "^4.17.1",
+    "lodash": "^4.17.15",
+    "next": "^9.3.0",
+    "node-sass": "^4.13.1",
+    "nodemon": "^2.0.2",
+    "nprogress": "^0.2.0",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0",
+    "react-redux": "^7.2.0",
+    "redux": "^4.0.5",
+    "redux-devtools-extension": "^2.13.8",
+    "redux-persist": "^6.0.0",
+    "redux-thunk": "^2.3.0",
+    "styled-components": "^5.0.1"
+  }
+}
