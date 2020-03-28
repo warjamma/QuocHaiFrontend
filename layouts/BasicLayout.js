@@ -58,6 +58,8 @@ function BasicLayout(props) {
         return ['2'];
       case 'my-referred':
         return ['3'];
+      case 'profile':
+        return ['4'];
       default:
         return ['1'];
     }
@@ -157,8 +159,12 @@ function BasicLayout(props) {
                 </SubMenu>
               ) : (
                 <Menu.Item key="4">
-                  <UserOutlined />
-                  <span>Thông tin cá nhân</span>
+                  <Link href={`${get(profile, 'data.employer', '') ? '/company/profile' : '/referrer/profile'}`}>
+                    <UserOutlined />
+                  </Link>
+                  <Link href={`${get(profile, 'data.employer', '') ? '/company/profile' : '/referrer/profile'}`}>
+                    <span>Thông tin cá nhân</span>
+                  </Link>
                 </Menu.Item>
               )
             }
