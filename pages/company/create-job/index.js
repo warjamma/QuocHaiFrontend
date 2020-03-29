@@ -16,7 +16,7 @@ function CreateJob (props) {
   } 
 
   useEffect(() => {
-    console.log('hêr1321')
+    console.log('hrre')
   }, []);
 
   return (
@@ -24,7 +24,7 @@ function CreateJob (props) {
       <div className="create-job__header">
         <div>Tạo công việc mới</div>
       </div>
-      {/* <Row className="create-job__body">
+      <Row className="create-job__body">
         <Form
           {...layout}
           name="basic"
@@ -152,7 +152,7 @@ function CreateJob (props) {
             </Col>
           </Row>
         </Form>
-      </Row> */}
+      </Row>
     </div>
   )
 }

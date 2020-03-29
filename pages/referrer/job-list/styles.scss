@@ -48,4 +48,19 @@
       }
     }
   }
+  .custom-company {
+    display: flex;
+    .logo-company {
+      width: 75px;
+      height: 75px;
+      background-color: grey;
+      margin-right: 10px;
+    }
+    .info-required {
+      text-align: left;
+      .job-role {
+        margin: 5px 0px;
+      }
+    }
+  }
 }

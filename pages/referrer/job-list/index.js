@@ -28,27 +28,51 @@ const initQuery = {
 const columns = [
   {
     title: 'Công ty',
-    dataIndex: 'company',
-    align: 'center'
+    dataIndex: 'company_id',
+    render: (text, record, index) => (
+      <div className="custom-company">
+        <div className="logo-company" />
+        <div className="info-required">
+          <b className="name-company">Rockship</b>
+          <div className="job-role">
+            <span>Vị trí tuyển dụng : </span>
+            {
+              record.job_role.map(item => (
+                <Tag color="blue" key={item}>{item}</Tag>
+              ))
+            }
+          </div>
+          <div className="job-level">
+            <span>Level yêu cầu : </span>
+            {
+              record.job_levels.map(item => (
+                <Tag color="blue" key={item}>{item}</Tag>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    ),
   },
   {
     title: 'Công việc',
-    dataIndex: 'job',
-    align: 'center'
+    dataIndex: 'job_title',
   },
   {
     title: 'Mức thưởng',
     dataIndex: 'reward',
-    align: 'center'
+    align: 'center',
+    render: (text, record, index) => <Tag color="green">{record.reward}$</Tag>,
   },
   {
     title: 'Mức lương',
-    dataIndex: 'address',
-    align: 'center'
+    dataIndex: '',
+    align: 'center',
+    render: (text, record, index) => <Tag color="blue">{record.min_salary}$ - {record.max_salary}$</Tag>,
   },
   {
     title: 'Ứng viên',
-    dataIndex: 'address',
+    dataIndex: 'vacancy_number',
     align: 'center'
   },
   {
@@ -71,26 +95,19 @@ function itemRender(current, type, originalElement) {
 function JobList (props) {
   const { referred, dispatch } = props
   const [query, setQuery] = useState(initQuery);
-  const [data, setData] = useState({ hits: [] });
 
   const changeQuery = (key, value) => {
     let clone = { ...query };
     clone[key] = value;
     setQuery(clone)
-  } 
+  }
 
   const handleFind = async () => {
     await dispatch(getListJob(query))
-  } 
+  }
 
   useEffect(() => {
-    const fetchData = async () => {
-      const result = await axios(
-        'https://hn.algolia.com/api/v1/search?query=redux',
-      );
-      setData(result.data);
-    };
-    fetchData();
+    dispatch(getListJob());
   }, []);
 
   return (
@@ -104,7 +121,7 @@ function JobList (props) {
           <Row gutter={[16, 16]} className="body">
             <Col span={12}>
               <b>Từ khóa</b>
-              <Search  placeholder="Từ khóa"/>
+              <Search onChange={(e) => changeQuery('key_word', e.target.value)} placeholder="Từ khóa"/>
             </Col>
             <Col span={6}>
               <b>Công ty</b>
@@ -112,16 +129,17 @@ function JobList (props) {
                 allowClear
                 showSearch
                 mode="multiple"
-                
+                onChange={(e) => changeQuery('company', e)}
                 style={{ width: '100%' }}
                 placeholder="Công ty"
                 optionFilterProp="children"
+                defaultValue="All"
                 filterOption={(input, option) =>
                   option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
               >
                 <Option value="All">Tất cả</Option>
-                <Option value="All">Rockship</Option>
+                <Option value="Rockship">Rockship</Option>
               </Select>
             </Col>
             <Col span={6}>
@@ -130,21 +148,16 @@ function JobList (props) {
                 allowClear
                 showSearch
                 mode="multiple"
-                
+                onChange={(e) => changeQuery('job_type', e)}
                 style={{ width: '100%' }}
                 placeholder="Chọn loại công việc"
                 optionFilterProp="children"
                 filterOption={(input, option) =>
                   option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
+                defaultValue="All"
               >
                 <Option value="All">Tất cả</Option>
-                <Option value="Developer">Developer</Option>
-                <Option value="Kế toán">Kế toán</Option>
-                <Option value="HR">HR</Option>
-                <Option value="HR1">HR1</Option>
-                <Option value="HR2">HR2</Option>
-                <Option value="HR3">HR3</Option>
               </Select>
             </Col>
           </Row>
@@ -155,27 +168,28 @@ function JobList (props) {
                 allowClear
                 showSearch
                 mode="multiple"
-                
+                onChange={(e) => changeQuery('location', e)}
                 style={{ width: '100%' }}
                 placeholder="Địa điểm"
                 optionFilterProp="children"
                 filterOption={(input, option) =>
                   option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
+                defaultValue="All"
               >
                 <Option value="All">Tất cả</Option>
-                <Option value="All">Hà Nội</Option>
-                <Option value="All">Hồ Chí Minh</Option>
-                <Option value="All">Đà Nẵng</Option>
+                <Option value="Hà Nội">Hà Nội</Option>
+                <Option value="Hồ Chí Minh">Hồ Chí Minh</Option>
+                <Option value="Đà Nẵng<">Đà Nẵng</Option>
               </Select>
             </Col>
             <Col span={8}>
               <b>Mức lương</b>
               <div className="salary-form">
                 <span className="content">từ</span>
-                <Input  addonAfter={<span>$</span>}/>
+                <Input onChange={(e) => changeQuery('min_salary', e.target.value)} addonAfter={<span>$</span>}/>
                 <span className="content">đến</span>
-                <Input  addonAfter={<span>$</span>}/>
+                <Input onChange={(e) => changeQuery('max_salary', e.target.value)} addonAfter={<span>$</span>}/>
               </div>
             </Col>
             <Col span={6}>
@@ -184,35 +198,35 @@ function JobList (props) {
                 allowClear
                 showSearch
                 mode="multiple"
-                
+                onChange={(e) => changeQuery('status', e)}
                 style={{ width: '100%' }}
                 placeholder="Trang thái"
                 optionFilterProp="children"
                 filterOption={(input, option) =>
                   option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
+                defaultValue="All"
               >
                 <Option value="All">Tất cả</Option>
               </Select>
             </Col>
           </Row>
           <div className="filter-button">
-            <Button icon={<SearchOutlined />}  type="primary">Tìm kiếm</Button>
+            <Button onClick={() => handleFind()} icon={<SearchOutlined />}  type="primary">Tìm kiếm</Button>
             <Button icon={<RedoOutlined />}  type="primary">Làm mới</Button>
           </div>
         </Col>
       </Row>
       <div className="jobListTable">
-        <Table bordered columns={columns} dataSource={get(referred, 'list_job.items.job', [])}  />
+        <Table bordered rowKey="id" columns={columns} dataSource={get(referred, 'list_job.items.job', [])}  />
       </div>
     </div>
   );
 };
 
-JobList.getInitialProps = async function({ reduxStore }) {
-  reduxStore.dispatch(getListJob({offset: 0, limit: 20}))
-  const { referred } = reduxStore.getState()
+function mapStateToProps(state) {
+  const { referred } = state
   return { referred }
-};
+}
 
-export default connect(null, null)(JobList)
+export default connect(mapStateToProps, null)(JobList)
