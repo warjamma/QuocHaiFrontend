@@ -6,3 +6,52 @@
 .ant-tag {
   border-radius: 25px;
 }
+
+.ant-btn {
+  box-shadow: none;
+  border-radius: 5px;
+  // border: none;
+  // height: 30px;
+  // padding: 0px 15px;
+}
+
+input {
+  outline: none;
+  box-shadow: none;
+}
+
+.ant-select-selector, .ant-input-search, .ant-input-number{
+  border-radius: 7px !important;
+}
+
+.ant-input-number-handler-up {
+  border-top-right-radius: 7px;
+}
+
+.ant-input-number-handler-down {
+  border-bottom-right-radius: 7px;
+}
+
+
+.ant-input {
+  border-radius: 7px;
+}
+
+.ant-input-group-addon {
+  border-radius: 7px;
+}
+
+.ant-form-item-explain {
+  font-size: 12px;
+  position: relative;
+  top: 5px;
+}
+.ant-form-item-label {
+  padding: 0px !important;
+  height: 27px;
+  font-weight: bold;
+  label {
+    height: 100%;
+    color: #5d5d5d !important;
+  }
+}

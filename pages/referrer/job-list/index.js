@@ -1,12 +1,15 @@
 import React, { Component, useState, useEffect } from 'react';
 import { connect } from 'react-redux'
 import Link from 'next/link'
-import { SettingFilled, DollarCircleFilled, FlagFilled } from '@ant-design/icons';
-import { Pagination, Row, Col, Button, Tag, Input, Select } from 'antd';
+import { RedoOutlined, SearchOutlined, DollarCircleOutlined } from '@ant-design/icons';
+import { Table, Row, Col, Button, Tag, Input, Select } from 'antd';
 import { getListJob } from '../../../containers/referred/actions';
 import { get } from 'lodash';
+import axios from 'axios';
 
 import './styles.scss'
+
+const { Search } = Input
 
 const { Option } = Select;
 
@@ -22,9 +25,38 @@ const initQuery = {
   limit: 20,
 }
 
-function onSearch(val) {
-  console.log('search:', val);
-}
+const columns = [
+  {
+    title: 'Công ty',
+    dataIndex: 'company',
+    align: 'center'
+  },
+  {
+    title: 'Công việc',
+    dataIndex: 'job',
+    align: 'center'
+  },
+  {
+    title: 'Mức thưởng',
+    dataIndex: 'reward',
+    align: 'center'
+  },
+  {
+    title: 'Mức lương',
+    dataIndex: 'address',
+    align: 'center'
+  },
+  {
+    title: 'Ứng viên',
+    dataIndex: 'address',
+    align: 'center'
+  },
+  {
+    title: 'Giới thiệu của tôi',
+    dataIndex: 'address',
+    align: 'center'
+  },
+];
 
 function itemRender(current, type, originalElement) {
   if (type === 'prev') {
@@ -39,6 +71,7 @@ function itemRender(current, type, originalElement) {
 function JobList (props) {
   const { referred, dispatch } = props
   const [query, setQuery] = useState(initQuery);
+  const [data, setData] = useState({ hits: [] });
 
   const changeQuery = (key, value) => {
     let clone = { ...query };
@@ -50,139 +83,136 @@ function JobList (props) {
     await dispatch(getListJob(query))
   } 
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await axios(
+        'https://hn.algolia.com/api/v1/search?query=redux',
+      );
+      setData(result.data);
+    };
+    fetchData();
+  }, []);
+
   return (
-    <div className="job-list-referrer">
-      <Row gutter={[16, 16]}>
-        <Col span={17}>
-          <h1 className="title"><span>{get(referred, 'list_job.pagination.count', 0)}</span> Jobs</h1>
-          {
-            get(referred, 'list_job.pagination.count', 0) ? (
-              <div className="list-job">
-                <Pagination total={get(referred, 'list_job.pagination.count', 0)} itemRender={itemRender} />
-                  {
-                    get(referred, 'list_job.items.job', []).map(item => (
-                      <Row key={item} className="item">
-                        <Col span={4}>
-                          <img className="logo-company" src="https://topdev.vn/files/logos/eee36e0693d50266f16846c4bdf57168.png" alt="logo" />
-                          <div className="slot">(+ 5 slot)</div>
-                        </Col>
-                        <Col className="info-company" span={15}>
-                          <div className="job-name">
-                            [Junior/Senior] Software Developer (.NET, JavaScript) (ASP.NET, C#, ReactJS, Visual Studio)
-                          </div>
-                          <div className="company-name">GrapeCity</div>
-                          <div className="list-required">
-                            {
-                              ['Junior', 'Senior'].map(item => (
-                                <Tag key={item} color="blue">{item}</Tag>
-                              ))
-                            }
-                          </div>
-                          <div className="salary-job">
-                            <div className="item-s">
-                              <FlagFilled />
-                              <div>Hồ Chí Minh</div>
-                            </div>
-                            <div className="item-s">
-                              <SettingFilled />
-                              <div>Outsourcing</div>
-                            </div>
-                            <div className="item-s">
-                              <DollarCircleFilled />
-                              <div className="money">$700 - $2,000</div>
-                            </div>
-                          </div>
-                          <div className="list-required">
-                            {
-                              ['ASP.NET', 'JavaScript', 'C#', '.NET', 'ReactJS', 'Visual Studio'].map(item => (
-                                <Tag key={item} color="blue">{item}</Tag>
-                              ))
-                            }
-                          </div>
-                        </Col>
-                        <Col className="review-of" span={5}>
-                          <div className="review-of__item reward-m">
-                            <div>
-                              <Tag color="green">$ 100</Tag>
-                            </div>
-                          </div>
-                          <div className="review-of__item">
-                            <Button>My referred (0)</Button>
-                          </div>
-                        </Col>
-                      </Row>
-                    ))
-                  }
-                <Pagination total={get(referred, 'list_job.pagination.count', 0)} itemRender={itemRender} />
-              </div>
-            ) : null
-          }
-        </Col>
-        <Col span={7}>
-          <div className="filter-box">
-            <div className="filter-item">
-              <div className="title">Từ khóa</div>
-              <Input onChange={(e) => changeQuery('key_word', e.target.value)} placeholder="Enter job title, poisition, company..." />
-            </div>
-            <div className="filter-item">
-              <div className="title">Công Ty</div>
-              <Input onChange={(e) => changeQuery('company', e.target.value)} placeholder="Enter job title, poisition, company..." />
-            </div>
-            <div className="filter-item">
-              <div className="title">Công việc</div>
+    <div className="jobListContainer">
+      <div className="header">
+        <div>Danh sách công việc (40)</div>
+      </div>
+      <Row className="filter-box">
+        <Col span={24} className="title">Tìm kiếm</Col>
+        <Col span={24} className="filter-option">
+          <Row gutter={[16, 16]} className="body">
+            <Col span={12}>
+              <b>Từ khóa</b>
+              <Search  placeholder="Từ khóa"/>
+            </Col>
+            <Col span={6}>
+              <b>Công ty</b>
               <Select
+                allowClear
                 showSearch
+                mode="multiple"
+                
                 style={{ width: '100%' }}
-                placeholder="Select a location"
+                placeholder="Công ty"
                 optionFilterProp="children"
-                onChange={(e) => changeQuery('job_type', e)}
-                onSearch={onSearch}
                 filterOption={(input, option) =>
                   option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
               >
+                <Option value="All">Tất cả</Option>
+                <Option value="All">Rockship</Option>
+              </Select>
+            </Col>
+            <Col span={6}>
+              <b>Loại công việc</b>
+              <Select
+                allowClear
+                showSearch
+                mode="multiple"
+                
+                style={{ width: '100%' }}
+                placeholder="Chọn loại công việc"
+                optionFilterProp="children"
+                filterOption={(input, option) =>
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+              >
+                <Option value="All">Tất cả</Option>
                 <Option value="Developer">Developer</Option>
+                <Option value="Kế toán">Kế toán</Option>
+                <Option value="HR">HR</Option>
+                <Option value="HR1">HR1</Option>
+                <Option value="HR2">HR2</Option>
+                <Option value="HR3">HR3</Option>
               </Select>
-            </div>
-            <div className="filter-item">
-              <div className="title">Địa điểm</div>
+            </Col>
+          </Row>
+          <Row gutter={[16, 16]} className="body">
+            <Col span={6}>
+              <b>Địa điểm</b>
               <Select
+                allowClear
                 showSearch
+                mode="multiple"
+                
                 style={{ width: '100%' }}
-                placeholder="Select a location"
+                placeholder="Địa điểm"
                 optionFilterProp="children"
-                onChange={(e) => changeQuery('location', e)}
                 filterOption={(input, option) =>
                   option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
               >
-                <Option value="HaNoi">Hà Nội</Option>
-                <Option value="HoChi minh">Hồ Chí Minh</Option>
-                <Option value="DaNang">Đà Nẵng</Option>
+                <Option value="All">Tất cả</Option>
+                <Option value="All">Hà Nội</Option>
+                <Option value="All">Hồ Chí Minh</Option>
+                <Option value="All">Đà Nẵng</Option>
               </Select>
-            </div>
-            <div className="filter-item">
-              <div className="title">Mức thưởng</div>
-              <div className="reward-slider">
-                <div className="from">Từ</div>
-                <Input onChange={(e) => changeQuery('min_salary', e.target.value)} placeholder="$ 100"/>
-                <div className="to">Đến</div>
-                <Input onChange={(e) => changeQuery('max_salary', e.target.value)} placeholder="$ 1000"/>
+            </Col>
+            <Col span={8}>
+              <b>Mức lương</b>
+              <div className="salary-form">
+                <span className="content">từ</span>
+                <Input  addonAfter={<span>$</span>}/>
+                <span className="content">đến</span>
+                <Input  addonAfter={<span>$</span>}/>
               </div>
-            </div>
-            <Button onClick={handleFind} className="find-btn">Find</Button>
+            </Col>
+            <Col span={6}>
+              <b>Trạng thái</b>
+              <Select
+                allowClear
+                showSearch
+                mode="multiple"
+                
+                style={{ width: '100%' }}
+                placeholder="Trang thái"
+                optionFilterProp="children"
+                filterOption={(input, option) =>
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+              >
+                <Option value="All">Tất cả</Option>
+              </Select>
+            </Col>
+          </Row>
+          <div className="filter-button">
+            <Button icon={<SearchOutlined />}  type="primary">Tìm kiếm</Button>
+            <Button icon={<RedoOutlined />}  type="primary">Làm mới</Button>
           </div>
         </Col>
       </Row>
-      
+      <div className="jobListTable">
+        <Table bordered columns={columns} dataSource={get(referred, 'list_job.items.job', [])}  />
+      </div>
     </div>
-  )
+  );
 };
 
 JobList.getInitialProps = async function({ reduxStore }) {
   reduxStore.dispatch(getListJob({offset: 0, limit: 20}))
   const { referred } = reduxStore.getState()
   return { referred }
-}
+};
 
 export default connect(null, null)(JobList)

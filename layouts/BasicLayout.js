@@ -103,6 +103,7 @@ function BasicLayout(props) {
             height: '100vh',
             position: 'fixed',
             left: 0,
+            zIndex: 3
           }}
           trigger={null} collapsible collapsed={collapsed}>
           <div className="logo" />
@@ -192,7 +193,6 @@ function BasicLayout(props) {
           <Content
             className="sideLayoutBody"
             style={{
-              margin: '10px',
               padding: '10px 10px',
               minHeight: 280,
             }}
