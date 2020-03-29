@@ -24,9 +24,6 @@ class MyApp extends App {
   constructor(props) {
     super(props)
     this.persistor = persistStore(props.reduxStore)
-    this.state = {
-      token: undefined,
-    };
   }
 
   static async getInitialProps({ Component, ctx }) {
@@ -42,21 +39,24 @@ class MyApp extends App {
     const { Component, pageProps, reduxStore } = this.props
     const LayoutWrapper = () => {
       return (
-        <Component {...pageProps} />
+        <BasicLayout>
+          <Component {...pageProps} />
+        </BasicLayout>
       )
     }
     return (
       <Provider store={reduxStore}>
         <PersistGate
-          loading={<LayoutWrapper />}
+          loading={<div className="loading-screen">
+            <div className="loader-spinner">
+            </div>
+          </div>}
           persistor={this.persistor}
         >
           <Head>
             <link rel="stylesheet" type="text/css" href="/nprogress.css" />
           </Head>
-          <BasicLayout>
-            <LayoutWrapper />
-          </BasicLayout>
+          <LayoutWrapper />
         </PersistGate>
       </Provider>
     )

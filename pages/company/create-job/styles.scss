@@ -1,0 +1,47 @@
+.create-job {
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    div {
+      font-size: 16px;
+      font-weight: bold;
+    }
+  }
+  &__body {
+    background: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0px;
+    .ant-form-item {
+      margin-bottom: 15px;
+    }
+    // .gtn-button-fixed {
+    //   text-align: right;
+    //   position: fixed;
+    //   background: #fff;
+    //   width: 100%;
+    //   left: 0px;
+    //   padding: 20px;
+    //   bottom: 0px;
+    //   margin: 0px;
+    //   z-index: 2;
+    //   box-shadow: 0 -5px 5px -5px #afadad;
+    // }
+    .flex-input {
+      display: flex;
+      .content {
+        font-weight: bold;
+        margin: 0px 10px;
+        position: relative;
+        top: 5px;
+        &:first-child {
+          margin-left: 0px;
+        }
+      }
+    }
+  }
+}

@@ -3,11 +3,12 @@ import { connect } from 'react-redux'
 import Link from 'next/link'
 
 function OverView () {
+  console.log('...a1212')
   return (
-  <div>
-    OverView!!
-  </div>
-  )
+    <div>
+      OverView!!
+    </div>
+    )
 };
 
 OverView.getInitialProps = async function({ reduxStore }) {
