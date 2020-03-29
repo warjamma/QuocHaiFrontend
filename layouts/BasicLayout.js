@@ -42,7 +42,7 @@ function BasicLayout(props) {
       error(get(profile, 'message', ''));
       dispatch(clearError())
     }
-    setToken(localStorage.getItem('token'))
+    // setToken(localStorage.getItem('token'))
   });
 
   const toggle = () => {
