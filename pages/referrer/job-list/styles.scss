@@ -1,150 +1,66 @@
-.job-list-referrer {
-  .title {
-    font-size: 32px;
-    font-weight: normal;
-    span {
-      color: #EB5757;
+.jobListContainer {
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    div {
       font-weight: bold;
-    }
-  }
-  .list-job {
-    text-align: center;
-    .item {
-      border: 1px solid #C2D0DA;
-      background: #F1F1F1;
-      margin: 15px 0px;
-      border-radius: 3px;
-      padding: 10px 10px;
-      align-items: flex-start;
-      .slot {
-        font-weight: bold;
-        font-size: 16px;
-        color: #EB5757;
-      }
-      .logo-company {
-        width: 100%;
-        max-height: 100px;
-        object-fit: contain;
-      }
-      .info-company {
-        text-align: left;
-        .job-name {
-          font-size: 16px;
-          font-weight: bold;
-        }
-        .company-name {
-          font-weight: bold;
-        }
-        .list-required {
-          margin: 5px 0px;
-        }
-        .salary-job {
-          margin: 10px 0px;
-          display: flex;
-          .item-s {
-            color: #777;
-            margin-right: 20px;
-            display: flex;
-            align-items: center;
-            div {
-              margin-left: 5px;
-            }
-            .money {
-              color: #EB5757;
-              font-weight: bold;
-            }
-          }
-        }
-      }
-      .review-of {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        align-items: flex-end;
-        &__item {
-          font-weight: bold;
-          button {
-            background-color: #EB5757;
-            font-weight: bold;
-            color: #fff;
-            border: none;
-          }
-        }
-        .reward-m {
-          margin-bottom: 10px;
-          span {
-            font-size: 14px;
-            padding: 3px 10px;
-            margin: 0px;
-          }
-        }
-      }
+      font-size: 16px;
     }
   }
   .filter-box {
-    padding: 10px 10px;
-    background-color: #F1F1F1;
-    border-radius: 3px;
-    position: sticky;
-    top: 0px;
-    border: 1px solid #C2D0DA;
-    color: #222;
-    .filter-item {
-      .title {
-        font-size: 14px !important;
-        font-weight: bold;
-        margin-bottom: 3px;
+    background: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0px;
+    .body {
+      .salary-form {
+        display: flex;
+        align-items: center;
+        .content {
+          display: block;
+          margin: 0px 10px;
+          &:first-child {
+            margin-left: 0px;
+          }
+        }
       }
-      margin-bottom: 15px;
-    }
-    .reward-slider {
-      display: flex;
-      align-items: center;
-      div {
-        font-size: 12px;
-        font-weight: bold;
-      }
-      .from {
-        margin-right: 7px;
-      }
-      .to {
-        margin: 0px 7px;
+      b {
+        font-weight: 500;
       }
     }
     .title {
-      font-size: 18px;
-    }
-    input {
-      height: 40px;
-      width: 100%;
-      outline: none;
-      border: none;
-      font-size: 12px;
-    }
-    .ant-select-arrow {
-      top: 62%;
-    }
-    .ant-select-selector  {
-      height: 40px;
-      border: none;
-      font-size: 12px !important;
-      input {
-        height: 40px;
-        position: relative;
-        top: 4px;
-      }
-      .ant-select-selection-placeholder, .ant-select-selection-item {
-        display: flex;
-        align-items: center;
-      }
-    }
-    .find-btn {
-      width: 100%;
-      border: none;
-      background-color: #2D9CDB;
       font-weight: bold;
-      color: #fff;
-      margin-top: 30px;
+      margin-bottom: 7px;
+      font-size: 16px;
+    }
+    .filter-option {
+      .filter-button {
+        text-align: right;
+        button {
+          &:first-child {
+            margin-right: 10px;
+          }
+        }
+      }
+    }
+  }
+  .custom-company {
+    display: flex;
+    .logo-company {
+      width: 75px;
+      height: 75px;
+      background-color: grey;
+      margin-right: 10px;
+    }
+    .info-required {
+      text-align: left;
+      .job-role {
+        margin: 5px 0px;
+      }
     }
   }
 }

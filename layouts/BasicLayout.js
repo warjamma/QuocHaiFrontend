@@ -36,7 +36,6 @@ function BasicLayout(props) {
   const { dispatch, profile, router } = props;
   const [collapsed, setcollapsed] = useState(true);
   const [token, setToken] = useState(null);
-
   useEffect(() => {
     if (get(profile, 'error', false) && (get(profile, 'message', ''))) {
       error(get(profile, 'message', ''));
@@ -94,7 +93,7 @@ function BasicLayout(props) {
       </Menu.Item>
     </Menu>
   );
-  if (token) {
+  if (get(profile, 'data.token', '')) {
     return (
       <Layout className="dashboardPage">
         <Sider
@@ -103,6 +102,7 @@ function BasicLayout(props) {
             height: '100vh',
             position: 'fixed',
             left: 0,
+            zIndex: 3
           }}
           trigger={null} collapsible collapsed={collapsed}>
           <div className="logo" />
@@ -192,7 +192,6 @@ function BasicLayout(props) {
           <Content
             className="sideLayoutBody"
             style={{
-              margin: '10px',
               padding: '10px 10px',
               minHeight: 280,
             }}

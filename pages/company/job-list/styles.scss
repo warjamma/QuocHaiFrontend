@@ -1,0 +1,40 @@
+.jobListContainer {
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    div {
+      font-size: 16px;
+      font-weight: bold;
+    }
+  }
+  .filter-box {
+    background: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0px;
+    .body {
+      b {
+        font-weight: 500;
+      }
+    }
+    .title {
+      font-weight: bold;
+      margin-bottom: 7px;
+      font-size: 16px;
+    }
+    .filter-option {
+      .filter-button {
+        text-align: right;
+        button {
+          &:first-child {
+            margin-right: 10px;
+          }
+        }
+      }
+    }
+  }
+}
