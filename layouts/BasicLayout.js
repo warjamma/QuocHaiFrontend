@@ -36,13 +36,12 @@ function BasicLayout(props) {
   const { dispatch, profile, router } = props;
   const [collapsed, setcollapsed] = useState(true);
   const [token, setToken] = useState(null);
-
   useEffect(() => {
-    if (get(profile, 'error', false) && (get(profile, 'message', ''))) {
-      error(get(profile, 'message', ''));
-      dispatch(clearError())
-    }
-    setToken(localStorage.getItem('token'))
+    // if (get(profile, 'error', false) && (get(profile, 'message', ''))) {
+    //   error(get(profile, 'message', ''));
+    //   dispatch(clearError())
+    // }
+    // setToken(localStorage.getItem('token'))
   });
 
   const toggle = () => {
@@ -94,7 +93,7 @@ function BasicLayout(props) {
       </Menu.Item>
     </Menu>
   );
-  if (token) {
+  if (get(profile, 'data.token', '')) {
     return (
       <Layout className="dashboardPage">
         <Sider
