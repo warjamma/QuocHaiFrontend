@@ -107,7 +107,7 @@ function JobList (props) {
   }
 
   useEffect(() => {
-    dispatch(getListJob());
+    dispatch(getListJob(query));
   }, []);
 
   return (
