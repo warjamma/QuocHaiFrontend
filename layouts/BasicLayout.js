@@ -15,7 +15,8 @@ import {
   FileOutlined,
   LogoutOutlined,
   BellFilled,
-  InboxOutlined
+  InboxOutlined,
+  SyncOutlined
 } from '@ant-design/icons';
 
 import { requireAuthentication } from "../lib/auth";
@@ -59,6 +60,8 @@ function BasicLayout(props) {
         return ['3'];
       case 'profile':
         return ['4'];
+      case 'job-detail':
+        return ['5'];
       default:
         return ['1'];
     }
@@ -168,6 +171,14 @@ function BasicLayout(props) {
                 </Menu.Item>
               )
             }
+            <Menu.Item key="5">
+              <Link href={`${get(profile, 'data.employer', '') ? '/company/job-detail' : '/referrer/job-detail'}`}>
+              <SyncOutlined spin />
+              </Link>
+              <Link href={`${get(profile, 'data.employer', '') ? '/company/job-detail' : '/referrer/job-detail'}`}>
+                <span>Chi tiết công việc</span>
+              </Link>
+            </Menu.Item>
            
           </Menu>
         </Sider>
