@@ -95,10 +95,12 @@ function itemRender(current, type, originalElement) {
 function JobList (props) {
   const { referred, dispatch } = props
   const [query, setQuery] = useState(initQuery);
+  const [total, setTotal] = useState(null);
 
   const changeQuery = (key, value) => {
     let clone = { ...query };
-    clone[key] = value;
+    clone[key] = typeof value === 'object' ? value.join(', ') : value ;
+    console.log(clone)
     setQuery(clone)
   }
 
@@ -106,8 +108,14 @@ function JobList (props) {
     await dispatch(getListJob(query))
   }
 
+  const handleTableChange = async (pagination) => {
+    let clone = { ...query };
+    clone['offset'] = pagination.current * 10;
+    await dispatch(getListJob(clone))
+  };
+
   useEffect(() => {
-    dispatch(getListJob(query));
+    dispatch(getListJob());
   }, []);
 
   return (
@@ -133,13 +141,12 @@ function JobList (props) {
                 style={{ width: '100%' }}
                 placeholder="Công ty"
                 optionFilterProp="children"
-                defaultValue="All"
+                defaultValue=""
                 filterOption={(input, option) =>
                   option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
               >
-                <Option value="All">Tất cả</Option>
-                <Option value="Rockship">Rockship</Option>
+                <Option value="">Tất cả</Option>
               </Select>
             </Col>
             <Col span={6}>
@@ -155,9 +162,9 @@ function JobList (props) {
                 filterOption={(input, option) =>
                   option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
-                defaultValue="All"
+                defaultValue=""
               >
-                <Option value="All">Tất cả</Option>
+                <Option value="">Tất cả</Option>
               </Select>
             </Col>
           </Row>
@@ -175,12 +182,12 @@ function JobList (props) {
                 filterOption={(input, option) =>
                   option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
-                defaultValue="All"
+                defaultValue=""
               >
-                <Option value="All">Tất cả</Option>
+                <Option value="">Tất cả</Option>
                 <Option value="Hà Nội">Hà Nội</Option>
                 <Option value="Hồ Chí Minh">Hồ Chí Minh</Option>
-                <Option value="Đà Nẵng<">Đà Nẵng</Option>
+                <Option value="Đà Nẵng">Đà Nẵng</Option>
               </Select>
             </Col>
             <Col span={8}>
@@ -205,9 +212,9 @@ function JobList (props) {
                 filterOption={(input, option) =>
                   option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
-                defaultValue="All"
+                defaultValue=""
               >
-                <Option value="All">Tất cả</Option>
+                <Option value="">Tất cả</Option>
               </Select>
             </Col>
           </Row>
@@ -218,7 +225,14 @@ function JobList (props) {
         </Col>
       </Row>
       <div className="jobListTable">
-        <Table bordered rowKey="id" columns={columns} dataSource={get(referred, 'list_job.items.job', [])}  />
+        <Table
+          bordered
+          rowKey="id"
+          columns={columns}
+          dataSource={get(referred, 'list_job.items.job', [])}
+          pagination={{ pageSize: 20, total: 33 }}
+          onChange={handleTableChange}
+        />
       </div>
     </div>
   );
