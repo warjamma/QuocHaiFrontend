@@ -16,7 +16,8 @@ import {
   LogoutOutlined,
   BellFilled,
   InboxOutlined,
-  SyncOutlined
+  SyncOutlined,
+  FormOutlined
 } from '@ant-design/icons';
 
 import { requireAuthentication } from "../lib/auth";
@@ -62,6 +63,8 @@ function BasicLayout(props) {
         return ['4'];
       case 'job-detail':
         return ['5'];
+      case 'job-lists':
+        return ['6'];
       default:
         return ['1'];
     }
@@ -173,13 +176,20 @@ function BasicLayout(props) {
             }
             <Menu.Item key="5">
               <Link href={`${get(profile, 'data.employer', '') ? '/company/job-detail' : '/referrer/job-detail'}`}>
-              <SyncOutlined spin />
+                <SyncOutlined spin/>
               </Link>
               <Link href={`${get(profile, 'data.employer', '') ? '/company/job-detail' : '/referrer/job-detail'}`}>
                 <span>Chi tiết công việc</span>
               </Link>
             </Menu.Item>
-           
+            <Menu.Item key="6">
+              <Link href={`${get(profile, 'data.employer', '') ? '/company/job-detail' : '/admin/job-lists'}`}>
+              <FormOutlined />
+              </Link>
+              <Link href={`${get(profile, 'data.employer', '') ? '/company/job-detail' : '/admin/job-lists'}`}>
+                <span>Admin Job List</span>
+              </Link>
+            </Menu.Item>
           </Menu>
         </Sider>
         <Layout className="site-layout" style={{ marginLeft: !collapsed ? 200 : 80 }}>
