@@ -281,13 +281,13 @@ const { TextArea } = Input;
              <Fragment>
             <Tabs defaultActiveKey="1" onChange={this.callback}>
             <TabPane tab="Pending Approval" key="1">
-                <Table columns={columnsPending} dataSource={dataPending} />
+                <Table bordered columns={columnsPending} dataSource={dataPending} />
             </TabPane>
             <TabPane tab="Approved" key="2">
-                <Table columns={columnsApproved} dataSource={dataApproved} />
+                <Table bordered columns={columnsApproved} dataSource={dataApproved} />
             </TabPane>
             <TabPane tab="Denied" key="3">
-                <Table columns={columnsDenied} dataSource={dataDenied} />
+                <Table bordered columns={columnsDenied} dataSource={dataDenied} />
             </TabPane>
         </Tabs>
         <Modal

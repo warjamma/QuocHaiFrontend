@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import Link from 'next/link'
 import Router, { withRouter } from 'next/router';
 import { get } from 'lodash';
-import { Layout, Menu, Dropdown, message, Badge } from 'antd';
+import { Layout, Menu, Dropdown, message, Badge, Radio } from 'antd';
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
@@ -21,6 +21,7 @@ import {
 } from '@ant-design/icons';
 
 import { requireAuthentication } from "../lib/auth";
+import { companySideBar, adminSideBar, referrerSideBar } from "../ultils/sidebar";
 
 import { logOutRequest, clearError } from '../containers/profile/actions'
 
@@ -36,7 +37,7 @@ const error = (mess) => {
 
 function BasicLayout(props) {
   const { dispatch, profile, router } = props;
-  const [collapsed, setcollapsed] = useState(true);
+  const [collapsed, setcollapsed] = useState(false);
   const [token, setToken] = useState(null);
   useEffect(() => {
     if (get(profile, 'error', false) && (get(profile, 'message', ''))) {
@@ -50,24 +51,14 @@ function BasicLayout(props) {
     setcollapsed(!collapsed)
   };
 
-  const renderKey = () => {
-    const path = router.pathname
-    switch(path.split('/')[2]) {
-      case '':
-        return ['1']
-      case 'job-list':
-        return ['2'];
-      case 'my-referred':
-        return ['3'];
-      case 'profile':
-        return ['4'];
-      case 'job-detail':
-        return ['5'];
-      case 'job-lists':
-        return ['6'];
-      default:
-        return ['1'];
+  const sidebarMenu = () => {
+    if (get(profile, 'data.employer', '')) {
+      return companySideBar;
     }
+    if (get(profile, 'data.recruiter', '') && get(profile, 'data.recruiter.role', '') === 'superadmin') {
+      return adminSideBar;
+    }
+    return referrerSideBar;
   }
 
   const content = (
@@ -112,84 +103,38 @@ function BasicLayout(props) {
           }}
           trigger={null} collapsible collapsed={collapsed}>
           <div className="logo" />
-          <Menu theme="dark" mode="inline" defaultSelectedKeys={renderKey()}>
-            <Menu.Item key="1">
-              <Link href={`${get(profile, 'data.employer', '') ? '/company' : '/referrer'}`}>
-                <PieChartOutlined />
-              </Link>
-              <span>
-                <Link href={`${get(profile, 'data.employer', '') ? '/company' : '/referrer'}`}>
-                  <a>Bảng điều khiển</a>
-                </Link>
-              </span>
-            </Menu.Item>
-            <Menu.Item key="2">
-              <Link href={`${get(profile, 'data.employer', '') ? '/company/job-list' : '/referrer/job-list'}`}>
-                <VideoCameraOutlined />
-              </Link>
-              <span>
-                <Link href={`${get(profile, 'data.employer', '') ? '/company/job-list' : '/referrer/job-list'}`}>
-                  <a>Công việc</a>
-                </Link>
-              </span>
-            </Menu.Item>
-            <Menu.Item key="3">
-              <Link href={`${get(profile, 'data.employer', '') ? '/company/my-referred' : '/referrer/my-referred'}`}>
-                <UploadOutlined />
-              </Link>
-              <span>
-                <Link href={`${get(profile, 'data.employer', '') ? '/company/my-referred' : '/referrer/my-referred'}`}>
-                  <a>Đã giới thiệu</a>
-                </Link>
-              </span>
-            </Menu.Item>
+          <Menu theme="dark" mode="inline">
             {
-              get(profile, 'data.employer', '') ? (
-                <SubMenu
-                  key="4"
-                  title={
+              sidebarMenu().map((item, key) => (
+                !item.subMenu ? (
+                  <Menu.Item key={key + 1} onClick={() => Router.push(item.url)}>
+                    <PieChartOutlined />
                     <span>
-                      <UserOutlined />
-                      <span>Quản trị</span>
+                      {item.name}
                     </span>
-                  }
-                >
-                  <Menu.Item className="subItem" key="sub1">
-                    <FileOutlined />
-                    <span>Hồ sơ công ty</span>
                   </Menu.Item>
-                  <Menu.Item className="subItem" key="sub2">
-                    <TeamOutlined />
-                    <span>Nhân viên</span>
-                  </Menu.Item>
-                </SubMenu>
-              ) : (
-                <Menu.Item key="4">
-                  <Link href={`${get(profile, 'data.employer', '') ? '/company/profile' : '/referrer/profile'}`}>
-                    <UserOutlined />
-                  </Link>
-                  <Link href={`${get(profile, 'data.employer', '') ? '/company/profile' : '/referrer/profile'}`}>
-                    <span>Thông tin cá nhân</span>
-                  </Link>
-                </Menu.Item>
-              )
+                ) : (
+                  <SubMenu
+                    key="4"
+                    title={
+                      <span>
+                        <UserOutlined />
+                        <span>{item.name}</span>
+                      </span>
+                    }
+                  >
+                    {
+                      item.subMenu.map((pk, key) => (
+                        <Menu.Item className="subItem" key={key + 1}>
+                          <FileOutlined />
+                          <span>{pk.name}</span>
+                        </Menu.Item>
+                      ))
+                    }
+                  </SubMenu>
+                )
+              ))
             }
-            <Menu.Item key="5">
-              <Link href={`${get(profile, 'data.employer', '') ? '/company/job-detail' : '/referrer/job-detail'}`}>
-                <SyncOutlined spin/>
-              </Link>
-              <Link href={`${get(profile, 'data.employer', '') ? '/company/job-detail' : '/referrer/job-detail'}`}>
-                <span>Chi tiết công việc</span>
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="6">
-              <Link href={`${get(profile, 'data.employer', '') ? '/company/job-detail' : '/admin/job-lists'}`}>
-              <FormOutlined />
-              </Link>
-              <Link href={`${get(profile, 'data.employer', '') ? '/company/job-detail' : '/admin/job-lists'}`}>
-                <span>Admin Job List</span>
-              </Link>
-            </Menu.Item>
           </Menu>
         </Sider>
         <Layout className="site-layout" style={{ marginLeft: !collapsed ? 200 : 80 }}>

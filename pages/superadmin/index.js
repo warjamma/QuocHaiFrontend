@@ -17,21 +17,18 @@ const success = (mess) => {
 
 function Login(props) {
   const { dispatch, profile } = props;
-  const [role, setRole] = useState('employers');
-
   useEffect(() => {
-    if (get(profile, 'data.token', '')) {
+    if (get(profile, 'data.token', '') && get(profile, 'data.recruiter.role', '') === 'superadmin') {
       success('Login successfully!');
-      Router.push(role === 'employers' ? '/company' : '/referrer');
+      Router.push('/superadmin/job-list');
     }
   });
 
   const onFinish = async (values) => {
-    await dispatch(loginRequest(values, role))
-    console.log(get(profile, 'data.token', ''))
-    if(get(profile, 'data.token', '')) {
-      success('Login successfully!');
-      Router.push(role === 'employers' ? '/company' : '/referrer');
+    await dispatch(loginRequest(values, 'admin'))
+    if(get(profile, 'data.token', '') && get(profile, 'data.recruiter.role', '') === 'superadmin') {
+      success('Login successfully!')
+      Router.push('/superadmin/job-list');
     }
   };
 
@@ -43,21 +40,17 @@ function Login(props) {
         onFinish={onFinish}
       >
         <Form.Item
-          name="email"
+          name="username"
           rules={[
             {
-              type: 'email',
-              message: 'The input is not valid E-mail!',
-            },
-            {
               required: true,
-              message: 'Please input your E-mail!',
+              message: 'Please input your name!',
             },
           ]}
         >
           <Input
             prefix={<UserOutlined className="site-form-item-icon" />}
-            placeholder="Email"
+            placeholder="User name"
           />
         </Form.Item>
         <Form.Item
@@ -73,15 +66,11 @@ function Login(props) {
           <Form.Item name="remember" valuePropName="checked" noStyle>
             <Checkbox>Remember me</Checkbox>
           </Form.Item>
-          <Link href="/forgot-password">
-            <a className="login-form-forgot">Forgot password</a>
-          </Link>
         </Form.Item>
         <Form.Item className="groupButtonLogin">
           <Button className="login-form-button buttonLogin" type="primary" htmlType="submit">
             Log in
           </Button>
-          Or <Link href="/register"><a>register now!</a></Link>
         </Form.Item>
       </Form>
     )
@@ -91,18 +80,9 @@ function Login(props) {
     <div className="loginForm">
       <div className="loginLogo">
         <img src="/src_assets_images_logo.png" alt="logo" />
-        <div>Login</div>
+        <div>Super Admin</div>
       </div>
-      <Tabs defaultActiveKey={role} onChange={(e) => {
-        setRole(e)
-      }}>
-        <TabPane tab="As Company" key="employers">
-          <FormLogin />
-        </TabPane>
-        <TabPane tab="As Referrer" key="recruiters">
-          <FormLogin />
-        </TabPane>
-      </Tabs>
+      <FormLogin />
     </div>
   );
 }
