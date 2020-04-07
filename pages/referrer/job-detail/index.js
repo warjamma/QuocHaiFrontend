@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
+import Router from 'next/router';
 import { Table, Tag, Button,Form,Row, Col, Input,Select,Typography, Card,Alert,Text } from 'antd';
 import Link from 'next/link'
 import {
@@ -50,7 +51,7 @@ function jobDetail(){
                     <div ><CalendarOutlined /> 4 days ago</div>
                     <Row gutter={[16, 16]}>
                             <Col span={8} >
-                                <Button type="primary"  block>Upload CV</Button>
+                                <Button type="primary"   onClick={() => Router.push('/referrer/upload-cv')}  block>Giới thiệu ứng viên</Button>
                             </Col>
                             <Col span={8} >
                                 <Button type="primary" block>Dowload JD</Button>
@@ -89,7 +90,7 @@ function jobDetail(){
                     </ul>
                     <Row gutter={[16, 16]}>
                         <Col span={8} >
-                            <Button type="primary"  block>Upload CV</Button>
+                            <Button type="primary"  onClick={() => Router.push('/referrer/upload-cv')}   block>Giới thiệu ứng viên</Button>
                         </Col>
                         <Col span={8} >
                             <Button type="primary" block>Dowload JD</Button>
