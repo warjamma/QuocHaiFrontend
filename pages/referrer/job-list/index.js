@@ -31,7 +31,7 @@ const columns = [
     title: 'Công ty',
     dataIndex: 'company_id',
     render: (text, record, index) => (
-      <div className="custom-company" onClick={() => Router.push('/referrer/job-detail')}>
+      <div className="custom-company" onClick={() => Router.push('/referrer/job-detail/'+record.id+'')}>
         <div className="logo-company" />
         <div className="info-required">
           <b className="name-company">Rockship</b>
@@ -118,6 +118,7 @@ function JobList (props) {
   useEffect(() => {
     dispatch(getListJob());
   }, []);
+  
 
   return (
     <div className="jobListContainer">
