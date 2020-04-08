@@ -1,7 +1,12 @@
-import { Table, Row, Col, Button, Input, Select } from 'antd';
+import React, { Component, useState, useEffect } from 'react';
+import { Table, Row, Col, Button, Input, Select, Tag } from 'antd';
 import Router from 'next/router';
+import { connect } from 'react-redux';
 import { RedoOutlined, SearchOutlined, HighlightOutlined, EditOutlined } from '@ant-design/icons';
 import styled from 'styled-components'
+import { getListJob } from '../../../containers/company/action';
+import { get } from 'lodash';
+import moment from 'moment';
 
 import './styles.scss';
 
@@ -21,29 +26,31 @@ const { Option } = Select
 const columns = [
   {
     title: 'Công việc',
-    dataIndex: 'job',
-    align: 'center',
+    dataIndex: 'job_title',
     width: 300
   },
   {
     title: 'Ngày tạo',
     dataIndex: 'created',
-    align: 'center'
+    align: 'center',
+    render: (text, record, index) => <span color="green">{moment(record.created_at).format('DD-MM-YYYY')}</span>,
   },
   {
     title: 'Số lượng',
-    dataIndex: 'quantity',
+    dataIndex: 'vacancy_number',
     align: 'center'
   },
   {
     title: 'Mức lương ($)',
     dataIndex: 'salary',
-    align: 'center'
+    align: 'center',
+    render: (text, record, index) => <Tag color="blue">{record.min_salary}$ - {record.max_salary}$</Tag>,
   },
   {
     title: 'Trạng thái',
     dataIndex: 'status',
-    align: 'center'
+    align: 'center',
+    render: (text, record, index) => <Tag color="green">{record.status}</Tag>,
   },
   {
     title: 'Hồ sơ ứng viên',
@@ -59,7 +66,32 @@ const columns = [
   },
 ];
 
+const initQuery = {
+  company: '',
+  key_word: '',
+  location: '',
+  status: null,
+  job_type: null,
+  min_salary: null,
+  max_salary: null,
+  offset: 0,
+  limit: 20,
+}
+
 function JobList (props) {
+  const { profile, company, dispatch } = props;
+  const [query, setQuery] = useState(initQuery);
+
+  const handleTableChange = async (pagination) => {
+    let clone = { ...query };
+    clone['offset'] = pagination.current * 10;
+    await dispatch(getListJob(clone, get(profile, 'data.employer.company_id', '')));
+  };
+
+  useEffect(() => {
+    dispatch(getListJob(query, get(profile, 'data.employer.company_id', '')));
+  }, []);
+
   return (
     <div className="jobListContainer">
       <div className="header">
@@ -122,10 +154,22 @@ function JobList (props) {
         </Col>
       </Row>
       <div className="jobListTable">
-        <Table bordered columns={columns} dataSource={[]} />
+        <Table
+          bordered
+          rowKey="id"
+          columns={columns}
+          dataSource={get(company, 'list_job.items.job', [])}
+          pagination={{ pageSize: 20 }}
+          onChange={handleTableChange}
+        />
       </div>
     </div>
   );
 }
 
-export default JobList
+function mapStateToProps(state) {
+  const { company, profile } = state
+  return { company, profile }
+}
+
+export default connect(mapStateToProps, null)(JobList)

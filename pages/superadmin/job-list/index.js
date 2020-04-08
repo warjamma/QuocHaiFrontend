@@ -1,306 +1,268 @@
-import React, { Component, Fragment } from 'react';
-import { Tabs, Table, Tag, Button, Modal, Input } from 'antd';
-import {
-    EditOutlined, DeleteOutlined
-} from '@ant-design/icons';
+import React, { Component, useState, useEffect } from 'react';
+import { connect } from 'react-redux'
+import Link from 'next/link'
+import { CloseOutlined, SearchOutlined, QuestionCircleOutlined, CheckOutlined } from '@ant-design/icons';
+import { Table, Row, Col, Button, Tag, Input, Select, Tabs, Modal, Tooltip } from 'antd';
+import { getListJob } from '../../../containers/referred/actions';
+import { actionApproveJob, actionRejectJob } from '../../../containers/job/actions';
+import { get } from 'lodash';
 
-const { TabPane } = Tabs;
-const { TextArea } = Input;
+import './styles.scss'
 
+const { Search } = Input
 
+const { Option } = Select;
 
- export default class index extends Component {
-    state = { visible: false };
+const initQuery = {
+  company: '',
+  key_word: '',
+  location: '',
+  status: 'pending',
+  job_type: null,
+  min_salary: null,
+  max_salary: null,
+  offset: 0,
+  limit: 20,
+}
 
-    showModal = () => {
-      this.setState({
-        visible: true,
-      });
-    };
-  
-    handleOk = e => {
-      console.log(e);
-      this.setState({
-        visible: false,
-      });
-    };
-  
-    handleCancel = e => {
-      console.log(e);
-      this.setState({
-        visible: false,
-      });
-    };
+function itemRender(current, type, originalElement) {
+  if (type === 'prev') {
+    return <a>Previous</a>;
+  }
+  if (type === 'next') {
+    return <a>Next</a>;
+  }
+  return originalElement;
+}
 
-    callback(key) {
-        console.log(key);
-    }
-     render() {
-        const columnsPending = [
-            {
-                title: 'Công ty',
-                dataIndex: 'company_id',
-                render: (text, record, index) => (
-                    <div className="custom-company">
-                        <div className="logo-company" />
-                        <div className="info-required">
-                            <b className="name-company">Rockship</b>
-                            <div className="job-role">
-                                <span>Vị trí tuyển dụng : </span>
-                                {
-                                    record.job_role.map(item => (
-                                        <Tag color="blue" key={item}>{item}</Tag>
-                                    ))
-                                }
-                            </div>
-                            <div className="job-level">
-                                <span>Level yêu cầu : </span>
-                                {
-                                    record.job_levels.map(item => (
-                                        <Tag color="blue" key={item}>{item}</Tag>
-                                    ))
-                                }
-                            </div>
-                        </div>
-                    </div>
-                ),
-            },
-            {
-                title: 'Công việc',
-                dataIndex: 'job_title',
-            },
-            {
-                title: 'Mức thưởng',
-                dataIndex: 'reward',
-                align: 'center',
-                render: (text, record, index) => <Tag color="green">{record.reward}$</Tag>,
-            },
-            {
-                title: 'Mức lương',
-                dataIndex: '',
-                align: 'center',
-                render: (text, record, index) => <Tag color="blue">{record.min_salary}$ - {record.max_salary}$</Tag>,
-            },
-            {
-                title: 'Số lượng yêu cầu',
-                dataIndex: 'amount',
-                align: 'center'
-            },
-            {
-                title: 'Action',
-                key: 'action',
-                render: (text, record) => (
-                    <span>
-                        <a style={{ marginRight: 16 }}><Button type="primary">Approve</Button></a>
-                        <a><Button type="primary" onClick={this.showModal}>Deny</Button></a>
-                    </span>
-                ),
-            },
-        ];
-        
-        const columnsApproved = [
-            {
-                title: 'Công ty',
-                dataIndex: 'company_id',
-                render: (text, record, index) => (
-                    <div className="custom-company">
-                        <div className="logo-company" />
-                        <div className="info-required">
-                            <b className="name-company">Rockship</b>
-                            <div className="job-role">
-                                <span>Vị trí tuyển dụng : </span>
-                                {
-                                    record.job_role.map(item => (
-                                        <Tag color="blue" key={item}>{item}</Tag>
-                                    ))
-                                }
-                            </div>
-                            <div className="job-level">
-                                <span>Level yêu cầu : </span>
-                                {
-                                    record.job_levels.map(item => (
-                                        <Tag color="blue" key={item}>{item}</Tag>
-                                    ))
-                                }
-                            </div>
-                        </div>
-                    </div>
-                ),
-            },
-            {
-                title: 'Công việc',
-                dataIndex: 'job_title',
-            },
-            {
-                title: 'Mức lương',
-                dataIndex: '',
-                align: 'center',
-                render: (text, record, index) => <Tag color="blue">{record.min_salary}$ - {record.max_salary}$</Tag>,
-            },
-            {
-                title: 'Số lượng yêu cầu',
-                dataIndex: 'amount',
-                align: 'center'
-            },
-            {
-                title: 'Tình Trạng',
-                dataIndex: 'status',
-                align: 'center'
-            },
-            {
-                title: 'Action',
-                key: 'action',
-                render: (text, record) => (
-                    <span>
-                        <a style={{ marginRight: 16 }}><EditOutlined /></a>
-                        <a><DeleteOutlined /></a>
-                    </span>
-                ),
-            },
-        ]
-        
-        const columnsDenied = [
-            {
-                title: 'Công ty',
-                dataIndex: 'company_id',
-                render: (text, record, index) => (
-                    <div className="custom-company">
-                        <div className="logo-company" />
-                        <div className="info-required">
-                            <b className="name-company">Rockship</b>
-                            <div className="job-role">
-                                <span>Vị trí tuyển dụng : </span>
-                                {
-                                    record.job_role.map(item => (
-                                        <Tag color="blue" key={item}>{item}</Tag>
-                                    ))
-                                }
-                            </div>
-                            <div className="job-level">
-                                <span>Level yêu cầu : </span>
-                                {
-                                    record.job_levels.map(item => (
-                                        <Tag color="blue" key={item}>{item}</Tag>
-                                    ))
-                                }
-                            </div>
-                        </div>
-                    </div>
-                ),
-            },
-            {
-                title: 'Công việc',
-                dataIndex: 'job_title',
-            },
-            {
-                title: 'Mức lương',
-                dataIndex: '',
-                align: 'center',
-                render: (text, record, index) => <Tag color="blue">{record.min_salary}$ - {record.max_salary}$</Tag>,
-            },
-            {
-                title: 'Số lượng yêu cầu',
-                dataIndex: 'amount',
-                align: 'center'
-            },
-            {
-                title: 'Lý do',
-                dataIndex: 'reason',
-                align: 'center'
-            },
-            {
-                title: 'Action',
-                key: 'action',
-                render: (text, record) => (
-                    <span>
-                        <a style={{ marginRight: 16 }}><EditOutlined /></a>
-                        <a><Button type="primary">Approve</Button></a>
-                    </span>
-                ),
-            },
-        ]
-        const dataPending = [
-            {
-                key: '1',
-                company_id: '123',
-                job_role: [
-                    'Designer',
-                    'Frontend'
-                ],
-                job_levels: [
-                    'Midle',
-                    'Senior'
-                ],
-                job_title: 'Front-End Developer',
-                reward: '100',
-                min_salary: '500',
-                max_salary: '1000',
-                amount: '5'
-            }
-        ]
-        
-        const dataApproved = [
-            {
-                key: '1',
-                company_id: '123',
-                job_role: [
-                    'Designer',
-                    'Frontend'
-                ],
-                job_levels: [
-                    'Midle',
-                    'Senior'
-                ],
-                job_title: 'Front-End Developer',
-                status: 'Active',
-                min_salary: '500',
-                max_salary: '1000',
-                amount: '5'
-            }
-        ]
-        const dataDenied = [
-            {
-                key: '1',
-                company_id: '123',
-                job_role: [
-                    'Designer',
-                    'Frontend'
-                ],
-                job_levels: [
-                    'Midle',
-                    'Senior'
-                ],
-                job_title: 'Front-End Developer',
-                reason: 'trash',
-                min_salary: '500',
-                max_salary: '1000',
-                amount: '5'
-            }
-        ]
-         return (
-             <Fragment>
-            <Tabs defaultActiveKey="1" onChange={this.callback}>
-            <TabPane tab="Pending Approval" key="1">
-                <Table bordered columns={columnsPending} dataSource={dataPending} />
-            </TabPane>
-            <TabPane tab="Approved" key="2">
-                <Table bordered columns={columnsApproved} dataSource={dataApproved} />
-            </TabPane>
-            <TabPane tab="Denied" key="3">
-                <Table bordered columns={columnsDenied} dataSource={dataDenied} />
-            </TabPane>
-        </Tabs>
-        <Modal
-          title="Deny Reason"
-          visible={this.state.visible}
-          onOk={this.handleOk}
-          onCancel={this.handleCancel}
+function JobList (props) {
+  const { referred, dispatch } = props
+  const [query, setQuery] = useState(initQuery);
+  const [total, setTotal] = useState(null);
+  const [activeTab, setTab] = useState('Pending');
+  const [visibleModal, toggleModal] = useState(false);
+  const [reason, setReason] = useState('');
+  const [selectedJob, setSelectedJob] = useState(null);
+
+  const columns = [
+    {
+      title: 'Công ty',
+      dataIndex: 'company_id',
+      render: (text, record, index) => (
+        <div className="custom-company">
+          <div className="logo-company" />
+          <div className="info-required">
+            <b className="name-company">Rockship</b>
+            <div className="job-role">
+              <span>Vị trí tuyển dụng : </span>
+              {
+                record.job_role.map(item => (
+                  <Tag color="blue" key={item}>{item}</Tag>
+                ))
+              }
+            </div>
+            <div className="job-level">
+              <span>Level yêu cầu : </span>
+              {
+                record.job_levels.map(item => (
+                  <Tag color="blue" key={item}>{item}</Tag>
+                ))
+              }
+            </div>
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: 'Công việc',
+      dataIndex: 'job_title',
+    },
+    {
+      title: 'Mức thưởng',
+      dataIndex: 'reward',
+      align: 'center',
+      render: (text, record, index) => <Tag color="green">{record.reward}$</Tag>,
+    },
+    {
+      title: 'Mức lương',
+      dataIndex: '',
+      align: 'center',
+      render: (text, record, index) => <Tag color="blue">{record.min_salary}$ - {record.max_salary}$</Tag>,
+    },
+    {
+      title: '',
+      dataIndex: '',
+      align: 'center',
+      width: 'max-content',
+      render: (text, record, index) => (
+        <div className="group-btn-action">
+          {
+            activeTab === 'Pending' && (
+              <div className="group-btn-action">
+                <Button type="primary" onClick={() => approveJob(record.id)}>Approve</Button>
+                <Button danger onClick={() => selectDeny(record.id)}>Deny</Button>
+              </div>
+            )
+          }
+          {
+            activeTab === 'Accepted' && (
+              <Button danger onClick={() => selectDeny(record.id)}>Deny</Button>
+            )
+          }
+          {
+            activeTab === 'Reject' && (
+              <div>
+                <Button style={{ marginBottom: 7 }} type="primary" onClick={() => approveJob(record.id)}>Approve</Button>
+                <Tooltip placement="left" title={record.reject_reason}>
+                  <QuestionCircleOutlined />
+                </Tooltip>
+              </div>
+            )
+          }
+        </div>
+      )
+    },
+  ];
+
+  const changeQuery = (key, value) => {
+    let clone = { ...query };
+    clone[key] = typeof value === 'object' ? value.join(', ') : value ;
+    setQuery(clone)
+  }
+
+  const onChangeTab = async (value) => {
+    setTab(value);
+    let clone = { ...query };
+    clone['status'] = value.toLowerCase();
+    setQuery(clone);
+    await dispatch(getListJob(clone))
+  }
+
+  const handleFind = async () => {
+    await dispatch(getListJob(query))
+  }
+
+  const handleTableChange = async (pagination) => {
+    let clone = { ...query };
+    clone['offset'] = pagination.current * 10;
+    await dispatch(getListJob(clone))
+  };
+
+  const approveJob = async (id) => {
+    await dispatch(actionApproveJob(id));
+    dispatch(getListJob(query));
+  }
+
+  const rejectJob = async () => {
+    await dispatch(actionRejectJob(selectedJob, {reason: reason}));
+    toggleModal(false);
+    setReason('');
+    dispatch(getListJob(query));
+  }
+
+  const selectDeny = (id) => {
+    toggleModal(true);
+    setSelectedJob(id) 
+  }
+
+  useEffect(() => {
+    dispatch(getListJob(query));
+  }, []);
+
+  return (
+    <div className="jobListContainer">
+      <div className="header">
+        <div>Danh sách công việc (40)</div>
+      </div>
+      <Row className="filter-box">
+        <Col span={24} className="title">Tìm kiếm</Col>
+        <Col span={24} className="filter-option">
+          <Row gutter={[16, 16]} className="body">
+            <Col span={12}>
+              <b>Từ khóa</b>
+              <Search onChange={(e) => changeQuery('key_word', e.target.value)} placeholder="Từ khóa"/>
+            </Col>
+            <Col span={6}>
+              <b>Công ty</b>
+              <Select
+                allowClear
+                showSearch
+                mode="multiple"
+                onChange={(e) => changeQuery('company', e)}
+                style={{ width: '100%' }}
+                placeholder="Công ty"
+                optionFilterProp="children"
+                defaultValue=""
+                filterOption={(input, option) =>
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+              >
+                <Option value="">Tất cả</Option>
+              </Select>
+            </Col>
+            <Col span={6}>
+              <b>Loại công việc</b>
+              <Select
+                allowClear
+                showSearch
+                mode="multiple"
+                onChange={(e) => changeQuery('job_type', e)}
+                style={{ width: '100%' }}
+                placeholder="Chọn loại công việc"
+                optionFilterProp="children"
+                filterOption={(input, option) =>
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+                defaultValue=""
+              >
+                <Option value="">Tất cả</Option>
+              </Select>
+            </Col>
+          </Row>
+          <div className="filter-button">
+            <Button onClick={() => handleFind()} icon={<SearchOutlined />}  type="primary">Tìm kiếm</Button>
+            {/* <Button icon={<RedoOutlined />}  type="primary">Làm mới</Button> */}
+          </div>
+        </Col>
+      </Row>
+      <div className="jobListTable">
+        <Tabs
+          onChange={(e) => onChangeTab(e)}
+          activeKey={activeTab}
+          type="card"
         >
-          <TextArea rows={4} />
-        </Modal>
-        </Fragment>
-         )
-     }
- }
- 
+          {[{title: 'Pending'}, {title: 'Accepted'}, {title: 'Reject'}].map(pane => (
+            <Tabs.TabPane tab={pane.title} key={pane.title}>
+              <Table
+                bordered
+                rowKey="id"
+                columns={columns}
+                dataSource={get(referred, 'list_job.items.job', [])}
+                pagination={{ pageSize: 20, total: 33 }}
+                onChange={handleTableChange}
+              />
+            </Tabs.TabPane>
+          ))}
+        </Tabs>
+      </div>
+      <Modal
+        title="Confirm deny"
+        visible={visibleModal}
+        onOk={() => rejectJob()}
+        onCancel={() => {
+          toggleModal(!visibleModal);
+          setReason('')
+        }}
+      >
+        <Input.TextArea placeholder="" autoSize={{ minRows: 4 }} onChange={(e) => setReason(e.target.value)} />
+      </Modal>
+    </div>
+  );
+};
 
+function mapStateToProps(state) {
+  const { referred } = state
+  return { referred }
+}
+
+export default connect(mapStateToProps, null)(JobList)

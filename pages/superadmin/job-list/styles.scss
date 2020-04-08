@@ -1,0 +1,83 @@
+.jobListContainer {
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    div {
+      font-weight: bold;
+      font-size: 16px;
+    }
+  }
+  .filter-box {
+    background: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0px;
+    .body {
+      .salary-form {
+        display: flex;
+        align-items: center;
+        .content {
+          display: block;
+          margin: 0px 10px;
+          &:first-child {
+            margin-left: 0px;
+          }
+        }
+      }
+      b {
+        font-weight: 500;
+      }
+    }
+    .title {
+      font-weight: bold;
+      margin-bottom: 7px;
+      font-size: 16px;
+    }
+    .filter-option {
+      .filter-button {
+        text-align: right;
+        button {
+          &:first-child {
+            margin-right: 10px;
+          }
+        }
+      }
+    }
+  }
+  .custom-company {
+    display: flex;
+    .logo-company {
+      min-width: 75px;
+      height: 75px;
+      background-color: grey;
+      margin-right: 10px;
+    }
+    .info-required {
+      text-align: left;
+      .job-role {
+        margin: 5px 0px;
+      }
+    }
+  }
+  .group-btn-action {
+    display: flex;
+    align-items: center;
+    svg {
+      font-size: 16px;
+    }
+    button {
+      padding: 0px 5px;
+      height: 25px;
+      margin: 2px;
+    }
+  }
+  .ant-tabs-bar {
+    margin-bottom: -2px;
+    .ant-tabs-tab {
+    }
+  }
+}

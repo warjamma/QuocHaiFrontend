@@ -17,7 +17,7 @@ const initQuery = {
   company: '',
   key_word: '',
   location: '',
-  status: null,
+  status: 'accepted',
   job_type: null,
   min_salary: null,
   max_salary: null,
@@ -115,7 +115,7 @@ function JobList (props) {
   };
 
   useEffect(() => {
-    dispatch(getListJob());
+    dispatch(getListJob(query));
   }, []);
 
   return (
