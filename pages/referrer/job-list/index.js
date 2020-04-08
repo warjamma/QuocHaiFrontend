@@ -1,6 +1,7 @@
 import React, { Component, useState, useEffect } from 'react';
 import { connect } from 'react-redux'
 import Link from 'next/link'
+import Router from 'next/router';
 import { RedoOutlined, SearchOutlined, DollarCircleOutlined } from '@ant-design/icons';
 import { Table, Row, Col, Button, Tag, Input, Select } from 'antd';
 import { getListJob } from '../../../containers/referred/actions';
@@ -30,7 +31,7 @@ const columns = [
     title: 'Công ty',
     dataIndex: 'company_id',
     render: (text, record, index) => (
-      <div className="custom-company">
+      <div className="custom-company" onClick={() => Router.push('/referrer/job-detail/'+record.id+'')}>
         <div className="logo-company" />
         <div className="info-required">
           <b className="name-company">Rockship</b>
@@ -117,6 +118,7 @@ function JobList (props) {
   useEffect(() => {
     dispatch(getListJob(query));
   }, []);
+  
 
   return (
     <div className="jobListContainer">

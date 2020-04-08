@@ -1,7 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component,useState, useEffect } from 'react';
 import { connect } from 'react-redux'
-import { Table, Tag, Button,Form,Row, Col, Input,Select,Typography, Card,Alert,Text } from 'antd';
+import Router,{ useRouter } from 'next/router';
+import { Table, Tag, Button,Form,Row, Col, Input,Select,Typography, Card,Alert,Text} from 'antd';
+import { getJobById } from '../../../containers/referred/actions';
 import Link from 'next/link'
+import axios from 'axios';
+import { get } from 'lodash';
 import {
     DollarOutlined,
     RightOutlined,
@@ -14,7 +18,17 @@ import {
   } from '@ant-design/icons';
 const { Title } = Typography;
 const { Meta } = Card;
-function jobDetail(){
+ 
+function jobDetail(props){
+    const router = useRouter();
+    const { id } = router.query;
+
+    const { referred, dispatch } = props;
+    //console.log(referred);
+    //console.log(get(referred,'job_detail.data.job.job_role'));
+    useEffect(() => {
+        dispatch(getJobById({id}));
+      }, []);
     return (
         <div style={{padding: 30}}>
             <Title level={2}>Job detail</Title>
@@ -23,7 +37,7 @@ function jobDetail(){
                 <div style={{background:'white'}}>
                     <img style={{padding: 'auto', margin: 'auto', display: 'block'}} alt="example" src="https://cdn.itviec.com/employers/fpt-software/logo/w170/mir3HT3xtedbECJY5jVeRRgV/fpt-software-logo.png" />
                     <div style={{background:'white',padding:20}} >
-                        <Title level={3}>FPT Software</Title>
+                        <Title level={3}>ROCKSHIP</Title>
                         <div>The leading provider of software outsourcing services in Vietnam</div>
                         <div ><SettingOutlined />&nbsp;Outsourcing</div>
                         <div ><UsergroupAddOutlined />&nbsp;1000+</div>
@@ -39,9 +53,8 @@ function jobDetail(){
             </Col>
             <Col span={16} >
                 <Card className="titileJob">
-                    <Title level={3}>Technical Lead (Java)- Onsite Indonesia</Title>
-                    <Button style={{marginRight: 5}}>J2EE</Button>
-                    <Button style={{marginRight: 5}}>Java</Button>
+                    <Title level={3}>{get(referred,'job_detail.data.job.job_title')}</Title>
+                    <Button style={{marginRight: 5}}>{get(referred,'job_detail.data.job.job_role')}</Button>
                     <Button>Spring</Button>
                     <div style={{color:'#68ba50'}}><DollarOutlined /> You'll love it</div>
                     <div ><RightOutlined /> FPT Software Đường D1 Phường Tân Phú , District 9, Ho Chi Minh</div>
@@ -50,7 +63,7 @@ function jobDetail(){
                     <div ><CalendarOutlined /> 4 days ago</div>
                     <Row gutter={[16, 16]}>
                             <Col span={8} >
-                                <Button type="primary"  block>Upload CV</Button>
+                                <Button type="primary"   onClick={() => Router.push('/referrer/upload-cv/'+id+'')}  block>Giới thiệu ứng viên</Button>
                             </Col>
                             <Col span={8} >
                                 <Button type="primary" block>Dowload JD</Button>
@@ -89,7 +102,7 @@ function jobDetail(){
                     </ul>
                     <Row gutter={[16, 16]}>
                         <Col span={8} >
-                            <Button type="primary"  block>Upload CV</Button>
+                            <Button type="primary"  onClick={() => Router.push('/referrer/upload-cv'+id+'')}   block>Giới thiệu ứng viên</Button>
                         </Col>
                         <Col span={8} >
                             <Button type="primary" block>Dowload JD</Button>
@@ -140,87 +153,13 @@ function jobDetail(){
                         </Row>
                 </Card>
 
-                <Card className="moreJobs">
-                        <Row gutter={[16, 16]} className="oneRow">
-                            <Col span={6} >
-                                <img alt="example" src="https://cdn.itviec.com/employers/dxc-vietnam/logo/s65/U7GERVChzwPaBYXec1bQgPmP/DXC%20logo-icon.png" />
-                            </Col>
-                            <Col span={18} >
-                                <Row>
-                                    <Col span={18} >
-                                        <Title level={3}>Why You'll Love Working Here</Title>
-                                        <div style={{color:'#68ba50'}}><DollarOutlined /> You'll love it</div>
-                                    </Col>
-                                    <Col span={6} >
-                                        <div style={{float:'right',background:'#ff9e34',color:'white',fontSize:'8',padding:3}}>Ant Design</div><br/>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col span={18} >
-                                        <div>Role: As a COBOL Software Engineer, you will collaborate proactively with functional analysts to transla
-                                            te business and integration requirements into...</div>
-                                    </Col>
-                                    <Col span={6} >
-                                        <div style={{float:'right'}}>Hồ Chí Minh</div><br/>
-                                        <div style={{float:'right'}}>Tân Bình</div>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col span={18} >
-                                        <Button style={{marginRight: 5}}>J2EE</Button>
-                                        <Button style={{marginRight: 5}}>Java</Button>
-                                        <Button>Spring</Button>
-                                    </Col>
-                                    <Col span={6} >
-                                        <div style={{float:'right'}}>7 minutes ago</div><br/>
-                                    </Col>
-                                </Row>
-                            </Col>
-                        </Row>
-                </Card>
-
-                <Card className="moreJobs">
-                        <Row gutter={[16, 16]} className="oneRow">
-                            <Col span={6} >
-                                <img alt="example" src="https://cdn.itviec.com/employers/dxc-vietnam/logo/s65/U7GERVChzwPaBYXec1bQgPmP/DXC%20logo-icon.png" />
-                            </Col>
-                            <Col span={18} >
-                                <Row>
-                                    <Col span={18} >
-                                        <Title level={3}>Why You'll Love Working Here</Title>
-                                        <div style={{color:'#68ba50'}}><DollarOutlined /> You'll love it</div>
-                                    </Col>
-                                    <Col span={6} >
-                                        <div style={{float:'right',background:'#ff9e34',color:'white',fontSize:'8',padding:3}}>Ant Design</div><br/>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col span={18} >
-                                        <div>Role: As a COBOL Software Engineer, you will collaborate proactively with functional analysts to transla
-                                            te business and integration requirements into...</div>
-                                    </Col>
-                                    <Col span={6} >
-                                        <div style={{float:'right'}}>Hồ Chí Minh</div><br/>
-                                        <div style={{float:'right'}}>Tân Bình</div>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col span={18} >
-                                        <Button style={{marginRight: 5}}>J2EE</Button>
-                                        <Button style={{marginRight: 5}}>Java</Button>
-                                        <Button>Spring</Button>
-                                    </Col>
-                                    <Col span={6} >
-                                        <div style={{float:'right'}}>7 minutes ago</div><br/>
-                                    </Col>
-                                </Row>
-                            </Col>
-                        </Row>
-                </Card>
-            </Card>
-
-            
+            </Card>          
         </div>
     );
 }
-export default connect(null, null)(jobDetail)
+function mapStateToProps(state) {
+    //console.log(state);
+    const { referred } = state
+    return { referred }
+  }
+export default connect(mapStateToProps, null)(jobDetail)
