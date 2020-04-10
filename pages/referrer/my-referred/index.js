@@ -107,7 +107,7 @@ const initQuery = {
   key_word: '',
   status: null,
   offset: 0,
-  limit: 20,
+  limit: 10,
 }
 
 function MyReferred (props) {

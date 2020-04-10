@@ -7,7 +7,6 @@ import styled from 'styled-components'
 import { getListJob } from '../../../containers/company/action';
 import { get } from 'lodash';
 import moment from 'moment';
-
 import './styles.scss';
 
 const ButtonAction = styled(Button)`
@@ -27,7 +26,8 @@ const columns = [
   {
     title: 'Công việc',
     dataIndex: 'job_title',
-    width: 300
+    width: 300,
+    render: (text, record) => <a onClick={() => Router.push(`/job-detail/${record.id}`)}>{text}</a>
   },
   {
     title: 'Ngày tạo',
@@ -36,8 +36,13 @@ const columns = [
     render: (text, record, index) => <span color="green">{moment(record.created_at).format('DD-MM-YYYY')}</span>,
   },
   {
-    title: 'Số lượng',
+    title: 'Số lượng yêu cầu',
     dataIndex: 'vacancy_number',
+    align: 'center'
+  },
+  {
+    title: 'Số ứng viên hiện có',
+    dataIndex: 'candidate',
     align: 'center'
   },
   {
@@ -53,16 +58,11 @@ const columns = [
     render: (text, record, index) => <Tag color="green">{record.status}</Tag>,
   },
   {
-    title: 'Hồ sơ ứng viên',
-    dataIndex: 'candidate',
-    align: 'center'
-  },
-  {
     title: '',
     dataIndex: 'candidate',
     align: 'center',
     width: 60,
-    render: (text, record, index) => <ButtonAction onClick={() => Router.push(`/job-detail/${record.id}`)}><EditOutlined /></ButtonAction>,
+    render: (text, record, index) => <ButtonAction onClick={() => Router.push(`/company/edit-job/${record.id}`)}><EditOutlined /></ButtonAction>,
   },
 ];
 
@@ -75,10 +75,12 @@ const initQuery = {
   min_salary: null,
   max_salary: null,
   offset: 0,
-  limit: 20,
+  limit: 10,
 }
 
-function JobList (props) {
+
+
+function JobList(props) {
   const { profile, company, dispatch } = props;
   const [query, setQuery] = useState(initQuery);
 
@@ -104,7 +106,7 @@ function JobList (props) {
           <Row gutter={[16, 16]} className="body">
             <Col span={12}>
               <b>Từ khóa</b>
-              <Search placeholder="Từ khóa"/>
+              <Search placeholder="Từ khóa" />
             </Col>
             <Col span={6}>
               <b>Loại công việc</b>
@@ -141,9 +143,10 @@ function JobList (props) {
                   option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
               >
-                <Option value="All">Tất cả</Option>
-                <Option value="All">Đang chờ</Option>
-                <Option value="Developer">Đã hoàn thành</Option>
+                <Option value="Pending">Pending</Option>
+                <Option value="Approved">Approved</Option>
+                <Option value="Rejected">Rejected</Option>
+                <Option value="Completed">Completed</Option>
               </Select>
             </Col>
           </Row>
@@ -159,9 +162,10 @@ function JobList (props) {
           rowKey="id"
           columns={columns}
           dataSource={get(company, 'list_job.items.job', [])}
-          pagination={{ pageSize: 20, total: get(company, 'list_job.extra_data.total', 0) }}
+          pagination={{ pageSize: 10, total: get(company, 'list_job.extra_data.total', 0) }}
           onChange={handleTableChange}
         />
+        
       </div>
     </div>
   );
