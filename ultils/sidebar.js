@@ -1,10 +1,6 @@
-export const companySideBar = [
+export const companySideBar = [  
   {
-    name: 'Bảng điều khiển',
-    url: '/company'
-  },
-  {
-    name: 'Công việc',
+    name: 'Danh sách công việc',
     url: '/company/job-list'
   },
   {
