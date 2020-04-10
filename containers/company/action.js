@@ -13,6 +13,18 @@ export function createJob(payload) {
   };
 }
 
+export function editJob(params, payload) {
+  return async dispatch => {
+    try {
+      await api.sendRequestWithToken('put', `/jobs?${qs.stringify(params)}`, null, null, payload);
+      return { status: true }
+    } catch (error) {
+      const { data } = error.response
+      return { status: false, error: data.message };
+    }
+  };
+}
+
 export function getListJob(params, companyId) {
   return async dispatch => {
     try {
