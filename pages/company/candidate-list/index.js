@@ -27,7 +27,7 @@ const { Option } = Select
 const initQuery = {
   key_word: '',
   offset: 0,
-  limit: 20,
+  limit: 10,
 }
 
 const EditableCell = ({

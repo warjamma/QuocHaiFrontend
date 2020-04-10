@@ -22,7 +22,7 @@ const initQuery = {
   min_salary: null,
   max_salary: null,
   offset: 0,
-  limit: 20,
+  limit: 10,
 }
 
 function itemRender(current, type, originalElement) {
