@@ -2,7 +2,7 @@ import React, { Component,useState, useEffect } from 'react';
 import { connect } from 'react-redux'
 import Router,{ useRouter } from 'next/router';
 import { Table, Tag, Button,Form,Row, Col, Input,Select,Typography, Card,Alert,Text} from 'antd';
-import { getJobById } from '../../../containers/referred/actions';
+import { getJobById } from '../../containers/referred/actions';
 import Link from 'next/link'
 import axios from 'axios';
 import { get } from 'lodash';

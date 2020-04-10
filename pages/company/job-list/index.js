@@ -62,7 +62,7 @@ const columns = [
     dataIndex: 'candidate',
     align: 'center',
     width: 60,
-    render: (text, record, index) => <ButtonAction onClick={() => Router.push(`/referrer/job-detail/${record.id}`)}><EditOutlined /></ButtonAction>,
+    render: (text, record, index) => <ButtonAction onClick={() => Router.push(`/job-detail/${record.id}`)}><EditOutlined /></ButtonAction>,
   },
 ];
 

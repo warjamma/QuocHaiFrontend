@@ -177,7 +177,7 @@ function UploadCV(props) {
               <Button type="primary" htmlType="submit">
                 Gửi ứng viên
               </Button>
-              <Button onClick={() => Router.push('/referrer/job-detail/' + id + '')} htmlType="button" style={{ margin: '0 8px' }} >
+              <Button onClick={() => Router.push('/job-detail/' + id + '')} htmlType="button" style={{ margin: '0 8px' }} >
                 Hủy
               </Button>
             </Form.Item>
