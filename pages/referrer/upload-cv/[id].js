@@ -10,6 +10,7 @@ UploadCV.propTypes = {
 
 };
 const initForm = {
+
   availability: "none",
   certificate: [
     "Trash",
@@ -95,8 +96,7 @@ function UploadCV(props) {
   const [fileData, setFileData] = useState('');
   const onFinish = async (value) => {
     value.cv = fileLink;
-    console.log('Success:', value);
-    await dispatch(createCandidate({ ...initForm, ...value })).then(res => {
+    await dispatch(createCandidate({ ...initForm, ...value },id )).then(res => {
       if (res.status) {
         return message.success('Create candidate successfully');
       }
@@ -105,7 +105,6 @@ function UploadCV(props) {
   };
   const onRequest = async (value) => {
     await dispatch(uploadRequest({ value })).then(res => {
-      console.log(res.data);
       setFileLink(res.data);
       if (res.status) {
         return message.success('Upload request');
@@ -118,9 +117,6 @@ function UploadCV(props) {
     console.log('Failed:', errorInfo);
   };
   const onChange = e => {
-    //Show pdf
-    console.log(e.target.files);
-    //Goi API
     onRequest(e.target.files,e.target.name);
 
   }
