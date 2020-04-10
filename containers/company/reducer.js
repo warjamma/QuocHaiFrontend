@@ -1,6 +1,7 @@
 
 export const exampleInitialState = {
-  list_job: null,
+  list_job: [],
+  list_candidate: [],
 }
 
 export default (state = exampleInitialState, action) => {
@@ -14,6 +15,16 @@ export default (state = exampleInitialState, action) => {
       return {
         ...state,
         ...{ list_job: [] },
+      }
+    case 'GET_LIST_CANDIDATE_SUCCESS':
+      return {
+        ...state,
+        ...{ list_candidate: action.data },
+      }
+    case 'GET_LIST_CANDIDATE_FAILURE':
+      return {
+        ...state,
+        ...{ list_candidate: [] },
       }
     case 'CREATE_JOB_SUCCESS':
       return {

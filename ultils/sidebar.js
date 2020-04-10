@@ -1,7 +1,7 @@
 export const companySideBar = [
   {
     name: 'Bảng điều khiển',
-    url: 'company'
+    url: '/company'
   },
   {
     name: 'Công việc',
@@ -40,7 +40,7 @@ export const adminSideBar = [
 export const referrerSideBar = [
   {
     name: 'Bảng điều khiển',
-    url: 'referrer'
+    url: '/referrer'
   },
   {
     name: 'Công việc',

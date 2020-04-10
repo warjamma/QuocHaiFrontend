@@ -62,7 +62,7 @@ const columns = [
     dataIndex: 'candidate',
     align: 'center',
     width: 60,
-    render: () => <ButtonAction><EditOutlined /></ButtonAction>,
+    render: (text, record, index) => <ButtonAction onClick={() => Router.push(`/referrer/job-detail/${record.id}`)}><EditOutlined /></ButtonAction>,
   },
 ];
 
@@ -159,7 +159,7 @@ function JobList (props) {
           rowKey="id"
           columns={columns}
           dataSource={get(company, 'list_job.items.job', [])}
-          pagination={{ pageSize: 20, total: 100 }}
+          pagination={{ pageSize: 20, total: get(company, 'list_job.extra_data.total', 0) }}
           onChange={handleTableChange}
         />
       </div>
