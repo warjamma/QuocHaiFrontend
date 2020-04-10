@@ -39,20 +39,24 @@ export function getListReferred(params) {
   };
 }
 
-export function createCandidate(payload) {
+export function createCandidate(payload, idJob) {
   return async dispatch => {
     try {
-      await api.sendRequestWithToken('post', '/candidates', null, null, payload);
-      return { status: true }
+      var responseId = await api.sendRequestWithToken('post', '/candidates', null, null, payload)
+        .then(response => response.data.data.candidate.id)
+      var response = await api.sendRequestWithToken('post', '/refers', null, { 'Content-Type': 'application/json' },
+        { "job_id": idJob, "candidate_id": responseId })
+        .then(response => response.data);
+     
     } catch (error) {
       const { data } = error.response
       return { status: false, error: data.message };
     }
+    return { status: true }
   };
 }
 
-export function uploadRequest(payload,name) {
-  console.log('Vo day roi:', payload);
+export function uploadRequest(payload, name) {
   const body = { mim_type: "application/pdf" };
   const header = { "Content-Type": "application/json" };
   return async dispatch => {
@@ -60,30 +64,23 @@ export function uploadRequest(payload,name) {
       var response = await api.sendRequest('post', '/upload/request', null, header, body)
         .then(response => response.data.presign_url);
       var body2 = response.fields;
-
       var data = new FormData();
       for (let property in body2) {
         data.append(`${property}`, `${body2[property]}`)
-     
       }
-
-      console.log('payloasssssssssssssssssssssssssssssssd',payload)
-      data.append("file",payload.value[0],name);
-      console.log(2)
-        var tmp = await axios({
-          method: 'post',
-          url: response.url,
-          data,
-          headers: { "content-type": "application/x-www-form-urlencoded" }
-        });
-      var response2 = await api.sendRequest('post', '/upload/verify', null, {'content-type': 'application/json'}, {
+      data.append("file", payload.value[0], name);
+      var tmp = await axios({
+        method: 'post',
+        url: response.url,
+        data,
+        headers: { "content-type": "application/x-www-form-urlencoded" }
+      });
+      var response2 = await api.sendRequest('post', '/upload/verify', null, { 'content-type': 'application/json' }, {
         key: response.fields.key
       }).then(response => response.data.data);
-      //console.log("sss",response2);
-
     } catch (error) {
       return 'request fail';
     }
-    return { status: true ,data: response2};
+    return { status: true, data: response2 };
   };
 }
