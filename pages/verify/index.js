@@ -15,6 +15,7 @@ const success = (mess) => {
 
 function Verify (props) {
   const { dispatch, router } = props
+  const { query } = router;
 
   useEffect(() => {
     const { query } = router;
@@ -24,7 +25,6 @@ function Verify (props) {
   });
 
   const onFinish = async (values) => {
-    const { query } = router;
     const res = await dispatch(verifyRequest(query.role, query.id, values))
     if(localStorage.getItem('token')) {
       success('Login successfully!')
@@ -42,14 +42,15 @@ function Verify (props) {
         name="normal_login"
         className="loginForm"
         onFinish={onFinish}
+        initialValues={{ verify_token: query.verify_token }}
       >
         <Form.Item
           name="verify_token"
-          rules={[{ required: true, message: 'Please input your Verify Code!' }]}
         >
           <Input 
             prefix={<LockOutlined className="site-form-item-icon" />}
-            placeholder="Verify Code"
+            placeholder={query.verify_token}
+            disabled
           />
         </Form.Item>
         <Form.Item className="groupButtonLogin">

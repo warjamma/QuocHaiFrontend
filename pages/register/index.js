@@ -40,7 +40,7 @@ function Register(props) {
         return error(res.message)
       }
       success(get(res, 'data.message', '').toUpperCase())
-      return Router.push(`/register/verify?role=${role}&id=${get(res, 'data.id', '')}`);
+      return Router.push(`/login`);
     });
   };
   

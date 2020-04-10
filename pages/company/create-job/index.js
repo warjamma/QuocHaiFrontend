@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import Router from 'next/router';
+
 import { Row, Col, Input, Form, Select, Button, InputNumber, Upload, message } from 'antd'
 import { InboxOutlined } from '@ant-design/icons';
 import { createJob } from '../../../containers/company/action';
@@ -7,13 +9,13 @@ import './styles.scss';
 
 const layout = {
   labelCol: {
-    span: 24 
+    span: 24
   },
 };
 
 const initForm = {
   job_title: "",
-	job_levels: [],
+  job_levels: [],
   job_role: [],
   locations: [],
   min_salary: null,
@@ -26,23 +28,23 @@ const initForm = {
   note: "none",
   education: "University",
   language: [
-		{
-		  field: "English",
-		  years: "3 years"
-		}
-	],
+    {
+      field: "English",
+      years: "3 years"
+    }
+  ],
   industry_knowledge: [
-		{
-		  field: "",
-		  years: "1 years"
-		}
-	],
+    {
+      field: "",
+      years: "1 years"
+    }
+  ],
   skill_requirement: [
-		{
-		  field: "",
-		  years: "1 years"
-		}
-	],
+    {
+      field: "",
+      years: "1 years"
+    }
+  ],
   report_to: "",
   team_size: null,
   interview_process: "",
@@ -54,13 +56,16 @@ const initForm = {
 
 const role = 'Account Management, Administration, Backend, Branding, Business Analyst, Business Development, CEO, CFO, CMO, Consultant, Content Creator, COO, CTO, Customer Service, Data Analyst, Designer, Developer, DevOps, Digital Marketing, Engineering, Finace/Accounting, Frontend, Fullstack, Game, General management, HR, HSE, Import - Export, Logistic, maintenance, Management, Market Research, marketing, Merchandising, Mobile, Office Management, Operation Management, Operations, Planning, Product Management, Production, Project Management, Public Relation, QA/QC, Quality Control, Recruitment, Research & Development, Researcher, Sales, Scrum Master, Software Architect, Software Development, Supply Chain, Teacher, Techical Sales, Tester, Traditional Marketing, Trainer'
 
-function CreateJob (props) {
+function CreateJob(props) {
   const { dispatch } = props
 
   const onFinish = async (value) => {
-    await dispatch(createJob({...initForm, ...value})).then(res => {
-      if(res.status) {
-        return message.success('Create job successfully');
+    await dispatch(createJob({ ...initForm, ...value })).then(res => {
+      if (res.status) {
+        return (
+          message.success('Create job successfully'),
+          Router.push('/company/job-list')
+        );
       }
       return message.error(res.error);
     })
@@ -105,14 +110,14 @@ function CreateJob (props) {
                 <Select mode="multiple" style={{ width: '100%' }}>
                   {
                     role.split(', ')
-                    .map(item => (
-                      <Select.Option key={item} value={item}>{item}</Select.Option>
-                    ))
+                      .map(item => (
+                        <Select.Option key={item} value={item}>{item}</Select.Option>
+                      ))
                   }
                 </Select>
               </Form.Item>
               <Form.Item
-                label="Level"
+                label="Cấp độ"
                 hasFeedback
                 name="job_levels"
                 rules={[{ required: true, message: 'This field is required !' }]}
@@ -120,9 +125,9 @@ function CreateJob (props) {
                 <Select mode="multiple" style={{ width: '100%' }}>
                   {
                     'C-level, Department head, Director, Junior, Manager, Middle, Senior, Specialist, Team Leader'.split(', ')
-                    .map(item => (
-                      <Select.Option key={item} value={item}>{item}</Select.Option>
-                    ))
+                      .map(item => (
+                        <Select.Option key={item} value={item}>{item}</Select.Option>
+                      ))
                   }
                 </Select>
               </Form.Item>
@@ -138,14 +143,14 @@ function CreateJob (props) {
                     <Select mode="multiple" style={{ width: '100%' }}>
                       {
                         ['Hồ Chí Minh', 'Hà Nội', 'Đà Nẵng']
-                        .map(item => (
-                          <Select.Option key={item} value={item}>{item}</Select.Option>
-                        ))
+                          .map(item => (
+                            <Select.Option key={item} value={item}>{item}</Select.Option>
+                          ))
                       }
                     </Select>
                   </Form.Item>
                 </Col>
-                <Col span={5}>
+                <Col span={4}>
                   <Form.Item
                     label="Số lượng"
                     hasFeedback
@@ -158,14 +163,18 @@ function CreateJob (props) {
                     />
                   </Form.Item>
                 </Col>
-                <Col span={5}>
+                <Col span={6}>
                   <Form.Item
-                    label="Team size"
+                    label="Kích cỡ team"
                     hasFeedback
                     name="team_size"
                     rules={[{ required: true, message: 'This field is required !' }]}
                   >
-                    <Input />
+                    <Select style={{ width: '100%' }}>
+                      <Select.Option value="large">Lớn</Select.Option>
+                      <Select.Option value="medium">Vừa</Select.Option>
+                      <Select.Option value="small">Nhỏ</Select.Option>
+                    </Select>
                   </Form.Item>
                 </Col>
               </Row>
@@ -219,7 +228,7 @@ function CreateJob (props) {
                 </Col>
                 <Col span={12}>
                   <Form.Item
-                    label="Reward"
+                    label="Mức thưởng"
                     hasFeedback
                     name="reward"
                     rules={[{ required: true, message: 'This field is required !' }]}
@@ -251,11 +260,11 @@ function CreateJob (props) {
           <Row justify="end">
             <Col span={12}>
               <Form.Item style={{ textAlign: 'right' }}>
-                <Button size="large" style={{ marginRight: 20 }} type="primary" htmlType="submit">
-                  <span style={{ fontSize: 13, fontWeight: 'bold' }}>Hoàn Thành</span>
+                <Button size="large" style={{ marginRight: 20, fontSize: 13, fontWeight: 'bold' }} type="primary" htmlType="submit">
+                  Hoàn Thành
                 </Button>
-                <Button size="large" >
-                  <span style={{ fontSize: 13, fontWeight: 'bold' }}>Làm mới</span>
+                <Button size="large" style={{ fontSize: 13, fontWeight: 'bold' }} onClick={() => { Router.push('/company/job-list') }}>
+                  Hủy bỏ
                 </Button>
               </Form.Item>
             </Col>
