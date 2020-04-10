@@ -36,8 +36,13 @@ const columns = [
     render: (text, record, index) => <span color="green">{moment(record.created_at).format('DD-MM-YYYY')}</span>,
   },
   {
-    title: 'Số lượng',
+    title: 'Số lượng yêu cầu',
     dataIndex: 'vacancy_number',
+    align: 'center'
+  },
+  {
+    title: 'Số ứng viên hiện có',
+    dataIndex: 'candidate',
     align: 'center'
   },
   {
@@ -51,12 +56,7 @@ const columns = [
     dataIndex: 'status',
     align: 'center',
     render: (text, record, index) => <Tag color="green">{record.status}</Tag>,
-  },
-  {
-    title: 'Hồ sơ ứng viên',
-    dataIndex: 'candidate',
-    align: 'center'
-  },
+  }, 
   {
     title: '',
     dataIndex: 'candidate',
@@ -141,9 +141,10 @@ function JobList (props) {
                   option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
               >
-                <Option value="All">Tất cả</Option>
-                <Option value="All">Đang chờ</Option>
-                <Option value="Developer">Đã hoàn thành</Option>
+                <Option value="Pending">Pending</Option>
+                <Option value="Approved">Approved</Option>
+                <Option value="Rejected">Rejected</Option>
+                <Option value="Completed">Completed</Option>
               </Select>
             </Col>
           </Row>
