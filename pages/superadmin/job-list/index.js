@@ -50,9 +50,11 @@ function JobList (props) {
       dataIndex: 'company_id',
       render: (text, record, index) => (
         <div className="custom-company">
-          <div className="logo-company" />
+          <div className="logo-company">
+            <img src={get(record, 'company.avatar') === null ? '/default-avatar.png' : get(record, 'company.avatar')}/>
+          </div>
           <div className="info-required">
-            <b className="name-company">Rockship</b>
+            <b className="name-company">{get(record, 'company.name', '')}</b>
             <div className="job-role">
               <span>Vị trí tuyển dụng : </span>
               {
@@ -139,12 +141,17 @@ function JobList (props) {
   }
 
   const handleFind = async () => {
-    await dispatch(getListJob(query))
+    let clone = { ...query };
+    clone['offset'] = 0;
+    setQuery(clone)
+    await dispatch(getListJob(clone))
   }
 
   const handleTableChange = async (pagination) => {
     let clone = { ...query };
-    clone['offset'] = pagination.current * 10;
+    clone['offset'] = (pagination.current - 1) * 10;
+    clone['limit'] = pagination.pageSize;
+    setQuery(clone)
     await dispatch(getListJob(clone))
   };
 
@@ -187,7 +194,6 @@ function JobList (props) {
               <Select
                 allowClear
                 showSearch
-                mode="multiple"
                 onChange={(e) => changeQuery('company', e)}
                 style={{ width: '100%' }}
                 placeholder="Công ty"
@@ -205,7 +211,6 @@ function JobList (props) {
               <Select
                 allowClear
                 showSearch
-                mode="multiple"
                 onChange={(e) => changeQuery('job_type', e)}
                 style={{ width: '100%' }}
                 placeholder="Chọn loại công việc"
@@ -236,9 +241,17 @@ function JobList (props) {
               <Table
                 bordered
                 rowKey="id"
+                loading={get(referred, 'is_loading', false)}
                 columns={columns}
                 dataSource={get(referred, 'list_job.items.job', [])}
-                pagination={{ pageSize: 20, total: get(referred, 'list_job.extra_data.total', 0), showSizeChanger: true, pageSizeOptions: ['10', '20', '30', '50'] }}
+                pagination={{
+                  pageSize: query.limit,
+                  total: get(referred, 'list_job.extra_data.total', 0),
+                  showSizeChanger: true,
+                  pageSizeOptions: ['10', '20', '30', '50'],
+                  size: "small",
+                  current: (query.offset / 10) + 1
+                }}
                 onChange={handleTableChange}
               />
             </Tabs.TabPane>

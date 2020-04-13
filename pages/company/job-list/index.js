@@ -100,7 +100,10 @@ function JobList(props) {
   }
 
   const handleFilter = async () => {
-    await dispatch(getListJob(query, get(profile, 'data.employer.company_id', '')));
+    let clone = { ...query };
+    clone['offset'] = 0;
+    setQuery(clone)
+    await dispatch(getListJob(clone, get(profile, 'data.employer.company_id', '')));
   }
 
   useEffect(() => {
@@ -183,6 +186,7 @@ function JobList(props) {
             showSizeChanger: true,
             pageSizeOptions: ['10', '20', '30', '50'],
             size: 'small',
+            current: (query.offset / 10) + 1
           }}
           onChange={handleTableChange}
         />

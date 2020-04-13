@@ -107,7 +107,10 @@ function JobList (props) {
   }
 
   const handleFind = async () => {
-    await dispatch(getListJob(query))
+    let clone = { ...query };
+    clone['offset'] = 0;
+    setQuery(clone)
+    await dispatch(getListJob(clone))
   }
 
   const handleTableChange = async (pagination) => {
@@ -236,7 +239,8 @@ function JobList (props) {
             total: get(referred, 'list_job.extra_data.total', []),
             showSizeChanger: true,
             pageSizeOptions: ['10', '20', '30', '50'],
-            size: 'small'
+            size: 'small',
+            current: (query.offset / 10) + 1
           }}
           onChange={handleTableChange}
         />

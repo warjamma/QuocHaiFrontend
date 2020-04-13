@@ -237,7 +237,7 @@ function CandidateList (props) {
 
   const handleTableChange = async (pagination) => {
     let clone = { ...query };
-    clone['offset'] = pagination.current * 10;
+    clone['offset'] = (pagination.current - 1) * 10;
     clone['limit'] = pagination.pageSize;
     setQuery(clone);
     await dispatch(getListCandidate(clone, get(profile, 'data.employer.company_id', '')));
@@ -250,7 +250,10 @@ function CandidateList (props) {
   }
 
   const handleFilter = async () => {
-    await dispatch(getListCandidate(query, get(profile, 'data.employer.company_id', '')));
+    let clone = { ...query };
+    clone['offset'] = 0;
+    setQuery(clone);
+    await dispatch(getListCandidate(clone, get(profile, 'data.employer.company_id', '')));
   }
 
   useEffect(() => {
@@ -315,7 +318,8 @@ function CandidateList (props) {
               total: get(company, 'list_candidate.extra_data.total', 0),
               showSizeChanger: true,
               pageSizeOptions: ['10', '20', '30', '50'],
-              size: 'small'
+              size: 'small',
+              current: (query.offset / 10) + 1
             }}
             onChange={handleTableChange}
           />

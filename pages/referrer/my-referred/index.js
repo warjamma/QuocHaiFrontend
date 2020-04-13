@@ -8,8 +8,16 @@ import renderColorTag from '../../../ultils/renderColorStatus';
 import { get } from 'lodash';
 import moment from 'moment';
 import './styles.scss'
+import Router from 'next/router';
 
 const { Option } = Select;
+const initQuery = {
+  company_name: '',
+  key_word: '',
+  // status: null,
+  offset: 0,
+  limit: 10,
+}
 
 const columns = [
   {
@@ -69,22 +77,15 @@ const columns = [
   },
   {
     title: 'Hồ sơ',
-    dataIndex: 'cv',
+    dataIndex: 'candidate_id',
     align: 'center',
     width: 80,
-    render: (text, record, index) => <Button onClick={() => window.open(get(record, 'candidate', {}).cv, "_blank")} type="primary" icon={<DownloadOutlined />} size="small" />,
+    render: (candidate_id) => <Button onClick={() => Router.push('/referrer/edit-cv/'+candidate_id+'')} type="primary" icon={<DownloadOutlined />} size="small" />,
   },
 ];
 
-const initQuery = {
-  company_name: '',
-  key_word: '',
-  status: null,
-  offset: 0,
-  limit: 10,
-}
 
-function MyReferred (props) {
+function MyReferred(props) {
   const { dispatch, referred } = props
   const [query, setQuery] = useState(initQuery)
 
@@ -95,15 +96,18 @@ function MyReferred (props) {
   }
 
   const handleFilter = async () => {
-    await dispatch(getListReferred(query))
+    let clone = { ...query };
+    clone['offset'] = 0;
+    setQuery(clone);
+    await dispatch(getListReferred(clone))
   }
 
   const handleTableChange = async (pagination) => {
     let clone = { ...query };
-    clone['offset'] = pagination.current * 10;
+    clone['offset'] = (pagination.current - 1) * 10;
     clone['limit'] = pagination.pageSize;
     setQuery(clone);
-    await dispatch(getListReferred(query));
+    await dispatch(getListReferred(clone));
   };
 
   useEffect(() => {
@@ -154,14 +158,13 @@ function MyReferred (props) {
           </Col>
           <Col span={24}>
             <div className="filter-button">
-              <Button onClick={() => handleFilter()} icon={<SearchOutlined />}  type="primary">Tìm kiếm</Button>
-              <Button icon={<RedoOutlined />}  type="primary">Làm mới</Button>
+              <Button onClick={() => handleFilter()} icon={<SearchOutlined />} type="primary">Tìm kiếm</Button>
+              <Button icon={<RedoOutlined />} type="primary">Làm mới</Button>
             </div>
           </Col>
-        </Row>   
+        </Row>
       </Form>
-    {/* end form */}
-    <div >
+      {/* end form */}
       <Table
         loading={get(referred, 'is_loading', false)}
         bordered
@@ -173,12 +176,12 @@ function MyReferred (props) {
           total: get(referred, 'list_referred.extra_data.total', 0),
           showSizeChanger: true,
           pageSizeOptions: ['10', '20', '30', '50'],
-          size: 'small'
+          size: 'small',
+          current: (query.offset / 10) + 1
         }}
         onChange={handleTableChange}
       />
     </div>
-  </div>
   )
 };
 
