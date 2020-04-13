@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { RedoOutlined, SearchOutlined, HighlightOutlined, EditOutlined } from '@ant-design/icons';
 import styled from 'styled-components'
 import { getListJob } from '../../../containers/company/action';
+import renderColorTag from '../../../ultils/renderColorStatus';
 import { get } from 'lodash';
 import moment from 'moment';
 import './styles.scss';
@@ -17,6 +18,7 @@ const ButtonAction = styled(Button)`
     color: #fff;
   }
 `
+const role = 'Account Management, Administration, Backend, Branding, Business Analyst, Business Development, CEO, CFO, CMO, Consultant, Content Creator, COO, CTO, Customer Service, Data Analyst, Designer, Developer, DevOps, Digital Marketing, Engineering, Finace/Accounting, Frontend, Fullstack, Game, General management, HR, HSE, Import - Export, Logistic, maintenance, Management, Market Research, marketing, Merchandising, Mobile, Office Management, Operation Management, Operations, Planning, Product Management, Production, Project Management, Public Relation, QA/QC, Quality Control, Recruitment, Research & Development, Researcher, Sales, Scrum Master, Software Architect, Software Development, Supply Chain, Teacher, Techical Sales, Tester, Traditional Marketing, Trainer'
 
 const { Search } = Input
 
@@ -55,7 +57,7 @@ const columns = [
     title: 'Trạng thái',
     dataIndex: 'status',
     align: 'center',
-    render: (text, record, index) => <Tag color="green">{record.status}</Tag>,
+    render: (text, record, index) => <Tag color={renderColorTag(record.status)}>{record.status}</Tag>,
   },
   {
     title: '',
@@ -79,18 +81,33 @@ const initQuery = {
 }
 
 
-
 function JobList(props) {
   const { profile, company, dispatch } = props;
   const [query, setQuery] = useState(initQuery);
 
   const handleTableChange = async (pagination) => {
     let clone = { ...query };
-    clone['offset'] = pagination.current * 10;
+    clone['offset'] = (pagination.current - 1) * 10;
+    clone['limit'] = pagination.pageSize;
+    setQuery(clone)
     await dispatch(getListJob(clone, get(profile, 'data.employer.company_id', '')));
   };
 
+  const onChangeQuery = async (key, value) => {
+    let clone = { ...query }
+    clone[key] = value
+    setQuery(clone)
+  }
+
+  const handleFilter = async () => {
+    let clone = { ...query };
+    clone['offset'] = 0;
+    setQuery(clone)
+    await dispatch(getListJob(clone, get(profile, 'data.employer.company_id', '')));
+  }
+
   useEffect(() => {
+    console.log(query)
     dispatch(getListJob(query, get(profile, 'data.employer.company_id', '')));
   }, []);
 
@@ -106,28 +123,27 @@ function JobList(props) {
           <Row gutter={[16, 16]} className="body">
             <Col span={12}>
               <b>Từ khóa</b>
-              <Search placeholder="Từ khóa" />
+              <Search onChange={(e) => onChangeQuery('key_word', e.target.value)} placeholder="Từ khóa" />
             </Col>
             <Col span={6}>
               <b>Loại công việc</b>
               <Select
                 allowClear
                 showSearch
-                mode="multiple"
                 style={{ width: '100%' }}
                 placeholder="Chọn loại công việc"
                 optionFilterProp="children"
                 filterOption={(input, option) =>
                   option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
+                onChange={(e) => onChangeQuery('job_type', e)}
               >
-                <Option value="All">Tất cả</Option>
-                <Option value="Developer">Developer</Option>
-                <Option value="Kế toán">Kế toán</Option>
-                <Option value="HR">HR</Option>
-                <Option value="HR1">HR1</Option>
-                <Option value="HR2">HR2</Option>
-                <Option value="HR3">HR3</Option>
+                {
+                  role.split(', ')
+                    .map(item => (
+                      <Option key={item} value={item}>{item}</Option>
+                    ))
+                }
               </Select>
             </Col>
             <Col span={6}>
@@ -135,37 +151,45 @@ function JobList(props) {
               <Select
                 allowClear
                 showSearch
-                mode="multiple"
                 style={{ width: '100%' }}
                 placeholder="Trạng thái"
                 optionFilterProp="children"
                 filterOption={(input, option) =>
                   option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
+                onChange={(e) => onChangeQuery('status', e)}
               >
-                <Option value="Pending">Pending</Option>
-                <Option value="Approved">Approved</Option>
-                <Option value="Rejected">Rejected</Option>
-                <Option value="Completed">Completed</Option>
+                <Option value="">All</Option>
+                <Option value="pending">Pending</Option>
+                <Option value="accepted">Accepted</Option>
+                <Option value="reject">Rejected</Option>
+                <Option value="on_board">On board</Option>
               </Select>
             </Col>
           </Row>
           <div className="filter-button">
-            <Button icon={<SearchOutlined />} type="primary">Tìm kiếm</Button>
+            <Button icon={<SearchOutlined />} onClick={() => handleFilter()} type="primary">Tìm kiếm</Button>
             <Button icon={<RedoOutlined />} type="primary">Làm mới</Button>
           </div>
         </Col>
       </Row>
       <div className="jobListTable">
         <Table
+          loading={get(company, 'is_loading', false)}
           bordered
           rowKey="id"
           columns={columns}
           dataSource={get(company, 'list_job.items.job', [])}
-          pagination={{ pageSize: 10, total: get(company, 'list_job.extra_data.total', 0) }}
+          pagination={{
+            pageSize: query.limit,
+            total: get(company, 'list_job.extra_data.total', 0),
+            showSizeChanger: true,
+            pageSizeOptions: ['10', '20', '30', '50'],
+            size: 'small',
+            current: (query.offset / 10) + 1
+          }}
           onChange={handleTableChange}
         />
-        
       </div>
     </div>
   );

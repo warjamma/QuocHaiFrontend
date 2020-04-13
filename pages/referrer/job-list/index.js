@@ -32,9 +32,11 @@ const columns = [
     dataIndex: 'company_id',
     render: (text, record, index) => (
       <div className="custom-company" onClick={() => Router.push('/job-detail/'+record.id+'')}>
-        <div className="logo-company" />
+        <div className="logo-company">
+          <img src={get(record, 'company.avatar') === null ? '/default-avatar.png' : get(record, 'company.avatar')}/>
+        </div>
         <div className="info-required">
-          <b className="name-company">Rockship</b>
+          <b className="name-company">{get(record, 'company.name', '')}</b>
           <div className="job-role">
             <span>Vị trí tuyển dụng : </span>
             {
@@ -101,17 +103,21 @@ function JobList (props) {
   const changeQuery = (key, value) => {
     let clone = { ...query };
     clone[key] = typeof value === 'object' ? value.join(', ') : value ;
-    console.log(clone)
     setQuery(clone)
   }
 
   const handleFind = async () => {
-    await dispatch(getListJob(query))
+    let clone = { ...query };
+    clone['offset'] = 0;
+    setQuery(clone)
+    await dispatch(getListJob(clone))
   }
 
   const handleTableChange = async (pagination) => {
     let clone = { ...query };
     clone['offset'] = pagination.current * 10;
+    clone['limit'] = pagination.pageSize;
+    setQuery(clone)
     await dispatch(getListJob(clone))
   };
 
@@ -138,7 +144,6 @@ function JobList (props) {
               <Select
                 allowClear
                 showSearch
-                mode="multiple"
                 onChange={(e) => changeQuery('company', e)}
                 style={{ width: '100%' }}
                 placeholder="Công ty"
@@ -156,7 +161,6 @@ function JobList (props) {
               <Select
                 allowClear
                 showSearch
-                mode="multiple"
                 onChange={(e) => changeQuery('job_type', e)}
                 style={{ width: '100%' }}
                 placeholder="Chọn loại công việc"
@@ -176,7 +180,6 @@ function JobList (props) {
               <Select
                 allowClear
                 showSearch
-                mode="multiple"
                 onChange={(e) => changeQuery('location', e)}
                 style={{ width: '100%' }}
                 placeholder="Địa điểm"
@@ -184,9 +187,8 @@ function JobList (props) {
                 filterOption={(input, option) =>
                   option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
-                defaultValue=""
               >
-                <Option value="">Tất cả</Option>
+                {/* <Option value="">Tất cả</Option> */}
                 <Option value="Hà Nội">Hà Nội</Option>
                 <Option value="Hồ Chí Minh">Hồ Chí Minh</Option>
                 <Option value="Đà Nẵng">Đà Nẵng</Option>
@@ -206,7 +208,6 @@ function JobList (props) {
               <Select
                 allowClear
                 showSearch
-                mode="multiple"
                 onChange={(e) => changeQuery('status', e)}
                 style={{ width: '100%' }}
                 placeholder="Trang thái"
@@ -228,11 +229,19 @@ function JobList (props) {
       </Row>
       <div className="jobListTable">
         <Table
+          loading={get(referred, 'is_loading', false)}
           bordered
           rowKey="id"
           columns={columns}
           dataSource={get(referred, 'list_job.items.job', [])}
-          pagination={{ pageSize: 20, total: get(referred, 'list_job.extra_data.total', []) }}
+          pagination={{
+            pageSize: query.limit,
+            total: get(referred, 'list_job.extra_data.total', []),
+            showSizeChanger: true,
+            pageSizeOptions: ['10', '20', '30', '50'],
+            size: 'small',
+            current: (query.offset / 10) + 1
+          }}
           onChange={handleTableChange}
         />
       </div>

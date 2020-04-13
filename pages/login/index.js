@@ -22,17 +22,12 @@ function Login(props) {
   useEffect(() => {
     if (get(profile, 'data.token', '')) {
       success('Login successfully!');
-      Router.push(role === 'employers' ? '/company/job-list' : '/referrer');
+      Router.push(get(profile, 'data.employer', '') ? '/company/job-list' : '/referrer');
     }
   });
 
   const onFinish = async (values) => {
     await dispatch(loginRequest(values, role))
-    console.log(get(profile, 'data.token', ''))
-    if(get(profile, 'data.token', '')) {
-      success('Login successfully!');
-      Router.push(role === 'employers' ? '/company/job-list' : '/referrer');
-    }
   };
 
   function FormLogin(props) {

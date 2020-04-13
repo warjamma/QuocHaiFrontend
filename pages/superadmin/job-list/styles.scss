@@ -51,10 +51,12 @@
   .custom-company {
     display: flex;
     .logo-company {
-      min-width: 75px;
-      height: 75px;
-      background-color: grey;
+      width: 100px;
       margin-right: 10px;
+      img {
+        width: 100%;
+        object-fit: cover;
+      }
     }
     .info-required {
       text-align: left;

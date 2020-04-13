@@ -5,6 +5,7 @@ var axios = require('axios');
 export function getListJob(params) {
   return async dispatch => {
     try {
+      dispatch({ type: "GET_LIST_REQUEST" });
       const { data } = await api.sendRequestWithToken('get', `/jobs?${qs.stringify(params)}`);
       dispatch({ type: "GET_LIST_JOB_SUCCESS", data: data });
     } catch (error) {
@@ -30,6 +31,7 @@ export function getJobById(params) {
 export function getListReferred(params) {
   return async dispatch => {
     try {
+      dispatch({ type: "GET_LIST_REQUEST" });
       const { data } = await api.sendRequestWithToken('get', `/recruiters/me/refer?${qs.stringify(params)}`);
       dispatch({ type: "GET_LIST_REFERRED_SUCCESS", data: data });
     } catch (error) {

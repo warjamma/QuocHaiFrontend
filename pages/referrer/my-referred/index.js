@@ -1,14 +1,15 @@
 import React, { Component, useState, useEffect } from 'react';
-import { connect } from 'react-redux'
-import { RedoOutlined, SearchOutlined, DollarCircleOutlined } from '@ant-design/icons';
-import { Table, Tag, Button, Form, Row, Col, Input, Select, Typography } from 'antd';
+import { connect } from 'react-redux';
+import Link from 'next/link';
+import { RedoOutlined, SearchOutlined, DownloadOutlined } from '@ant-design/icons';
+import { Table, Tag, Button,Form,Row, Col, Input,Select,Typography } from 'antd';
 import { getListReferred } from '../../../containers/referred/actions';
+import renderColorTag from '../../../ultils/renderColorStatus';
 import { get } from 'lodash';
-import moment from 'moment'
+import moment from 'moment';
 import './styles.scss'
 import Router from 'next/router';
 
-const { Title } = Typography;
 const { Option } = Select;
 const initQuery = {
   company_name: '',
@@ -20,81 +21,68 @@ const initQuery = {
 
 const columns = [
   {
-    title: 'Candidate',
-    dataIndex: 'candidate',
-    key: 'candidate',
-    width: 200,
-    render:(record,text)=> <a>{record.name}</a>, 
+    title: 'Công việc',
+    dataIndex: 'job',
+    render: (text, record, index) => (
+      <div>
+        <Link href={`/job-detail/${record.job.id}`}><a>{get(record, 'job', {}).job_title}</a></Link>
+      </div>
+    )
   },
   {
-    title: 'Status',
-    dataIndex: 'status',
-    key: 'status',
-    width: 120,
-    align: 'center',
-    render: (record) => {
-      return (
-        <span>
-          <Tag color="warning">{record}</Tag>
-        </span>
-      )
-    }
+    title: 'Tên',
+    dataIndex: 'name',
+    render: (text, record, index) => (
+      <div>
+        <div>{get(record, 'candidate', {}).name}</div>
+        <div>
+          {
+            get(record, 'candidate', {}).job_role.map(item => (
+              <Tag key={item} color="blue">{item}</Tag>
+            ))
+          }
+        </div>
+      </div>
+    )
   },
   {
-    title: 'Referred day',
-    dataIndex: 'updated_at',
-    key: 'updated_at',
-    width: 200,
+    title: 'Level',
+    dataIndex: 'created',
     align: 'center',
-    render:(text, record, index)=>(
-      <div>{moment(record.updated_at).subtract(10, 'days').calendar()}</div>
-      )
+    render: (text, record, index) => (
+      get(record, 'candidate', {}).job_level.map(item => (
+        <Tag key={item} color="blue">{item}</Tag>
+      ))
+    )
+  },
+  {
+    title: 'Mức Thưởng ($)',
+    dataIndex: 'reward',
+    align: 'center',
+    render: (text, record, index) => <Tag color="blue">{get(record, 'job.reward')}$</Tag>,
   },
   {
     title: 'Onboarding date',
-    dataIndex: 'created_at',
-    key: 'created_at',
-    width: 200,
+    dataIndex: 'status',
     align: 'center',
-    render:(text, record, index)=>(
-      <div>{moment(record.created_at).subtract(10, 'days').calendar()}</div>
-      )
+    render: (text, record, index) => <div>{moment(get(record, 'created_at', '')).format('DD-MM-YYYY')}</div>,
   },
   {
-    title: 'Salary (USD)',
-    dataIndex: 'job',
-    key: 'salary',
-    width: 140,
+    title: 'Trạng thái',
+    dataIndex: 'status',
     align: 'center',
-    render: (record,text) => 
-      <span>
-        <Tag color="red">{record.min_salary}$ - {record.max_salary}$</Tag>
-      </span>
-    
+    editable: true,
+    width: 150,
+    render: (text, record, index) => <Tag color={renderColorTag(record.status)}>{record.status.replace('_', ' ')}</Tag>,
   },
   {
-    width: 200,
-    title: 'Job Title',
-    dataIndex: 'job',
-    key: 'job',
-    render:(record,text)=> <a>{record.job_title}</a>,
-  },
-
-  {
-    title: 'Action',
-    key: 'action',
+    title: 'Hồ sơ',
     dataIndex: 'candidate_id',
-    width: 100,
     align: 'center',
-    render: (candidate_id) => (
-      <span>
-        <Button style={{margin:2}}onClick={() => Router.push('/referrer/edit-cv/'+candidate_id+'')}>Edit</Button>
-        {/* <Button >Delete</Button> */}
-      </span>
-    ),
+    width: 80,
+    render: (candidate_id) => <Button onClick={() => Router.push('/referrer/edit-cv/'+candidate_id+'')} type="primary" icon={<DownloadOutlined />} size="small" />,
   },
 ];
-
 
 
 function MyReferred(props) {
@@ -108,8 +96,19 @@ function MyReferred(props) {
   }
 
   const handleFilter = async () => {
-    await dispatch(getListReferred(query))
+    let clone = { ...query };
+    clone['offset'] = 0;
+    setQuery(clone);
+    await dispatch(getListReferred(clone))
   }
+
+  const handleTableChange = async (pagination) => {
+    let clone = { ...query };
+    clone['offset'] = (pagination.current - 1) * 10;
+    clone['limit'] = pagination.pageSize;
+    setQuery(clone);
+    await dispatch(getListReferred(clone));
+  };
 
   useEffect(() => {
     dispatch(getListReferred(query));
@@ -127,33 +126,36 @@ function MyReferred(props) {
         layout="horizontal"
       >
         <Row gutter={[16, 0]}>
-          <Col className="fiter-item" span={8}>
+          <Col className="fiter-item" span={14}>
             <div className="title">Từ khóa: </div>
-            <Input onClick={(e) => onChangeQuery('key_word', e.target.value)} placeholder="Key word..." />
+            <Input onChange={(e) => onChangeQuery('key_word', e.target.value)} placeholder="Key word..." />
           </Col>
-          <Col className="fiter-item" span={8} >
+          <Col className="fiter-item" span={6} >
             <div className="title">Công ty: </div>
             <Select
               style={{ width: '100%' }}
-              placeholder="Select a option and change input text above"
+              placeholder="Công ty"
               onChange={(e) => onChangeQuery('company_name', e)}
             >
-              <Option value="KMS">KMS</Option>
-              <Option value="Rock Ship">Rock Ship</Option>
-              <Option value="ABC">ABC</Option>
+              <Option value="">Tất cả</Option>
             </Select>
           </Col>
-          {/* <Col className="fiter-item" span={8} >
+          <Col className="fiter-item" span={4} >
             <div className="title">Trạng thái: </div>
             <Select
               style={{ width: '100%' }}
-              placeholder="Select a option and change input text above"
+              placeholder="Trạng thái"
               onChange={(e) => onChangeQuery('status', e)}
             >
-              <Option value="Pending">Pending</Option>
-              <Option value="Cancel">Cancel</Option>
+              <Option value="">All</Option>
+              <Option value="pending">Pending</Option>
+              <Option value="accepted">Accepted</Option>
+              <Option value="reject">Rejected</Option>
+              <Option value="on_board">On board</Option>
+              <Option value="probation">Probation</Option>
+              <Option value="done">Done</Option>
             </Select>
-          </Col> */}
+          </Col>
           <Col span={24}>
             <div className="filter-button">
               <Button onClick={() => handleFilter()} icon={<SearchOutlined />} type="primary">Tìm kiếm</Button>
@@ -163,24 +165,27 @@ function MyReferred(props) {
         </Row>
       </Form>
       {/* end form */}
-      <div >
-        <Table
-          bordered
-          rowKey="id"
-          columns={columns}
-          dataSource={get(referred, 'list_referred.items.refer', [])}
-          expandable={{
-            expandedRowRender: record => <p style={{ margin: 0 }}>{record.candidate.email}&nbsp;{record.candidate.phone_number}</p>,
-            rowExpandable: record => record.phoneNumber !== 'Not Expandable',
-          }} />
-        {console.log(get(referred,'list_referred.items.refer',[]))}
-      </div>
+      <Table
+        loading={get(referred, 'is_loading', false)}
+        bordered
+        rowKey="id"
+        columns={columns}
+        dataSource={get(referred, 'list_referred.items.refer', [])}
+        pagination={{
+          pageSize: query.limit,
+          total: get(referred, 'list_referred.extra_data.total', 0),
+          showSizeChanger: true,
+          pageSizeOptions: ['10', '20', '30', '50'],
+          size: 'small',
+          current: (query.offset / 10) + 1
+        }}
+        onChange={handleTableChange}
+      />
     </div>
   )
 };
 
 function mapStateToProps(state) {
-  //console.log('state', state)
   const { referred } = state
   return { referred }
 }
