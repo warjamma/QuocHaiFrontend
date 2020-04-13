@@ -1,13 +1,22 @@
 import React, { Component, useState, useEffect } from 'react';
 import { connect } from 'react-redux'
 import { RedoOutlined, SearchOutlined, DollarCircleOutlined } from '@ant-design/icons';
-import { Table, Tag, Button,Form,Row, Col, Input,Select,Typography } from 'antd';
+import { Table, Tag, Button, Form, Row, Col, Input, Select, Typography } from 'antd';
 import { getListReferred } from '../../../containers/referred/actions';
 import { get } from 'lodash';
+import moment from 'moment'
 import './styles.scss'
+import Router from 'next/router';
 
 const { Title } = Typography;
 const { Option } = Select;
+const initQuery = {
+  company_name: '',
+  key_word: '',
+  // status: null,
+  offset: 0,
+  limit: 10,
+}
 
 const columns = [
   {
@@ -15,9 +24,7 @@ const columns = [
     dataIndex: 'candidate',
     key: 'candidate',
     width: 200,
-    render: (text => (<a href="#">{text}</a>) ,
-          mail=><div>{mail}  </div>,
-          phoneNumber=> <div>{phoneNumber}</div> )
+    render:(record,text)=> <a>{record.name}</a>, 
   },
   {
     title: 'Status',
@@ -25,92 +32,72 @@ const columns = [
     key: 'status',
     width: 120,
     align: 'center',
-    render: status => (
-      <span>
-        <Tag color="warning">{status}</Tag>
-      </span>
-    )
+    render: (record) => {
+      return (
+        <span>
+          <Tag color="warning">{record}</Tag>
+        </span>
+      )
+    }
   },
   {
     title: 'Referred day',
-    dataIndex: 'referredDay',
-    key: 'referredday',
+    dataIndex: 'updated_at',
+    key: 'updated_at',
     width: 200,
-    align: 'center'
+    align: 'center',
+    render:(text, record, index)=>(
+      <div>{moment(record.updated_at).subtract(10, 'days').calendar()}</div>
+      )
   },
   {
     title: 'Onboarding date',
-    dataIndex: 'onboarDate',
-    key: 'onboarDate',
+    dataIndex: 'created_at',
+    key: 'created_at',
     width: 200,
-    align: 'center'
+    align: 'center',
+    render:(text, record, index)=>(
+      <div>{moment(record.created_at).subtract(10, 'days').calendar()}</div>
+      )
   },
   {
     title: 'Salary (USD)',
-    dataIndex: 'salary',
+    dataIndex: 'job',
     key: 'salary',
     width: 140,
     align: 'center',
-    render: salary => (
+    render: (record,text) => 
       <span>
-        <Tag color="red">{salary}</Tag>
+        <Tag color="red">{record.min_salary}$ - {record.max_salary}$</Tag>
       </span>
-    )
+    
   },
   {
+    width: 200,
     title: 'Job Title',
-    dataIndex: 'jobTitile',
-    key: 'jobTitile',
-    render: text => <a>{text}</a>,
+    dataIndex: 'job',
+    key: 'job',
+    render:(record,text)=> <a>{record.job_title}</a>,
   },
 
   {
     title: 'Action',
     key: 'action',
+    dataIndex: 'candidate_id',
     width: 100,
     align: 'center',
-    render: (text, record) => (
+    render: (candidate_id) => (
       <span>
-        <Button>Edit</Button>
+        <Button style={{margin:2}}onClick={() => Router.push('/referrer/edit-cv/'+candidate_id+'')}>Edit</Button>
+        {/* <Button >Delete</Button> */}
       </span>
     ),
   },
 ];
 
-const data = [
-  {
-    key: '1',
-    jobTitile: 'Backend Developer',
-    referredDay: '13/01/2020',
-    onboarDate: '18/03/2020',
-    status: 'Pending',
-    candidate: 'Phạm Huy Hoàng',
-    mail:'lgold141@gmail.com',
-    phoneNumber:'+44 7922.819.535',
-    salary: '1000$ - 1500$',
-  },
-  {
-    key: '2',
-    jobTitile: 'Full-stack Developer',
-    referredDay: '13/01/2020',
-    onboarDate: '18/03/2020',
-    status: 'Pending',
-    candidate: 'Nguyễn Viết Chánh',
-    mail:'lgold141@gmail.com',
-    phoneNumber:'+44 7922.819.535',
-    salary: '1000$ - 1500$',
-  },
-];
 
-const initQuery = {
-  company_name: '',
-  key_word: '',
-  status: null,
-  offset: 0,
-  limit: 10,
-}
 
-function MyReferred (props) {
+function MyReferred(props) {
   const { dispatch, referred } = props
   const [query, setQuery] = useState(initQuery)
 
@@ -125,7 +112,6 @@ function MyReferred (props) {
   }
 
   useEffect(() => {
-    console.log('hêr')
     dispatch(getListReferred(query));
   }, []);
 
@@ -157,7 +143,7 @@ function MyReferred (props) {
               <Option value="ABC">ABC</Option>
             </Select>
           </Col>
-          <Col className="fiter-item" span={8} >
+          {/* <Col className="fiter-item" span={8} >
             <div className="title">Trạng thái: </div>
             <Select
               style={{ width: '100%' }}
@@ -167,24 +153,36 @@ function MyReferred (props) {
               <Option value="Pending">Pending</Option>
               <Option value="Cancel">Cancel</Option>
             </Select>
-          </Col>
+          </Col> */}
           <Col span={24}>
             <div className="filter-button">
-              <Button onClick={() => handleFilter()} icon={<SearchOutlined />}  type="primary">Tìm kiếm</Button>
-              <Button icon={<RedoOutlined />}  type="primary">Làm mới</Button>
+              <Button onClick={() => handleFilter()} icon={<SearchOutlined />} type="primary">Tìm kiếm</Button>
+              <Button icon={<RedoOutlined />} type="primary">Làm mới</Button>
             </div>
           </Col>
-        </Row>   
+        </Row>
       </Form>
-    {/* end form */}
-    <div >
-      <Table bordered columns={columns} dataSource={get(referred, 'list_referred.item.refer', [])} expandable={{
-        expandedRowRender: record => <p style={{ margin: 0 }}>{record.mail}&nbsp;{record.phoneNumber}</p>,
-        rowExpandable: record => record.phoneNumber !== 'Not Expandable',
-      }}/>
+      {/* end form */}
+      <div >
+        <Table
+          bordered
+          rowKey="id"
+          columns={columns}
+          dataSource={get(referred, 'list_referred.items.refer', [])}
+          expandable={{
+            expandedRowRender: record => <p style={{ margin: 0 }}>{record.candidate.email}&nbsp;{record.candidate.phone_number}</p>,
+            rowExpandable: record => record.phoneNumber !== 'Not Expandable',
+          }} />
+        {console.log(get(referred,'list_referred.items.refer',[]))}
+      </div>
     </div>
-  </div>
   )
 };
 
-export default connect(null, null)(MyReferred)
+function mapStateToProps(state) {
+  //console.log('state', state)
+  const { referred } = state
+  return { referred }
+}
+
+export default connect(mapStateToProps, null)(MyReferred)

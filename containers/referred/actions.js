@@ -56,6 +56,43 @@ export function createCandidate(payload, idJob) {
   };
 }
 
+export function getCandidateById(params) {
+  console.log('params', params);
+  return async dispatch => {
+    try {
+      const { data } = await api.sendRequestWithToken('get', `/candidates/${params.id}`);
+      dispatch({ type: "GET_CANDIDATE_BY_ID_SUCCESS", data: data });
+    } catch (error) {
+      const { data } = error.response
+      return dispatch({ type: "GET_CANDIDATE_BY_ID_FAILURE", error: data.message });
+    }
+  };
+}
+
+export function updateCandidate(payload,id) {
+  return async dispatch => {
+    try {
+      var responseId = await api.sendRequestWithToken('put', `/candidates/${id}`, null, { 'Content-type': 'application/json' }, payload)
+        .then(response => response)
+    } catch (error) {
+      const { data } = error.response
+      return { status: false, error: data.message };
+    }
+    return { status: true }
+  };
+}
+export function deleteCandidate(payload) {
+  return async dispatch => {
+    try {
+      var responseId = await api.sendRequestWithToken('post', `/candidates/${payload}`, null, null, null)
+        .then(response => response)
+    } catch (error) {
+      const { data } = error.response
+      return { status: false, error: data.message };
+    }
+    return { status: true }
+  };
+}
 export function uploadRequest(payload, name) {
   const body = { mim_type: "application/pdf" };
   const header = { "Content-Type": "application/json" };
