@@ -126,13 +126,9 @@ function EditCV(props) {
 
   }
   useEffect(() => {
-    //console.log('vo day roi', query)
-    dispatch(getCandidateById({ id }));
+    console.log('vo day roi')
+    dispatch(getCandidateById({ id })).then(res => form.resetFields());
   }, []);
-  useEffect(() => {
-    form.resetFields();
-    console.log('chay')
-  });
   const handleDelete = async (candidate_id) => {
     console.log('Received values of fors', candidate_id);
     await dispatch(deleteCandidate(candidate_id)).then(res => {
