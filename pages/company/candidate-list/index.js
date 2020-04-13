@@ -238,9 +238,20 @@ function CandidateList (props) {
   const handleTableChange = async (pagination) => {
     let clone = { ...query };
     clone['offset'] = pagination.current * 10;
+    clone['limit'] = pagination.pageSize;
     setQuery(clone);
     await dispatch(getListCandidate(clone, get(profile, 'data.employer.company_id', '')));
   };
+
+  const onChangeQuery = async (key, value) => {
+    let clone = { ...query }
+    clone[key] = value
+    setQuery(clone)
+  }
+
+  const handleFilter = async () => {
+    await dispatch(getListCandidate(query, get(profile, 'data.employer.company_id', '')));
+  }
 
   useEffect(() => {
     dispatch(getListCandidate(query, get(profile, 'data.employer.company_id', '')));
@@ -255,31 +266,33 @@ function CandidateList (props) {
         <Col span={24} className="title">Tìm kiếm</Col>
         <Col span={24} className="filter-option">
           <Row gutter={[16, 16]} className="body">
-            <Col span={12}>
+            <Col span={18}>
               <b>Từ khóa</b>
-              <Search placeholder="Từ khóa"/>
+              <Search onChange={(e) => onChangeQuery('key_word', e.target.value)} placeholder="Từ khóa" />
             </Col>
-            <Col span={12}>
+            <Col span={6}>
               <b>Trạng thái</b>
               <Select
                 allowClear
                 showSearch
-                mode="multiple"
                 style={{ width: '100%' }}
                 placeholder="Trạng thái"
                 optionFilterProp="children"
                 filterOption={(input, option) =>
                   option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
+                onChange={(e) => onChangeQuery('status', e)}
               >
-                <Option value="All">Tất cả</Option>
-                <Option value="Pending">Đang chờ</Option>
-                <Option value="Done">Đã hoàn thành</Option>
+                <Option value="">All</Option>
+                <Option value="pending">Pending</Option>
+                <Option value="accepted">Accepted</Option>
+                <Option value="reject">Rejected</Option>
+                <Option value="on_board">On board</Option>
               </Select>
             </Col>
           </Row>
           <div className="filter-button">
-            <Button icon={<SearchOutlined />} type="primary">Tìm kiếm</Button>
+            <Button icon={<SearchOutlined />} onClick={handleFilter} type="primary">Tìm kiếm</Button>
             <Button icon={<RedoOutlined />} type="primary">Làm mới</Button>
           </div>
         </Col>
@@ -287,6 +300,7 @@ function CandidateList (props) {
       <div className="jobListTable">
         <Form form={form} component={false}>
           <Table
+            loading={get(company, 'is_loading', false)}
             components={{
               body: {
                 cell: EditableCell,
@@ -296,7 +310,13 @@ function CandidateList (props) {
             rowKey="id"
             columns={mergedColumns}
             dataSource={get(company, 'list_candidate.items.refers', [])}
-            pagination={{ pageSize: 20, total: get(company, 'list_candidate.extra_data.total', 0) }}
+            pagination={{
+              pageSize: query.limit,
+              total: get(company, 'list_candidate.extra_data.total', 0),
+              showSizeChanger: true,
+              pageSizeOptions: ['10', '20', '30', '50'],
+              size: 'small'
+            }}
             onChange={handleTableChange}
           />
         </Form>

@@ -15,6 +15,7 @@ export function createJob(payload) {
 export function getListJob(params, companyId) {
     return async dispatch => {
       try {
+        dispatch({ type: "GET_LIST_REQUEST" });
         const { data } = await api.sendRequestWithToken('get', `/companies/${companyId}/jobs?${qs.stringify(params)}`);
         dispatch({ type: "GET_LIST_JOB_SUCCESS", data: data });
       } catch (error) {
@@ -27,6 +28,7 @@ export function getListJob(params, companyId) {
   export function getListCandidate(params, companyId) {
     return async dispatch => {
       try {
+        dispatch({ type: "GET_LIST_REQUEST" });
         const { data } = await api.sendRequestWithToken('get', `/companies/${companyId}/refers?${qs.stringify(params)}`);
         dispatch({ type: "GET_LIST_CANDIDATE_SUCCESS", data: data });
       } catch (error) {

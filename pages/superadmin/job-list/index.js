@@ -238,7 +238,7 @@ function JobList (props) {
                 rowKey="id"
                 columns={columns}
                 dataSource={get(referred, 'list_job.items.job', [])}
-                pagination={{ pageSize: 20, total: get(referred, 'list_job.extra_data.total', 0) }}
+                pagination={{ pageSize: 20, total: get(referred, 'list_job.extra_data.total', 0), showSizeChanger: true, pageSizeOptions: ['10', '20', '30', '50'] }}
                 onChange={handleTableChange}
               />
             </Tabs.TabPane>
