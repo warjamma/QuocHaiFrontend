@@ -1,18 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { Col, Row, Form, Select, Input, Button, Upload, message, InputNumber } from 'antd';
+import Router, { useRouter } from 'next/router';
+import { UploadOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
-import Router from 'next/router';
-
-import { Row, Col, Input, Form, Select, Button, InputNumber, Upload, message } from 'antd'
-import { InboxOutlined } from '@ant-design/icons';
 import { createJob } from '../../../containers/company/action';
+import { uploadRequest } from '../../../containers/referred/actions';
 import './styles.scss';
+UploadCV.propTypes = {
 
-const layout = {
-  labelCol: {
-    span: 24
-  },
 };
-
 const initForm = {
   job_title: "",
   job_levels: [],
@@ -51,183 +48,203 @@ const initForm = {
   email_cc: "",
   use_test: true,
   reward: null,
-  currency: ""
+  currency: "",
+  jd_files:''
 }
-
 const role = 'Account Management, Administration, Backend, Branding, Business Analyst, Business Development, CEO, CFO, CMO, Consultant, Content Creator, COO, CTO, Customer Service, Data Analyst, Designer, Developer, DevOps, Digital Marketing, Engineering, Finace/Accounting, Frontend, Fullstack, Game, General management, HR, HSE, Import - Export, Logistic, maintenance, Management, Market Research, marketing, Merchandising, Mobile, Office Management, Operation Management, Operations, Planning, Product Management, Production, Project Management, Public Relation, QA/QC, Quality Control, Recruitment, Research & Development, Researcher, Sales, Scrum Master, Software Architect, Software Development, Supply Chain, Teacher, Techical Sales, Tester, Traditional Marketing, Trainer'
 
-function CreateJob(props) {
-  const { dispatch } = props
+const layout = {
+  labelCol: { span: 18 },
+  wrapperCol: { span: 22 },
+};
+const tailLayout = {
+  wrapperCol: { offset: 0, span: 18 },
+};
 
+function UploadCV(props) {
+  const { dispatch } = props
+  const router = useRouter();
+  const { id } = router.query;
+
+  const [fileLink, setFileLink] = useState('');
+  const [fileData, setFileData] = useState('');
   const onFinish = async (value) => {
-    await dispatch(createJob({ ...initForm, ...value })).then(res => {
+    value.jd_files = fileLink;
+    await dispatch(createJob({ ...initForm, ...value }, id)).then(res => {
       if (res.status) {
-        return (
-          message.success('Create job successfully'),
+        return message.success('Create job successfully'),
           Router.push('/company/job-list')
-        );
       }
       return message.error(res.error);
     })
+  };
+  const onRequest = async (value) => {
+    await dispatch(uploadRequest({ value })).then(res => {
+      setFileLink(res.data);
+      if (res.status) {
+        return message.success('Upload request');
+      }
+      return message.error(res.error);
+    })
+
+  };
+  const onFinishFailed = errorInfo => {
+    console.log('Failed:', errorInfo);
+  };
+  const onChange = e => {
+    onRequest(e.target.files, e.target.name);
+
   }
 
-  const normFile = e => {
-    console.log('Upload event:', e);
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e && e.fileList;
-  };
-
   return (
-    <div className="create-job">
-      <div className="create-job__header">
-        <div>Tạo công việc mới</div>
-      </div>
-      <Row className="create-job__body">
-        <Form
-          {...layout}
-          name="basic"
-          style={{ width: '100%' }}
-          onFinish={onFinish}
-        >
-          <Row gutter={[16, 16]}>
-            <Col span={17}>
-              <Form.Item
-                label="Tiêu đề"
-                name="job_title"
-                rules={[{ required: true, message: 'This field is required !' }]}
-                hasFeedback
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item
-                label="Vị trí"
-                hasFeedback
-                name="job_role"
-                rules={[{ required: true, message: 'This field is required !' }]}
-              >
-                <Select mode="multiple" style={{ width: '100%' }}>
-                  {
-                    role.split(', ')
-                      .map(item => (
-                        <Select.Option key={item} value={item}>{item}</Select.Option>
-                      ))
-                  }
-                </Select>
-              </Form.Item>
-              <Form.Item
-                label="Cấp độ"
-                hasFeedback
-                name="job_levels"
-                rules={[{ required: true, message: 'This field is required !' }]}
-              >
-                <Select mode="multiple" style={{ width: '100%' }}>
-                  {
-                    'C-level, Department head, Director, Junior, Manager, Middle, Senior, Specialist, Team Leader'.split(', ')
-                      .map(item => (
-                        <Select.Option key={item} value={item}>{item}</Select.Option>
-                      ))
-                  }
-                </Select>
-              </Form.Item>
-              <Row gutter={[16, 0]}>
-                <Col span={14}>
-                  <Form.Item
-                    style={{ width: '100%', marginRight: 16 }}
-                    label="Địa điểm"
-                    hasFeedback
-                    name="locations"
-                    rules={[{ required: true, message: 'This field is required !' }]}
-                  >
-                    <Select mode="multiple" style={{ width: '100%' }}>
-                      {
-                        ['Hồ Chí Minh', 'Hà Nội', 'Đà Nẵng']
-                          .map(item => (
-                            <Select.Option key={item} value={item}>{item}</Select.Option>
-                          ))
-                      }
-                    </Select>
-                  </Form.Item>
-                </Col>
-                <Col span={4}>
-                  <Form.Item
-                    label="Số lượng"
-                    hasFeedback
-                    name="vacancy_number"
-                    rules={[{ required: true, message: 'This field is required !' }]}
-                  >
-                    <InputNumber
-                      style={{ width: '100%' }}
-                      defaultValue={1}
-                    />
-                  </Form.Item>
-                </Col>
-                <Col span={6}>
-                  <Form.Item
-                    label="Kích cỡ team"
-                    hasFeedback
-                    name="team_size"
-                    rules={[{ required: true, message: 'This field is required !' }]}
-                  >
-                    <Select style={{ width: '100%' }}>
-                      <Select.Option value="large">Lớn</Select.Option>
-                      <Select.Option value="medium">Vừa</Select.Option>
-                      <Select.Option value="small">Nhỏ</Select.Option>
-                    </Select>
-                  </Form.Item>
-                </Col>
-              </Row>
-              <Form.Item
-                label="Tiền tệ"
-                hasFeedback
-                name="currency"
-                rules={[{ required: true, message: 'This field is required !' }]}
-                style={{ width: '120px' }}
-              >
-                <Select style={{ width: '100%' }}>
-                  <Select.Option disabled value="VNĐ">VNĐ</Select.Option>
-                  <Select.Option value="USD">USD</Select.Option>
-                </Select>
-              </Form.Item>
-              <Row gutter={[16, 0]}>
-                <Col span={12}>
-                  <Form.Item
-                    label="Mức lương"
-                    hasFeedback
-                  >
-                    <Input.Group className="flex-input" compact>
-                      <span className="content">Từ</span>
-                      <Form.Item
-                        hasFeedback
-                        name="min_salary"
-                        rules={[{ required: true, message: 'This field is required !' }]}
-                      >
-                        <InputNumber
-                          style={{ width: '100%' }}
-                          defaultValue={1000}
-                          formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                          parser={value => value.replace(/\$\s?|(,*)/g, '')}
-                        />
-                      </Form.Item>
-                      <span className="content">đến</span>
-                      <Form.Item
-                        hasFeedback
-                        name="max_salary"
-                        rules={[{ required: true, message: 'This field is required !' }]}
-                      >
-                        <InputNumber
-                          style={{ width: '100%' }}
-                          defaultValue={1000}
-                          formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                          parser={value => value.replace(/\$\s?|(,*)/g, '')}
-                        />
-                      </Form.Item>
-                    </Input.Group>
-                  </Form.Item>
-                </Col>
-                <Col span={12}>
-                  <Form.Item
+    <div className="uploadcv" style={{ backgroundColor: 'white' }}>
+      <Row gutter={[16, 16]}>
+        <Col span={18} ><iframe style={{ width: '100%', height: '400%' }} id="input" value={fileLink} src={fileLink}></iframe></Col>
+        <Col span={6}>
+          <Form
+            {...layout}
+            name="basic"
+            // initialValues={{ remember: true }}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            layout="vertical"
+            initialValues={{min_salary:1000,max_salary:1000,reward:1000,vacancy_number:1}}
+          >
+            <Form.Item name='jd_files'  >
+              <div className="upload-btn-wrapper">
+                <button className="btn"><UploadOutlined /> Upload JD</button>
+                <input type="file" name="jd_files" className='custom-file-input' onChange={onChange} />
+              </div>
+            </Form.Item>
+
+            <Form.Item
+              label="Tiêu đề"
+              name="job_title"
+              rules={[{ required: true, message: 'This field is required !' }]}
+              hasFeedback
+            >
+              <Input />
+            </Form.Item>
+
+            <Form.Item
+              label="Vị trí"
+              hasFeedback
+              name="job_role"
+              rules={[{ required: true, message: 'This field is required !' }]}
+            >
+              <Select mode="multiple" style={{ width: '100%' }}>
+                {
+                  role.split(', ')
+                    .map(item => (
+                      <Select.Option key={item} value={item}>{item}</Select.Option>
+                    ))
+                }
+              </Select>
+            </Form.Item>
+            <Form.Item
+              label="Cấp độ"
+              hasFeedback
+              name="job_levels"
+              rules={[{ required: true, message: 'This field is required !' }]}
+            >
+              <Select mode="multiple" style={{ width: '100%' }}>
+                {
+                  'C-level, Department head, Director, Junior, Manager, Middle, Senior, Specialist, Team Leader'.split(', ')
+                    .map(item => (
+                      <Select.Option key={item} value={item}>{item}</Select.Option>
+                    ))
+                }
+              </Select>
+            </Form.Item>
+            <Form.Item
+              style={{ width: '100%', marginRight: 16 }}
+              label="Địa điểm"
+              hasFeedback
+              name="locations"
+              rules={[{ required: true, message: 'This field is required !' }]}
+            >
+              <Select mode="multiple" style={{ width: '100%' }}>
+                {
+                  ['Hồ Chí Minh', 'Hà Nội', 'Đà Nẵng']
+                    .map(item => (
+                      <Select.Option key={item} value={item}>{item}</Select.Option>
+                    ))
+                }
+              </Select>
+            </Form.Item>
+            <Form.Item
+              label="Số lượng"
+              hasFeedback
+              name="vacancy_number"
+              rules={[{ required: true, message: 'This field is required !' }]}
+            >
+              <InputNumber
+                style={{ width: '100%' }}
+              // defaultValue={1}
+              />
+            </Form.Item>
+            <Form.Item
+              label="Kích cỡ team"
+              hasFeedback
+              name="team_size"
+              rules={[{ required: true, message: 'This field is required !' }]}
+            >
+              <Select style={{ width: '100%' }}>
+                <Select.Option value="large">Lớn</Select.Option>
+                <Select.Option value="medium">Vừa</Select.Option>
+                <Select.Option value="small">Nhỏ</Select.Option>
+              </Select>
+            </Form.Item>
+            <Form.Item
+              label="Tiền tệ"
+              hasFeedback
+              name="currency"
+              rules={[{ required: true, message: 'This field is required !' }]}
+              style={{ width: '100%' }}
+            >
+              <Select style={{ width: '100%' }}>
+                <Select.Option disabled value="VNĐ">VNĐ</Select.Option>
+                <Select.Option value="USD">USD</Select.Option>
+              </Select>
+            </Form.Item>
+            <Form.Item
+              label="Mức lương"
+              hasFeedback
+              style={{ width: '100%' }}
+            >
+              <Input.Group className="flex-input" compact>
+                {/* <span className="content">Từ</span> */}
+                <Form.Item
+                  label="Từ"
+                  hasFeedback
+                  name="min_salary"
+                  rules={[{ required: true, message: 'This field is required !' }]}
+                >
+                  <InputNumber
+                  
+                    style={{ width: '50%',marginRight:5}}
+                    //defaultValue={1000}
+                    formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                    parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                  />
+                </Form.Item>
+                {/* <span className="content">đến</span> */}
+                <Form.Item
+                  label="Đến"
+                  hasFeedback
+                  name="max_salary"
+                  rules={[{ required: true, message: 'This field is required !' }]}
+                >
+                  <InputNumber
+                    style={{ width: '50%' }}
+                    //defaultValue={1000}
+                    formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                    parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                  />
+                </Form.Item>
+              </Input.Group>
+            </Form.Item>
+            <Form.Item
                     label="Mức thưởng"
                     hasFeedback
                     name="reward"
@@ -235,44 +252,24 @@ function CreateJob(props) {
                   >
                     <InputNumber
                       style={{ width: '100%' }}
-                      defaultValue={1000}
+                      //defaultValue={1000}
                       formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                       parser={value => value.replace(/\$\s?|(,*)/g, '')}
                     />
                   </Form.Item>
-                </Col>
-              </Row>
-            </Col>
-            <Col span={7}>
-              <Form.Item label="Chi tiết công việc">
-                <Form.Item name="dragger" valuePropName="fileList" getValueFromEvent={normFile} noStyle>
-                  <Upload.Dragger name="files" action="/upload.do">
-                    <p className="ant-upload-drag-icon">
-                      <InboxOutlined />
-                    </p>
-                    <p style={{ fontSize: 12 }}>Click or drag file to this area to upload</p>
-                    <p style={{ fontSize: 12 }} className="ant-upload-hint">Support for a single or bulk upload.</p>
-                  </Upload.Dragger>
-                </Form.Item>
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row justify="end">
-            <Col span={12}>
-              <Form.Item style={{ textAlign: 'right' }}>
-                <Button size="large" style={{ marginRight: 20, fontSize: 13, fontWeight: 'bold' }} type="primary" htmlType="submit">
-                  Hoàn Thành
-                </Button>
-                <Button size="large" style={{ fontSize: 13, fontWeight: 'bold' }} onClick={() => { Router.push('/company/job-list') }}>
-                  Hủy bỏ
-                </Button>
-              </Form.Item>
-            </Col>
-          </Row>
-        </Form>
+            <Form.Item {...tailLayout}>
+              <Button type="primary" htmlType="submit">
+                Gửi ứng JD
+              </Button>
+              <Button onClick={() => Router.push('/company/job-list')} htmlType="button" style={{ margin: '0 8px' }} >
+                Hủy
+              </Button>
+            </Form.Item>
+          </Form>
+        </Col>
       </Row>
     </div>
-  )
+  );
 }
 
-export default connect()(CreateJob);
+export default connect()(UploadCV);
