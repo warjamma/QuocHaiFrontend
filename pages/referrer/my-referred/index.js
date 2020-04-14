@@ -1,9 +1,9 @@
 import React, { Component, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import Link from 'next/link';
-import { RedoOutlined, SearchOutlined, DownloadOutlined } from '@ant-design/icons';
-import { Table, Tag, Button,Form,Row, Col, Input,Select,Typography } from 'antd';
-import { getListReferred } from '../../../containers/referred/actions';
+import { RedoOutlined, SearchOutlined, DownloadOutlined, DeleteTwoTone } from '@ant-design/icons';
+import { Table, Tag, Button, Popconfirm, Form, Row, Col, message, Input, Select, Typography } from 'antd';
+import { getListReferred, deleteCandidate } from '../../../containers/referred/actions';
 import renderColorTag from '../../../ultils/renderColorStatus';
 import { get } from 'lodash';
 import moment from 'moment';
@@ -19,73 +19,89 @@ const initQuery = {
   limit: 10,
 }
 
-const columns = [
-  {
-    title: 'Công việc',
-    dataIndex: 'job',
-    render: (text, record, index) => (
-      <div>
-        <Link href={`/job-detail/${record.job.id}`}><a>{get(record, 'job', {}).job_title}</a></Link>
-      </div>
-    )
-  },
-  {
-    title: 'Tên',
-    dataIndex: 'name',
-    render: (text, record, index) => (
-      <div>
-        <div>{get(record, 'candidate', {}).name}</div>
-        <div>
-          {
-            get(record, 'candidate', {}).job_role.map(item => (
-              <Tag key={item} color="blue">{item}</Tag>
-            ))
-          }
-        </div>
-      </div>
-    )
-  },
-  {
-    title: 'Level',
-    dataIndex: 'created',
-    align: 'center',
-    render: (text, record, index) => (
-      get(record, 'candidate', {}).job_level.map(item => (
-        <Tag key={item} color="blue">{item}</Tag>
-      ))
-    )
-  },
-  {
-    title: 'Mức Thưởng ($)',
-    dataIndex: 'reward',
-    align: 'center',
-    render: (text, record, index) => <Tag color="blue">{get(record, 'job.reward')}$</Tag>,
-  },
-  {
-    title: 'Onboarding date',
-    dataIndex: 'status',
-    align: 'center',
-    render: (text, record, index) => <div>{moment(get(record, 'created_at', '')).format('DD-MM-YYYY')}</div>,
-  },
-  {
-    title: 'Trạng thái',
-    dataIndex: 'status',
-    align: 'center',
-    editable: true,
-    width: 150,
-    render: (text, record, index) => <Tag color={renderColorTag(record.status)}>{record.status.replace('_', ' ')}</Tag>,
-  },
-  {
-    title: 'Hồ sơ',
-    dataIndex: 'candidate_id',
-    align: 'center',
-    width: 80,
-    render: (candidate_id) => <Button onClick={() => Router.push('/referrer/edit-cv/'+candidate_id+'')} type="primary" icon={<DownloadOutlined />} size="small" />,
-  },
-];
 
 
 function MyReferred(props) {
+  const columns = [
+    {
+      title: 'Công việc',
+      dataIndex: 'job',
+      render: (text, record, index) => (
+        <div>
+          <Link href={`/job-detail/${record.job.id}`}><a>{get(record, 'job', {}).job_title}</a></Link>
+        </div>
+      )
+    },
+    {
+      title: 'Tên',
+      dataIndex: 'name',
+      render: (text, record, index) => (
+        <div>
+          <div>{get(record, 'candidate', {}).name}</div>
+          <div>
+            {
+              get(record, 'candidate', {}).job_role.map(item => (
+                <Tag key={item} color="blue">{item}</Tag>
+              ))
+            }
+          </div>
+        </div>
+      )
+    },
+    {
+      title: 'Level',
+      dataIndex: 'created',
+      align: 'center',
+      render: (text, record, index) => (
+        get(record, 'candidate', {}).job_level.map(item => (
+          <Tag key={item} color="blue">{item}</Tag>
+        ))
+      )
+    },
+    {
+      title: 'Mức Thưởng ($)',
+      dataIndex: 'reward',
+      align: 'center',
+      render: (text, record, index) => <Tag color="blue">{get(record, 'job.reward')}$</Tag>,
+    },
+    {
+      title: 'Onboarding date',
+      dataIndex: 'status',
+      align: 'center',
+      render: (text, record, index) => <div>{moment(get(record, 'created_at', '')).format('DD-MM-YYYY')}</div>,
+    },
+    {
+      title: 'Trạng thái',
+      dataIndex: 'status',
+      align: 'center',
+      editable: true,
+      width: 150,
+      render: (text, record, index) => <Tag color={renderColorTag(record.status)}>{record.status.replace('_', ' ')}</Tag>,
+    },
+    {
+      title: 'Hồ sơ',
+      dataIndex: 'candidate_id',
+      align: 'center',
+      width: 80,
+      render: (candidate_id) => <Button onClick={() => Router.push('/referrer/edit-cv/' + candidate_id + '')} type="primary" icon={<DownloadOutlined />} size="small" />,
+    },
+    {
+      title: 'Xóa',
+      dataIndex: 'candidate_id',
+      align: 'center',
+      width: 80,
+      render: (text, record) => <Popconfirm
+        title="Are you sure delete title?"
+        onConfirm={() => handleDelete(record.candidate_id)}
+        onCancel={cancel}
+        okText="Yes"
+        cancelText="No"
+      >
+        <Button style={{ margin: '0 8px' }} type="primary" htmlType="submit" icon={<DeleteTwoTone />} size="small" />
+      </Popconfirm>,
+    },
+  ];
+
   const { dispatch, referred } = props
   const [query, setQuery] = useState(initQuery)
 
@@ -109,7 +125,19 @@ function MyReferred(props) {
     setQuery(clone);
     await dispatch(getListReferred(clone));
   };
-
+  function cancel(e) {
+    console.log(e);
+    message.error('Cance');
+  }
+  const handleDelete = async (candidate_id) => {
+    console.log('Received values of fors', candidate_id);
+    await dispatch(deleteCandidate(candidate_id)).then(res => {
+      if (res.status) {
+        return message.success('Delete candidate successfully');
+      }
+      return message.error(res.error);
+    })
+  };
   useEffect(() => {
     dispatch(getListReferred(query));
   }, []);

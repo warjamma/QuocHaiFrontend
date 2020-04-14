@@ -86,7 +86,7 @@ export function updateCandidate(payload,id) {
 export function deleteCandidate(payload) {
   return async dispatch => {
     try {
-      var responseId = await api.sendRequestWithToken('post', `/candidates/${payload}`, null, null, null)
+      var responseId = await api.sendRequestWithToken('delete', `/candidates/${payload}`, null, null, null)
         .then(response => response)
     } catch (error) {
       const { data } = error.response
