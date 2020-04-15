@@ -63,7 +63,7 @@ function jobDetail(props){
                     <div ><CalendarOutlined /> 4 days ago</div>
                     <Row gutter={[16, 16]}>
                             <Col span={8} >
-                                <Button type="primary"   onClick={() => Router.push('/referrer/edit-cv/'+id+'')}  block>Giới thiệu ứng viên</Button>
+                                <Button type="primary"   onClick={() => Router.push('/referrer/upload-cv')}  block>Giới thiệu ứng viên</Button>
                             </Col>
                             <Col span={8} >
                                 <Button type="primary" block>Dowload JD</Button>
