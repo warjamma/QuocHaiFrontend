@@ -61,6 +61,12 @@ const tailLayout = {
   wrapperCol: { offset: 0, span: 18 },
 };
 
+const dummyRequest = ({ file, onSuccess }) => {
+  setTimeout(() => {
+    onSuccess("ok");
+  }, 0);
+};
+
 function UploadCV(props) {
   const { dispatch } = props
   const router = useRouter();
@@ -121,8 +127,15 @@ function UploadCV(props) {
             onFinishFailed={onFinishFailed}
             layout="vertical"
           >
-            <Form.Item name='jd_files' valuePropName="fileList">
-              <Upload accept=".pdf" name="jd_files" onRemove={() => setFileLink('')} onChange={onChange} listType="picture">
+            <Form.Item name='jd_files' valuePropName="file">
+              <Upload
+                customRequest={dummyRequest}
+                accept=".pdf"
+                name="jd_files"
+                onRemove={() => setFileLink('')}
+                onChange={onChange}
+                listType="picture"
+              >
                 <Button>
                   <UploadOutlined /> Click to upload
                 </Button>

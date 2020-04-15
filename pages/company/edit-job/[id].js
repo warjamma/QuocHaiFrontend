@@ -61,6 +61,12 @@ const layout = {
   wrapperCol: { span: 22 },
 };
 
+const dummyRequest = ({ file, onSuccess }) => {
+  setTimeout(() => {
+    onSuccess("ok");
+  }, 0);
+};
+
 function EditJob(props) {
   const [form] = Form.useForm();
   const { dispatch, referred } = props
@@ -147,8 +153,15 @@ function EditJob(props) {
             onFinishFailed={onFinishFailed}
             layout="vertical"
           >
-            <Form.Item>
-              <Upload accept=".pdf" name="jd_files" onRemove={() => setFileLink('')} onChange={onChange} listType="picture">
+            <Form.Item valuePropName="file">
+              <Upload
+                customRequest={dummyRequest}
+                accept=".pdf"
+                name="jd_files"
+                onRemove={() => setFileLink('')}
+                onChange={onChange}
+                listType="picture"
+              >
                 <Button>
                   <UploadOutlined /> Click to upload
                 </Button>
