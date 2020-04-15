@@ -78,6 +78,11 @@ function JobList (props) {
     {
       title: 'Công việc',
       dataIndex: 'job_title',
+      render: (text, record, index) => (
+        <div>
+          <Link href={`/job-detail/${record.id}`}><a className="job-title">{get(record, 'job_title', '')}</a></Link>
+        </div>
+      )
     },
     {
       title: 'Mức thưởng',
@@ -179,7 +184,7 @@ function JobList (props) {
   return (
     <div className="jobListContainer">
       <div className="header">
-        <div>Danh sách công việc (40)</div>
+        <div>{`Danh sách công việc (${get(referred, 'list_job.extra_data.total', 0)})`}</div>
       </div>
       <Row className="filter-box">
         <Col span={24} className="title">Tìm kiếm</Col>

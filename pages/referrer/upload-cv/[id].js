@@ -124,7 +124,7 @@ function UploadCV(props) {
   return (
     <div className="uploadcv" style={{ backgroundColor: 'white' }}>
       <Row gutter={[16, 16]}>
-        <Col span={18} ><iframe style={{ width: '100%', height: '400%' }} id="input" value={fileLink} src={fileLink}></iframe></Col>
+        <Col span={18} ><iframe style={{ width: '100%', height: '100%' }} id="input" value={fileLink} src={fileLink}></iframe></Col>
         <Col span={6}>
           <Form
             {...layout}

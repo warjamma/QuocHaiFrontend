@@ -29,7 +29,7 @@ const columns = [
     title: 'Công việc',
     dataIndex: 'job_title',
     width: 300,
-    render: (text, record) => <a onClick={() => Router.push(`/job-detail/${record.id}`)}>{text}</a>
+    render: (text, record) => <a className="job-title" onClick={() => Router.push(`/job-detail/${record.id}`)}>{text}</a>
   },
   {
     title: 'Ngày tạo',
@@ -114,7 +114,7 @@ function JobList(props) {
   return (
     <div className="jobListContainer">
       <div className="header">
-        <div>Danh sách công việc (40)</div>
+        <div>{`Danh sách công việc (${get(company, 'list_job.extra_data.total', 0)})`}</div>
         <Button onClick={() => Router.push('/company/create-job')} icon={<HighlightOutlined />} type="primary">Tạo công việc</Button>
       </div>
       <Row className="filter-box">

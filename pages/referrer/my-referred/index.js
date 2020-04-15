@@ -28,7 +28,7 @@ function MyReferred(props) {
       dataIndex: 'job',
       render: (text, record, index) => (
         <div>
-          <Link href={`/job-detail/${record.job.id}`}><a>{get(record, 'job', {}).job_title}</a></Link>
+          <Link href={`/job-detail/${record.job.id}`}><a className="job-title">{get(record, 'job', {}).job_title}</a></Link>
         </div>
       )
     },
@@ -145,7 +145,7 @@ function MyReferred(props) {
   return (
     <div className="my-referred-container">
       <div className="header">
-        <div>Hồ sơ của bạn (40)</div>
+        <div>{`Hồ sơ của bạn (${get(referred, 'list_referred.extra_data.total', 0)})`}</div>
       </div>
       <Form
         name="advanced_search"

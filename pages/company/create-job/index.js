@@ -78,28 +78,40 @@ function UploadCV(props) {
       return message.error(res.error);
     })
   };
-  const onRequest = async (value) => {
-    await dispatch(uploadRequest({ value })).then(res => {
+
+  const onRequest = (value) => {
+    dispatch(uploadRequest({ value })).then(res => {
       setFileLink(res.data);
       if (res.status) {
         return message.success('Upload request');
       }
       return message.error(res.error);
     })
-
   };
+
   const onFinishFailed = errorInfo => {
     console.log('Failed:', errorInfo);
   };
-  const onChange = e => {
-    onRequest(e.target.files, e.target.name);
 
+  const onChange = e => {
+    if (e.file.status !== 'uploading') {
+      console.log(e.file, e.fileList);
+    }
+    if (e.file.status === 'done') {
+      console.log(e.file)
+      onRequest(e.file, e.file.name);
+    } else if (e.file.status === 'error') {
+      message.error(`${e.file.name} file upload failed.`);
+    }
   }
 
   return (
     <div className="uploadcv" style={{ backgroundColor: 'white' }}>
+      <div className="header">
+        <div>Tạo công việc mới</div>
+      </div>
       <Row gutter={[16, 16]}>
-        <Col span={18} ><iframe style={{ width: '100%', height: '400%' }} id="input" value={fileLink} src={fileLink}></iframe></Col>
+        <Col span={18} ><iframe style={{ width: '100%', height: '100%' }} id="input" value={fileLink} src={fileLink}></iframe></Col>
         <Col span={6}>
           <Form
             {...layout}
@@ -108,15 +120,14 @@ function UploadCV(props) {
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             layout="vertical"
-            initialValues={{min_salary:1000,max_salary:1000,reward:1000,vacancy_number:1}}
           >
-            <Form.Item name='jd_files'  >
-              <div className="upload-btn-wrapper">
-                <button className="btn"><UploadOutlined /> Upload JD</button>
-                <input type="file" name="jd_files" className='custom-file-input' onChange={onChange} />
-              </div>
+            <Form.Item name='jd_files' valuePropName="fileList">
+              <Upload accept=".pdf" name="jd_files" onRemove={() => setFileLink('')} onChange={onChange} listType="picture">
+                <Button>
+                  <UploadOutlined /> Click to upload
+                </Button>
+              </Upload>
             </Form.Item>
-
             <Form.Item
               label="Tiêu đề"
               name="job_title"
@@ -132,7 +143,7 @@ function UploadCV(props) {
               name="job_role"
               rules={[{ required: true, message: 'This field is required !' }]}
             >
-              <Select mode="multiple" style={{ width: '100%' }}>
+              <Select mode="tags" style={{ width: '100%' }}>
                 {
                   role.split(', ')
                     .map(item => (
@@ -147,7 +158,10 @@ function UploadCV(props) {
               name="job_levels"
               rules={[{ required: true, message: 'This field is required !' }]}
             >
-              <Select mode="multiple" style={{ width: '100%' }}>
+              <Select
+                mode="tags"
+                style={{ width: '100%' }}
+              >
                 {
                   'C-level, Department head, Director, Junior, Manager, Middle, Senior, Specialist, Team Leader'.split(', ')
                     .map(item => (
@@ -163,7 +177,7 @@ function UploadCV(props) {
               name="locations"
               rules={[{ required: true, message: 'This field is required !' }]}
             >
-              <Select mode="multiple" style={{ width: '100%' }}>
+              <Select mode="tags" style={{ width: '100%' }}>
                 {
                   ['Hồ Chí Minh', 'Hà Nội', 'Đà Nẵng']
                     .map(item => (
@@ -219,10 +233,11 @@ function UploadCV(props) {
                   hasFeedback
                   name="min_salary"
                   rules={[{ required: true, message: 'This field is required !' }]}
+                  style={{ width: '100%' }}
                 >
                   <InputNumber
                   
-                    style={{ width: '50%',marginRight:5}}
+                    style={{ width: '100%' }}
                     //defaultValue={1000}
                     formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                     parser={value => value.replace(/\$\s?|(,*)/g, '')}
@@ -234,9 +249,10 @@ function UploadCV(props) {
                   hasFeedback
                   name="max_salary"
                   rules={[{ required: true, message: 'This field is required !' }]}
+                  style={{ width: '100%' }}
                 >
                   <InputNumber
-                    style={{ width: '50%' }}
+                    style={{ width: '100%' }}
                     //defaultValue={1000}
                     formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                     parser={value => value.replace(/\$\s?|(,*)/g, '')}
@@ -245,23 +261,23 @@ function UploadCV(props) {
               </Input.Group>
             </Form.Item>
             <Form.Item
-                    label="Mức thưởng"
-                    hasFeedback
-                    name="reward"
-                    rules={[{ required: true, message: 'This field is required !' }]}
-                  >
-                    <InputNumber
-                      style={{ width: '100%' }}
-                      //defaultValue={1000}
-                      formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                      parser={value => value.replace(/\$\s?|(,*)/g, '')}
-                    />
-                  </Form.Item>
-            <Form.Item {...tailLayout}>
+              label="Mức thưởng"
+              hasFeedback
+              name="reward"
+              rules={[{ required: true, message: 'This field is required !' }]}
+            >
+              <InputNumber
+                style={{ width: '100%' }}
+                //defaultValue={1000}
+                formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                parser={value => value.replace(/\$\s?|(,*)/g, '')}
+              />
+            </Form.Item>
+            <Form.Item style={{ marginTop: 20 }}>
               <Button type="primary" htmlType="submit">
-                Gửi ứng JD
+                Tạo công việc
               </Button>
-              <Button onClick={() => Router.push('/company/job-list')} htmlType="button" style={{ margin: '0 8px' }} >
+              <Button style={{ margin: '0 8px' }} onClick={() => Router.push('/company/job-list')} htmlType="button">
                 Hủy
               </Button>
             </Form.Item>

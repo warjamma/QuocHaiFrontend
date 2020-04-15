@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Table, Tag, Button,InputNumber,payload,Form,Row,Popconfirm, Col, Input,Select,Typography,Upload, message,Card,Alert,Text} from 'antd';
+import { Table, Tag, Button,InputNumber,payload,Form,Row,Popconfirm, Col, Input,Select,Typography, Upload, message,Card,Alert,Text} from 'antd';
 import Router, { useRouter } from 'next/router';
 import { UploadOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
@@ -60,9 +60,6 @@ const layout = {
   labelCol: { span: 18 },
   wrapperCol: { span: 22 },
 };
-const tailLayout = {
-  wrapperCol: { offset: 0, span: 24 },
-};
 
 function EditJob(props) {
   const [form] = Form.useForm();
@@ -96,9 +93,16 @@ function EditJob(props) {
     console.log('Failed:', errorInfo);
   };
   const onChange = e => {
-    onRequest(e.target.files, e.target.name);
-
-  }
+    if (e.file.status !== 'uploading') {
+      console.log(e.file, e.fileList);
+    }
+    if (e.file.status === 'done') {
+      console.log(e.file)
+      onRequest(e.file, e.file.name);
+    } else if (e.file.status === 'error') {
+      message.error(`${e.file.name} file upload failed.`);
+    }
+  };
   useEffect(() => {
     console.log('vo day roi')
     dispatch(getJobById({ id })).then(res => form.resetFields());
@@ -118,10 +122,10 @@ function EditJob(props) {
     message.error('Cance');
   }
   return (
-    <div className="EditJob" style={{ backgroundColor: 'white' }}>
+    <div className="uploadcv" style={{ backgroundColor: 'white' }}>
       <Row gutter={[16, 16]}>
         {/* {get(referred, 'candidate_detail', [])} */}
-        <Col span={18} ><iframe style={{ width: '100%', height: '400%' }} id="input" value={fileLink} src={fileLink == '' ? (get(referred, 'job_detail.data.job.jd_files', []) == '' ? (fileLink) : (get(referred, 'job_detail.data.job.jd_files', []))) : (fileLink)}></iframe></Col>
+        <Col span={18} ><iframe style={{ width: '100%', height: '100%' }} id="input" value={fileLink} src={fileLink == '' ? (get(referred, 'job_detail.data.job.jd_files', []) == '' ? (fileLink) : (get(referred, 'job_detail.data.job.jd_files', []))) : (fileLink)}></iframe></Col>
         <Col span={6}>
           <Form
             form={form}
@@ -143,11 +147,12 @@ function EditJob(props) {
             onFinishFailed={onFinishFailed}
             layout="vertical"
           >
-            <Form.Item name='jd_files'  >
-              <div className="upload-btn-wrapper">
-                <button className="btn"><UploadOutlined /> Upload JD</button>
-                <input type="file" name="jd_files" className='custom-file-input' onChange={onChange} />
-              </div>
+            <Form.Item>
+              <Upload accept=".pdf" name="jd_files" onRemove={() => setFileLink('')} onChange={onChange} listType="picture">
+                <Button>
+                  <UploadOutlined /> Click to upload
+                </Button>
+              </Upload>
             </Form.Item>
 
             <Form.Item
@@ -290,7 +295,7 @@ function EditJob(props) {
                 parser={value => value.replace(/\$\s?|(,*)/g, '')}
               />
             </Form.Item>
-            <Form.Item {...tailLayout}>
+            <Form.Item style={{ marginTop: 20 }}>
               <Button type="primary" htmlType="submit">
                 Cập nhật
               </Button>

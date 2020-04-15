@@ -146,7 +146,7 @@ function EditCV(props) {
     <div className="EditCV" style={{ backgroundColor: 'white' }}>
       <Row gutter={[16, 16]}>
         {/* {get(referred, 'candidate_detail', [])} */}
-        <Col span={18} ><iframe style={{ width: '100%', height: '400%' }} id="input" value={fileLink} src={fileLink == '' ? (get(referred, 'candidate_detail.data.candidate.cv', [])==''?(fileLink):(get(referred, 'candidate_detail.data.candidate.cv', []))) : (fileLink)}></iframe></Col>
+        <Col span={18} ><iframe style={{ width: '100%', height: '100%' }} id="input" value={fileLink} src={fileLink == '' ? (get(referred, 'candidate_detail.data.candidate.cv', [])==''?(fileLink):(get(referred, 'candidate_detail.data.candidate.cv', []))) : (fileLink)}></iframe></Col>
         <Col span={6}>
           <Form
             form={form}

@@ -263,7 +263,7 @@ function CandidateList (props) {
   return (
     <div className="jobListContainer">
       <div className="header">
-        <div>Danh sách ứng viên</div>
+        <div>{`Danh sách ứng viên (${get(company, 'list_candidate.extra_data.total', 0)})`}</div>
       </div>
       <Row className="filter-box">
         <Col span={24} className="title">Tìm kiếm</Col>

@@ -1,4 +1,5 @@
-import api from '../../services/api'
+import api from '../../services/api';
+import { get } from 'lodash';
 var qs = require('qs');
 var axios = require('axios');
 
@@ -107,7 +108,7 @@ export function uploadRequest(payload, name) {
       for (let property in body2) {
         data.append(`${property}`, `${body2[property]}`)
       }
-      data.append("file", payload.value[0], name);
+      data.append("file", get(payload, 'value.originFileObj', ''), name);
       var tmp = await axios({
         method: 'post',
         url: response.url,
@@ -117,9 +118,9 @@ export function uploadRequest(payload, name) {
       var response2 = await api.sendRequest('post', '/upload/verify', null, { 'content-type': 'application/json' }, {
         key: response.fields.key
       }).then(response => response.data.data);
+      return { status: true, data: response2 };
     } catch (error) {
-      return 'request fail';
+      return { status: false, error: 'Fail to upload' };;
     }
-    return { status: true, data: response2 };
   };
 }
