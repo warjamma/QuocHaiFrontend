@@ -12,6 +12,44 @@ export function createJob(payload) {
     }
   };
 }
+
+export function updateJob(payload,id) {
+  return async dispatch => {
+    try {
+      var responseId = await api.sendRequestWithToken('put', `/jobs/${id}`, null, { 'Content-type': 'application/json' }, payload)
+        .then(response => response)
+    } catch (error) {
+      const { data } = error.response
+      return { status: false, error: data.message };
+    }
+    return { status: true }
+  };
+}
+
+export function deleteJob(payload) {
+  return async dispatch => {
+    try {
+      var responseId = await api.sendRequestWithToken('delete', `/jobs/${payload}`, null, null, null)
+        .then(response => response)
+    } catch (error) {
+      const { data } = error.response
+      return { status: false, error: data.message };
+    }
+    return { status: true }
+  };
+}
+export function getJobById(params) {
+  console.log('params', params);
+  return async dispatch => {
+    try {
+      const { data } = await api.sendRequestWithToken('get', `/jobs/${params.id}`);
+      dispatch({ type: "GET_JOB_BY_ID_SUCCESS", data: data });
+    } catch (error) {
+      const { data } = error.response
+      return dispatch({ type: "GET_JOB_BY_ID_FAILURE", error: data.message });
+    }
+  };
+}
 export function getListJob(params, companyId) {
     return async dispatch => {
       try {
