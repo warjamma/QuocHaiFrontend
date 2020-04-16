@@ -90,6 +90,12 @@ const tailLayout = {
   wrapperCol: { offset: 0, span: 24 },
 };
 
+const dummyRequest = ({ file, onSuccess }) => {
+  setTimeout(() => {
+    onSuccess("ok");
+  }, 0);
+};
+
 function EditCV(props) {
   const [form] = Form.useForm();
   const { dispatch, referred } = props
@@ -122,9 +128,16 @@ function EditCV(props) {
     console.log('Failed:', errorInfo);
   };
   const onChange = e => {
-    onRequest(e.target.files, e.target.name);
-
-  }
+    if (e.file.status !== 'uploading') {
+      console.log(e.file, e.fileList);
+    }
+    if (e.file.status === 'done') {
+      console.log(e.file)
+      onRequest(e.file, e.file.name);
+    } else if (e.file.status === 'error') {
+      message.error(`${e.file.name} file upload failed.`);
+    }
+  };
   useEffect(() => {
     console.log('vo day roi')
     dispatch(getCandidateById({ id })).then(res => form.resetFields());
@@ -162,11 +175,19 @@ function EditCV(props) {
             onFinishFailed={onFinishFailed}
             layout="vertical"
           >
-            <Form.Item name='cv'  >
-              <div className="upload-btn-wrapper">
-                <button className="btn"><UploadOutlined /> Upload CV</button>
-                <input type="file" name="myfile" className='custom-file-input' onChange={onChange} />
-              </div>
+            <Form.Item valuePropName="file">
+              <Upload
+                customRequest={dummyRequest}
+                accept=".pdf"
+                name="cv"
+                onRemove={() => setFileLink('')}
+                onChange={onChange}
+                listType="picture"
+              >
+                <Button>
+                  <UploadOutlined /> Click to upload
+                </Button>
+              </Upload>
             </Form.Item>
 
             <Form.Item
