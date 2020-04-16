@@ -146,6 +146,7 @@ function EditCV(props) {
     console.log('Received values of fors', candidate_id);
     await dispatch(deleteCandidate(candidate_id)).then(res => {
       if (res.status) {
+        Router.push('/referrer/my-referred');
         return message.success('Delete candidate successfully');
       }
       return message.error(res.error);
