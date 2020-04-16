@@ -82,24 +82,19 @@ function MyReferred(props) {
       title: 'Hồ sơ',
       dataIndex: 'candidate_id',
       align: 'center',
-      width: 80,
-      render: (candidate_id) => <Button onClick={() => Router.push('/referrer/edit-cv/' + candidate_id + '')} type="primary" icon={<DownloadOutlined />} size="small" />,
-    },
-    {
-      title: 'Xóa',
-      dataIndex: 'candidate_id',
-      align: 'center',
-      width: 80,
-      render: (text, record) => <Popconfirm
+      width: 150,
+      render: (candidate_id) => <div><Button style={{marginRight:5}} onClick={() => Router.push('/referrer/edit-cv/' + candidate_id + '')} type="primary" icon={<DownloadOutlined />} size="small" />
+      <Popconfirm
         title="Are you sure delete title?"
-        onConfirm={() => handleDelete(record.candidate_id)}
+        onConfirm={() => handleDelete(candidate_id)}
         onCancel={cancel}
         okText="Yes"
         cancelText="No"
       >
         <Button style={{ margin: '0 8px' }} type="primary" htmlType="submit" icon={<DeleteTwoTone />} size="small" />
-      </Popconfirm>,
+      </Popconfirm></div>
     },
+    
   ];
 
   const { dispatch, referred } = props
@@ -133,6 +128,7 @@ function MyReferred(props) {
     console.log('Received values of fors', candidate_id);
     await dispatch(deleteCandidate(candidate_id)).then(res => {
       if (res.status) {
+        Router.push('/referrer/my-referred')
         return message.success('Delete candidate successfully');
       }
       return message.error(res.error);

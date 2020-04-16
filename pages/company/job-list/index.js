@@ -1,10 +1,10 @@
 import React, { Component, useState, useEffect } from 'react';
-import { Table, Row, Col, Button, Input, Select, Tag } from 'antd';
+import { Table, Row, Col,Popconfirm, Button,message, Input, Select, Tag } from 'antd';
 import Router from 'next/router';
 import { connect } from 'react-redux';
-import { RedoOutlined, SearchOutlined, HighlightOutlined, EditOutlined } from '@ant-design/icons';
+import { RedoOutlined,DeleteOutlined , SearchOutlined, HighlightOutlined, EditOutlined } from '@ant-design/icons';
 import styled from 'styled-components'
-import { getListJob } from '../../../containers/company/action';
+import { getListJob,deleteJob } from '../../../containers/company/action';
 import renderColorTag from '../../../ultils/renderColorStatus';
 import { get } from 'lodash';
 import moment from 'moment';
@@ -24,49 +24,6 @@ const { Search } = Input
 
 const { Option } = Select
 
-const columns = [
-  {
-    title: 'Công việc',
-    dataIndex: 'job_title',
-    width: 300,
-    render: (text, record) => <a className="job-title" onClick={() => Router.push(`/job-detail/${record.id}`)}>{text}</a>
-  },
-  {
-    title: 'Ngày tạo',
-    dataIndex: 'created',
-    align: 'center',
-    render: (text, record, index) => <span color="green">{moment(record.created_at).format('DD-MM-YYYY')}</span>,
-  },
-  {
-    title: 'Số lượng yêu cầu',
-    dataIndex: 'vacancy_number',
-    align: 'center'
-  },
-  {
-    title: 'Số ứng viên hiện có',
-    dataIndex: 'candidate',
-    align: 'center'
-  },
-  {
-    title: 'Mức lương ($)',
-    dataIndex: 'salary',
-    align: 'center',
-    render: (text, record, index) => <Tag color="blue">{record.min_salary}$ - {record.max_salary}$</Tag>,
-  },
-  {
-    title: 'Trạng thái',
-    dataIndex: 'status',
-    align: 'center',
-    render: (text, record, index) => <Tag color={renderColorTag(record.status)}>{record.status}</Tag>,
-  },
-  {
-    title: '',
-    dataIndex: 'candidate',
-    align: 'center',
-    width: 60,
-    render: (text, record, index) => <ButtonAction onClick={() => Router.push(`/company/edit-job/${record.id}`)}><EditOutlined /></ButtonAction>,
-  },
-];
 
 const initQuery = {
   company: '',
@@ -84,7 +41,59 @@ const initQuery = {
 function JobList(props) {
   const { profile, company, dispatch } = props;
   const [query, setQuery] = useState(initQuery);
-
+  const columns = [
+    {
+      title: 'Công việc',
+      dataIndex: 'job_title',
+      width: 300,
+      render: (text, record) => <a className="job-title" onClick={() => Router.push(`/job-detail/${record.id}`)}>{text}</a>
+    },
+    {
+      title: 'Ngày tạo',
+      dataIndex: 'created',
+      align: 'center',
+      render: (text, record, index) => <span color="green">{moment(record.created_at).format('DD-MM-YYYY')}</span>,
+    },
+    {
+      title: 'Số lượng yêu cầu',
+      dataIndex: 'vacancy_number',
+      align: 'center'
+    },
+    {
+      title: 'Số ứng viên hiện có',
+      dataIndex: 'candidate',
+      align: 'center'
+    },
+    {
+      title: 'Mức lương ($)',
+      dataIndex: 'salary',
+      align: 'center',
+      render: (text, record, index) => <Tag color="blue">{record.min_salary}$ - {record.max_salary}$</Tag>,
+    },
+    {
+      title: 'Trạng thái',
+      dataIndex: 'status',
+      align: 'center',
+      render: (text, record, index) => <Tag color={renderColorTag(record.status)}>{record.status}</Tag>,
+    },
+    {
+      title: '',
+      dataIndex: 'candidate',
+      align: 'center',
+      width: 150,
+      render: (text, record, index) => (<div className="Action"><ButtonAction style={{marginRight:5}}onClick={() => Router.push(`/company/edit-job/${record.id}`)}><EditOutlined /></ButtonAction>
+          <Popconfirm
+            title="Are you sure delete title?"
+            onConfirm={() => handleDelete(record.id)}
+            onCancel={cancel}
+            okText="Yes"
+            cancelText="No"
+          >
+          <ButtonAction><DeleteOutlined /></ButtonAction></Popconfirm> </div>)
+          ,
+    },
+  ];
+  
   const handleTableChange = async (pagination) => {
     let clone = { ...query };
     clone['offset'] = (pagination.current - 1) * 10;
@@ -105,7 +114,20 @@ function JobList(props) {
     setQuery(clone)
     await dispatch(getListJob(clone, get(profile, 'data.employer.company_id', '')));
   }
-
+  const handleDelete = async (job_id) => {
+    console.log('Received values of fors', job_id);
+    await dispatch(deleteJob(job_id)).then(res => {
+      if (res.status) {
+        Router.push('/company/job-list')
+        return message.success('Delete candidate successfully');
+      }
+      return message.error(res.error);
+    })
+  };
+  function cancel(e) {
+    console.log(e);
+    message.error('Cance');
+  }
   useEffect(() => {
     console.log(query)
     dispatch(getListJob(query, get(profile, 'data.employer.company_id', '')));
