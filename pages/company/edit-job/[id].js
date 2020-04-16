@@ -129,6 +129,9 @@ function EditJob(props) {
   }
   return (
     <div className="uploadcv" style={{ backgroundColor: 'white' }}>
+      <div className="header">
+        <div>Chỉnh sửa công việc</div>
+      </div>
       <Row gutter={[16, 16]}>
         {/* {get(referred, 'candidate_detail', [])} */}
         <Col span={18} ><iframe style={{ width: '100%', height: '100%' }} id="input" value={fileLink} src={fileLink == '' ? (get(referred, 'job_detail.data.job.jd_files', []) == '' ? (fileLink) : (get(referred, 'job_detail.data.job.jd_files', []))) : (fileLink)}></iframe></Col>

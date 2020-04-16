@@ -55,6 +55,19 @@ function JobList(props) {
       render: (text, record, index) => <span color="green">{moment(record.created_at).format('DD-MM-YYYY')}</span>,
     },
     {
+      title: 'Cấp độ yêu cầu',
+      dataIndex: 'job_levels',
+      render: (text, record, index) => (
+        <div>
+          {
+            record.job_levels.map(item => (
+              <Tag color="blue" key={item}>{item}</Tag>
+            ))
+          }
+        </div>
+      )
+    },
+    {
       title: 'Số lượng yêu cầu',
       dataIndex: 'vacancy_number',
       align: 'center'
@@ -145,7 +158,7 @@ function JobList(props) {
           <Row gutter={[16, 16]} className="body">
             <Col span={12}>
               <b>Từ khóa</b>
-              <Search onChange={(e) => onChangeQuery('key_word', e.target.value)} placeholder="Từ khóa" />
+              <Search value={query.key_word} onChange={(e) => onChangeQuery('key_word', e.target.value)} placeholder="Từ khóa" />
             </Col>
             <Col span={6}>
               <b>Loại công việc</b>
@@ -159,6 +172,7 @@ function JobList(props) {
                   option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
                 onChange={(e) => onChangeQuery('job_type', e)}
+                value={query.job_type}
               >
                 {
                   role.split(', ')
@@ -180,18 +194,18 @@ function JobList(props) {
                   option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
                 onChange={(e) => onChangeQuery('status', e)}
+                value={query.status}
               >
                 <Option value="">All</Option>
                 <Option value="pending">Pending</Option>
-                <Option value="accepted">Accepted</Option>
-                <Option value="reject">Rejected</Option>
-                <Option value="on_board">On board</Option>
+                <Option value="accepted">Approved</Option>
+                <Option value="reject">Denied</Option>
               </Select>
             </Col>
           </Row>
           <div className="filter-button">
             <Button icon={<SearchOutlined />} onClick={() => handleFilter()} type="primary">Tìm kiếm</Button>
-            <Button icon={<RedoOutlined />} type="primary">Làm mới</Button>
+            <Button icon={<RedoOutlined />} onClick={() => setQuery(initQuery)} type="primary">Làm mới</Button>
           </div>
         </Col>
       </Row>

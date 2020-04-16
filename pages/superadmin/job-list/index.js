@@ -192,7 +192,7 @@ function JobList (props) {
           <Row gutter={[16, 16]} className="body">
             <Col span={12}>
               <b>Từ khóa</b>
-              <Search onChange={(e) => changeQuery('key_word', e.target.value)} placeholder="Từ khóa"/>
+              <Search value={query.key_word} onChange={(e) => changeQuery('key_word', e.target.value)} placeholder="Từ khóa"/>
             </Col>
             <Col span={6}>
               <b>Công ty</b>
@@ -203,7 +203,7 @@ function JobList (props) {
                 style={{ width: '100%' }}
                 placeholder="Công ty"
                 optionFilterProp="children"
-                defaultValue=""
+                value={query.company}
                 filterOption={(input, option) =>
                   option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
@@ -223,7 +223,7 @@ function JobList (props) {
                 filterOption={(input, option) =>
                   option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
-                defaultValue=""
+                value={query.job_type}
               >
                 <Option value="">Tất cả</Option>
               </Select>
@@ -231,7 +231,7 @@ function JobList (props) {
           </Row>
           <div className="filter-button">
             <Button onClick={() => handleFind()} icon={<SearchOutlined />}  type="primary">Tìm kiếm</Button>
-            {/* <Button icon={<RedoOutlined />}  type="primary">Làm mới</Button> */}
+            <Button icon={<RedoOutlined />} onClick={() => setQuery(initQuery)} type="primary">Làm mới</Button>
           </div>
         </Col>
       </Row>

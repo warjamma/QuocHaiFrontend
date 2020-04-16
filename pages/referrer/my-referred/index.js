@@ -152,7 +152,7 @@ function MyReferred(props) {
         <Row gutter={[16, 0]}>
           <Col className="fiter-item" span={14}>
             <div className="title">Từ khóa: </div>
-            <Input onChange={(e) => onChangeQuery('key_word', e.target.value)} placeholder="Key word..." />
+            <Input value={query.key} onChange={(e) => onChangeQuery('key_word', e.target.value)} placeholder="Key word..." />
           </Col>
           <Col className="fiter-item" span={6} >
             <div className="title">Công ty: </div>
@@ -160,6 +160,7 @@ function MyReferred(props) {
               style={{ width: '100%' }}
               placeholder="Công ty"
               onChange={(e) => onChangeQuery('company_name', e)}
+              value={query.company_name}
             >
               <Option value="">Tất cả</Option>
             </Select>
@@ -170,6 +171,7 @@ function MyReferred(props) {
               style={{ width: '100%' }}
               placeholder="Trạng thái"
               onChange={(e) => onChangeQuery('status', e)}
+              value={query.status}
             >
               <Option value="">All</Option>
               <Option value="pending">Pending</Option>
@@ -183,7 +185,7 @@ function MyReferred(props) {
           <Col span={24}>
             <div className="filter-button">
               <Button onClick={() => handleFilter()} icon={<SearchOutlined />} type="primary">Tìm kiếm</Button>
-              <Button icon={<RedoOutlined />} type="primary">Làm mới</Button>
+              <Button icon={<RedoOutlined />} onClick={() => setQuery(initQuery)} type="primary">Làm mới</Button>
             </div>
           </Col>
         </Row>

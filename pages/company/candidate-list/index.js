@@ -26,6 +26,7 @@ const { Option } = Select
 
 const initQuery = {
   key_word: '',
+  status: '',
   offset: 0,
   limit: 10,
 }
@@ -271,7 +272,7 @@ function CandidateList (props) {
           <Row gutter={[16, 16]} className="body">
             <Col span={18}>
               <b>Từ khóa</b>
-              <Search onChange={(e) => onChangeQuery('key_word', e.target.value)} placeholder="Từ khóa" />
+              <Search value={query.key_word} onChange={(e) => onChangeQuery('key_word', e.target.value)} placeholder="Từ khóa" />
             </Col>
             <Col span={6}>
               <b>Trạng thái</b>
@@ -285,6 +286,7 @@ function CandidateList (props) {
                   option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
                 onChange={(e) => onChangeQuery('status', e)}
+                value={query.status}
               >
                 <Option value="">All</Option>
                 <Option value="pending">Pending</Option>
@@ -296,7 +298,7 @@ function CandidateList (props) {
           </Row>
           <div className="filter-button">
             <Button icon={<SearchOutlined />} onClick={handleFilter} type="primary">Tìm kiếm</Button>
-            <Button icon={<RedoOutlined />} type="primary">Làm mới</Button>
+            <Button icon={<RedoOutlined />} onClick={() => setQuery(initQuery)} type="primary">Làm mới</Button>
           </div>
         </Col>
       </Row>
