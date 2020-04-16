@@ -1,7 +1,7 @@
 import React, { Component, useState, useEffect } from 'react';
 import { connect } from 'react-redux'
 import Link from 'next/link'
-import { CloseOutlined, SearchOutlined, QuestionCircleOutlined, CheckOutlined } from '@ant-design/icons';
+import { RedoOutlined, SearchOutlined, QuestionCircleOutlined, CheckOutlined } from '@ant-design/icons';
 import { Table, Row, Col, Button, Tag, Input, Select, Tabs, Modal, Tooltip } from 'antd';
 import { getListJob } from '../../../containers/referred/actions';
 import { actionApproveJob, actionRejectJob } from '../../../containers/job/actions';

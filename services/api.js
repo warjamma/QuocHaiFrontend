@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { logOutRequest } from '../containers/profile/actions';
 
 axios.defaults.baseURL = 'https://rocksearch-api.rockship.co';
 
@@ -39,7 +40,8 @@ const APIService = {
         })
         .catch((err) => {
           if (headers.length && err.response.status === 401) {
-            window.location.href = "/login"
+            this.logOutRequest();
+            window.location.href = "/login";
           }
           reject(err);
         });
