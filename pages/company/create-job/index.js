@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { createJob } from '../../../containers/company/action';
 import { uploadRequest } from '../../../containers/referred/actions';
 import './styles.scss';
-UploadCV.propTypes = {
+CreateJob.propTypes = {
 
 };
 const initForm = {
@@ -67,7 +67,7 @@ const dummyRequest = ({ file, onSuccess }) => {
   }, 0);
 };
 
-function UploadCV(props) {
+function CreateJob(props) {
   const { dispatch } = props
   const router = useRouter();
   const { id } = router.query;
@@ -112,7 +112,7 @@ function UploadCV(props) {
   }
 
   return (
-    <div className="uploadcv" style={{ backgroundColor: 'white' }}>
+    <div className="CreateJob" style={{ backgroundColor: 'white' }}>
       <div className="header">
         <div>Tạo công việc mới</div>
       </div>
@@ -301,4 +301,4 @@ function UploadCV(props) {
   );
 }
 
-export default connect()(UploadCV);
+export default connect()(CreateJob);

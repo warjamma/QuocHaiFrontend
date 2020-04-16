@@ -4,7 +4,7 @@ import { Col, Row, payload,Popconfirm, Form, Input, Button, Upload, message } fr
 import Router, { useRouter } from 'next/router';
 import { UploadOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
-import { createCandidate, uploadRequest, getCandidateById, updateCandidate, deleteCandidate } from '../../../containers/referred/actions';
+import { createCandidate, getCandidateById, updateCandidate, deleteCandidate,uploadRequest } from '../../../containers/referred/actions';
 import './styles.scss';
 import { get } from 'lodash';
 
