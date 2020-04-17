@@ -108,13 +108,13 @@ function JobList (props) {
             activeTab === 'Pending' && (
               <div className="group-btn-action">
                 <Button type="primary" onClick={() => approveJob(record.id)}>Approve</Button>
-                <Button danger onClick={() => selectDeny(record.id)}>Lý do</Button>
+                <Button danger onClick={() => selectDeny(record.id)}>Deny</Button>
               </div>
             )
           }
           {
             activeTab === 'Accepted' && (
-              <Button danger onClick={() => selectDeny(record.id)}>Lý do</Button>
+              <Button danger onClick={() => selectDeny(record.id)}>Deny</Button>
             )
           }
           {
@@ -265,7 +265,7 @@ function JobList (props) {
         </Tabs>
       </div>
       <Modal
-        title="Confirm deny"
+        title="Lý do"
         visible={visibleModal}
         onOk={() => rejectJob()}
         onCancel={() => {
