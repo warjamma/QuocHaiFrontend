@@ -192,13 +192,12 @@ function UploadCV(props) {
             <Form.Item
               label="Điện thoại ứng viên"
               name="phone_number"
-              rules={[{ required: true, message: 'Please input your phone number!' }]}
             >
               <Input placeholder="ex: Phone Number" />
             </Form.Item>.
 
             <Form.Item {...tailLayout}>
-              <Button type="primary" htmlType="submit">
+              <Button onClick={() => Router.push('/job-detail/' + id + '')} type="primary" htmlType="submit">
                 Gửi ứng viên
               </Button>
               <Button onClick={() => Router.push('/job-detail/' + id + '')} htmlType="button" style={{ margin: '0 8px' }} >

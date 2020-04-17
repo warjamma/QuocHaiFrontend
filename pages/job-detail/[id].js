@@ -30,9 +30,22 @@ function jobDetail(props) {
     useEffect(() => {
         dispatch(getJobById({ id }))
     }, []);
-    console.log('profile', profile)
+    //console.log('profile', profile)
+    const checkRole = () => {
+        switch (get(profile, 'data.recruiter.role')) {
+            case 'superadmin':
+                return 'blue';
+                break;
+            case 'admin':
+                return 'red';
+                break;
+            default:
+                return '';
+                break;
+        }
 
-    console.log(referred)
+    }
+    //console.log(referred)
     return (
         <div style={{ padding: 30 }}>
             <Title level={2}>Job detail</Title>
@@ -65,8 +78,8 @@ function jobDetail(props) {
                         <a style={{ color: '#68ba50', fontSize: '13px', paddingLeft: 10 }}>See map<CaretRightOutlined /></a>
                         <div ><RightOutlined /> Indonesia <a style={{ color: '#68ba50', fontSize: '13px' }}>See map<CaretRightOutlined /></a></div>
                         <div ><CalendarOutlined /> 4 days ago</div>
-                        <Button style={get(profile, 'data.employer.id') ? ({ visibility: "hidden" }) : ({ float: 'left', marginRight: 5, width: '40%', display: 'block' })} type="primary" onClick={() => Router.push(`/referrer/upload-cv/${id}`)} block>Giới thiệu ứng viên</Button>
-                        <Button style={{ float: 'left', width: '40%' }} disabled={get(referred, 'job_detail.data.job.jd_files') == '' || get(referred, 'job_detail.data.job.jd_files') == '' ? (true) : (false)} type="primary" block><a href={get(referred, 'job_detail.data.job.jd_files')} download>Dowload JD</a></Button>
+                        <Button style={((get(profile, 'data.recruiter.role') == 'superadmin') || get(profile, 'data.employer.role') == 'admin') ? ({ visibility: "hidden" }) : ({ float: 'left', marginRight: 5, width: '40%', display: 'block' })} type="primary" onClick={() => Router.push(`/referrer/upload-cv/${id}`)} block>Giới thiệu ứng viên</Button>
+                        <Button style={{ float: 'left', width: '40%' }} disabled={get(referred, 'job_detail.data.job.jd_files') == '' || get(referred, 'job_detail.data.job.jd_files') == null ? (true) : (false)} type="primary" block><a href={get(referred, 'job_detail.data.job.jd_files')} download>Dowload JD</a></Button>
                     </Card>
                     <Card className="contentJob" >
                         <Title level={3}>Top 3 Reasons To Join Us</Title>
@@ -98,8 +111,8 @@ function jobDetail(props) {
                             <li style={{ marginLeft: 10 }} level={4}>English-friendly, international working environment</li>
                             <li style={{ marginLeft: 10 }} level={4}>Onsite opportunities</li>
                         </ul>
-                        <Button style={get(profile, 'data.employer.id') ? ({ visibility: "hidden" }) : ({ float: 'left', marginRight: 5, width: '40%', display: 'block' })} type="primary" onClick={() => Router.push(`/referrer/upload-cv/${id}`)} block>Giới thiệu ứng viên</Button>
-                        <Button style={{ float: 'left', width: '40%' }} disabled={get(referred, 'job_detail.data.job.jd_files') == '' || get(referred, 'job_detail.data.job.jd_files') == '' ? (true) : (false)} type="primary" block><a href={get(referred, 'job_detail.data.job.jd_files')} download>Dowload JD</a></Button>
+                        <Button style={((get(profile, 'data.recruiter.role') == 'superadmin') || get(profile, 'data.employer.role') == 'admin') ? ({ visibility: "hidden" }) : ({ float: 'left', marginRight: 5, width: '40%', display: 'block' })} type="primary" onClick={() => Router.push(`/referrer/upload-cv/${id}`)} block>Giới thiệu ứng viên</Button>
+                        <Button style={{ float: 'left', width: '40%' }} disabled={get(referred, 'job_detail.data.job.jd_files') == '' || get(referred, 'job_detail.data.job.jd_files') ==null ? (true) : (false)} type="primary" block><a href={get(referred, 'job_detail.data.job.jd_files')} download>Dowload JD</a></Button>
                     </Card>
                 </Col>
             </Row>
