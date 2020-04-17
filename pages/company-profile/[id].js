@@ -30,14 +30,20 @@ function jobDetail(props) {
     useEffect(() => {
         dispatch(getJobById({ id }))
     }, []);
-    console.log('profile', profile)
+    const Hidden = () => {
+        if (get(profile, 'job_detail.data.employer.id') !== null) {
+            //console.log('voday')
+            return { visibility: "hidden" };
+            console.log({ visibility: "hidden" });
+        }
+    }
 
-    console.log(referred)
+
     return (
         <div style={{ padding: 30 }}>
-            <Title level={2}>Job detail</Title>
+            <Title level={2}>Company Profile</Title>
             <Row gutter={[16, 16]}>
-                <Col span={8} >
+                <Col span={24} >
                     <div style={{ background: 'white' }}>
                         <img style={{ padding: 'auto', margin: 'auto', display: 'block' }} alt="example" src="https://cdn.itviec.com/employers/fpt-software/logo/w170/mir3HT3xtedbECJY5jVeRRgV/fpt-software-logo.png" />
                         <div style={{ background: 'white', padding: 20 }} >
@@ -55,7 +61,7 @@ function jobDetail(props) {
                         </div>
                     </div>
                 </Col>
-                <Col span={16} >
+                {/* <Col span={16} >
                     <Card className="titileJob">
                         <Title level={3}>{get(referred, 'job_detail.data.job.job_title')}</Title>
                         <Button style={{ marginRight: 5 }}>{get(referred, 'job_detail.data.job.job_role')}</Button>
@@ -66,7 +72,7 @@ function jobDetail(props) {
                         <div ><RightOutlined /> Indonesia <a style={{ color: '#68ba50', fontSize: '13px' }}>See map<CaretRightOutlined /></a></div>
                         <div ><CalendarOutlined /> 4 days ago</div>
                         <Button style={get(profile, 'data.employer.id') ? ({ visibility: "hidden" }) : ({ float: 'left', marginRight: 5, width: '40%', display: 'block' })} type="primary" onClick={() => Router.push(`/referrer/upload-cv/${id}`)} block>Giới thiệu ứng viên</Button>
-                        <Button style={{ float: 'left', width: '40%' }} disabled={get(referred, 'job_detail.data.job.jd_files') == '' || get(referred, 'job_detail.data.job.jd_files') == '' ? (true) : (false)} type="primary" block><a href={get(referred, 'job_detail.data.job.jd_files')} download>Dowload JD</a></Button>
+                        <Button style={{ float: 'left', width: '40%' }}  disabled={get(referred, 'job_detail.data.job.jd_files') == ''?(true):( false)  } type="primary" block><a href={get(referred, 'job_detail.data.job.jd_files')} download>Dowload JD</a></Button>
                     </Card>
                     <Card className="contentJob" >
                         <Title level={3}>Top 3 Reasons To Join Us</Title>
@@ -99,12 +105,13 @@ function jobDetail(props) {
                             <li style={{ marginLeft: 10 }} level={4}>Onsite opportunities</li>
                         </ul>
                         <Button style={get(profile, 'data.employer.id') ? ({ visibility: "hidden" }) : ({ float: 'left', marginRight: 5, width: '40%', display: 'block' })} type="primary" onClick={() => Router.push(`/referrer/upload-cv/${id}`)} block>Giới thiệu ứng viên</Button>
-                        <Button style={{ float: 'left', width: '40%' }} disabled={get(referred, 'job_detail.data.job.jd_files') == '' || get(referred, 'job_detail.data.job.jd_files') == '' ? (true) : (false)} type="primary" block><a href={get(referred, 'job_detail.data.job.jd_files')} download>Dowload JD</a></Button>
+                        <Button style={{ float: 'left', width: '40%' }} type="primary" block>Dowload JD</Button>
                     </Card>
                 </Col>
+            */}
             </Row>
 
-            <Card className="involveJob" >
+            {/* <Card className="involveJob" >
                 <Title level={3}>More Jobs for You</Title>
                 <Card className="moreJobs">
                     <Row gutter={[16, 16]} className="oneRow">
@@ -146,6 +153,7 @@ function jobDetail(props) {
                 </Card>
 
             </Card>
+         */}
         </div>
     );
 }
