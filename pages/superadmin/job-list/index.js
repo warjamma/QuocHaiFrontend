@@ -6,6 +6,7 @@ import { Table, Row, Col, Button, Tag, Input, Select, Tabs, Modal, Tooltip } fro
 import { getListJob } from '../../../containers/referred/actions';
 import { actionApproveJob, actionRejectJob } from '../../../containers/job/actions';
 import { get } from 'lodash';
+import Router, { useRouter } from 'next/router';
 
 import './styles.scss'
 
@@ -54,7 +55,7 @@ function JobList (props) {
             <img src={get(record, 'company.avatar') === null ? '/default-avatar.png' : get(record, 'company.avatar')}/>
           </div>
           <div className="info-required">
-            <b className="name-company">{get(record, 'company.name', '')}</b>
+            <b className="name-company" onClick={()=>Router.push(`/company-profile/${get(record, 'company_id')}`)}>{get(record, 'company.name', '')}</b>
             <div className="job-role">
               <span>Vị trí tuyển dụng : </span>
               {
@@ -107,13 +108,13 @@ function JobList (props) {
             activeTab === 'Pending' && (
               <div className="group-btn-action">
                 <Button type="primary" onClick={() => approveJob(record.id)}>Approve</Button>
-                <Button danger onClick={() => selectDeny(record.id)}>Deny</Button>
+                <Button danger onClick={() => selectDeny(record.id)}>Lý do</Button>
               </div>
             )
           }
           {
             activeTab === 'Accepted' && (
-              <Button danger onClick={() => selectDeny(record.id)}>Deny</Button>
+              <Button danger onClick={() => selectDeny(record.id)}>Lý do</Button>
             )
           }
           {
@@ -241,7 +242,7 @@ function JobList (props) {
           activeKey={activeTab}
           type="card"
         >
-          {[{title: 'Pending'}, {title: 'Accepted'}, {title: 'Reject'}].map(pane => (
+          {[{title: 'Pending'}, {title: 'Approved'}, {title: 'Denied'}].map(pane => (
             <Tabs.TabPane tab={pane.title} key={pane.title}>
               <Table
                 bordered
