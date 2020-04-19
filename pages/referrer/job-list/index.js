@@ -210,7 +210,7 @@ function JobList (props) {
                 <Input value={query.max_salary} onChange={(e) => changeQuery('max_salary', e.target.value)} addonAfter={<span>$</span>}/>
               </div>
             </Col>
-            <Col span={6}>
+            {/* <Col span={6}>
               <b>Trạng thái</b>
               <Select
                 allowClear
@@ -226,7 +226,7 @@ function JobList (props) {
               >
                 <Option value="">Tất cả</Option>
               </Select>
-            </Col>
+            </Col> */}
           </Row>
           <div className="filter-button">
             <Button onClick={() => handleFind()} icon={<SearchOutlined />}  type="primary">Tìm kiếm</Button>

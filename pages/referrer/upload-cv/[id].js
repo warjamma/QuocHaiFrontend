@@ -104,7 +104,7 @@ function UploadCV(props) {
     value.cv = fileLink;
     await dispatch(createCandidate({ ...initForm, ...value },id )).then(res => {
       if (res.status) {
-        return message.success('Create candidate successfully');
+        return message.success('Create candidate successfully').then(() => Router.push(`/job-detail/${id}`));
       }
       return message.error(res.error);
     })
@@ -197,7 +197,7 @@ function UploadCV(props) {
             </Form.Item>.
 
             <Form.Item {...tailLayout}>
-              <Button onClick={() => Router.push('/job-detail/' + id + '')} type="primary" htmlType="submit">
+              <Button type="primary" htmlType="submit">
                 Gửi ứng viên
               </Button>
               <Button onClick={() => Router.push('/job-detail/' + id + '')} htmlType="button" style={{ margin: '0 8px' }} >

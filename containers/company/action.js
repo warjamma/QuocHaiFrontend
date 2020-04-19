@@ -75,10 +75,10 @@ export function getListJob(params, companyId) {
       }
     };
   }
-  export function updateStatusRef(referId, status) {
+  export function updateStatusRef(referId, status, body) {
     return async dispatch => {
       try {
-        const { data } = await api.sendRequestWithToken('put', `/companies/refer/${referId}/${status}`);
+        const { data } = await api.sendRequestWithToken('put', `/refers/${referId}/${status}`, null, null, body);
         return { status: true, data: data }
       } catch (error) {
         return { status: false, error: data.message };

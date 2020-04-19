@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect } from 'react';
-import { Table, Row, Col, Button, Input, Select, Tag, Popconfirm, InputNumber, Form, message } from 'antd';
+import { Table, Row, Col, Button, Input, Select, Tag, Popconfirm, DatePicker, Form, message } from 'antd';
 import Router from 'next/router';
 import Link from 'next/link';
 import { connect } from 'react-redux';
@@ -8,6 +8,7 @@ import styled from 'styled-components'
 import { getListCandidate, updateStatusRef } from '../../../containers/company/action';
 import { get } from 'lodash';
 import moment from 'moment';
+import renderColorStatus from '../../../ultils/renderColorStatus'
 
 import './styles.scss';
 
@@ -31,56 +32,57 @@ const initQuery = {
   limit: 10,
 }
 
-const EditableCell = ({
-  editing,
-  dataIndex,
-  title,
-  inputType,
-  record,
-  index,
-  children,
-  ...restProps
-}) => {
-  const inputNode = <Select
-    allowClear
-    showSearch
-    style={{ width: '100%' }}
-  >
-    <Option value="accepted">Accept</Option>
-    <Option value="reject">Reject</Option>
-    <Option value="on_board">On board</Option>
-    <Option value="probation">Probation</Option>
-    <Option value="done">Done</Option>
-  </Select>;
-  return (
-    <td {...restProps}>
-      {editing ? (
-        <Form.Item
-          name={dataIndex}
-          style={{
-            margin: 0,
-          }}
-          rules={[
-            {
-              required: true,
-              message: `Please Input ${title}!`,
-            },
-          ]}
-        >
-          {inputNode}
-        </Form.Item>
-      ) : (
-        children
-      )}
-    </td>
-  );
-};
-
 function CandidateList (props) {
   const [form] = Form.useForm();
   const { profile, company, dispatch } = props;
   const [query, setQuery] = useState(initQuery);
   const [editingKey, setEditingKey] = useState('');
+  const [date, onChangeDate] = useState('');
+  const [statusIndex, setStatusIndex] = useState('');
+
+  const EditableCell = ({
+    editing,
+    dataIndex,
+    title,
+    inputType,
+    record,
+    index,
+    children,
+    ...restProps
+  }) => {
+    const inputNode = <Select
+      allowClear
+      showSearch
+      style={{ width: '100%' }}
+      onChange={(e) => setStatusIndex(e)}
+    >
+      <Option value="on_board">Accept</Option>
+      <Option value="reject">Reject</Option>
+      <Option value="probation">Probation</Option>
+    </Select>;
+    return (
+      <td {...restProps}>
+        {editing ? (
+          <Form.Item
+            name={dataIndex}
+            style={{
+              margin: 0,
+            }}
+            rules={[
+              {
+                required: true,
+                message: `Please Input ${title}!`,
+              },
+            ]}
+          >
+            {inputNode}
+          </Form.Item>
+        ) : (
+          children
+        )}
+      </td>
+    );
+  };
 
   const isEditing = record => {
     return record.id === editingKey;
@@ -95,10 +97,16 @@ function CandidateList (props) {
     setEditingKey('');
   };
 
-  const save = async data => {
+  const save = async (data) => {
     try {
       const row = await form.validateFields();
-      dispatch(updateStatusRef(data.id, row.status)).then(res => {
+      const body = {};
+      if(row.status === 'reject') {
+        body.failing_reason = 'nope';
+      } else {
+        row.status === 'on_board' ? body.on_boarding_at = date : body.pass_probation_at = date; 
+      }
+      dispatch(updateStatusRef(data.id, row.status, body)).then(res => {
         if(res.status) {
           message.success('Update status successfully')
         } else {
@@ -111,26 +119,6 @@ function CandidateList (props) {
       console.log('Validate Failed:', errInfo);
     }
   };
-
-  const renderColorTag = (status) => {
-    switch(status) {
-      case 'accepted':
-        return 'blue';
-        break;
-      case 'reject':
-        return 'red';
-        break;
-      case 'on_board':
-        return 'green';
-        break;
-      case 'probation':
-        return 'green';
-        break;
-      default:
-        return 'orange';
-        break;
-    }
-  }
 
   const columns = [
     {
@@ -178,15 +166,21 @@ function CandidateList (props) {
       title: 'Onboarding date',
       dataIndex: 'status',
       align: 'center',
-      render: (text, record, index) => <div>{moment(get(record, 'created_at', '')).format('DD-MM-YYYY')}</div>,
+      render: (text, record, index) => <div>{moment(get(record, 'on_boarding_at', '')).format('DD-MM-YYYY')}</div>,
+    },
+    {
+      title: 'Probation date',
+      dataIndex: 'status',
+      align: 'center',
+      render: (text, record, index) => <div>{moment(get(record, 'pass_probation_at', '')).format('DD-MM-YYYY')}</div>,
     },
     {
       title: 'Trạng thái',
       dataIndex: 'status',
       align: 'center',
       editable: true,
-      width: 150,
-      render: (text, record, index) => <Tag color={renderColorTag(record.status)}>{record.status.replace('_', ' ')}</Tag>,
+      width: 120,
+      render: (text, record, index) => <Tag color={renderColorStatus(get(record, 'status', ''))}>{get(record, 'status', '').replace('_', ' ')}</Tag>,
     },
     {
       title: 'Hồ sơ',
@@ -200,18 +194,35 @@ function CandidateList (props) {
       dataIndex: 'operation',
       align: 'center',
       render: (text, record, index) => {
+        const dateFormat = 'YYYY/MM/DD';
         const editable = isEditing(record);
         return editable ? (
           <span>
-            <a onClick={() => save(record)} style={{ marginRight: 8 }}>
-              Save
-            </a>
-            <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
+            <Popconfirm placement="topRight" title={
+              <div>
+                {
+                  (statusIndex || record.status) === 'reject' ? (
+                    <span>Sure to reject it ?</span>
+                  ) : (
+                    <DatePicker
+                      onChange={(e) => onChangeDate(moment(e).format())}
+                      defaultValue={moment(record.status === 'on_board' ? record.on_boarding_at || new Date() : record.pass_probation_at || new Date(), dateFormat)}
+                      format={dateFormat} 
+                    />
+                  )
+                }
+              </div>
+            } onConfirm={() => save(record)}>
+              <a style={{ marginRight: 8 }}>
+                Save
+              </a>
+            </Popconfirm>
+            <Popconfirm placement="topRight" title="Sure to cancel?" onConfirm={cancel}>
               <a>Cancel</a>
             </Popconfirm>
           </span>
         ) : (
-          <a disabled={editingKey !== ''} onClick={() => edit(record)}>
+          <a disabled={get(record, 'candidate.status', '') !== 'active'} onClick={() => edit(record)}>
             Edit
           </a>
         );

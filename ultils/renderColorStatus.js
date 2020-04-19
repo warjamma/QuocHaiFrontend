@@ -1,19 +1,16 @@
 export default (status) => {
   switch(status) {
     case 'accepted':
+    case 'active':
       return 'blue';
-      break;
     case 'reject':
+    case 'cancelled':
       return 'red';
-      break;
     case 'on_board':
       return 'green';
-      break;
     case 'probation':
       return 'green';
-      break;
     default:
       return 'orange';
-      break;
   }
 }
