@@ -9,6 +9,7 @@ import { get } from 'lodash';
 import moment from 'moment';
 import './styles.scss'
 import Router from 'next/router';
+import { reset } from 'nodemon';
 
 const { Option } = Select;
 const initQuery = {
@@ -120,6 +121,12 @@ function MyReferred(props) {
     setQuery(clone);
     await dispatch(getListReferred(clone));
   };
+
+  const resetSearch = async () => {
+    setQuery(initQuery);
+    await dispatch(getListReferred(initQuery));
+  }
+  
   function cancel(e) {
     console.log(e);
     message.error('Cance');
@@ -185,7 +192,7 @@ function MyReferred(props) {
           <Col span={24}>
             <div className="filter-button">
               <Button onClick={() => handleFilter()} icon={<SearchOutlined />} type="primary">Tìm kiếm</Button>
-              <Button icon={<RedoOutlined />} onClick={() => setQuery(initQuery)} type="primary">Làm mới</Button>
+              <Button icon={<RedoOutlined />} onClick={() => resetSearch()} type="primary">Làm mới</Button>
             </div>
           </Col>
         </Row>

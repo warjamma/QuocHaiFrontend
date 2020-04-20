@@ -127,6 +127,12 @@ function JobList(props) {
     setQuery(clone)
     await dispatch(getListJob(clone, get(profile, 'data.employer.company_id', '')));
   }
+
+  const resetSearch = async () => {
+    setQuery(initQuery);
+    await dispatch(getListJob(initQuery, get(profile, 'data.employer.company_id', '')));
+  }
+
   const handleDelete = async (job_id) => {
     console.log('Received values of fors', job_id);
     await dispatch(deleteJob(job_id)).then(res => {
@@ -137,10 +143,12 @@ function JobList(props) {
       return message.error(res.error);
     })
   };
+
   function cancel(e) {
     console.log(e);
     message.error('Cance');
   }
+
   useEffect(() => {
     console.log(query)
     dispatch(getListJob(query, get(profile, 'data.employer.company_id', '')));
@@ -205,7 +213,7 @@ function JobList(props) {
           </Row>
           <div className="filter-button">
             <Button icon={<SearchOutlined />} onClick={() => handleFilter()} type="primary">Tìm kiếm</Button>
-            <Button icon={<RedoOutlined />} onClick={() => setQuery(initQuery)} type="primary">Làm mới</Button>
+            <Button icon={<RedoOutlined />} onClick={() => resetSearch()} type="primary">Làm mới</Button>
           </div>
         </Col>
       </Row>

@@ -161,6 +161,11 @@ function JobList (props) {
     await dispatch(getListJob(clone))
   };
 
+  const resetSearch = async () => {
+    setQuery(initQuery);
+    await dispatch(getListJob(initQuery))
+  }
+
   const approveJob = async (id) => {
     await dispatch(actionApproveJob(id));
     dispatch(getListJob(query));
@@ -232,7 +237,7 @@ function JobList (props) {
           </Row>
           <div className="filter-button">
             <Button onClick={() => handleFind()} icon={<SearchOutlined />}  type="primary">Tìm kiếm</Button>
-            <Button icon={<RedoOutlined />} onClick={() => setQuery(initQuery)} type="primary">Làm mới</Button>
+            <Button icon={<RedoOutlined />} onClick={() => resetSearch()} type="primary">Làm mới</Button>
           </div>
         </Col>
       </Row>
