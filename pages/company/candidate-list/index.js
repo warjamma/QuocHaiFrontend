@@ -37,8 +37,8 @@ function CandidateList (props) {
   const { profile, company, dispatch } = props;
   const [query, setQuery] = useState(initQuery);
   const [editingKey, setEditingKey] = useState('');
-  const [date, onChangeDate] = useState('');
   const [statusIndex, setStatusIndex] = useState('');
+  const dateFormat = 'YYYY/MM/DD';
 
   const EditableCell = ({
     editing,
@@ -54,7 +54,9 @@ function CandidateList (props) {
       allowClear
       showSearch
       style={{ width: '100%' }}
-      onChange={(e) => setStatusIndex(e)}
+      onChange={(e) => {
+        setStatusIndex(e);
+      }}
     >
       <Option value="on_board">Accept</Option>
       <Option value="reject">Reject</Option>
@@ -89,7 +91,13 @@ function CandidateList (props) {
   }
 
   const edit = record => {
-    form.setFieldsValue({ ...record });
+    form.resetFields();
+    const clone = { ...record };
+    clone.on_boarding_at = moment(clone.on_boarding_at, dateFormat);
+    clone.pass_probation_at = moment(clone.pass_probation_at, dateFormat);
+    console.log(clone)
+    form.setFieldsValue({ ...clone });
+    setStatusIndex(record.status);
     setEditingKey(record.id);
   };
 
@@ -100,11 +108,13 @@ function CandidateList (props) {
   const save = async (data) => {
     try {
       const row = await form.validateFields();
+      console.log(row)
       const body = {};
       if(row.status === 'reject') {
-        body.failing_reason = 'nope';
+        body.failing_reason = row.failing_reason;
       } else {
-        row.status === 'on_board' ? body.on_boarding_at = date : body.pass_probation_at = date; 
+        row.status === 'on_board' ? body.on_boarding_at = `${moment(row.on_boarding_at).format('YYYY-MM-DDTHH:mm:ss')}Z`
+        : body.pass_probation_at = `${moment(row.pass_probation_at).format('YYYY-MM-DDTHH:mm:ss')}Z`; 
       }
       dispatch(updateStatusRef(data.id, row.status, body)).then(res => {
         if(res.status) {
@@ -169,12 +179,6 @@ function CandidateList (props) {
       render: (text, record, index) => <div>{moment(get(record, 'on_boarding_at', '')).format('DD-MM-YYYY')}</div>,
     },
     {
-      title: 'Probation date',
-      dataIndex: 'status',
-      align: 'center',
-      render: (text, record, index) => <div>{moment(get(record, 'pass_probation_at', '')).format('DD-MM-YYYY')}</div>,
-    },
-    {
       title: 'Trạng thái',
       dataIndex: 'status',
       align: 'center',
@@ -194,7 +198,6 @@ function CandidateList (props) {
       dataIndex: 'operation',
       align: 'center',
       render: (text, record, index) => {
-        const dateFormat = 'YYYY/MM/DD';
         const editable = isEditing(record);
         return editable ? (
           <span>
@@ -202,13 +205,25 @@ function CandidateList (props) {
               <div>
                 {
                   (statusIndex || record.status) === 'reject' ? (
-                    <span>Sure to reject it ?</span>
+                    <Form.Item
+                      name="failing_reason"
+                      style={{
+                        margin: 0,
+                      }}
+                    >
+                      <Input.TextArea placeholder="Reason to reject..." />
+                    </Form.Item>
                   ) : (
-                    <DatePicker
-                      onChange={(e) => onChangeDate(moment(e).format())}
-                      defaultValue={moment(record.status === 'on_board' ? record.on_boarding_at || new Date() : record.pass_probation_at || new Date(), dateFormat)}
-                      format={dateFormat} 
-                    />
+                    <Form.Item
+                      name={statusIndex === 'on_board' ? 'on_boarding_at' : 'pass_probation_at'}
+                      style={{
+                        margin: 0,
+                      }}
+                    >
+                      <DatePicker
+                        format={dateFormat} 
+                      />
+                    </Form.Item>
                   )
                 }
               </div>
@@ -268,6 +283,11 @@ function CandidateList (props) {
     await dispatch(getListCandidate(clone, get(profile, 'data.employer.company_id', '')));
   }
 
+  const resetSearch = async () => {
+    setQuery(initQuery);
+    await dispatch(getListCandidate(initQuery, get(profile, 'data.employer.company_id', '')));
+  }
+  
   useEffect(() => {
     dispatch(getListCandidate(query, get(profile, 'data.employer.company_id', '')));
   }, []);
@@ -282,8 +302,8 @@ function CandidateList (props) {
         <Col span={24} className="filter-option">
           <Row gutter={[16, 16]} className="body">
             <Col span={18}>
-              <b>Từ khóa</b>
-              <Search value={query.key_word} onChange={(e) => onChangeQuery('key_word', e.target.value)} placeholder="Từ khóa" />
+              <b>Tìm theo tên ứng viên</b>
+              <Search value={query.key_word} onChange={(e) => onChangeQuery('key_word', e.target.value)} placeholder="Tên ứng viên" />
             </Col>
             <Col span={6}>
               <b>Trạng thái</b>
@@ -301,15 +321,17 @@ function CandidateList (props) {
               >
                 <Option value="">All</Option>
                 <Option value="pending">Pending</Option>
-                <Option value="accepted">Accepted</Option>
-                <Option value="reject">Rejected</Option>
-                <Option value="on_board">On board</Option>
+                <Option value="confirmed">Confirmed</Option>
+                <Option value="onboarding">Onboarding</Option>
+                <Option value="interview_failed">Interview failed</Option>
+                <Option value="probation_passed">Probation passed</Option>
+                <Option value="probation_failed">Probation failed</Option>
               </Select>
             </Col>
           </Row>
           <div className="filter-button">
             <Button icon={<SearchOutlined />} onClick={handleFilter} type="primary">Tìm kiếm</Button>
-            <Button icon={<RedoOutlined />} onClick={() => setQuery(initQuery)} type="primary">Làm mới</Button>
+            <Button icon={<RedoOutlined />} onClick={() => resetSearch()} type="primary">Làm mới</Button>
           </div>
         </Col>
       </Row>
