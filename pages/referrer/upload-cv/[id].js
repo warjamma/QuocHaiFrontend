@@ -158,6 +158,7 @@ function UploadCV(props) {
                 onRemove={() => setFileLink('')}
                 onChange={onChange}
                 listType="picture"
+                showUploadList={false}
               >
                 <Button>
                   <UploadOutlined /> Click to upload
