@@ -49,9 +49,10 @@ const initForm = {
   use_test: true,
   reward: null,
   currency: "",
-  jd_files:''
+  jd_files: ''
 }
 const role = 'Account Management, Administration, Backend, Branding, Business Analyst, Business Development, CEO, CFO, CMO, Consultant, Content Creator, COO, CTO, Customer Service, Data Analyst, Designer, Developer, DevOps, Digital Marketing, Engineering, Finace/Accounting, Frontend, Fullstack, Game, General management, HR, HSE, Import - Export, Logistic, maintenance, Management, Market Research, marketing, Merchandising, Mobile, Office Management, Operation Management, Operations, Planning, Product Management, Production, Project Management, Public Relation, QA/QC, Quality Control, Recruitment, Research & Development, Researcher, Sales, Scrum Master, Software Architect, Software Development, Supply Chain, Teacher, Techical Sales, Tester, Traditional Marketing, Trainer'
+const language = 'Java, JavaScript, Reactjs, Vuejs, Angular, .Net, Nodejs, ObjectC, Swift, Kotlin, Python, PHP, MySQL, HTML/ CSS, SQL, C#, C++, Spring, AWS, Linux, Cocos2dx, Unity, ASP.NET, Docker, Ruby'
 
 const layout = {
   labelCol: { span: 18 },
@@ -78,8 +79,8 @@ function CreateJob(props) {
     value.jd_files = fileLink;
     await dispatch(createJob({ ...initForm, ...value }, id)).then(res => {
       if (res.status) {
-        return message.success('Create job successfully'),
-          Router.push('/company/job-list')
+        return message.success('Create job successfully').then(res=>Router.push('/company/job-list'));
+          
       }
       return message.error(res.error);
     })
@@ -135,6 +136,7 @@ function CreateJob(props) {
                 onRemove={() => setFileLink('')}
                 onChange={onChange}
                 listType="picture"
+                showUploadList={false}
               >
                 <Button>
                   <UploadOutlined /> Click to upload
@@ -144,7 +146,7 @@ function CreateJob(props) {
             <Form.Item
               label="Tiêu đề"
               name="job_title"
-              rules={[{ required: true, message: 'This field is required !' }]}
+              // rules={[{ required: true, message: 'This field is required !' }]}
               hasFeedback
             >
               <Input />
@@ -159,6 +161,21 @@ function CreateJob(props) {
               <Select mode="tags" style={{ width: '100%' }}>
                 {
                   role.split(', ')
+                    .map(item => (
+                      <Select.Option key={item} value={item}>{item}</Select.Option>
+                    ))
+                }
+              </Select>
+            </Form.Item>
+            <Form.Item
+              label="Ngôn ngữ"
+              hasFeedback
+              //name="language"
+              rules={[{ required: true, message: 'This field is required !' }]}
+            >
+              <Select mode="tags" style={{ width: '100%' }}>
+                {
+                  language.split(', ')
                     .map(item => (
                       <Select.Option key={item} value={item}>{item}</Select.Option>
                     ))
@@ -246,11 +263,12 @@ function CreateJob(props) {
                   hasFeedback
                   name="min_salary"
                   rules={[{ required: true, message: 'This field is required !' }]}
-                  style={{ width: '100%' }}
+                  // style={{ width: '100%' }}
                 >
                   <InputNumber
-                  
-                    style={{ width: '100%' }}
+
+                    // style={{ width: '100%' }}
+                    style={{ width: '50%' }}
                     //defaultValue={1000}
                     formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                     parser={value => value.replace(/\$\s?|(,*)/g, '')}
@@ -262,10 +280,10 @@ function CreateJob(props) {
                   hasFeedback
                   name="max_salary"
                   rules={[{ required: true, message: 'This field is required !' }]}
-                  style={{ width: '100%' }}
+                  // style={{ width: '100%' }}
                 >
                   <InputNumber
-                    style={{ width: '100%' }}
+                    style={{ width: '50%' }}
                     //defaultValue={1000}
                     formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                     parser={value => value.replace(/\$\s?|(,*)/g, '')}
@@ -285,6 +303,9 @@ function CreateJob(props) {
                 formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                 parser={value => value.replace(/\$\s?|(,*)/g, '')}
               />
+            </Form.Item>
+            <Form.Item name="candidate_benefit" label="Phúc lợi">
+              <Input.TextArea />
             </Form.Item>
             <Form.Item style={{ marginTop: 20 }}>
               <Button type="primary" htmlType="submit">

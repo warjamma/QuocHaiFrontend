@@ -119,7 +119,7 @@ function JobList (props) {
 
   const handleTableChange = async (pagination) => {
     let clone = { ...query };
-    clone['offset'] = pagination.current * 10;
+    clone['offset'] = (pagination.current-1) * 10;
     clone['limit'] = pagination.pageSize;
     setQuery(clone)
     await dispatch(getListJob(clone))
@@ -247,7 +247,7 @@ function JobList (props) {
           dataSource={get(referred, 'list_job.items.job', [])}
           pagination={{
             pageSize: query.limit,
-            total: get(referred, 'list_job.extra_data.total', []),
+            total: get(referred, 'list_job.extra_data.total',0),
             showSizeChanger: true,
             pageSizeOptions: ['10', '20', '30', '50'],
             size: 'small',
