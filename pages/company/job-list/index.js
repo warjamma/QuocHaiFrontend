@@ -42,12 +42,27 @@ function JobList(props) {
   const { profile, company, dispatch } = props;
   const [query, setQuery] = useState(initQuery);
   const columns = [
+    // {
+    //   title: 'Công việc',
+    //   dataIndex: 'job_title',
+    //   width: 300,
+    //   render: (text, record) => <a className="job-title" onClick={() => Router.push(`/job-detail/${record.id}`)}>{text}</a>
+    // },
     {
-      title: 'Công việc',
-      dataIndex: 'job_title',
-      width: 300,
-      render: (text, record) => <a className="job-title" onClick={() => Router.push(`/job-detail/${record.id}`)}>{text}</a>
-    },
+    title: 'Vị trí',
+    dataIndex: 'company_id',
+    render: (text, record, index) => (
+      <div className="custom-company" onClick={() => Router.push('/job-detail/'+record.id+'')}>    
+          <div className="job-role">
+            {
+              record.job_role.map(item => (
+                <Tag style={{margin:3, cursor: 'pointer'}} color="blue" key={item}>{item}</Tag>
+              ))
+            }         
+          </div>
+      </div>
+    ),
+  },
     {
       title: 'Ngày tạo',
       dataIndex: 'created',
@@ -102,7 +117,8 @@ function JobList(props) {
             okText="Yes"
             cancelText="No"
           >
-          <ButtonAction><DeleteOutlined /></ButtonAction></Popconfirm> </div>)
+          <ButtonAction><DeleteOutlined /></ButtonAction>
+          </Popconfirm> </div>)
           ,
     },
   ];

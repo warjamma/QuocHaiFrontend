@@ -6,6 +6,7 @@ import { getJobById } from '../../containers/referred/actions';
 import Link from 'next/link'
 import axios from 'axios';
 import { get } from 'lodash';
+import moment from 'moment'
 import './styles.scss'
 import {
     DollarOutlined,
@@ -15,7 +16,11 @@ import {
     FieldTimeOutlined,
     UsergroupAddOutlined,
     FlagOutlined,
-    SettingOutlined
+    SettingOutlined,
+    FacebookOutlined,
+    LinkedinOutlined,
+    MailOutlined,
+    PhoneOutlined
 } from '@ant-design/icons';
 const { Title } = Typography;
 const { Meta } = Card;
@@ -66,21 +71,29 @@ function jobDetail(props) {
         document.body.removeChild(a);
     }
     return (
-        <div className="job-detail"style={{ padding: 30 }}>
+        <div className="job-detail" style={{ padding: 30 }}>
             {/* <Title level={2}>Job detail</Title> */}
-            <div className="header" style={{backgroud:'#fff',fontWeight:'bold'}}>Job detail</div>
+            <div className="header" style={{ backgroud: '#fff', fontWeight: 'bold' }}>Job detail</div>
             <Row gutter={[16, 16]}>
                 <Col span={8} >
                     <div style={{ background: 'white' }}>
-                        <img style={{ padding: 'auto', margin: 'auto', display: 'block' }} alt="example" src="https://cdn.itviec.com/employers/fpt-software/logo/w170/mir3HT3xtedbECJY5jVeRRgV/fpt-software-logo.png" />
+                        {
+                            get(referred, 'job_detail.data.job.company.avata') ?get(record, 'company.avatar') 
+                                (<img style={{ padding: 'auto', margin: 'auto', display: 'block', width: 170, height: 170, objectFit: 'cover' }} alt="example" src={get(referred, 'job_detail.data.job.company.avata')}/>) : ("")
+                        }
+                        {/* <img style={{ padding: 'auto', margin: 'auto', display: 'block' }} alt="example" src="https://cdn.itviec.com/employers/fpt-software/logo/w170/mir3HT3xtedbECJY5jVeRRgV/fpt-software-logo.png" /> */}
                         <div style={{ background: 'white', padding: 20 }} >
                             <Title level={3}>{get(referred, 'job_detail.data.job.company.name')}</Title>
                             <div>{get(referred, 'job_detail.data.job.company.about')}</div>
-                            <div ><SettingOutlined />&nbsp;Outsourcing</div>
-                            <div ><UsergroupAddOutlined />&nbsp;1000+</div>
-                            <div ><FlagOutlined />&nbsp;Vietnam</div>
+                            {/* <div ><SettingOutlined />&nbsp;Outsourcing</div> */}
+                            <div ><UsergroupAddOutlined />&nbsp;{get(referred, 'job_detail.data.job.company.company_size')}+</div>
+                            {/* <div ><FlagOutlined />&nbsp;Vietnam</div>
                             <div ><CalendarOutlined />&nbsp;Monday - Friday</div>
-                            <div ><FieldTimeOutlined />&nbsp;Extra salary for OT</div>
+                            <div ><FieldTimeOutlined />&nbsp;Extra salary for OT</div> */}
+                            <div ><FacebookOutlined />&nbsp;{get(referred, 'job_detail.data.job.company.facebook')}</div>
+                            <div ><MailOutlined />&nbsp;{get(referred, 'job_detail.data.job.company.email_cc')}</div>
+                            <div ><LinkedinOutlined />&nbsp;{get(referred, 'job_detail.data.job.company.linked_in')}</div>
+                            <div ><PhoneOutlined />&nbsp;{get(referred, 'job_detail.data.job.company.phone_number')}</div>
                             <br />
                             <a style={{ color: '#68ba50', fontSize: '13px', float: 'left' }}>See map<CaretRightOutlined /></a>
                             <br />
@@ -91,13 +104,13 @@ function jobDetail(props) {
                 <Col span={16} >
                     <Card className="titileJob">
                         <Title level={3}>{get(referred, 'job_detail.data.job.job_title')}</Title>
-                        {get(referred, 'job_detail.data.job.job_role',[]).map((value,key)=>{
+                        {get(referred, 'job_detail.data.job.job_role', []).map((value, key) => {
                             return <Button key={key} style={{ marginRight: 5 }}>{value}</Button>
                         })}
                         <div style={{ color: '#68ba50' }}><DollarOutlined /> You'll love it</div>
-                        <div ><RightOutlined /> FPT Software Đường D1 Phường Tân Phú , District 9, Ho Chi Minh</div>
-                        <a style={{ color: '#68ba50', fontSize: '13px', paddingLeft: 10 }}>See map<CaretRightOutlined /></a>
-                        {get(referred, 'job_detail.data.job.locations',[]).map((value,key)=>{
+                        {/* <div ><RightOutlined /> FPT Software Đường D1 Phường Tân Phú , District 9, Ho Chi Minh</div>
+                        <a style={{ color: '#68ba50', fontSize: '13px', paddingLeft: 10 }}>See map<CaretRightOutlined /></a> */}
+                        {get(referred, 'job_detail.data.job.locations', []).map((value, key) => {
                             return <div key={key}><RightOutlined /> {value} <a style={{ color: '#68ba50', fontSize: '13px' }}>See map<CaretRightOutlined /></a></div>
                         })}
                         <div ><CalendarOutlined /> 4 days ago</div>
@@ -105,37 +118,28 @@ function jobDetail(props) {
                         <Button onClick={download} style={{ float: 'left', width: '40%' }} type="primary" block>Dowload JD</Button>
                     </Card>
                     <Card className="contentJob" >
-                        <Title level={3}>Top 3 Reasons To Join Us</Title>
+                        <Title level={3}>Job role To Join Us</Title>
                         <ul>
-                            <li style={{ fontWeight: 'bold' }} level={4}>Global Exposure </li>
-                            <li style={{ fontWeight: 'bold' }} level={4}>Global Exposure</li>
-                            <li style={{ fontWeight: 'bold' }} level={4}>Global Exposure</li>
+                            {get(referred, 'job_detail.data.job.job_role', []).map((value, key) => {
+                                return <li key={key} style={{ fontWeight: 'bold' }} level={4}>{value}</li>
+                            })}
                         </ul>
-                        <Title level={3}>The Job</Title>
+                        <Title level={3}>Job Levels</Title>
                         <ul>
-                            <li style={{ marginLeft: 10 }} level={4}>Study customer’s requirement and framework, create design documents, implementation and coding of solutions.</li>
-                            <li style={{ marginLeft: 10 }} level={4}>Generate unit tests to ensure the products are being tested thoroughly to produce quality products</li>
-                            <li style={{ marginLeft: 10 }} level={4}>Supporting quality assurance in testing software products.
-                        Interacting with customers and partners about product explanation, implementation and support</li>
+                            {get(referred, 'job_detail.data.job.job_levels', []).map((value, key) => {
+                                return <li key={key} style={{ marginLeft: 10 }} level={4}>{value}</li>
+                            })}
+                            
                         </ul>
 
                         <Title level={3}>Your Skills and Experience</Title>
                         <ul>
-                            <li style={{ marginLeft: 10 }} level={4}>Study customer’s requirement and framework, create design documents, implementation and coding of solutions.</li>
-                            <li style={{ marginLeft: 10 }} level={4}>Generate unit tests to ensure the products are being tested thoroughly to produce quality products</li>
-                            <li style={{ marginLeft: 10 }} level={4}>Supporting quality assurance in testing software products.
-                        Interacting with customers and partners about product explanation, implementation and support</li>
-                        </ul>
-
-                        <Title level={3}>Why You'll Love Working Here</Title>
-                        <ul>
-                            <li style={{ marginLeft: 10 }} level={4}>Salary negotiation.</li>
-                            <li style={{ marginLeft: 10 }} level={4}>All benefits based on Labor Law & FPT Software’s policy.</li>
-                            <li style={{ marginLeft: 10 }} level={4}>English-friendly, international working environment</li>
-                            <li style={{ marginLeft: 10 }} level={4}>Onsite opportunities</li>
+                            {get(referred, 'job_detail.data.job.job.skill_requirement',[]).map((value, key) => {
+                                return <li key={key} style={{ marginLeft: 10 }} level={4}> {value.years}</li>
+                            })}
                         </ul>
                         <Button style={((get(profile, 'data.recruiter.role') == 'superadmin') || get(profile, 'data.employer.role') == 'admin') ? ({ visibility: "hidden" }) : ({ float: 'left', marginRight: 5, width: '40%', display: 'block' })} type="primary" onClick={() => Router.push(`/referrer/upload-cv/${id}`)} block>Giới thiệu ứng viên</Button>
-                        <Button style={{ float: 'left', width: '40%' }} disabled={get(referred, 'job_detail.data.job.jd_files') == '' || get(referred, 'job_detail.data.job.jd_files') ==null ? (true) : (false)} type="primary" block><a href={get(referred, 'job_detail.data.job.jd_files')} download>Dowload JD</a></Button>
+                        <Button style={{ float: 'left', width: '40%' }} disabled={get(referred, 'job_detail.data.job.jd_files') == '' || get(referred, 'job_detail.data.job.jd_files') == null ? (true) : (false)} type="primary" block><a href={get(referred, 'job_detail.data.job.jd_files')} download>Dowload JD</a></Button>
                     </Card>
                 </Col>
             </Row>

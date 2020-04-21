@@ -132,7 +132,7 @@ function CandidateList (props) {
 
   const columns = [
     {
-      title: 'Công việc',
+      title: 'Vị trí',
       dataIndex: 'job',
       render: (text, record, index) => (
         <div>
@@ -146,13 +146,13 @@ function CandidateList (props) {
       render: (text, record, index) => (
         <div>
           <div>{get(record, 'candidate', {}).name}</div>
-          <div>
+          {/* <div>
             {
               get(record, 'candidate', {}).job_role.map(item => (
                 <Tag key={item} color="blue">{item}</Tag>
               ))
             }
-          </div>
+          </div> */}
         </div>
       )
     },
@@ -167,17 +167,23 @@ function CandidateList (props) {
       )
     },
     {
+      title: 'Thưởng ($)',
+      dataIndex: 'job',
+      align: 'center',
+      render: (text, record, index) => <Tag color="blue">{get(record, 'job', {}).reward}$</Tag>,
+    },
+    {
       title: 'Mức lương ($)',
       dataIndex: 'salary',
       align: 'center',
       render: (text, record, index) => <Tag color="blue">{get(record, 'candidate', {}).min_salary}$ - {get(record, 'candidate', {}).max_salary}$</Tag>,
     },
-    {
-      title: 'Onboarding date',
-      dataIndex: 'status',
-      align: 'center',
-      render: (text, record, index) => <div>{moment(get(record, 'on_boarding_at', '')).format('DD-MM-YYYY')}</div>,
-    },
+    // {
+    //   title: 'Onboarding date',
+    //   dataIndex: 'status',
+    //   align: 'center',
+    //   render: (text, record, index) => <div>{moment(get(record, 'on_boarding_at', '')).format('DD-MM-YYYY')}</div>,
+    // },
     {
       title: 'Trạng thái',
       dataIndex: 'status',

@@ -1,7 +1,7 @@
 import React, { Component, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import Link from 'next/link';
-import { RedoOutlined, SearchOutlined, DownloadOutlined, DeleteTwoTone } from '@ant-design/icons';
+import { RedoOutlined, SearchOutlined, DownloadOutlined, DeleteTwoTone ,EditOutlined} from '@ant-design/icons';
 import { Table, Tag, Button, Popconfirm, Form, Row, Col, message, Input, Select, Typography } from 'antd';
 import { getListReferred, deleteCandidate } from '../../../containers/referred/actions';
 import renderColorTag from '../../../ultils/renderColorStatus';
@@ -24,12 +24,19 @@ const initQuery = {
 function MyReferred(props) {
   const columns = [
     {
-      title: 'Công việc',
+      title: 'Vị trí',
       dataIndex: 'job',
       render: (text, record, index) => (
-        <div>
-          <Link href={`/job-detail/${record.job.id}`}><a className="job-title">{get(record, 'job', {}).job_title}</a></Link>
-        </div>
+        // <div>
+        //   <Link href={`/job-detail/${record.job.id}`}><a className="job-title">{get(record, 'job', {}).job_title}</a></Link>
+        // </div>
+        <div onClick={() => Router.push('/job-detail/'+record.job.id+'')}>
+            {
+              get(record, 'candidate', {}).job_role.map(item => (
+                <Tag style={{margin:3, cursor: 'pointer'}}  key={item} color="red">{item}</Tag>
+              ))
+            }
+          </div>
       )
     },
     {
@@ -38,13 +45,13 @@ function MyReferred(props) {
       render: (text, record, index) => (
         <div>
           <div>{get(record, 'candidate', {}).name}</div>
-          <div>
+          {/* <div>
             {
               get(record, 'candidate', {}).job_role.map(item => (
                 <Tag key={item} color="blue">{item}</Tag>
               ))
             }
-          </div>
+          </div> */}
         </div>
       )
     },
@@ -79,11 +86,11 @@ function MyReferred(props) {
       render: (text, record, index) => <Tag color={renderColorTag(record.status)}>{record.status.replace('_', ' ')}</Tag>,
     },
     {
-      title: 'Hồ sơ',
+      title: 'Cập nhật',
       dataIndex: 'candidate_id',
       align: 'center',
       width: 150,
-      render: (candidate_id) => <div><Button style={{marginRight:5}} onClick={() => Router.push('/referrer/edit-cv/' + candidate_id + '')} type="primary" icon={<DownloadOutlined />} size="small" />
+      render: (candidate_id) => <div className="Action"><Button style={{marginRight:5}} onClick={() => Router.push('/referrer/edit-cv/' + candidate_id + '')}  icon={<EditOutlined />} size="small" />
       <Popconfirm
         title="Are you sure delete title?"
         onConfirm={() => handleDelete(candidate_id)}
@@ -91,7 +98,7 @@ function MyReferred(props) {
         okText="Yes"
         cancelText="No"
       >
-        <Button style={{ margin: '0 8px' }} type="primary" htmlType="submit" icon={<DeleteTwoTone />} size="small" />
+        <Button style={{ margin: '0 8px' }}  htmlType="submit" icon={<DeleteTwoTone />} size="small" />
       </Popconfirm></div>
     },
     

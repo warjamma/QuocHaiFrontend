@@ -34,10 +34,10 @@ export const adminSideBar = [
 ]
 
 export const referrerSideBar = [
-  {
-    name: 'Bảng điều khiển',
-    url: '/referrer'
-  },
+  // {
+  //   name: 'Bảng điều khiển',
+  //   url: '/referrer'
+  // },
   {
     name: 'Công việc',
     url: '/referrer/job-list'

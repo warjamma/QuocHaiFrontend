@@ -102,7 +102,7 @@ function CreateJob(props) {
 
   const onChange = e => {
     if (e.file.status !== 'uploading') {
-      console.log(e.file, e.fileList);
+      console.log(e.file, e.fileList);  
     }
     if (e.file.status === 'done') {
       console.log(e.file)
@@ -143,14 +143,14 @@ function CreateJob(props) {
                 </Button>
               </Upload>
             </Form.Item>
-            <Form.Item
+            {/* <Form.Item
               label="Tiêu đề"
               name="job_title"
               // rules={[{ required: true, message: 'This field is required !' }]}
               hasFeedback
             >
               <Input />
-            </Form.Item>
+            </Form.Item> */}
 
             <Form.Item
               label="Vị trí"
