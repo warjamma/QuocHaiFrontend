@@ -106,9 +106,13 @@ function EditCV(props) {
   const [fileLink, setFileLink] = useState('');
   const [fileData, setFileData] = useState('');
   const onFinish = async (value) => {
-    value.cv = fileLink;
+    if(fileLink)
+    {
+      value.cv = fileLink;
+    }
     await dispatch(updateCandidate({ ...initForm, ...value }, id)).then(res => {
       if (res.status) {
+        Router.push('/referrer/my-referred');
         return message.success('Update candidate successfully');
       }
       return message.error(res.error);
@@ -187,6 +191,7 @@ function EditCV(props) {
                 onRemove={() => setFileLink('')}
                 onChange={onChange}
                 listType="picture"
+                showUploadList={false}
               >
                 <Button>
                   <UploadOutlined /> Click to upload
@@ -221,10 +226,9 @@ function EditCV(props) {
             <Form.Item
               label="Điện thoại ứng viên"
               name="phone_number"
-              rules={[{ required: true, message: 'Please input your phone number!' }]}
             >
               <Input placeholder="ex: Phone Number" />
-            </Form.Item>.
+            </Form.Item>
 
             <Form.Item {...tailLayout}>
               <Button type="primary" htmlType="submit">
@@ -238,11 +242,11 @@ function EditCV(props) {
                 okText="Yes"
                 cancelText="No"
               >
-                <Button style={{ margin: '0 8px' }} type="primary" htmlType="submit">
+                {/* <Button style={{ margin: '0 8px' }} type="primary" htmlType="submit">
                   Xóa
-                </Button>
+                </Button> */}
               </Popconfirm>
-              <Button onClick={() => Router.push('/referrer/my-referred')} htmlType="button"  >
+              <Button style={{ margin: '0 8px' }}  onClick={() => Router.push('/referrer/my-referred')} htmlType="button"  >
                 Hủy
               </Button>
             </Form.Item>
