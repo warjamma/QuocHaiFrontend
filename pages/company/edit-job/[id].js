@@ -176,14 +176,14 @@ function EditJob(props) {
               </Upload>
             </Form.Item>
 
-            <Form.Item
+            {/* <Form.Item
               label="Tiêu đề"
               name="job_title"
               // rules={[{ required: true, message: 'This field is required !' }]}
               hasFeedback
             >
               <Input />
-            </Form.Item>
+            </Form.Item> */}
 
             <Form.Item
               label="Vị trí"
