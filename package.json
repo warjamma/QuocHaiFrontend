@@ -38,7 +38,7 @@
     "uuid": "^7.0.3",
     "webpack": "^4.42.1"
   },
-  "browser":{
+  "browser": {
     "child_process": false
   }
 }

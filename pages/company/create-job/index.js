@@ -102,7 +102,7 @@ function CreateJob(props) {
 
   const onChange = e => {
     if (e.file.status !== 'uploading') {
-      console.log(e.file, e.fileList);
+      console.log(e.file, e.fileList);  
     }
     if (e.file.status === 'done') {
       console.log(e.file)

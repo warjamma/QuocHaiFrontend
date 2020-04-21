@@ -2,7 +2,7 @@ import React, { Component, useState, useEffect } from 'react';
 import { connect } from 'react-redux'
 import Link from 'next/link'
 import Router from 'next/router';
-import { RedoOutlined, SearchOutlined, DollarCircleOutlined } from '@ant-design/icons';
+import { RedoOutlined, SearchOutlined, DollarCircleOutlined,FileDoneOutlined } from '@ant-design/icons';
 import { Table, Row, Col, Button, Tag, Input, Select } from 'antd';
 import { getListJob } from '../../../containers/referred/actions';
 import { get } from 'lodash';
@@ -31,40 +31,51 @@ const columns = [
     dataIndex: 'company_id',
     render: (text, record, index) => (
       <div className="custom-company" onClick={() => Router.push('/job-detail/'+record.id+'')}>
-        <div className="logo-company">
-          <img src={get(record, 'company.avatar') === null ? '/default-avatar.png' : get(record, 'company.avatar')}/>
+        <div className="logo-company" style={{ width: 100,marginRight: 10}}>
+          <img  style ={{cursor: 'pointer',width: '100%',objectFit: 'cover'}} src={get(record, 'company.avatar') === null ? '/default-avatar.png' : get(record, 'company.avatar')}/>
         </div>
         <div className="info-required">
-          <b className="name-company">{get(record, 'company.name', '')}</b>
-          <div className="job-role">
-            <span>Vị trí tuyển dụng : </span>
-            {
-              record.job_role.map(item => (
-                <Tag color="blue" key={item}>{item}</Tag>
-              ))
-            }
-          </div>
+          <b style={{ cursor: 'pointer'}} className="name-company">{get(record, 'company.name', '')}</b>
           <div className="job-level">
-            <span>Level yêu cầu : </span>
+            <span>Cấp độ:&nbsp;</span>
             {
               record.job_levels.map(item => (
-                <Tag color="blue" key={item}>{item}</Tag>
+                <Tag style={{margin:2, cursor: 'pointer'}} color="blue" key={item}>{item}</Tag>
               ))
             }
           </div>
+          <div className="job-role">
+            <span>Số lượng yêu cầu: {record.vacancy_number} </span>
+          </div>
+          
         </div>
       </div>
     ),
   },
   {
-    title: 'Công việc',
-    dataIndex: 'job_title',
+    title: 'Vị trí',
+    dataIndex: 'company_id',
     render: (text, record, index) => (
-      <div>
-        <Link href={`/job-detail/${record.id}`}><a className="job-title">{get(record, 'job_title', '')}</a></Link>
+      <div className="custom-company" onClick={() => Router.push('/job-detail/'+record.id+'')}>    
+          <div className="job-role">
+            {
+              record.job_role.map(item => (
+                <Tag style={{margin:3, cursor: 'pointer'}} color="blue" key={item}>{item}</Tag>
+              ))
+            }         
+          </div>
       </div>
-    )
+    ),
   },
+  // {
+  //   title: 'Công việc',
+  //   dataIndex: 'job_title',
+  //   render: (text, record, index) => (
+  //     <div>
+  //       <Link href={`/job-detail/${record.id}`}><a className="job-title">{get(record, 'job_title', '')}</a></Link>
+  //     </div>
+  //   )
+  // },
   {
     title: 'Mức thưởng',
     dataIndex: 'reward',
@@ -78,14 +89,15 @@ const columns = [
     render: (text, record, index) => <Tag color="blue">{record.min_salary}$ - {record.max_salary}$</Tag>,
   },
   {
-    title: 'Ứng viên',
+    title: 'Đã ứng tuyển',
     dataIndex: 'vacancy_number',
     align: 'center'
   },
   {
     title: 'Giới thiệu của tôi',
     dataIndex: 'address',
-    align: 'center'
+    align: 'center',
+    render: ()=><div style={{fontSize:23}}><FileDoneOutlined /></div>
   },
 ];
 
