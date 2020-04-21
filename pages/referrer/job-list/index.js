@@ -6,7 +6,6 @@ import { RedoOutlined, SearchOutlined, DollarCircleOutlined } from '@ant-design/
 import { Table, Row, Col, Button, Tag, Input, Select } from 'antd';
 import { getListJob } from '../../../containers/referred/actions';
 import { get } from 'lodash';
-import axios from 'axios';
 
 import './styles.scss'
 
