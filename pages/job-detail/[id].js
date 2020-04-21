@@ -6,7 +6,6 @@ import { getJobById } from '../../containers/referred/actions';
 import Link from 'next/link'
 import axios from 'axios';
 import { get } from 'lodash';
-import './styles.scss'
 import {
     DollarOutlined,
     RightOutlined,
@@ -66,16 +65,15 @@ function jobDetail(props) {
         document.body.removeChild(a);
     }
     return (
-        <div className="job-detail"style={{ padding: 30 }}>
-            {/* <Title level={2}>Job detail</Title> */}
-            <div className="header" style={{backgroud:'#fff',fontWeight:'bold'}}>Job detail</div>
+        <div style={{ padding: 30 }}>
+            <Title level={2}>Job detail</Title>
             <Row gutter={[16, 16]}>
                 <Col span={8} >
                     <div style={{ background: 'white' }}>
                         <img style={{ padding: 'auto', margin: 'auto', display: 'block' }} alt="example" src="https://cdn.itviec.com/employers/fpt-software/logo/w170/mir3HT3xtedbECJY5jVeRRgV/fpt-software-logo.png" />
                         <div style={{ background: 'white', padding: 20 }} >
-                            <Title level={3}>{get(referred, 'job_detail.data.job.company.name')}</Title>
-                            <div>{get(referred, 'job_detail.data.job.company.about')}</div>
+                            <Title level={3}>ROCKSHIP</Title>
+                            <div>The leading provider of software outsourcing services in Vietnam</div>
                             <div ><SettingOutlined />&nbsp;Outsourcing</div>
                             <div ><UsergroupAddOutlined />&nbsp;1000+</div>
                             <div ><FlagOutlined />&nbsp;Vietnam</div>
@@ -91,15 +89,12 @@ function jobDetail(props) {
                 <Col span={16} >
                     <Card className="titileJob">
                         <Title level={3}>{get(referred, 'job_detail.data.job.job_title')}</Title>
-                        {get(referred, 'job_detail.data.job.job_role',[]).map((value,key)=>{
-                            return <Button key={key} style={{ marginRight: 5 }}>{value}</Button>
-                        })}
+                        <Button style={{ marginRight: 5 }}>{get(referred, 'job_detail.data.job.job_role')}</Button>
+                        <Button>Spring</Button>
                         <div style={{ color: '#68ba50' }}><DollarOutlined /> You'll love it</div>
                         <div ><RightOutlined /> FPT Software Đường D1 Phường Tân Phú , District 9, Ho Chi Minh</div>
                         <a style={{ color: '#68ba50', fontSize: '13px', paddingLeft: 10 }}>See map<CaretRightOutlined /></a>
-                        {get(referred, 'job_detail.data.job.locations',[]).map((value,key)=>{
-                            return <div key={key}><RightOutlined /> {value} <a style={{ color: '#68ba50', fontSize: '13px' }}>See map<CaretRightOutlined /></a></div>
-                        })}
+                        <div ><RightOutlined /> Indonesia <a style={{ color: '#68ba50', fontSize: '13px' }}>See map<CaretRightOutlined /></a></div>
                         <div ><CalendarOutlined /> 4 days ago</div>
                         <Button style={get(profile, 'data.employer.id') ? ({ visibility: "hidden" }) : ({ float: 'left', marginRight: 5, width: '40%', display: 'block' })} type="primary" onClick={() => Router.push(`/referrer/upload-cv/${id}`)} block>Giới thiệu ứng viên</Button>
                         <Button onClick={download} style={{ float: 'left', width: '40%' }} type="primary" block>Dowload JD</Button>
@@ -186,7 +181,7 @@ function jobDetail(props) {
     );
 }
 function mapStateToProps(state) {
-    console.log(state);
+    //console.log(state);
     const { referred, profile } = state
     return { referred, profile }
 }
