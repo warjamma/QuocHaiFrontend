@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Table, Tag, Button, InputNumber, payload, Form, Row, Popconfirm, Col, Input, Select, Typography, Upload, message, Card, Alert, Text } from 'antd';
+import { Table, Tag, Button,InputNumber,payload,Form,Row,Popconfirm, Col, Input,Select,Typography, Upload, message,Card,Alert,Text} from 'antd';
 import Router, { useRouter } from 'next/router';
 import { UploadOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
-import { updateJob, getJobById, deleteJob } from '../../../containers/company/action';
+import { updateJob, getJobById,deleteJob } from '../../../containers/company/action';
 import { uploadRequest } from '../../../containers/referred/actions';
 import './styles.scss';
 import { get } from 'lodash';
@@ -55,7 +55,6 @@ const initForm = {
   jd_files: ''
 }
 const role = 'Account Management, Administration, Backend, Branding, Business Analyst, Business Development, CEO, CFO, CMO, Consultant, Content Creator, COO, CTO, Customer Service, Data Analyst, Designer, Developer, DevOps, Digital Marketing, Engineering, Finace/Accounting, Frontend, Fullstack, Game, General management, HR, HSE, Import - Export, Logistic, maintenance, Management, Market Research, marketing, Merchandising, Mobile, Office Management, Operation Management, Operations, Planning, Product Management, Production, Project Management, Public Relation, QA/QC, Quality Control, Recruitment, Research & Development, Researcher, Sales, Scrum Master, Software Architect, Software Development, Supply Chain, Teacher, Techical Sales, Tester, Traditional Marketing, Trainer'
-const language = 'Java, JavaScript, Reactjs, Vuejs, Angular, .Net, Nodejs, ObjectC, Swift, Kotlin, Python, PHP, MySQL, HTML/ CSS, SQL, C#, C++, Spring, AWS, Linux, Cocos2dx, Unity, ASP.NET, Docker, Ruby'
 
 const layout = {
   labelCol: { span: 18 },
@@ -78,12 +77,10 @@ function EditJob(props) {
   const [fileLink, setFileLink] = useState('');
   const [fileData, setFileData] = useState('');
   const onFinish = async (value) => {
-    if(fileLink){
-      value.jd_files = fileLink;
-    }
+    value.jd_files = fileLink;
     await dispatch(updateJob({ ...initForm, ...value }, id)).then(res => {
       if (res.status) {
-        return message.success('Update Job successfully').then(res=>Router.push('/company/job-list'));
+        return message.success('Update Job successfully');         
       }
       return message.error(res.error);
     })
@@ -152,7 +149,6 @@ function EditJob(props) {
               min_salary: get(referred, 'job_detail.data.job.min_salary', []),
               max_salary: get(referred, 'job_detail.data.job.max_salary', []),
               reward: get(referred, 'job_detail.data.job.reward', []),
-              candidate_benefit: get(referred, 'job_detail.data.job.candidate_benefit', []),
             }}
             {...layout}
             name="basic"
@@ -168,7 +164,6 @@ function EditJob(props) {
                 onRemove={() => setFileLink('')}
                 onChange={onChange}
                 listType="picture"
-                showUploadList={false}
               >
                 <Button>
                   <UploadOutlined /> Click to upload
@@ -179,7 +174,7 @@ function EditJob(props) {
             <Form.Item
               label="Tiêu đề"
               name="job_title"
-              // rules={[{ required: true, message: 'This field is required !' }]}
+              rules={[{ required: true, message: 'This field is required !' }]}
               hasFeedback
             >
               <Input />
@@ -194,21 +189,6 @@ function EditJob(props) {
               <Select mode="multiple" style={{ width: '100%' }}>
                 {
                   role.split(', ')
-                    .map(item => (
-                      <Select.Option key={item} value={item}>{item}</Select.Option>
-                    ))
-                }
-              </Select>
-            </Form.Item>
-            <Form.Item
-              label="Ngôn ngữ"
-              hasFeedback
-              //name="language"
-              rules={[{ required: true, message: 'This field is required !' }]}
-            >
-              <Select mode="tags" style={{ width: '100%' }}>
-                {
-                  language.split(', ')
                     .map(item => (
                       <Select.Option key={item} value={item}>{item}</Select.Option>
                     ))
@@ -331,15 +311,12 @@ function EditJob(props) {
                 parser={value => value.replace(/\$\s?|(,*)/g, '')}
               />
             </Form.Item>
-            <Form.Item name="candidate_benefit" label="Phúc lợi">
-              <Input.TextArea />
-            </Form.Item>
             <Form.Item style={{ marginTop: 20 }}>
-              <Button  style={{ margin: '0 8px' }} type="primary" htmlType="submit">
+              <Button type="primary" htmlType="submit">
                 Cập nhật
               </Button>
 
-              {/* <Popconfirm
+              <Popconfirm
                 title="Are you sure delete title?"
                 onConfirm={() => handleDelete(get(referred, 'job_detail.data.job.id', []))}
                 onCancel={cancel}
@@ -349,7 +326,7 @@ function EditJob(props) {
                 <Button style={{ margin: '0 8px' }} type="primary" htmlType="submit">
                   Xóa
                 </Button>
-              </Popconfirm> */}
+              </Popconfirm>
               <Button onClick={() => Router.push('/company/job-list')} htmlType="button"  >
                 Quay lại
               </Button>
