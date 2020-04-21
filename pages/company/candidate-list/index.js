@@ -136,7 +136,7 @@ function CandidateList (props) {
       dataIndex: 'job',
       render: (text, record, index) => (
         <div>
-          <Link href={`/job-detail/${record.job.id}`}><a>{get(record, 'job', {}).job_title}</a></Link>
+          <Link href="/job-detail/[id]" as={`/job-detail/${record.job.id}`}><a>{get(record, 'job', {}).job_title}</a></Link>
         </div>
       )
     },
