@@ -9,7 +9,6 @@ import { get } from 'lodash';
 import moment from 'moment';
 import './styles.scss'
 import Router from 'next/router';
-import { reset } from 'nodemon';
 
 const { Option } = Select;
 const initQuery = {
