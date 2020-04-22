@@ -102,6 +102,7 @@ function UploadCV(props) {
   const [fileData, setFileData] = useState([]);
   const onFinish = async (value) => {
     value.cv = fileLink;
+    value.phone_number=initForm.phone_number;
     await dispatch(createCandidate({ ...initForm, ...value },id )).then(res => {
       if (res.status) {
         return message.success('Create candidate successfully').then(() => Router.push(`/job-detail/${id}`));
