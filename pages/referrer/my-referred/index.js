@@ -6,7 +6,7 @@ import { Table, Tag, Button, Popconfirm, Form, Row, Col, message, Input, Select,
 import { getListReferred, deleteCandidate } from '../../../containers/referred/actions';
 import { getAllCompany } from '../../../containers/company/action';
 import renderColorTag from '../../../ultils/renderColorStatus';
-import { get } from 'lodash';
+import { get, debounce } from 'lodash';
 import moment from 'moment';
 import './styles.scss'
 import Router from 'next/router';

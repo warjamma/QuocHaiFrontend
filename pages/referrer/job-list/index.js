@@ -8,7 +8,7 @@ import { getListJob } from '../../../containers/referred/actions';
 import { getAllCompany } from '../../../containers/company/action';
 import { getAllJobType } from '../../../containers/job/actions';
 
-import { get } from 'lodash';
+import { get, debounce } from 'lodash';
 
 import './styles.scss'
 
