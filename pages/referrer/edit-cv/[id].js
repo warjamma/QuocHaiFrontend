@@ -165,7 +165,8 @@ function EditCV(props) {
     onRemove: () => setFileLink(''),
     multiple: true,
     listType: "picture",
-    accept: ".pdf"
+    accept: ".pdf",
+    customRequest: dummyRequest
   };
 
   return (

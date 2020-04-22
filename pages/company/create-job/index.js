@@ -110,7 +110,8 @@ function CreateJob(props) {
     onRemove: () => setFileLink(''),
     multiple: true,
     listType: "picture",
-    accept: ".pdf"
+    accept: ".pdf",
+    customRequest: dummyRequest
   };
 
   return (
