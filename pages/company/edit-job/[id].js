@@ -13,47 +13,7 @@ import { get } from 'lodash';
 EditJob.propTypes = {
 
 };
-const initForm = {
-  job_title: "",
-  job_levels: [],
-  job_role: [],
-  locations: [],
-  min_salary: null,
-  max_salary: null,
-  vacancy_number: null,
-  responsibility: "none",
-  expectation: "none",
-  candidate_benefit: "none",
-  priority: "none",
-  note: "none",
-  education: "University",
-  language: [
-    {
-      field: "English",
-      years: "3 years"
-    }
-  ],
-  industry_knowledge: [
-    {
-      field: "",
-      years: "1 years"
-    }
-  ],
-  skill_requirement: [
-    {
-      field: "",
-      years: "1 years"
-    }
-  ],
-  report_to: "",
-  team_size: null,
-  interview_process: "",
-  email_cc: "",
-  use_test: true,
-  reward: null,
-  currency: "",
-  jd_files: ''
-}
+
 const role = 'Account Management, Administration, Backend, Branding, Business Analyst, Business Development, CEO, CFO, CMO, Consultant, Content Creator, COO, CTO, Customer Service, Data Analyst, Designer, Developer, DevOps, Digital Marketing, Engineering, Finace/Accounting, Frontend, Fullstack, Game, General management, HR, HSE, Import - Export, Logistic, maintenance, Management, Market Research, marketing, Merchandising, Mobile, Office Management, Operation Management, Operations, Planning, Product Management, Production, Project Management, Public Relation, QA/QC, Quality Control, Recruitment, Research & Development, Researcher, Sales, Scrum Master, Software Architect, Software Development, Supply Chain, Teacher, Techical Sales, Tester, Traditional Marketing, Trainer'
 const language = 'Java, JavaScript, Reactjs, Vuejs, Angular, .Net, Nodejs, ObjectC, Swift, Kotlin, Python, PHP, MySQL, HTML/ CSS, SQL, C#, C++, Spring, AWS, Linux, Cocos2dx, Unity, ASP.NET, Docker, Ruby'
 
@@ -73,10 +33,9 @@ function EditJob(props) {
   const { dispatch, referred } = props
   const router = useRouter();
   const { id } = router.query;
-  console.log('id', id)
   const initForm = get(referred, `job_detail.data.job`, []);
   const [fileLink, setFileLink] = useState('');
-  const [fileData, setFileData] = useState('');
+  const [fileData, setFileData] = useState([]);
   const onFinish = async (value) => {
     if(fileLink){
       value.jd_files = fileLink;
@@ -102,20 +61,23 @@ function EditJob(props) {
     console.log('Failed:', errorInfo);
   };
   const onChange = e => {
-    if (e.file.status !== 'uploading') {
-      console.log(e.file, e.fileList);
-    }
-    if (e.file.status === 'done') {
-      console.log(e.file)
+    let fileList = [...e.fileList];
+    const last = fileList.slice(-1);
+    setFileData(last);
+    if(e.file.status === 'done') {
       onRequest(e.file, e.file.name);
-    } else if (e.file.status === 'error') {
-      message.error(`${e.file.name} file upload failed.`);
     }
   };
+  
   useEffect(() => {
-    console.log('vo day roi')
-    dispatch(getJobById({ id })).then(res => form.resetFields());
+    dispatch(getJobById({ id })).then(res => {
+      const { data, status } = res;
+      if (status) {
+        form.setFieldsValue(data.data.job)
+      }
+    });
   }, []);
+
   const handleDelete = async (job_id) => {
     console.log('Received values of fors', job_id);
     await dispatch(deleteJob(job_id)).then(res => {
@@ -126,10 +88,20 @@ function EditJob(props) {
       return message.error(res.error);
     })
   };
+
   function cancel(e) {
     console.log(e);
     message.error('Cance');
   }
+
+  const setting = {
+    onChange: onChange,
+    onRemove: () => setFileLink(''),
+    multiple: true,
+    listType: "picture",
+    accept: ".pdf"
+  };
+
   return (
     <div className="uploadcv" style={{ backgroundColor: 'white' }}>
       <div className="header">
@@ -141,19 +113,6 @@ function EditJob(props) {
         <Col span={6}>
           <Form
             form={form}
-            initialValues={{
-              job_title: get(referred, 'job_detail.data.job.job_title', []),
-              job_role: get(referred, 'job_detail.data.job.job_role', []),
-              job_levels: get(referred, 'job_detail.data.job.job_levels', []),
-              locations: get(referred, 'job_detail.data.job.locations', []),
-              vacancy_number: get(referred, 'job_detail.data.job.vacancy_number', []),
-              team_size: get(referred, 'job_detail.data.job.team_size', []),
-              currency: get(referred, 'job_detail.data.job.currency', []),
-              min_salary: get(referred, 'job_detail.data.job.min_salary', []),
-              max_salary: get(referred, 'job_detail.data.job.max_salary', []),
-              reward: get(referred, 'job_detail.data.job.reward', []),
-              candidate_benefit: get(referred, 'job_detail.data.job.candidate_benefit', []),
-            }}
             {...layout}
             name="basic"
             onFinish={onFinish}
@@ -162,13 +121,8 @@ function EditJob(props) {
           >
             <Form.Item valuePropName="file">
               <Upload
-                customRequest={dummyRequest}
-                accept=".pdf"
-                name="jd_files"
-                onRemove={() => setFileLink('')}
-                onChange={onChange}
-                listType="picture"
-                showUploadList={false}
+                {...setting}
+                fileList={fileData}
               >
                 <Button>
                   <UploadOutlined /> Click to upload
@@ -203,7 +157,7 @@ function EditJob(props) {
             <Form.Item
               label="Ngôn ngữ"
               hasFeedback
-              //name="language"
+              name="language"
               rules={[{ required: true, message: 'This field is required !' }]}
             >
               <Select mode="tags" style={{ width: '100%' }}>
@@ -287,31 +241,28 @@ function EditJob(props) {
               style={{ width: '100%' }}
             >
               <Input.Group className="flex-input" compact>
-                {/* <span className="content">Từ</span> */}
                 <Form.Item
                   label="Từ"
                   hasFeedback
                   name="min_salary"
+                  style={{ width: '100%' }}
                   rules={[{ required: true, message: 'This field is required !' }]}
                 >
                   <InputNumber
-
-                    style={{ width: '50%', marginRight: 5 }}
-                    //defaultValue={1000}
+                    style={{ width: '100%' }}
                     formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                     parser={value => value.replace(/\$\s?|(,*)/g, '')}
                   />
                 </Form.Item>
-                {/* <span className="content">đến</span> */}
                 <Form.Item
                   label="Đến"
                   hasFeedback
                   name="max_salary"
+                  style={{ width: '100%' }}
                   rules={[{ required: true, message: 'This field is required !' }]}
                 >
                   <InputNumber
-                    style={{ width: '50%' }}
-                    //defaultValue={1000}
+                    style={{ width: '100%' }}
                     formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                     parser={value => value.replace(/\$\s?|(,*)/g, '')}
                   />

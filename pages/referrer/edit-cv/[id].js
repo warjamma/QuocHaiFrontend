@@ -104,7 +104,7 @@ function EditCV(props) {
   console.log('id', id)
   const initForm = get(referred, `candidate_detail.data.candidate`, []);
   const [fileLink, setFileLink] = useState('');
-  const [fileData, setFileData] = useState('');
+  const [fileData, setFileData] = useState([]);
   const onFinish = async (value) => {
     if(fileLink)
     {
@@ -132,20 +132,19 @@ function EditCV(props) {
     console.log('Failed:', errorInfo);
   };
   const onChange = e => {
-    if (e.file.status !== 'uploading') {
-      console.log(e.file, e.fileList);
-    }
-    if (e.file.status === 'done') {
-      console.log(e.file)
+    let fileList = [...e.fileList];
+    const last = fileList.slice(-1);
+    setFileData(last);
+    if(e.file.status === 'done') {
       onRequest(e.file, e.file.name);
-    } else if (e.file.status === 'error') {
-      message.error(`${e.file.name} file upload failed.`);
     }
   };
+
   useEffect(() => {
     console.log('vo day roi')
     dispatch(getCandidateById({ id })).then(res => form.resetFields());
   }, []);
+
   const handleDelete = async (candidate_id) => {
     console.log('Received values of fors', candidate_id);
     await dispatch(deleteCandidate(candidate_id)).then(res => {
@@ -160,6 +159,15 @@ function EditCV(props) {
     console.log(e);
     message.error('Cance');
   }
+
+  const setting = {
+    onChange: onChange,
+    onRemove: () => setFileLink(''),
+    multiple: true,
+    listType: "picture",
+    accept: ".pdf"
+  };
+
   return (
     <div className="EditCV" style={{ backgroundColor: 'white' }}>
       <div className="header">
@@ -169,6 +177,14 @@ function EditCV(props) {
         {/* {get(referred, 'candidate_detail', [])} */}
         <Col span={18} ><iframe style={{ width: '100%', height: '100vh' }} id="input" value={fileLink} src={fileLink == '' ? (get(referred, 'candidate_detail.data.candidate.cv', [])==''?(fileLink):(get(referred, 'candidate_detail.data.candidate.cv', []))) : (fileLink)}></iframe></Col>
         <Col span={6}>
+          <Upload
+            {...setting}
+            fileList={fileData}
+          >
+            <Button>
+              <UploadOutlined /> Click to upload
+            </Button>
+          </Upload>
           <Form
             form={form}
             initialValues={{
@@ -183,22 +199,6 @@ function EditCV(props) {
             onFinishFailed={onFinishFailed}
             layout="vertical"
           >
-            <Form.Item valuePropName="file">
-              <Upload
-                customRequest={dummyRequest}
-                accept=".pdf"
-                name="cv"
-                onRemove={() => setFileLink('')}
-                onChange={onChange}
-                listType="picture"
-                showUploadList={false}
-              >
-                <Button>
-                  <UploadOutlined /> Click to upload
-                </Button>
-              </Upload>
-            </Form.Item>
-
             <Form.Item
               label="Tên ứng viên"
               name="name"

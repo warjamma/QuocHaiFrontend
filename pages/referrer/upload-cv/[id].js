@@ -99,7 +99,7 @@ function UploadCV(props) {
   const { id } = router.query;
 
   const [fileLink, setFileLink] = useState('');
-  const [fileData, setFileData] = useState('');
+  const [fileData, setFileData] = useState([]);
   const onFinish = async (value) => {
     value.cv = fileLink;
     await dispatch(createCandidate({ ...initForm, ...value },id )).then(res => {
@@ -122,16 +122,22 @@ function UploadCV(props) {
   const onFinishFailed = errorInfo => {
     console.log('Failed:', errorInfo);
   };
+  
   const onChange = e => {
-    if (e.file.status !== 'uploading') {
-      console.log(e.file, e.fileList);
-    }
-    if (e.file.status === 'done') {
-      console.log(e.file)
+    let fileList = [...e.fileList];
+    const last = fileList.slice(-1);
+    setFileData(last);
+    if(e.file.status === 'done') {
       onRequest(e.file, e.file.name);
-    } else if (e.file.status === 'error') {
-      message.error(`${e.file.name} file upload failed.`);
     }
+  };
+
+  const setting = {
+    onChange: onChange,
+    onRemove: () => setFileLink(''),
+    multiple: true,
+    listType: "picture",
+    accept: ".pdf"
   };
 
   return (
@@ -142,6 +148,14 @@ function UploadCV(props) {
       <Row gutter={[16, 16]}>
         <Col span={18} ><iframe style={{ width: '100%', height: '100vh' }} id="input" value={fileLink} src={fileLink}></iframe></Col>
         <Col span={6}>
+          <Upload
+            {...setting}
+            fileList={fileData}
+          >
+            <Button>
+              <UploadOutlined /> Click to upload
+            </Button>
+          </Upload>
           <Form
             {...layout}
             name="basic"
@@ -150,22 +164,6 @@ function UploadCV(props) {
             onFinishFailed={onFinishFailed}
             layout="vertical"
           >
-            <Form.Item valuePropName="file">
-              <Upload
-                customRequest={dummyRequest}
-                accept=".pdf"
-                name="cv"
-                onRemove={() => setFileLink('')}
-                onChange={onChange}
-                listType="picture"
-                showUploadList={false}
-              >
-                <Button>
-                  <UploadOutlined /> Click to upload
-                </Button>
-              </Upload>
-            </Form.Item>
-
             <Form.Item
               label="Tên ứng viên"
               name="name"

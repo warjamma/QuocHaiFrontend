@@ -22,6 +22,7 @@ export function getJobById(params) {
     try {
       const { data } = await api.sendRequestWithToken('get', `/jobs/${params.id}`);
       dispatch({ type: "GET_JOB_BY_ID_SUCCESS", data: data });
+      return { status: true, data }
     } catch (error) {
       const { data } = error.response
       return dispatch({ type: "GET_JOB_BY_ID_FAILURE", error: data.message });

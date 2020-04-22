@@ -20,16 +20,11 @@ const initForm = {
   vacancy_number: null,
   responsibility: "none",
   expectation: "none",
-  candidate_benefit: "none",
+  candidate_benefit: "",
   priority: "none",
   note: "none",
   education: "University",
-  language: [
-    {
-      field: "English",
-      years: "3 years"
-    }
-  ],
+  language: [],
   industry_knowledge: [
     {
       field: "",
@@ -51,6 +46,7 @@ const initForm = {
   currency: "",
   jd_files: ''
 }
+
 const role = 'Account Management, Administration, Backend, Branding, Business Analyst, Business Development, CEO, CFO, CMO, Consultant, Content Creator, COO, CTO, Customer Service, Data Analyst, Designer, Developer, DevOps, Digital Marketing, Engineering, Finace/Accounting, Frontend, Fullstack, Game, General management, HR, HSE, Import - Export, Logistic, maintenance, Management, Market Research, marketing, Merchandising, Mobile, Office Management, Operation Management, Operations, Planning, Product Management, Production, Project Management, Public Relation, QA/QC, Quality Control, Recruitment, Research & Development, Researcher, Sales, Scrum Master, Software Architect, Software Development, Supply Chain, Teacher, Techical Sales, Tester, Traditional Marketing, Trainer'
 const language = 'Java, JavaScript, Reactjs, Vuejs, Angular, .Net, Nodejs, ObjectC, Swift, Kotlin, Python, PHP, MySQL, HTML/ CSS, SQL, C#, C++, Spring, AWS, Linux, Cocos2dx, Unity, ASP.NET, Docker, Ruby'
 
@@ -74,7 +70,7 @@ function CreateJob(props) {
   const { id } = router.query;
 
   const [fileLink, setFileLink] = useState('');
-  const [fileData, setFileData] = useState('');
+  const [fileData, setFileData] = useState([]);
   const onFinish = async (value) => {
     value.jd_files = fileLink;
     await dispatch(createJob({ ...initForm, ...value }, id)).then(res => {
@@ -101,16 +97,21 @@ function CreateJob(props) {
   };
 
   const onChange = e => {
-    if (e.file.status !== 'uploading') {
-      console.log(e.file, e.fileList);
-    }
-    if (e.file.status === 'done') {
-      console.log(e.file)
+    let fileList = [...e.fileList];
+    const last = fileList.slice(-1);
+    setFileData(last);
+    if(e.file.status === 'done') {
       onRequest(e.file, e.file.name);
-    } else if (e.file.status === 'error') {
-      message.error(`${e.file.name} file upload failed.`);
     }
-  }
+  };
+
+  const setting = {
+    onChange: onChange,
+    onRemove: () => setFileLink(''),
+    multiple: true,
+    listType: "picture",
+    accept: ".pdf"
+  };
 
   return (
     <div className="CreateJob" style={{ backgroundColor: 'white' }}>
@@ -120,29 +121,22 @@ function CreateJob(props) {
       <Row gutter={[16, 16]}>
         <Col span={18} ><iframe style={{ width: '100%', height: '100vh' }} id="input" value={fileLink} src={fileLink}></iframe></Col>
         <Col span={6}>
+          <Upload
+            {...setting}
+            fileList={fileData}
+          >
+            <Button>
+              <UploadOutlined /> Click to upload
+            </Button>
+          </Upload>
           <Form
             {...layout}
             name="basic"
-            // initialValues={{ remember: true }}
+            initialValues={{ candidate_benefit: '' }}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             layout="vertical"
           >
-            <Form.Item name='jd_files' valuePropName="file">
-              <Upload
-                customRequest={dummyRequest}
-                accept=".pdf"
-                name="jd_files"
-                onRemove={() => setFileLink('')}
-                onChange={onChange}
-                listType="picture"
-                showUploadList={false}
-              >
-                <Button>
-                  <UploadOutlined /> Click to upload
-                </Button>
-              </Upload>
-            </Form.Item>
             <Form.Item
               label="Tiêu đề"
               name="job_title"
@@ -170,7 +164,7 @@ function CreateJob(props) {
             <Form.Item
               label="Ngôn ngữ"
               hasFeedback
-              //name="language"
+              name="language"
               rules={[{ required: true, message: 'This field is required !' }]}
             >
               <Select mode="tags" style={{ width: '100%' }}>
@@ -257,34 +251,28 @@ function CreateJob(props) {
               style={{ width: '100%' }}
             >
               <Input.Group className="flex-input" compact>
-                {/* <span className="content">Từ</span> */}
                 <Form.Item
                   label="Từ"
                   hasFeedback
                   name="min_salary"
                   rules={[{ required: true, message: 'This field is required !' }]}
-                  // style={{ width: '100%' }}
+                  style={{ width: '100%' }}
                 >
                   <InputNumber
-
-                    // style={{ width: '100%' }}
-                    style={{ width: '50%' }}
-                    //defaultValue={1000}
+                    style={{ width: '100%' }}
                     formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                     parser={value => value.replace(/\$\s?|(,*)/g, '')}
                   />
                 </Form.Item>
-                {/* <span className="content">đến</span> */}
                 <Form.Item
                   label="Đến"
                   hasFeedback
                   name="max_salary"
                   rules={[{ required: true, message: 'This field is required !' }]}
-                  // style={{ width: '100%' }}
+                  style={{ width: '100%' }}
                 >
                   <InputNumber
-                    style={{ width: '50%' }}
-                    //defaultValue={1000}
+                    style={{ width: '100%' }}
                     formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                     parser={value => value.replace(/\$\s?|(,*)/g, '')}
                   />
