@@ -10,6 +10,10 @@ export default (status) => {
       return 'green';
     case 'probation':
       return 'green';
+    case 'interview_failed':
+      return 'red';
+    case 'probation_failed':
+      return 'red';
     default:
       return 'orange';
   }

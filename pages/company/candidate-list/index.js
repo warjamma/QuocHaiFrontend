@@ -58,9 +58,10 @@ function CandidateList (props) {
         setStatusIndex(e);
       }}
     >
-      <Option value="on_board">Accept</Option>
-      <Option value="reject">Reject</Option>
-      <Option value="probation">Probation</Option>
+      <Option value="on_board">Onboarding</Option>
+      <Option value="interview_failed">Interview failed</Option>
+      <Option value="probation">Probation passed</Option>
+      <Option value="probation_failed">Probation failed</Option>
     </Select>;
     return (
       <td {...restProps}>
@@ -109,7 +110,7 @@ function CandidateList (props) {
       const row = await form.validateFields();
       console.log(row)
       const body = {};
-      if(row.status === 'reject') {
+      if(row.status === 'interview_failed' || row.status === 'probation_failed') {
         body.failing_reason = row.failing_reason;
       } else {
         row.status === 'on_board' ? body.on_boarding_at = `${moment(row.on_boarding_at).format('YYYY-MM-DDTHH:mm:ss')}Z`
@@ -209,7 +210,7 @@ function CandidateList (props) {
             <Popconfirm placement="topRight" title={
               <div>
                 {
-                  (statusIndex || record.status) === 'reject' ? (
+                  (statusIndex === 'interview_failed' || statusIndex === 'probation_failed')  ? (
                     <Form.Item
                       name="failing_reason"
                       style={{
