@@ -89,7 +89,7 @@ function JobList(props) {
     },
     {
       title: 'Số ứng viên hiện có',
-      dataIndex: 'candidate',
+      dataIndex: 'current_applied',
       align: 'center'
     },
     {

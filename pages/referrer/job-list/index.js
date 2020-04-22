@@ -1,10 +1,13 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { Component, useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux'
 import Link from 'next/link'
 import Router from 'next/router';
 import { RedoOutlined, SearchOutlined, DollarCircleOutlined,FileDoneOutlined } from '@ant-design/icons';
-import { Table, Row, Col, Button, Tag, Input, Select } from 'antd';
+import { Table, Row, Col, Button, Tag, Input, Select, Spin } from 'antd';
 import { getListJob } from '../../../containers/referred/actions';
+import { getAllCompany } from '../../../containers/company/action';
+import { getAllJobType } from '../../../containers/job/actions';
+
 import { get } from 'lodash';
 
 import './styles.scss'
@@ -67,15 +70,6 @@ const columns = [
       </div>
     ),
   },
-  // {
-  //   title: 'Công việc',
-  //   dataIndex: 'job_title',
-  //   render: (text, record, index) => (
-  //     <div>
-  //       <Link href={`/job-detail/${record.id}`}><a className="job-title">{get(record, 'job_title', '')}</a></Link>
-  //     </div>
-  //   )
-  // },
   {
     title: 'Mức thưởng',
     dataIndex: 'reward',
@@ -115,6 +109,9 @@ function JobList (props) {
   const { referred, dispatch } = props
   const [query, setQuery] = useState(initQuery);
   const [total, setTotal] = useState(null);
+  const [listCompany, setListCompany] = useState([]);
+  const [fetching, setFetching] = useState(false);
+  const [listJobType, setListJobType] = useState([]);
 
   const changeQuery = (key, value) => {
     let clone = { ...query };
@@ -144,8 +141,33 @@ function JobList (props) {
 
   useEffect(() => {
     dispatch(getListJob(query));
+    fetchCompany('');
+    fetchJobType('');
   }, []);
   
+  const fetchCompany = value => {
+    setListCompany([]);
+    setFetching(true);
+    dispatch(getAllCompany({offset: 0, limit: 50, key_word: value})).then(res => {
+      if (res.status) {
+        setListCompany(get(res, 'data.items.company_name'));
+        setFetching(false);
+      }
+    });
+  };
+
+  const fetchJobType = value => {
+    setListJobType([]);
+    setFetching(true);
+    dispatch(getAllJobType({offset: 0, limit: 50, key_word: value})).then(res => {
+      if (res.status) {
+        setListJobType(get(res, 'data.items.job_type'));
+        setFetching(false);
+      }
+    });
+  };
+
+  const delayedQuery = useRef(debounce((e, func) => func(e), 800)).current;
 
   return (
     <div className="jobListContainer">
@@ -169,13 +191,14 @@ function JobList (props) {
                 style={{ width: '100%' }}
                 placeholder="Công ty"
                 optionFilterProp="children"
-                defaultValue=""
-                filterOption={(input, option) =>
-                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                }
+                notFoundContent={fetching ? <Spin size="small" /> : null}
+                filterOption={false}
+                onSearch={(e) => delayedQuery(e, fetchCompany)}
                 value={query.company}
               >
-                <Option value="">Tất cả</Option>
+                {listCompany.map((d, index) => (
+                  <Option value={d} key={index}>{d}</Option>
+                ))}
               </Select>
             </Col>
             <Col span={6}>
@@ -187,12 +210,14 @@ function JobList (props) {
                 style={{ width: '100%' }}
                 placeholder="Chọn loại công việc"
                 optionFilterProp="children"
-                filterOption={(input, option) =>
-                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                }
+                notFoundContent={fetching ? <Spin size="small" /> : null}
+                filterOption={false}
+                onSearch={(e) => delayedQuery(e, fetchJobType)}
                 value={query.job_type}
               >
-                <Option value="">Tất cả</Option>
+                {listJobType.map((d, index) => (
+                  <Option value={d} key={index}>{d}</Option>
+                ))}
               </Select>
             </Col>
           </Row>

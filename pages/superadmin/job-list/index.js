@@ -1,11 +1,12 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { Component, useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux'
 import Link from 'next/link'
 import { RedoOutlined, SearchOutlined, QuestionCircleOutlined, CheckOutlined } from '@ant-design/icons';
-import { Table, Row, Col, Button, Tag, Input, Select, Tabs, Modal, Tooltip } from 'antd';
+import { Table, Row, Col, Button, Tag, Input, Select, Tabs, Modal, Tooltip, Spin } from 'antd';
 import { getListJob } from '../../../containers/referred/actions';
-import { actionApproveJob, actionRejectJob } from '../../../containers/job/actions';
-import { get } from 'lodash';
+import { actionApproveJob, actionRejectJob, getAllJobType } from '../../../containers/job/actions';
+import { getAllCompany } from '../../../containers/company/action';
+import { get, debounce } from 'lodash';
 import Router, { useRouter } from 'next/router';
 
 import './styles.scss'
@@ -44,6 +45,9 @@ function JobList (props) {
   const [visibleModal, toggleModal] = useState(false);
   const [reason, setReason] = useState('');
   const [selectedJob, setSelectedJob] = useState(null);
+  const [listCompany, setListCompany] = useState([]);
+  const [fetching, setFetching] = useState(false);
+  const [listJobType, setListJobType] = useState([]);
 
   const columns = [
     {
@@ -172,7 +176,7 @@ function JobList (props) {
   }
 
   const rejectJob = async () => {
-    await dispatch(actionRejectJob(selectedJob, {reason: reason}));
+    await dispatch(actionRejectJob(selectedJob, {reject_reason: reason}));
     toggleModal(false);
     setReason('');
     dispatch(getListJob(query));
@@ -185,7 +189,33 @@ function JobList (props) {
 
   useEffect(() => {
     dispatch(getListJob(query));
+    fetchCompany('');
+    fetchJobType('');
   }, []);
+  
+  const fetchCompany = value => {
+    setListCompany([]);
+    setFetching(true);
+    dispatch(getAllCompany({offset: 0, limit: 50, key_word: value})).then(res => {
+      if (res.status) {
+        setListCompany(get(res, 'data.items.company_name'));
+        setFetching(false);
+      }
+    });
+  };
+
+  const fetchJobType = value => {
+    setListJobType([]);
+    setFetching(true);
+    dispatch(getAllJobType({offset: 0, limit: 50, key_word: value})).then(res => {
+      if (res.status) {
+        setListJobType(get(res, 'data.items.job_type'));
+        setFetching(false);
+      }
+    });
+  };
+
+  const delayedQuery = useRef(debounce((e, func) => func(e), 800)).current;
 
   return (
     <div className="jobListContainer">
@@ -209,12 +239,14 @@ function JobList (props) {
                 style={{ width: '100%' }}
                 placeholder="Công ty"
                 optionFilterProp="children"
+                notFoundContent={fetching ? <Spin size="small" /> : null}
+                filterOption={false}
+                onSearch={(e) => delayedQuery(e, fetchCompany)}
                 value={query.company}
-                filterOption={(input, option) =>
-                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                }
               >
-                <Option value="">Tất cả</Option>
+                {listCompany.map((d, index) => (
+                  <Option value={d} key={index}>{d}</Option>
+                ))}
               </Select>
             </Col>
             <Col span={6}>
@@ -226,12 +258,14 @@ function JobList (props) {
                 style={{ width: '100%' }}
                 placeholder="Chọn loại công việc"
                 optionFilterProp="children"
-                filterOption={(input, option) =>
-                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                }
+                notFoundContent={fetching ? <Spin size="small" /> : null}
+                filterOption={false}
+                onSearch={(e) => delayedQuery(e, fetchJobType)}
                 value={query.job_type}
               >
-                <Option value="">Tất cả</Option>
+                {listJobType.map((d, index) => (
+                  <Option value={d} key={index}>{d}</Option>
+                ))}
               </Select>
             </Col>
           </Row>
@@ -247,7 +281,7 @@ function JobList (props) {
           activeKey={activeTab}
           type="card"
         >
-          {[{title: 'Pending'}, {title: 'Approved'}, {title: 'Denied'}].map(pane => (
+          {[{title: 'Pending'}, {title: 'Accepted'}, {title: 'Reject'}].map(pane => (
             <Tabs.TabPane tab={pane.title} key={pane.title}>
               <Table
                 bordered

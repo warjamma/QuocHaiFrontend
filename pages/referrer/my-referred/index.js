@@ -1,9 +1,10 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { Component, useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import Link from 'next/link';
 import { RedoOutlined, SearchOutlined, DownloadOutlined, DeleteTwoTone ,EditOutlined} from '@ant-design/icons';
-import { Table, Tag, Button, Popconfirm, Form, Row, Col, message, Input, Select, Typography } from 'antd';
+import { Table, Tag, Button, Popconfirm, Form, Row, Col, message, Input, Select, Spin } from 'antd';
 import { getListReferred, deleteCandidate } from '../../../containers/referred/actions';
+import { getAllCompany } from '../../../containers/company/action';
 import renderColorTag from '../../../ultils/renderColorStatus';
 import { get } from 'lodash';
 import moment from 'moment';
@@ -106,6 +107,8 @@ function MyReferred(props) {
 
   const { dispatch, referred } = props
   const [query, setQuery] = useState(initQuery)
+  const [listCompany, setListCompany] = useState([]);
+  const [fetching, setFetching] = useState(false);
 
   const onChangeQuery = async (key, value) => {
     let clone = { ...query }
@@ -149,7 +152,21 @@ function MyReferred(props) {
   };
   useEffect(() => {
     dispatch(getListReferred(query));
+    fetchCompany('');
   }, []);
+
+  const fetchCompany = async value => {
+    setListCompany([]);
+    setFetching(true);
+    await dispatch(getAllCompany({offset: 0, limit: 50, key_word: value})).then(res => {
+      if (res.status) {
+        setListCompany(get(res, 'data.items.company_name'));
+        setFetching(false);
+      }
+    });
+  };
+
+  const delayedQuery = useRef(debounce((e, func) => func(e), 800)).current;
 
   return (
     <div className="my-referred-container">
@@ -170,12 +187,19 @@ function MyReferred(props) {
           <Col className="fiter-item" span={6} >
             <div className="title">Công ty: </div>
             <Select
+              allowClear
+              showSearch
+              onChange={(e) => onChangeQuery('company_name', e)}
               style={{ width: '100%' }}
               placeholder="Công ty"
-              onChange={(e) => onChangeQuery('company_name', e)}
-              value={query.company_name}
+              optionFilterProp="children"
+              notFoundContent={fetching ? <Spin size="small" /> : null}
+              filterOption={false}
+              onSearch={(e) => delayedQuery(e, fetchCompany)}
             >
-              <Option value="">Tất cả</Option>
+              {listCompany.map((d, index) => (
+                <Option value={d} key={index}>{d}</Option>
+              ))}
             </Select>
           </Col>
           <Col className="fiter-item" span={4} >
