@@ -93,9 +93,8 @@ function CandidateList (props) {
   const edit = record => {
     form.resetFields();
     const clone = { ...record };
-    clone.on_boarding_at = moment(clone.on_boarding_at, dateFormat);
-    clone.pass_probation_at = moment(clone.pass_probation_at, dateFormat);
-    console.log(clone)
+    clone.on_boarding_at = clone.on_boarding_at ? moment(clone.on_boarding_at, dateFormat) : '';
+    clone.pass_probation_at = clone.pass_probation_at ? moment(clone.pass_probation_at, dateFormat) : '';
     form.setFieldsValue({ ...clone });
     setStatusIndex(record.status);
     setEditingKey(record.id);
@@ -234,7 +233,7 @@ function CandidateList (props) {
                 }
               </div>
             } onConfirm={() => save(record)}>
-              <a style={{ marginRight: 8 }}>
+              <a disabled={statusIndex === 'confirmed'} style={{ marginRight: 8 }}>
                 Save
               </a>
             </Popconfirm>
@@ -243,7 +242,7 @@ function CandidateList (props) {
             </Popconfirm>
           </span>
         ) : (
-          <a disabled={get(record, 'candidate.status', '') !== 'active'} onClick={() => edit(record)}>
+          <a disabled={get(record, 'status', '') === 'pending'} onClick={() => edit(record)}>
             Edit
           </a>
         );
