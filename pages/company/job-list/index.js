@@ -109,7 +109,8 @@ function JobList(props) {
       dataIndex: 'candidate',
       align: 'center',
       width: 150,
-      render: (text, record, index) => (<div className="Action"><ButtonAction style={{marginRight:5}}onClick={() => Router.push(`/company/edit-job/${record.id}`)}><EditOutlined /></ButtonAction>
+      render: (text, record, index) => (<div className="Action"><Button onClick={() => Router.push(`/company/edit-job/${record.id}`)}><EditOutlined /></Button>
+      &nbsp;
           <Popconfirm
             title="Are you sure delete title?"
             onConfirm={() => handleDelete(record.id)}
@@ -117,7 +118,7 @@ function JobList(props) {
             okText="Yes"
             cancelText="No"
           >
-          <ButtonAction><DeleteOutlined /></ButtonAction>
+          <Button><DeleteOutlined /></Button>
           </Popconfirm> </div>)
           ,
     },

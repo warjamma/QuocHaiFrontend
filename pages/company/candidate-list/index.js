@@ -135,8 +135,15 @@ function CandidateList (props) {
       title: 'Vị trí',
       dataIndex: 'job',
       render: (text, record, index) => (
-        <div>
-          <Link href="/job-detail/[id]" as={`/job-detail/${record.job.id}`}><a>{get(record, 'job', {}).job_title}</a></Link>
+        <div className="custom-company" onClick={() => Router.push('/job-detail/'+record.job.id+'')}> 
+        <div className="job-role">
+          {/* <Link href="/job-detail/[id]" as={`/job-detail/${record.job.id}`}><a>{get(record, 'job', {}).job_role}</a></Link> */}
+          {
+              get(record, 'job', {}).job_role.map(item => (
+                <Tag style={{margin:3, cursor: 'pointer'}} color="blue" key={item}>{item}</Tag>
+              ))
+            } 
+        </div>
         </div>
       )
     },
@@ -157,12 +164,12 @@ function CandidateList (props) {
       )
     },
     {
-      title: 'Level',
-      dataIndex: 'created',
+      title: 'Cấp độ',
+      dataIndex: 'job',
       align: 'center',
       render: (text, record, index) => (
-        get(record, 'candidate', {}).job_level.map(item => (
-          <Tag key={item} color="blue">{item}</Tag>
+        get(record, 'job', {}).job_levels.map(item => (
+          <Tag style={{margin:3, cursor: 'pointer'}} key={item} color="blue">{item}</Tag>
         ))
       )
     },
@@ -174,16 +181,16 @@ function CandidateList (props) {
     },
     {
       title: 'Mức lương ($)',
-      dataIndex: 'salary',
+      dataIndex: 'job',
       align: 'center',
-      render: (text, record, index) => <Tag color="blue">{get(record, 'candidate', {}).min_salary}$ - {get(record, 'candidate', {}).max_salary}$</Tag>,
+      render: (text, record, index) => <Tag color="blue">{get(record, 'job', {}).min_salary}$ - {get(record, 'job', {}).max_salary}$</Tag>,
     },
-    // {
-    //   title: 'Onboarding date',
-    //   dataIndex: 'status',
-    //   align: 'center',
-    //   render: (text, record, index) => <div>{moment(get(record, 'on_boarding_at', '')).format('DD-MM-YYYY')}</div>,
-    // },
+    {
+      title: 'Onboarding date',
+      dataIndex: 'status',
+      align: 'center',
+      render: (text, record, index) => <div>{get(record, 'on_boarding_at')?moment(get(record, 'on_boarding_at')).format('DD-MM-YYYY'):("")}</div>,
+    },
     {
       title: 'Trạng thái',
       dataIndex: 'status',

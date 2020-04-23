@@ -1,7 +1,7 @@
 import React, { Component, useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import Link from 'next/link';
-import { RedoOutlined, SearchOutlined, DownloadOutlined, DeleteTwoTone ,EditOutlined} from '@ant-design/icons';
+import { RedoOutlined, SearchOutlined, DownloadOutlined, DeleteTwoTone ,EditOutlined,DeleteOutlined} from '@ant-design/icons';
 import { Table, Tag, Button, Popconfirm, Form, Row, Col, message, Input, Select, Spin } from 'antd';
 import { getListReferred, deleteCandidate } from '../../../containers/referred/actions';
 import { getAllCompany } from '../../../containers/company/action';
@@ -99,7 +99,7 @@ function MyReferred(props) {
         okText="Yes"
         cancelText="No"
       >
-        <Button style={{ margin: '0 8px' }}  htmlType="submit" icon={<DeleteTwoTone />} size="small" />
+        <Button icon={<DeleteOutlined />} size="small" />
       </Popconfirm></div>
     },
     
