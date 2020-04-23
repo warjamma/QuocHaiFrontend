@@ -81,6 +81,7 @@ export function updateCandidate(payload,id) {
     }
   };
 }
+
 export function deleteCandidate(payload) {
   return async () => {
     try {
