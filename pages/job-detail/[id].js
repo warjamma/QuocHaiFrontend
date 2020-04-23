@@ -32,11 +32,9 @@ function jobDetail(props) {
     const { referred, dispatch, profile } = props;
     const [status, setSatus] = useState(false);
     console.log('refer', referred);
-    //console.log(get('referred jobddddddddddd',referred,'job_detail.data.job.jd_files'));
     useEffect(() => {
         dispatch(getJobById({ id }))
     }, []);
-    //console.log('profile', profile)
     const checkRole = () => {
         switch (get(profile, 'data.recruiter.role')) {
             case 'superadmin':

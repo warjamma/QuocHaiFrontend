@@ -189,7 +189,7 @@ function CandidateList (props) {
       title: 'Onboarding date',
       dataIndex: 'status',
       align: 'center',
-      render: (text, record, index) => <div>{get(record, 'on_boarding_at')?moment(get(record, 'on_boarding_at')).format('DD-MM-YYYY'):("")}</div>,
+      render: (text, record, index) => <div>{get(record, 'on_boarding_at')?moment(get(record, 'on_boarding_at')).format('DD-MM-YYYY'):("N/A")}</div>,
     },
     {
       title: 'Trạng thái',
