@@ -114,11 +114,11 @@ function jobDetail(props) {
                             })}
                         </div>
                         <br />
-                        <div style={{ marginTop: -14, marginBottom: 10 }}>
+                        {/* <div style={{ marginTop: -14, marginBottom: 10 }}>
                             {get(referred, 'job_detail.data.job.language', []).map((value, key) => {
                                 return <Button key={key} style={{ marginRight: 5 }}>{value}</Button>
                             })}
-                        </div>
+                        </div> */}
                         {get(referred, 'job_detail.data.job.locations', []).map((value, key) => {
                             return <div style={{ marginBottom: 6 }} key={key}><RightOutlined /> {value} <a style={{ color: '#68ba50', fontSize: '13px' }}></a></div>
                         })}
