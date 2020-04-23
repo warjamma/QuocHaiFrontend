@@ -1,87 +1,15 @@
+/* eslint-disable jsx-a11y/iframe-has-title */
+/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable no-nested-ternary */
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { Col, Row, payload,Popconfirm, Form, Input, Button, Upload, message } from 'antd';
+import { Col, Row, Popconfirm, Form, Input, Button, Upload, message } from 'antd';
 import Router, { useRouter } from 'next/router';
 import { UploadOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
-import { createCandidate, getCandidateById, updateCandidate, deleteCandidate,uploadRequest } from '../../../containers/referred/actions';
+import { get, cloneDeep } from 'lodash';
+import { getCandidateById, updateCandidate, deleteCandidate,uploadRequest } from '../../../containers/referred/actions';
 import './styles.scss';
-import { get } from 'lodash';
 
-
-EditCV.propTypes = {
-
-};
-const initForm = {
-
-  availability: "none",
-  certificate: [
-    "Trash",
-    "Trash"
-  ],
-  created_at: "2020-04-08T15:56:09.412901",
-  current_salary: 4,
-  cv: "",
-  education: [
-    {
-      degree: "Trash",
-      major: "Trash"
-    }
-  ],
-  email: "",
-  expectation: "sadsad",
-  experience: [
-    {
-      duration: 3,
-      industry: "Trash collecting",
-      job_title: "Trash collector",
-      role: "Trash collector"
-    }
-  ],
-  industry_insight: [
-    {
-      field: "Trash collecting",
-      rating: "Trash",
-      years: "whole life"
-    }
-  ],
-  job_level: [
-    "trash",
-    "junior"
-  ],
-  job_role: [
-    "backend",
-    "frontend"
-  ],
-  language: [
-    {
-      field: "Trash",
-      rating: "Trash",
-      years: "whole life"
-    }
-  ],
-  locations: [
-    "Ho Chi Minh",
-    "Trash"
-  ],
-  max_salary: 12,
-  min_salary: 23,
-  name: "",
-  phone_number: "",
-  profile_title: "",
-  recommendation: "none",
-  recruiter_id: "",
-  skill: [
-    {
-      field: "Trash",
-      rating: "Trash",
-      years: "3 years"
-    }
-  ],
-  status: "pending",
-  updated_at: "2020-04-08T15:56:09.412907",
-  verify_token: ""
-};
 const layout = {
   labelCol: { span: 18 },
   wrapperCol: { span: 22 },
@@ -90,7 +18,7 @@ const tailLayout = {
   wrapperCol: { offset: 0, span: 24 },
 };
 
-const dummyRequest = ({ file, onSuccess }) => {
+const dummyRequest = ({ onSuccess }) => {
   setTimeout(() => {
     onSuccess("ok");
   }, 0);
@@ -101,16 +29,16 @@ function EditCV(props) {
   const { dispatch, referred } = props;
   const router = useRouter();
   const { id } = router.query;
-  console.log('id', id);
   const initForm = get(referred, `candidate_detail.data.candidate`, []);
   const [fileLink, setFileLink] = useState('');
   const [fileData, setFileData] = useState([]);
+
   const onFinish = async (value) => {
-    if(fileLink)
-    {
-      value.cv = fileLink;
+    const data = cloneDeep(value);
+    if(fileLink) {
+      data.cv = fileLink;
     }
-    await dispatch(updateCandidate({ ...initForm, ...value }, id)).then(res => {
+    await dispatch(updateCandidate({ ...initForm, ...data }, id)).then(res => {
       if (res.status) {
         Router.push('/referrer/my-referred');
         return message.success('Update candidate successfully');
@@ -141,13 +69,11 @@ function EditCV(props) {
   };
 
   useEffect(() => {
-    console.log('vo day roi');
-    dispatch(getCandidateById({ id })).then(res => form.resetFields());
+    dispatch(getCandidateById({ id })).then(() => form.resetFields());
   }, []);
 
-  const handleDelete = async (candidate_id) => {
-    console.log('Received values of fors', candidate_id);
-    await dispatch(deleteCandidate(candidate_id)).then(res => {
+  const handleDelete = async (candidateId) => {
+    await dispatch(deleteCandidate(candidateId)).then(res => {
       if (res.status) {
         Router.push('/referrer/my-referred');
         return message.success('Delete candidate successfully');
@@ -155,9 +81,9 @@ function EditCV(props) {
       return message.error(res.error);
     });
   };
-  function cancel(e) {
-    console.log(e);
-    message.error('Cance');
+
+  function cancel() {
+    message.error('Cancel');
   }
 
   const setting = {
@@ -176,7 +102,8 @@ function EditCV(props) {
       </div>
       <Row gutter={[16, 16]}>
         {/* {get(referred, 'candidate_detail', [])} */}
-        <Col span={18} ><iframe style={{ width: '100%', height: '100vh' }} id="input" value={fileLink} src={fileLink == '' ? (get(referred, 'candidate_detail.data.candidate.cv', [])==''?(fileLink):(get(referred, 'candidate_detail.data.candidate.cv', []))) : (fileLink)} /></Col>
+        <Col span={18}>
+          <iframe style={{ width: '100%', height: '100vh' }} id="input" value={fileLink} src={fileLink === '' ? (get(referred, 'candidate_detail.data.candidate.cv', []) === ''?(fileLink):(get(referred, 'candidate_detail.data.candidate.cv', []))) : (fileLink)} /></Col>
         <Col span={6}>
           <Upload
             {...setting}
@@ -259,7 +186,6 @@ function EditCV(props) {
 }
 
 function mapStateToProps(state) {
-  console.log('memberdetail in state', state);
   const { referred } = state;
   return { referred };
 }

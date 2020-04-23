@@ -2,12 +2,10 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import Router, { withRouter } from 'next/router';
 
-import { Form, Input, Button, Tabs, message } from 'antd';
-import { ExceptionOutlined, LockOutlined } from '@ant-design/icons';
+import { Form, Input, Button, message } from 'antd';
+import { LockOutlined } from '@ant-design/icons';
 import { verifyRequest } from '../../containers/profile/actions';
 import './styles.scss';
-
-import Link from 'next/link';
 
 const success = (mess) => {
   message.success(mess);
@@ -18,14 +16,13 @@ function Verify (props) {
   const { query } = router;
 
   useEffect(() => {
-    const { query } = router;
     if (localStorage.getItem('token')) {
       Router.push(query.role === 'employers' ? '/company' : '/referrer');
     }
   });
 
   const onFinish = async (values) => {
-    const res = await dispatch(verifyRequest(query.role, query.id, values));
+    await dispatch(verifyRequest(query.role, query.id, values));
     if(localStorage.getItem('token')) {
       success('Login successfully!');
       Router.push(query.role === 'employers' ? '/company' : '/referrer');
@@ -61,10 +58,6 @@ function Verify (props) {
       </Form>
     </div>
   );
-};
-
-Verify.getInitialProps = async function({ reduxStore }) {
-  return {};
 };
 
 export default connect(null, null)(withRouter(Verify));

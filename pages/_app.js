@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/jsx-props-no-spreading */
 import App from 'next/app';
 import React from 'react';
 import { Provider } from 'react-redux';
@@ -7,14 +9,12 @@ import { PersistGate } from 'redux-persist/integration/react';
 import Head from 'next/head';
 import Router from 'next/router';
 import NProgress from 'nprogress';
-import '../theme/index.scss';
 
-import { get } from 'lodash';
 import BasicLayout from '../layouts/BasicLayout';
 import withReduxStore from '../lib/width-redux-store';
+import '../theme/index.scss';
 
 Router.events.on('routeChangeStart', url => {
-  console.log(`Loading: ${url}`);
   NProgress.start();
 });
 Router.events.on('routeChangeComplete', () => NProgress.done());

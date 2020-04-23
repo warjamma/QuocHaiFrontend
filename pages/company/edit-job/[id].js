@@ -1,18 +1,15 @@
+/* eslint-disable jsx-a11y/iframe-has-title */
+/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable no-nested-ternary */
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { Table, Tag, Button, InputNumber, payload, Form, Row, Popconfirm, Col, Input, Select, Typography, Upload, message, Card, Alert, Text } from 'antd';
+import { Button, InputNumber, Form, Row, Col, Input, Select, Upload, message } from 'antd';
 import Router, { useRouter } from 'next/router';
 import { UploadOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
-import { updateJob, getJobById, deleteJob } from '../../../containers/company/action';
+import { get, cloneDeep } from 'lodash';
+import { updateJob, getJobById } from '../../../containers/company/action';
 import { uploadRequest } from '../../../containers/referred/actions';
 import './styles.scss';
-import { get } from 'lodash';
-
-
-EditJob.propTypes = {
-
-};
 
 const role = 'Account Management, Administration, Backend, Branding, Business Analyst, Business Development, CEO, CFO, CMO, Consultant, Content Creator, COO, CTO, Customer Service, Data Analyst, Designer, Developer, DevOps, Digital Marketing, Engineering, Finace/Accounting, Frontend, Fullstack, Game, General management, HR, HSE, Import - Export, Logistic, maintenance, Management, Market Research, marketing, Merchandising, Mobile, Office Management, Operation Management, Operations, Planning, Product Management, Production, Project Management, Public Relation, QA/QC, Quality Control, Recruitment, Research & Development, Researcher, Sales, Scrum Master, Software Architect, Software Development, Supply Chain, Teacher, Techical Sales, Tester, Traditional Marketing, Trainer';
 const language = 'Java, JavaScript, Reactjs, Vuejs, Angular, .Net, Nodejs, ObjectC, Swift, Kotlin, Python, PHP, MySQL, HTML/ CSS, SQL, C#, C++, Spring, AWS, Linux, Cocos2dx, Unity, ASP.NET, Docker, Ruby';
@@ -22,7 +19,7 @@ const layout = {
   wrapperCol: { span: 22 },
 };
 
-const dummyRequest = ({ file, onSuccess }) => {
+const dummyRequest = ({ onSuccess }) => {
   setTimeout(() => {
     onSuccess("ok");
   }, 0);
@@ -37,12 +34,13 @@ function EditJob(props) {
   const [fileLink, setFileLink] = useState('');
   const [fileData, setFileData] = useState([]);
   const onFinish = async (value) => {
+    const data = cloneDeep(value);
     if(fileLink){
-      value.jd_files = fileLink;
+      data.jd_files = fileLink;
     }
-    await dispatch(updateJob({ ...initForm, ...value }, id)).then(res => {
+    await dispatch(updateJob({ ...initForm, ...data }, id)).then(res => {
       if (res.status) {
-        return message.success('Update Job successfully').then(res=>Router.push('/company/job-list'));
+        return message.success('Update Job successfully').then(() => Router.push('/company/job-list'));
       }
       return message.error(res.error);
     });
@@ -78,21 +76,20 @@ function EditJob(props) {
     });
   }, []);
 
-  const handleDelete = async (job_id) => {
-    console.log('Received values of fors', job_id);
-    await dispatch(deleteJob(job_id)).then(res => {
-      if (res.status) {
-        Router.push('/company/job-list');
-        return message.success('Delete candidate successfully');
-      }
-      return message.error(res.error);
-    });
-  };
+  // const handleDelete = async (jobId) => {
+  //   console.log('Received values of fors', jobId);
+  //   await dispatch(deleteJob(jobId)).then(res => {
+  //     if (res.status) {
+  //       Router.push('/company/job-list');
+  //       return message.success('Delete candidate successfully');
+  //     }
+  //     return message.error(res.error);
+  //   });
+  // };
 
-  function cancel(e) {
-    console.log(e);
-    message.error('Cance');
-  }
+  // function cancel(e) {
+  //   message.error('Cance');
+  // }
 
   const setting = {
     onChange,
@@ -110,7 +107,7 @@ function EditJob(props) {
       </div>
       <Row gutter={[16, 16]}>
         {/* {get(referred, 'candidate_detail', [])} */}
-        <Col span={18} ><iframe style={{ width: '100%', height: '100vh' }} id="input" value={fileLink} src={fileLink == '' ? (get(referred, 'job_detail.data.job.jd_files', []) == '' ? (fileLink) : (get(referred, 'job_detail.data.job.jd_files', []))) : (fileLink)} /></Col>
+        <Col span={18} ><iframe style={{ width: '100%', height: '100vh' }} id="input" value={fileLink} src={fileLink === '' ? (get(referred, 'job_detail.data.job.jd_files', []) === '' ? (fileLink) : (get(referred, 'job_detail.data.job.jd_files', []))) : (fileLink)} /></Col>
         <Col span={6}>
           <Form
             form={form}
@@ -314,7 +311,6 @@ function EditJob(props) {
 }
 
 function mapStateToProps(state) {
-  console.log('memberdetail in state', state);
   const { referred } = state;
   return { referred };
 }

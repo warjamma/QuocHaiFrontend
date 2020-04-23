@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import Link from 'next/link';
-import { Form, Input, Button, Tabs, Radio, message} from 'antd';
+import { Form, Input, Button, Radio, message} from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { get } from 'lodash';
 import { forgotPassword } from '../../containers/profile/actions';
@@ -66,9 +65,6 @@ function ForgetPassword({ dispatch }) {
       </Form>
     </div>
   );
-}
-
-function mapStateToProps(state) {
 }
 
 export default connect()(ForgetPassword);

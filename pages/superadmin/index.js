@@ -1,15 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import Link from 'next/link';
 import Router from 'next/router';
-import { Form, Input, Button, Checkbox, Tabs, message} from 'antd';
+import { Form, Input, Button, Checkbox, message} from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { get } from 'lodash';
 import { loginRequest } from '../../containers/profile/actions';
 
 import './styles.scss';
-
-const { TabPane } = Tabs;
 
 const success = (mess) => {
   message.success(mess);
@@ -32,7 +29,7 @@ function Login(props) {
     }
   };
 
-  function FormLogin(props) {
+  function FormLogin() {
     return (
       <Form
         name="normal_login"

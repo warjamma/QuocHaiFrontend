@@ -5,8 +5,8 @@ export function loginRequest(user, role) {
   return async dispatch => {
     try {
       const { data } = await api.sendRequest('post', `/${role}/login`, null, null, user);
-      dispatch({ type: "LOGIN_SUCCESS", data: data.data });
       localStorage.setItem('token', data.data.token);
+      return dispatch({ type: "LOGIN_SUCCESS", data: data.data });
     } catch (error) {
       const { data } = error.response;
       return dispatch({ type: "LOGIN_FAILURE", error: data.message });
@@ -15,7 +15,7 @@ export function loginRequest(user, role) {
 }
 
 export function registerRequest(user, role) {
-  return async dispatch => {
+  return async () => {
     try {
       const { data } = await api.sendRequest('post', `/${role}/register`, null, null, user);
       return { status: true, data: data.data };
@@ -42,8 +42,8 @@ export function verifyRequest(role, id, payload) {
   return async dispatch => {
     try {
       const { data } = await api.sendRequest('post', `/${role}/${id}/verify`, null, null, payload);
-      dispatch({ type: "LOGIN_SUCCESS", data: data.data });
       localStorage.setItem('token', data.data.token);
+      return dispatch({ type: "LOGIN_SUCCESS", data: data.data });
     } catch (error) {
       const { data } = error.response;
       return dispatch({ type: "LOGIN_FAILURE", error: data.message });

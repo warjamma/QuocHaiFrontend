@@ -1,23 +1,19 @@
+/* eslint-disable no-shadow */
+/* eslint-disable react/no-array-index-key */
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import Link from 'next/link';
 import Router, { withRouter } from 'next/router';
 import { get } from 'lodash';
-import { Layout, Menu, Dropdown, message, Badge, Radio } from 'antd';
+import { Layout, Menu, Dropdown, message, Badge } from 'antd';
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
   UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
-  TeamOutlined,
   PieChartOutlined,
   FileOutlined,
   LogoutOutlined,
   BellFilled,
   InboxOutlined,
-  SyncOutlined,
-  FormOutlined
 } from '@ant-design/icons';
 
 import { requireAuthentication } from "../lib/auth";
@@ -36,9 +32,8 @@ const error = (mess) => {
 };
 
 function BasicLayout(props) {
-  const { dispatch, profile, router } = props;
+  const { dispatch, profile, children } = props;
   const [collapsed, setcollapsed] = useState(false);
-  const [token, setToken] = useState(null);
   useEffect(() => {
     if (get(profile, 'error', false) && (get(profile, 'message', ''))) {
       error(get(profile, 'message', ''));
@@ -168,14 +163,13 @@ function BasicLayout(props) {
       </Layout>
     );
   } 
-    return (
-      <>
-        <div className="container-box authenticate-page">
-          {props.children}
-        </div>
-      </>
-    );
-  
+  return (
+    <>
+      <div className="container-box authenticate-page">
+        {children}
+      </div>
+    </>
+  );
 }
 
 function mapStateToProps(state) {

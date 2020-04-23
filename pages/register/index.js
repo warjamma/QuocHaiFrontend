@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+/* eslint-disable react/jsx-props-no-spreading */
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Form, Input, Button, Checkbox, Tabs, Select, message } from 'antd';
 import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
@@ -91,7 +92,8 @@ function Register(props) {
     </Form.Item>
   );
 
-  function FormRegister(props) {
+  function FormRegister() {
+    const { children } = props;
     return (
       <Form
         {...formItemLayout}
@@ -99,7 +101,7 @@ function Register(props) {
         className="customForm"
         onFinish={onFinish}
       >
-        {props.children}
+        {children}
         <Form.Item className="groupButtonLogin">
           <Button className="buttonLogin" type="primary" htmlType="submit">
             Register
@@ -188,7 +190,7 @@ function Register(props) {
             </Form.Item>
             <Form.Item name="agreement" valuePropName="checked">
               <Checkbox>
-                I have read the <a href="">agreement</a>
+                I have read the agreement
               </Checkbox>
             </Form.Item>
           </FormRegister>
@@ -257,7 +259,7 @@ function Register(props) {
             </Form.Item>
             <Form.Item name="agreement" valuePropName="checked">
               <Checkbox>
-                I have read the <a href="">agreement</a>
+                I have read the agreement
               </Checkbox>
             </Form.Item>
           </FormRegister>
@@ -265,9 +267,6 @@ function Register(props) {
       </Tabs>
     </div>
   );
-}
-
-function mapStateToProps(state) {
 }
 
 export default connect()(Register);

@@ -44,7 +44,6 @@ function JobList(props) {
   const [query, setQuery] = useState(initQuery);
 
   useEffect(() => {
-    console.log(query);
     dispatch(getListJob(query, get(profile, 'data.employer.company_id', '')));
   }, []);
 

@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import Link from 'next/link';
@@ -30,7 +31,7 @@ function Login(props) {
     await dispatch(loginRequest(values, role));
   };
 
-  function FormLogin(props) {
+  function FormLogin() {
     return (
       <Form
         name="normal_login"

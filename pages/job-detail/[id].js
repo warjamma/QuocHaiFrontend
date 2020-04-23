@@ -1,59 +1,39 @@
-import React, { Component, useState, useEffect } from 'react';
+/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable jsx-a11y/anchor-has-content */
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable react/no-array-index-key */
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import Router, { useRouter } from 'next/router';
-import { Table, Tag, Button, Form, Row, Col, Input, Select, Typography, Card, Alert, Text } from 'antd';
-import Link from 'next/link';
-import axios from 'axios';
+import { Button, Row, Col, Typography, Card } from 'antd';
+import {
+  DollarOutlined,
+  RightOutlined,
+  CalendarOutlined,
+  CaretRightOutlined,
+  UsergroupAddOutlined,
+  FacebookOutlined,
+  LinkedinOutlined,
+  MailOutlined,
+  PhoneOutlined
+} from '@ant-design/icons';
 import { get } from 'lodash';
 import moment from 'moment';
 import './styles.scss';
-import {
-    DollarOutlined,
-    RightOutlined,
-    CalendarOutlined,
-    CaretRightOutlined,
-    FieldTimeOutlined,
-    UsergroupAddOutlined,
-    FlagOutlined,
-    SettingOutlined,
-    FacebookOutlined,
-    LinkedinOutlined,
-    MailOutlined,
-    PhoneOutlined
-} from '@ant-design/icons';
+
 import { getJobById } from '../../containers/referred/actions';
 
 const { Title } = Typography;
-const { Meta } = Card;
 
 function jobDetail(props) {
     const router = useRouter();
     const { id } = router.query;
 
     const { referred, dispatch, profile } = props;
-    const [status, setSatus] = useState(false);
-    console.log('refer', referred);
-    // console.log(get('referred jobddddddddddd',referred,'job_detail.data.job.jd_files'));
     useEffect(() => {
         dispatch(getJobById({ id }));
     }, []);
-    // console.log('profile', profile)
-    const checkRole = () => {
-        switch (get(profile, 'data.recruiter.role')) {
-            case 'superadmin':
-                return 'blue';
-                break;
-            case 'admin':
-                return 'red';
-                break;
-            default:
-                return '';
-                break;
-        }
-
-    };
-    // console.log(referred)
-
+    
     const toDataURL = (url) => {
         return fetch(url).then((response) => {
             return response.blob();
@@ -65,7 +45,6 @@ function jobDetail(props) {
     const download = async () => {
         const a = document.createElement("a");
         a.href = await toDataURL(get(referred, 'job_detail.data.job.jd_files'));
-        console.log(a);
         a.download = "JD.pdf";
         document.body.appendChild(a);
         a.click();
@@ -79,8 +58,8 @@ function jobDetail(props) {
                 <Col span={8} >
                     <div style={{ background: 'white' }}>
                         {
-                            get(referred, 'job_detail.data.job.company.avata') ? get(record, 'company.avatar')
-                                (<img style={{ padding: 'auto', margin: 'auto', display: 'block', width: 170, height: 170, objectFit: 'cover' }} alt="example" src={get(referred, 'job_detail.data.job.company.avata')} />) : ("")
+                          get(referred, 'job_detail.data.job.company.avatar') ?
+                            (<img style={{ padding: 'auto', margin: 'auto', display: 'block', width: 170, height: 170, objectFit: 'cover' }} alt="example" src={get(referred, 'job_detail.data.job.company.avatar')} />) : ("")
                         }
                         {/* <img style={{ padding: 'auto', margin: 'auto', display: 'block' }} alt="example" src="https://cdn.itviec.com/employers/fpt-software/logo/w170/mir3HT3xtedbECJY5jVeRRgV/fpt-software-logo.png" /> */}
                         <div style={{ background: 'white', padding: 20 }} >
@@ -96,9 +75,9 @@ function jobDetail(props) {
                             <div ><LinkedinOutlined />&nbsp;{get(referred, 'job_detail.data.job.company.linked_in')}</div>
                             <div ><PhoneOutlined />&nbsp;{get(referred, 'job_detail.data.job.company.phone_number')}</div>
                             <br />
-                            <a style={{ color: '#68ba50', fontSize: '13px', float: 'left' }}>See map<CaretRightOutlined /></a>
+                            <span style={{ color: '#68ba50', fontSize: '13px', float: 'left' }}>See map<CaretRightOutlined /></span>
                             <br />
-                            <a style={{ color: '#68ba50', fontSize: '16px', textAlign: 'center', display: 'block' }}>View our company page<CaretRightOutlined /></a>
+                            <span style={{ color: '#68ba50', fontSize: '16px', textAlign: 'center', display: 'block' }}>View our company page<CaretRightOutlined /></span>
                         </div>
                     </div>
                 </Col>
@@ -159,8 +138,8 @@ function jobDetail(props) {
                                 return <li key={key} style={{ marginLeft: 10 }} level={4}> {value.years}</li>;
                             })}
                         </ul>
-                        <Button style={((get(profile, 'data.recruiter.role') == 'superadmin') || get(profile, 'data.employer.role') == 'admin') ? ({ visibility: "hidden" }) : ({ float: 'left', marginRight: 5, width: '40%', display: 'block' })} type="primary" onClick={() => Router.push(`/referrer/upload-cv/${id}`)} block>Giới thiệu ứng viên</Button>
-                        <Button style={{ float: 'left', width: '40%' }} disabled={!!(get(referred, 'job_detail.data.job.jd_files') == '' || get(referred, 'job_detail.data.job.jd_files') == null)} type="primary" block><a href={get(referred, 'job_detail.data.job.jd_files')} download>Dowload JD</a></Button>
+                        <Button style={((get(profile, 'data.recruiter.role') === 'superadmin') || get(profile, 'data.employer.role') === 'admin') ? ({ visibility: "hidden" }) : ({ float: 'left', marginRight: 5, width: '40%', display: 'block' })} type="primary" onClick={() => Router.push(`/referrer/upload-cv/${id}`)} block>Giới thiệu ứng viên</Button>
+                        <Button style={{ float: 'left', width: '40%' }} disabled={!!(get(referred, 'job_detail.data.job.jd_files') === '' || get(referred, 'job_detail.data.job.jd_files') == null)} type="primary" block><a href={get(referred, 'job_detail.data.job.jd_files')} download>Dowload JD</a></Button>
                     </Card>
                 </Col>
             </Row>
@@ -211,7 +190,6 @@ function jobDetail(props) {
     );
 }
 function mapStateToProps(state) {
-    console.log(state);
     const { referred, profile } = state;
     return { referred, profile };
 }

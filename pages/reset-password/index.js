@@ -1,21 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import { Form, Input, Button, Tabs, message } from 'antd';
+import { Form, Input, Button } from 'antd';
 import { ExceptionOutlined, LockOutlined } from '@ant-design/icons';
 import get from 'lodash/get';
 import './styles.scss';
 
-
-const warning = (mes) => {
-  message.success(mes);
-};
-
 function ResetPassword(props) {
-  const { dispatch, location, isError, history } = props;
-
-  useEffect(() => {
-    console.log(location);
-  });
+  const { location } = props;
 
   const onFinish = values => {
     console.log(values);
@@ -61,9 +52,6 @@ function ResetPassword(props) {
       </Form>
     </div>
   );
-}
-
-function mapStateToProps(state) {
 }
 
 export default connect()(ResetPassword);

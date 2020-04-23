@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable jsx-a11y/iframe-has-title */
+import React, { useState } from 'react';
 import { Col, Row, Form, Input, Button, Upload, message } from 'antd';
 import Router, { useRouter } from 'next/router';
 import { UploadOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
+import { cloneDeep } from 'lodash';
 import { createCandidate,uploadRequest } from '../../../containers/referred/actions';
 import './styles.scss';
 
-UploadCV.propTypes = {
-
-};
 const initForm = {
 
   availability: "none",
@@ -88,7 +87,7 @@ const tailLayout = {
   wrapperCol: { offset: 0, span: 18 },
 };
 
-const dummyRequest = ({ file, onSuccess }) => {
+const dummyRequest = ({ onSuccess }) => {
   setTimeout(() => {
     onSuccess("ok");
   }, 0);
@@ -102,9 +101,10 @@ function UploadCV(props) {
   const [fileLink, setFileLink] = useState('');
   const [fileData, setFileData] = useState([]);
   const onFinish = async (value) => {
-    value.cv = fileLink;
-    value.phone_number=initForm.phone_number;
-    await dispatch(createCandidate({ ...initForm, ...value },id )).then(res => {
+    const data = cloneDeep(value);
+    data.cv = fileLink;
+    data.phone_number=initForm.phone_number;
+    dispatch(createCandidate({ ...initForm, ...data },id )).then(res => {
       if (res.status) {
         return message.success('Create candidate successfully').then(() => Router.push(`/job-detail/${id}`));
       }
@@ -112,7 +112,7 @@ function UploadCV(props) {
     });
   };
   const onRequest = async (value) => {
-    await dispatch(uploadRequest({ value })).then(res => {
+    dispatch(uploadRequest({ value })).then(res => {
       setFileLink(res.data);
       if (res.status) {
         return message.success('Upload request');
