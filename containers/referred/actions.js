@@ -1,8 +1,8 @@
 import { get } from 'lodash';
 import api from '../../services/api';
 
-const qs = require('qs')
-const axios = require('axios')
+const qs = require('qs');
+const axios = require('axios');
 
 export function getListJob(params) {
   return async dispatch => {
