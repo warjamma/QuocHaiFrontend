@@ -140,7 +140,7 @@ function JobList (props) {
             )
           }
           {
-            activeTab === 'Reject' && (
+            activeTab === 'Denied' && (
               <div>
                 <Button style={{ marginBottom: 7 }} type="primary" onClick={() => approveJob(record.id)}>Approve</Button>
                 <Tooltip placement="left" title={record.reject_reason}>
@@ -299,7 +299,7 @@ function JobList (props) {
           activeKey={activeTab}
           type="card"
         >
-          {[{title: 'Pending'}, {title: 'Accepted'}, {title: 'Reject'}].map(pane => (
+          {[{title: 'Pending'}, {title: 'Accepted'}, {title: ' Denied'}].map(pane => (
             <Tabs.TabPane tab={pane.title} key={pane.title}>
               <Table
                 bordered
