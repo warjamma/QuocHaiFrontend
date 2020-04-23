@@ -153,7 +153,7 @@ function CreateJob(props) {
               name="job_role"
               rules={[{ required: true, message: 'This field is required !' }]}
             >
-              <Select mode="tags" style={{ width: '100%' }}>
+              <Select style={{ width: '100%' }}>
                 {
                   role.split(', ')
                     .map(item => (

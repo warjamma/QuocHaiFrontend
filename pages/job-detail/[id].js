@@ -78,8 +78,8 @@ function jobDetail(props) {
                 <Col span={8} >
                     <div style={{ background: 'white' }}>
                         {
-                            get(referred, 'job_detail.data.job.company.avata') ?get(record, 'company.avatar') 
-                                (<img style={{ padding: 'auto', margin: 'auto', display: 'block', width: 170, height: 170, objectFit: 'cover' }} alt="example" src={get(referred, 'job_detail.data.job.company.avata')}/>) : ("")
+                            get(referred, 'job_detail.data.job.company.avata') ? get(record, 'company.avatar')
+                                (<img style={{ padding: 'auto', margin: 'auto', display: 'block', width: 170, height: 170, objectFit: 'cover' }} alt="example" src={get(referred, 'job_detail.data.job.company.avata')} />) : ("")
                         }
                         {/* <img style={{ padding: 'auto', margin: 'auto', display: 'block' }} alt="example" src="https://cdn.itviec.com/employers/fpt-software/logo/w170/mir3HT3xtedbECJY5jVeRRgV/fpt-software-logo.png" /> */}
                         <div style={{ background: 'white', padding: 20 }} >
@@ -103,17 +103,26 @@ function jobDetail(props) {
                 </Col>
                 <Col span={16} >
                     <Card className="titileJob">
-                        <Title level={3}>{get(referred, 'job_detail.data.job.job_title')}</Title>
-                        {get(referred, 'job_detail.data.job.job_role', []).map((value, key) => {
-                            return <Button key={key} style={{ marginRight: 5 }}>{value}</Button>
-                        })}
-                        <div style={{ color: '#68ba50' }}><DollarOutlined /> You'll love it</div>
-                        {/* <div ><RightOutlined /> FPT Software Đường D1 Phường Tân Phú , District 9, Ho Chi Minh</div>
-                        <a style={{ color: '#68ba50', fontSize: '13px', paddingLeft: 10 }}>See map<CaretRightOutlined /></a> */}
+                        <Title level={3}><div style={{ float: 'left' }} >[Tuyển]</div>{get(referred, 'job_detail.data.job.job_role', []).map((value, key) => {
+                            return <div key={key} style={{ float: 'left' }} level={4}>  &nbsp;{value}&nbsp;</div>
+                        })}</Title>
+                        <br />
+
+                        <div style={{ marginTop: 5 }}>
+                            {get(referred, 'job_detail.data.job.job_levels', []).map((value, key) => {
+                                return <Button key={key} style={{ marginRight: 5 }}>{value}</Button>
+                            })}
+                        </div>
+                        <br />
+                        <div style={{ marginTop: -14, marginBottom: 10 }}>
+                            {get(referred, 'job_detail.data.job.language', []).map((value, key) => {
+                                return <Button key={key} style={{ marginRight: 5 }}>{value}</Button>
+                            })}
+                        </div>
                         {get(referred, 'job_detail.data.job.locations', []).map((value, key) => {
-                            return <div key={key}><RightOutlined /> {value} <a style={{ color: '#68ba50', fontSize: '13px' }}>See map<CaretRightOutlined /></a></div>
+                            return <div style={{ marginBottom: 6 }} key={key}><RightOutlined /> {value} <a style={{ color: '#68ba50', fontSize: '13px' }}></a></div>
                         })}
-                        <div ><CalendarOutlined /> 4 days ago</div>
+                        <div style={{ marginBottom: 10 }}><CalendarOutlined /> 4 days ago</div>
                         <Button style={get(profile, 'data.employer.id') ? ({ visibility: "hidden" }) : ({ float: 'left', marginRight: 5, width: '40%', display: 'block' })} type="primary" onClick={() => Router.push(`/referrer/upload-cv/${id}`)} block>Giới thiệu ứng viên</Button>
                         <Button onClick={download} style={{ float: 'left', width: '40%' }} type="primary" block>Dowload JD</Button>
                     </Card>
@@ -124,17 +133,28 @@ function jobDetail(props) {
                                 return <li key={key} style={{ fontWeight: 'bold' }} level={4}>{value}</li>
                             })}
                         </ul>
+                        <Title level={3}>Job detail</Title>
+                        <ul>
+                            <li style={{ fontWeight: 'bold' }} level={4}> Ngày tạo: {moment(get(referred, 'job_detail.data.job.created_at', [])).format('l')}</li>
+                            <li style={{ fontWeight: 'bold' }} level={4}> Tiền tệ: {get(referred, 'job_detail.data.job.currency', [])}</li>
+                            <li style={{ fontWeight: 'bold' }} level={4}> Max Lương : ${get(referred, 'job_detail.data.job.max_salary', [])}</li>
+                            <li style={{ fontWeight: 'bold' }} level={4}> Min Lương : ${get(referred, 'job_detail.data.job.min_salary', [])}</li>
+                            <li style={{ fontWeight: 'bold' }} level={4}> Trạng thái: {get(referred, 'job_detail.data.job.status', [])}</li>
+                            <li style={{ fontWeight: 'bold' }} level={4}> Kích cỡ team: {get(referred, 'job_detail.data.job.team_size', [])}</li>
+                            <li style={{ fontWeight: 'bold' }} level={4}> Số lượng yêu cầu: {get(referred, 'job_detail.data.job.vacancy_number', [])}</li>
+                            <li style={{ fontWeight: 'bold' }} level={4}> Phúc lợi: {get(referred, 'job_detail.data.job.vacancy_number', [])}</li>
+                        </ul>
                         <Title level={3}>Job Levels</Title>
                         <ul>
                             {get(referred, 'job_detail.data.job.job_levels', []).map((value, key) => {
-                                return <li key={key} style={{ marginLeft: 10 }} level={4}>{value}</li>
+                                return <li key={key} style={{ fontWeight: 'bold', marginLeft: 10 }} level={4}>{value}</li>
                             })}
-                            
+
                         </ul>
 
                         <Title level={3}>Your Skills and Experience</Title>
                         <ul>
-                            {get(referred, 'job_detail.data.job.job.skill_requirement',[]).map((value, key) => {
+                            {get(referred, 'job_detail.data.job.job.skill_requirement', []).map((value, key) => {
                                 return <li key={key} style={{ marginLeft: 10 }} level={4}> {value.years}</li>
                             })}
                         </ul>
@@ -186,7 +206,7 @@ function jobDetail(props) {
                 </Card>
 
             </Card>
-        </div>
+        </div >
     );
 }
 function mapStateToProps(state) {
