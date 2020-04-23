@@ -8,8 +8,10 @@
     "start": "next start",
     "production:server": "node index.js",
     "dev:server": "npm run build && nodemon index.js",
-    "lint": "eslint .",
-    "lint:fix": "eslint --fix ."
+    "lint": "eslint \"{src,apps,libs,configs,test}/**/*.ts\" --fix",
+    "eslint:test": "eslint ./",
+    "eslint:fix": "eslint ./ --fix"
+
   },
   "dependencies": {
     "@ant-design/icons": "^4.0.0",
@@ -63,10 +65,9 @@
     }
   },
   "lint-staged": {
-    "*.{js,jsx}": [
-      "pretty-quick --staged",
-      "eslint src/ --fix",
-      "git add"
+    ".js|jsx": [
+      "npm run eslint:test",
+      "npm run eslint:fix"
     ]
   }
 }
