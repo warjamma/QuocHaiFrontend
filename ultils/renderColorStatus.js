@@ -17,4 +17,4 @@ export default (status) => {
     default:
       return 'orange';
   }
-}
+};

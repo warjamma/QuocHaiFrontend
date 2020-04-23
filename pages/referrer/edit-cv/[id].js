@@ -81,7 +81,7 @@ const initForm = {
   status: "pending",
   updated_at: "2020-04-08T15:56:09.412907",
   verify_token: ""
-}
+};
 const layout = {
   labelCol: { span: 18 },
   wrapperCol: { span: 22 },
@@ -98,10 +98,10 @@ const dummyRequest = ({ file, onSuccess }) => {
 
 function EditCV(props) {
   const [form] = Form.useForm();
-  const { dispatch, referred } = props
+  const { dispatch, referred } = props;
   const router = useRouter();
   const { id } = router.query;
-  console.log('id', id)
+  console.log('id', id);
   const initForm = get(referred, `candidate_detail.data.candidate`, []);
   const [fileLink, setFileLink] = useState('');
   const [fileData, setFileData] = useState([]);
@@ -116,7 +116,7 @@ function EditCV(props) {
         return message.success('Update candidate successfully');
       }
       return message.error(res.error);
-    })
+    });
   };
   const onRequest = async (value) => {
     await dispatch(uploadRequest({ value })).then(res => {
@@ -125,14 +125,14 @@ function EditCV(props) {
         return message.success('Upload request');
       }
       return message.error(res.error);
-    })
+    });
 
   };
   const onFinishFailed = errorInfo => {
     console.log('Failed:', errorInfo);
   };
   const onChange = e => {
-    let fileList = [...e.fileList];
+    const fileList = [...e.fileList];
     const last = fileList.slice(-1);
     setFileData(last);
     if(e.file.status === 'done') {
@@ -141,7 +141,7 @@ function EditCV(props) {
   };
 
   useEffect(() => {
-    console.log('vo day roi')
+    console.log('vo day roi');
     dispatch(getCandidateById({ id })).then(res => form.resetFields());
   }, []);
 
@@ -153,7 +153,7 @@ function EditCV(props) {
         return message.success('Delete candidate successfully');
       }
       return message.error(res.error);
-    })
+    });
   };
   function cancel(e) {
     console.log(e);
@@ -161,7 +161,7 @@ function EditCV(props) {
   }
 
   const setting = {
-    onChange: onChange,
+    onChange,
     onRemove: () => setFileLink(''),
     multiple: true,
     listType: "picture",
@@ -176,7 +176,7 @@ function EditCV(props) {
       </div>
       <Row gutter={[16, 16]}>
         {/* {get(referred, 'candidate_detail', [])} */}
-        <Col span={18} ><iframe style={{ width: '100%', height: '100vh' }} id="input" value={fileLink} src={fileLink == '' ? (get(referred, 'candidate_detail.data.candidate.cv', [])==''?(fileLink):(get(referred, 'candidate_detail.data.candidate.cv', []))) : (fileLink)}></iframe></Col>
+        <Col span={18} ><iframe style={{ width: '100%', height: '100vh' }} id="input" value={fileLink} src={fileLink == '' ? (get(referred, 'candidate_detail.data.candidate.cv', [])==''?(fileLink):(get(referred, 'candidate_detail.data.candidate.cv', []))) : (fileLink)} /></Col>
         <Col span={6}>
           <Upload
             {...setting}
@@ -260,8 +260,8 @@ function EditCV(props) {
 
 function mapStateToProps(state) {
   console.log('memberdetail in state', state);
-  const { referred } = state
-  return { referred }
+  const { referred } = state;
+  return { referred };
 }
 
 export default connect(mapStateToProps, null)(EditCV);

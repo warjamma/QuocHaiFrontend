@@ -2,6 +2,7 @@ require('dotenv').config();
 const cacheableResponse = require('cacheable-response');
 const express = require('express');
 const next = require('next');
+
 const port = parseInt(process.env.PORT, 10) || 4001;
 const nodeEnv = process.env.NODE_ENV !== 'production';
 const app = next({ dev: nodeEnv });

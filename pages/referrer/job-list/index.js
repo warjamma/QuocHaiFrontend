@@ -1,18 +1,18 @@
 import React, { Component, useState, useEffect, useRef } from 'react';
-import { connect } from 'react-redux'
-import Link from 'next/link'
+import { connect } from 'react-redux';
+import Link from 'next/link';
 import Router from 'next/router';
 import { RedoOutlined, SearchOutlined, DollarCircleOutlined,FileDoneOutlined } from '@ant-design/icons';
 import { Table, Row, Col, Button, Tag, Input, Select, Spin } from 'antd';
+import { get, debounce } from 'lodash';
 import { getListJob } from '../../../containers/referred/actions';
 import { getAllCompany } from '../../../containers/company/action';
 import { getAllJobType } from '../../../containers/job/actions';
 
-import { get, debounce } from 'lodash';
 
-import './styles.scss'
+import './styles.scss';
 
-const { Search } = Input
+const { Search } = Input;
 
 const { Option } = Select;
 
@@ -26,14 +26,14 @@ const initQuery = {
   max_salary: null,
   offset: 0,
   limit: 10,
-}
+};
 
 const columns = [
   {
     title: 'Công ty',
     dataIndex: 'company_id',
     render: (text, record, index) => (
-      <div className="custom-company" onClick={() => Router.push('/job-detail/'+record.id+'')}>
+      <div className="custom-company" onClick={() => Router.push(`/job-detail/${record.id}`)}>
         <div className="logo-company" style={{ width: 100,marginRight: 10}}>
           <img  style ={{cursor: 'pointer',width: '100%',objectFit: 'cover'}} src={get(record, 'company.avatar') === null ? '/default-avatar.png' : get(record, 'company.avatar')}/>
         </div>
@@ -59,7 +59,7 @@ const columns = [
     title: 'Vị trí',
     dataIndex: 'company_id',
     render: (text, record, index) => (
-      <div className="custom-company" onClick={() => Router.push('/job-detail/'+record.id+'')}>    
+      <div className="custom-company" onClick={() => Router.push(`/job-detail/${record.id}`)}>    
           <div className="job-role">
             {
               record.job_role.map(item => (
@@ -106,7 +106,7 @@ function itemRender(current, type, originalElement) {
 }
 
 function JobList (props) {
-  const { referred, dispatch } = props
+  const { referred, dispatch } = props;
   const [query, setQuery] = useState(initQuery);
   const [total, setTotal] = useState(null);
   const [listCompany, setListCompany] = useState([]);
@@ -114,30 +114,30 @@ function JobList (props) {
   const [listJobType, setListJobType] = useState([]);
 
   const changeQuery = (key, value) => {
-    let clone = { ...query };
+    const clone = { ...query };
     clone[key] = typeof value === 'object' ? value.join(', ') : value ;
-    setQuery(clone)
-  }
+    setQuery(clone);
+  };
 
   const handleFind = async () => {
-    let clone = { ...query };
-    clone['offset'] = 0;
-    setQuery(clone)
-    await dispatch(getListJob(clone))
-  }
+    const clone = { ...query };
+    clone.offset = 0;
+    setQuery(clone);
+    await dispatch(getListJob(clone));
+  };
 
   const handleTableChange = async (pagination) => {
-    let clone = { ...query };
-    clone['offset'] = (pagination.current-1) * 10;
-    clone['limit'] = pagination.pageSize;
-    setQuery(clone)
-    await dispatch(getListJob(clone))
+    const clone = { ...query };
+    clone.offset = (pagination.current-1) * 10;
+    clone.limit = pagination.pageSize;
+    setQuery(clone);
+    await dispatch(getListJob(clone));
   };
   
   const resetSearch = async () => {
     setQuery(initQuery);
-    await dispatch(getListJob(initQuery))
-  }
+    await dispatch(getListJob(initQuery));
+  };
 
   useEffect(() => {
     dispatch(getListJob(query));
@@ -298,8 +298,8 @@ function JobList (props) {
 };
 
 function mapStateToProps(state) {
-  const { referred } = state
-  return { referred }
+  const { referred } = state;
+  return { referred };
 }
 
-export default connect(mapStateToProps, null)(JobList)
+export default connect(mapStateToProps, null)(JobList);

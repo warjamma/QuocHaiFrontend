@@ -4,9 +4,9 @@ import Link from 'next/link';
 import Router from 'next/router';
 import { Form, Input, Button, Checkbox, Tabs, message} from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { get } from 'lodash';
 import { loginRequest } from '../../containers/profile/actions';
 
-import { get } from 'lodash';
 import './styles.scss';
 
 const { TabPane } = Tabs;
@@ -27,7 +27,7 @@ function Login(props) {
   });
 
   const onFinish = async (values) => {
-    await dispatch(loginRequest(values, role))
+    await dispatch(loginRequest(values, role));
   };
 
   function FormLogin(props) {
@@ -79,7 +79,7 @@ function Login(props) {
           Or <Link href="/register"><a>register now!</a></Link>
         </Form.Item>
       </Form>
-    )
+    );
   }
 
   return (
@@ -89,7 +89,7 @@ function Login(props) {
         <div>Login</div>
       </div>
       <Tabs defaultActiveKey={role} onChange={(e) => {
-        setRole(e)
+        setRole(e);
       }}>
         <TabPane tab="As Company" key="employers">
           <FormLogin />

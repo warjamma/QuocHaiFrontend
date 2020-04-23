@@ -3,11 +3,11 @@ import { Table, Row, Col,Popconfirm, Button,message, Input, Select, Tag } from '
 import Router from 'next/router';
 import { connect } from 'react-redux';
 import { RedoOutlined,DeleteOutlined , SearchOutlined, HighlightOutlined, EditOutlined } from '@ant-design/icons';
-import styled from 'styled-components'
-import { getListJob,deleteJob } from '../../../containers/company/action';
-import renderColorTag from '../../../ultils/renderColorStatus';
+import styled from 'styled-components';
 import { get } from 'lodash';
 import moment from 'moment';
+import { getListJob,deleteJob } from '../../../containers/company/action';
+import renderColorTag from '../../../ultils/renderColorStatus';
 import './styles.scss';
 
 const ButtonAction = styled(Button)`
@@ -17,12 +17,12 @@ const ButtonAction = styled(Button)`
     border-color: #1890FF;
     color: #fff;
   }
-`
-const role = 'Account Management, Administration, Backend, Branding, Business Analyst, Business Development, CEO, CFO, CMO, Consultant, Content Creator, COO, CTO, Customer Service, Data Analyst, Designer, Developer, DevOps, Digital Marketing, Engineering, Finace/Accounting, Frontend, Fullstack, Game, General management, HR, HSE, Import - Export, Logistic, maintenance, Management, Market Research, marketing, Merchandising, Mobile, Office Management, Operation Management, Operations, Planning, Product Management, Production, Project Management, Public Relation, QA/QC, Quality Control, Recruitment, Research & Development, Researcher, Sales, Scrum Master, Software Architect, Software Development, Supply Chain, Teacher, Techical Sales, Tester, Traditional Marketing, Trainer'
+`;
+const role = 'Account Management, Administration, Backend, Branding, Business Analyst, Business Development, CEO, CFO, CMO, Consultant, Content Creator, COO, CTO, Customer Service, Data Analyst, Designer, Developer, DevOps, Digital Marketing, Engineering, Finace/Accounting, Frontend, Fullstack, Game, General management, HR, HSE, Import - Export, Logistic, maintenance, Management, Market Research, marketing, Merchandising, Mobile, Office Management, Operation Management, Operations, Planning, Product Management, Production, Project Management, Public Relation, QA/QC, Quality Control, Recruitment, Research & Development, Researcher, Sales, Scrum Master, Software Architect, Software Development, Supply Chain, Teacher, Techical Sales, Tester, Traditional Marketing, Trainer';
 
-const { Search } = Input
+const { Search } = Input;
 
-const { Option } = Select
+const { Option } = Select;
 
 
 const initQuery = {
@@ -35,7 +35,7 @@ const initQuery = {
   max_salary: null,
   offset: 0,
   limit: 10,
-}
+};
 
 
 function JobList(props) {
@@ -52,7 +52,7 @@ function JobList(props) {
     title: 'Vị trí',
     dataIndex: 'company_id',
     render: (text, record, index) => (
-      <div className="custom-company" onClick={() => Router.push('/job-detail/'+record.id+'')}>    
+      <div className="custom-company" onClick={() => Router.push(`/job-detail/${record.id}`)}>    
           <div className="job-role">
             {
               record.job_role.map(item => (
@@ -125,40 +125,40 @@ function JobList(props) {
   ];
   
   const handleTableChange = async (pagination) => {
-    let clone = { ...query };
-    clone['offset'] = (pagination.current - 1) * 10;
-    clone['limit'] = pagination.pageSize;
-    setQuery(clone)
+    const clone = { ...query };
+    clone.offset = (pagination.current - 1) * 10;
+    clone.limit = pagination.pageSize;
+    setQuery(clone);
     await dispatch(getListJob(clone, get(profile, 'data.employer.company_id', '')));
   };
 
   const onChangeQuery = async (key, value) => {
-    let clone = { ...query }
-    clone[key] = value
-    setQuery(clone)
-  }
+    const clone = { ...query };
+    clone[key] = value;
+    setQuery(clone);
+  };
 
   const handleFilter = async () => {
-    let clone = { ...query };
-    clone['offset'] = 0;
-    setQuery(clone)
+    const clone = { ...query };
+    clone.offset = 0;
+    setQuery(clone);
     await dispatch(getListJob(clone, get(profile, 'data.employer.company_id', '')));
-  }
+  };
 
   const resetSearch = async () => {
     setQuery(initQuery);
     await dispatch(getListJob(initQuery, get(profile, 'data.employer.company_id', '')));
-  }
+  };
 
   const handleDelete = async (job_id) => {
     console.log('Received values of fors', job_id);
     await dispatch(deleteJob(job_id)).then(res => {
       if (res.status) {
-        Router.push('/company/job-list')
+        Router.push('/company/job-list');
         return message.success('Delete candidate successfully');
       }
       return message.error(res.error);
-    })
+    });
   };
 
   function cancel(e) {
@@ -167,7 +167,7 @@ function JobList(props) {
   }
 
   useEffect(() => {
-    console.log(query)
+    console.log(query);
     dispatch(getListJob(query, get(profile, 'data.employer.company_id', '')));
   }, []);
 
@@ -257,8 +257,8 @@ function JobList(props) {
 }
 
 function mapStateToProps(state) {
-  const { company, profile } = state
-  return { company, profile }
+  const { company, profile } = state;
+  return { company, profile };
 }
 
-export default connect(mapStateToProps, null)(JobList)
+export default connect(mapStateToProps, null)(JobList);

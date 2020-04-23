@@ -6,6 +6,7 @@ import { UploadOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import { createCandidate,uploadRequest } from '../../../containers/referred/actions';
 import './styles.scss';
+
 UploadCV.propTypes = {
 
 };
@@ -78,7 +79,7 @@ const initForm = {
   status: "pending",
   updated_at: "2020-04-08T15:56:09.412907",
   verify_token: ""
-}
+};
 const layout = {
   labelCol: { span: 18 },
   wrapperCol: { span: 22 },
@@ -94,7 +95,7 @@ const dummyRequest = ({ file, onSuccess }) => {
 };
 
 function UploadCV(props) {
-  const { dispatch } = props
+  const { dispatch } = props;
   const router = useRouter();
   const { id } = router.query;
 
@@ -108,7 +109,7 @@ function UploadCV(props) {
         return message.success('Create candidate successfully').then(() => Router.push(`/job-detail/${id}`));
       }
       return message.error(res.error);
-    })
+    });
   };
   const onRequest = async (value) => {
     await dispatch(uploadRequest({ value })).then(res => {
@@ -117,7 +118,7 @@ function UploadCV(props) {
         return message.success('Upload request');
       }
       return message.error(res.error);
-    })
+    });
 
   };
   const onFinishFailed = errorInfo => {
@@ -125,7 +126,7 @@ function UploadCV(props) {
   };
   
   const onChange = e => {
-    let fileList = [...e.fileList];
+    const fileList = [...e.fileList];
     const last = fileList.slice(-1);
     setFileData(last);
     if(e.file.status === 'done') {
@@ -134,7 +135,7 @@ function UploadCV(props) {
   };
 
   const setting = {
-    onChange: onChange,
+    onChange,
     onRemove: () => setFileLink(''),
     multiple: true,
     listType: "picture",
@@ -148,7 +149,7 @@ function UploadCV(props) {
         <div>Hồ sơ ứng viên</div>
       </div>
       <Row gutter={[16, 16]}>
-        <Col span={18} ><iframe style={{ width: '100%', height: '100vh' }} id="input" value={fileLink} src={fileLink}></iframe></Col>
+        <Col span={18} ><iframe style={{ width: '100%', height: '100vh' }} id="input" value={fileLink} src={fileLink} /></Col>
         <Col span={6}>
           <Upload
             {...setting}
@@ -201,7 +202,7 @@ function UploadCV(props) {
               <Button type="primary" htmlType="submit">
                 Gửi ứng viên
               </Button>
-              <Button onClick={() => Router.push('/job-detail/' + id + '')} htmlType="button" style={{ margin: '0 8px' }} >
+              <Button onClick={() => Router.push(`/job-detail/${  id  }`)} htmlType="button" style={{ margin: '0 8px' }} >
                 Hủy
               </Button>
             </Form.Item>

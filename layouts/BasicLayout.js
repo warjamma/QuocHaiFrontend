@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux'
-import Link from 'next/link'
+import { connect } from 'react-redux';
+import Link from 'next/link';
 import Router, { withRouter } from 'next/router';
 import { get } from 'lodash';
 import { Layout, Menu, Dropdown, message, Badge, Radio } from 'antd';
@@ -23,10 +23,10 @@ import {
 import { requireAuthentication } from "../lib/auth";
 import { companySideBar, adminSideBar, referrerSideBar } from "../ultils/sidebar";
 
-import { logOutRequest, clearError } from '../containers/profile/actions'
+import { logOutRequest, clearError } from '../containers/profile/actions';
 
 import './BasicLayout.scss';
-import './styles.scss'
+import './styles.scss';
 
 const { SubMenu } = Menu;
 const { Header, Sider, Content } = Layout;
@@ -42,13 +42,13 @@ function BasicLayout(props) {
   useEffect(() => {
     if (get(profile, 'error', false) && (get(profile, 'message', ''))) {
       error(get(profile, 'message', ''));
-      dispatch(clearError())
+      dispatch(clearError());
     }
     // setToken(localStorage.getItem('token'))
   });
 
   const toggle = () => {
-    setcollapsed(!collapsed)
+    setcollapsed(!collapsed);
   };
 
   const sidebarMenu = () => {
@@ -59,7 +59,7 @@ function BasicLayout(props) {
       return adminSideBar;
     }
     return referrerSideBar;
-  }
+  };
 
   const content = (
     <Menu className="notificationList">
@@ -72,7 +72,7 @@ function BasicLayout(props) {
         <div>Không có thông báo</div>
       </div>
     </Menu>
-  )
+  );
 
   const menu = (
     <Menu className="dropdownProfile">
@@ -81,7 +81,7 @@ function BasicLayout(props) {
         Thông tin cá nhân
       </Menu.Item>
       <Menu.Item key="2" onClick={async () => {
-          await dispatch(logOutRequest())
+          await dispatch(logOutRequest());
           Router.push('/login');
         }}
       >
@@ -166,16 +166,16 @@ function BasicLayout(props) {
           </Content>
         </Layout>
       </Layout>
-    )
-  } else {
+    );
+  } 
     return (
       <>
         <div className="container-box authenticate-page">
           {props.children}
         </div>
       </>
-    )
-  }
+    );
+  
 }
 
 function mapStateToProps(state) {
@@ -185,4 +185,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, null)(withRouter(requireAuthentication(BasicLayout)))
+export default connect(mapStateToProps, null)(withRouter(requireAuthentication(BasicLayout)));

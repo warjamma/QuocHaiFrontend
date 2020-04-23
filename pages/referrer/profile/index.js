@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import { Card, Input, Form, Row, Col, notification, Tabs, Select, Button, Upload, Typography } from 'antd';
 import {
   SaveTwoTone, EditTwoTone, EditOutlined, UploadOutlined
-  //UploadOutlined,
+  // UploadOutlined,
 } from '@ant-design/icons';
-import './styles.scss'
+import './styles.scss';
+
 const { Title } = Typography;
 const { Option } = Select;
 const layout = {
@@ -24,7 +25,7 @@ function TabChange({ status, fields }) {
         <EditUser
           status={status}
           fields={fields}
-        ></EditUser>
+         />
       </TabPane>
       <TabPane tab="Password" key="2">
         <ChangePassword />
@@ -162,7 +163,7 @@ function EditUser({ onChange, fields, status }) {
 function MyProfile() {
   const [status, setStatus] = useState(false);
   const isEdit = () => {
-    setStatus(!status)
+    setStatus(!status);
   };
   const updateUser = () => {
     notification.open({
@@ -170,7 +171,7 @@ function MyProfile() {
       description:
         'Click me to save',
       onClick: () => {
-        setStatus(!status)
+        setStatus(!status);
         console.log('Notification Clicked!');
 
       },
@@ -244,7 +245,7 @@ function MyProfile() {
                   </div>
                 )} >
               {status ? (<TabChange status={status} fields={fields} />) :
-                (<EditUser status={status} fields={fields}></EditUser>)}
+                (<EditUser status={status} fields={fields} />)}
             </Card>
           </Col>
           <Col span={8} >

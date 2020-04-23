@@ -1,10 +1,10 @@
 import React, { Component, useState, useEffect } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import Router, { useRouter } from 'next/router';
 import { Table, Tag, Button, Form, Row, Col, Rate, Input, Select, Typography, Card, Alert, Text } from 'antd';
 import { getJobById } from '../../containers/referred/actions';
 import { get } from 'lodash';
-import './styles.scss'
+import './styles.scss';
 import {
     DollarOutlined,
     RightOutlined,
@@ -15,6 +15,7 @@ import {
     FlagOutlined,
     SettingOutlined
 } from '@ant-design/icons';
+
 const { Title } = Typography;
 const { Meta } = Card;
 
@@ -25,17 +26,17 @@ function jobDetail(props) {
     const { referred, dispatch, profile } = props;
     const [status, setSatus] = useState(false);
     console.log('refer', referred);
-    //console.log(get('referred jobddddddddddd',referred,'job_detail.data.job.jd_files'));
+    // console.log(get('referred jobddddddddddd',referred,'job_detail.data.job.jd_files'));
     useEffect(() => {
-        dispatch(getJobById({ id }))
+        dispatch(getJobById({ id }));
     }, []);
     const Hidden = () => {
         if (get(profile, 'job_detail.data.employer.id') !== null) {
-            //console.log('voday')
+            // console.log('voday')
             return { visibility: "hidden" };
             console.log({ visibility: "hidden" });
         }
-    }
+    };
 
 
     return (
@@ -80,7 +81,7 @@ function jobDetail(props) {
                         <div style={{ background: 'white', padding: 20 }} >
                             <Title level={3}>Location</Title>
                             <div style={{ fontSize: 16 }}>Centec Tower, 72 Nguyen Thi Minh Khai Street, HCMC District 3 Ho Chi Minh</div>
-                            <div></div>
+                            <div />
                             
                         </div>
                     </div>
@@ -106,8 +107,8 @@ function jobDetail(props) {
     );
 }
 function mapStateToProps(state) {
-    //console.log(state);
-    const { referred, profile } = state
-    return { referred, profile }
+    // console.log(state);
+    const { referred, profile } = state;
+    return { referred, profile };
 }
-export default connect(mapStateToProps, null)(jobDetail)
+export default connect(mapStateToProps, null)(jobDetail);

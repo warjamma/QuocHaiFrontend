@@ -1,13 +1,12 @@
 import React, { Component, useState, useEffect } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import Router, { useRouter } from 'next/router';
 import { Table, Tag, Button, Form, Row, Col, Input, Select, Typography, Card, Alert, Text } from 'antd';
-import { getJobById } from '../../containers/referred/actions';
-import Link from 'next/link'
+import Link from 'next/link';
 import axios from 'axios';
 import { get } from 'lodash';
-import moment from 'moment'
-import './styles.scss'
+import moment from 'moment';
+import './styles.scss';
 import {
     DollarOutlined,
     RightOutlined,
@@ -22,6 +21,8 @@ import {
     MailOutlined,
     PhoneOutlined
 } from '@ant-design/icons';
+import { getJobById } from '../../containers/referred/actions';
+
 const { Title } = Typography;
 const { Meta } = Card;
 
@@ -32,11 +33,11 @@ function jobDetail(props) {
     const { referred, dispatch, profile } = props;
     const [status, setSatus] = useState(false);
     console.log('refer', referred);
-    //console.log(get('referred jobddddddddddd',referred,'job_detail.data.job.jd_files'));
+    // console.log(get('referred jobddddddddddd',referred,'job_detail.data.job.jd_files'));
     useEffect(() => {
-        dispatch(getJobById({ id }))
+        dispatch(getJobById({ id }));
     }, []);
-    //console.log('profile', profile)
+    // console.log('profile', profile)
     const checkRole = () => {
         switch (get(profile, 'data.recruiter.role')) {
             case 'superadmin':
@@ -50,8 +51,8 @@ function jobDetail(props) {
                 break;
         }
 
-    }
-    //console.log(referred)
+    };
+    // console.log(referred)
 
     const toDataURL = (url) => {
         return fetch(url).then((response) => {
@@ -59,17 +60,17 @@ function jobDetail(props) {
         }).then(blob => {
             return URL.createObjectURL(blob);
         });
-    }
+    };
 
     const download = async () => {
         const a = document.createElement("a");
         a.href = await toDataURL(get(referred, 'job_detail.data.job.jd_files'));
-        console.log(a)
+        console.log(a);
         a.download = "JD.pdf";
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
-    }
+    };
     return (
         <div className="job-detail" style={{ padding: 30 }}>
             {/* <Title level={2}>Job detail</Title> */}
@@ -104,13 +105,13 @@ function jobDetail(props) {
                 <Col span={16} >
                     <Card className="titileJob">
                         <Title level={3}><div style={{ float: 'left' }} >[Tuyển]</div>{get(referred, 'job_detail.data.job.job_role', []).map((value, key) => {
-                            return <div key={key} style={{ float: 'left' }} level={4}>  &nbsp;{value}&nbsp;</div>
+                            return <div key={key} style={{ float: 'left' }} level={4}>  &nbsp;{value}&nbsp;</div>;
                         })}</Title>
                         <br />
 
                         <div style={{ marginTop: 5 }}>
                             {get(referred, 'job_detail.data.job.job_levels', []).map((value, key) => {
-                                return <Button key={key} style={{ marginRight: 5 }}>{value}</Button>
+                                return <Button key={key} style={{ marginRight: 5 }}>{value}</Button>;
                             })}
                         </div>
                         <br />
@@ -120,7 +121,7 @@ function jobDetail(props) {
                             })}
                         </div> */}
                         {get(referred, 'job_detail.data.job.locations', []).map((value, key) => {
-                            return <div style={{ marginBottom: 6 }} key={key}><RightOutlined /> {value} <a style={{ color: '#68ba50', fontSize: '13px' }}></a></div>
+                            return <div style={{ marginBottom: 6 }} key={key}><RightOutlined /> {value} <a style={{ color: '#68ba50', fontSize: '13px' }} /></div>;
                         })}
                         <div style={{ marginBottom: 10 }}><CalendarOutlined /> 4 days ago</div>
                         <Button style={get(profile, 'data.employer.id') ? ({ visibility: "hidden" }) : ({ float: 'left', marginRight: 5, width: '40%', display: 'block' })} type="primary" onClick={() => Router.push(`/referrer/upload-cv/${id}`)} block>Giới thiệu ứng viên</Button>
@@ -130,7 +131,7 @@ function jobDetail(props) {
                         <Title level={3}>Job role To Join Us</Title>
                         <ul>
                             {get(referred, 'job_detail.data.job.job_role', []).map((value, key) => {
-                                return <li key={key} style={{ fontWeight: 'bold' }} level={4}>{value}</li>
+                                return <li key={key} style={{ fontWeight: 'bold' }} level={4}>{value}</li>;
                             })}
                         </ul>
                         <Title level={3}>Job detail</Title>
@@ -147,7 +148,7 @@ function jobDetail(props) {
                         <Title level={3}>Job Levels</Title>
                         <ul>
                             {get(referred, 'job_detail.data.job.job_levels', []).map((value, key) => {
-                                return <li key={key} style={{ fontWeight: 'bold', marginLeft: 10 }} level={4}>{value}</li>
+                                return <li key={key} style={{ fontWeight: 'bold', marginLeft: 10 }} level={4}>{value}</li>;
                             })}
 
                         </ul>
@@ -155,11 +156,11 @@ function jobDetail(props) {
                         <Title level={3}>Your Skills and Experience</Title>
                         <ul>
                             {get(referred, 'job_detail.data.job.job.skill_requirement', []).map((value, key) => {
-                                return <li key={key} style={{ marginLeft: 10 }} level={4}> {value.years}</li>
+                                return <li key={key} style={{ marginLeft: 10 }} level={4}> {value.years}</li>;
                             })}
                         </ul>
                         <Button style={((get(profile, 'data.recruiter.role') == 'superadmin') || get(profile, 'data.employer.role') == 'admin') ? ({ visibility: "hidden" }) : ({ float: 'left', marginRight: 5, width: '40%', display: 'block' })} type="primary" onClick={() => Router.push(`/referrer/upload-cv/${id}`)} block>Giới thiệu ứng viên</Button>
-                        <Button style={{ float: 'left', width: '40%' }} disabled={get(referred, 'job_detail.data.job.jd_files') == '' || get(referred, 'job_detail.data.job.jd_files') == null ? (true) : (false)} type="primary" block><a href={get(referred, 'job_detail.data.job.jd_files')} download>Dowload JD</a></Button>
+                        <Button style={{ float: 'left', width: '40%' }} disabled={!!(get(referred, 'job_detail.data.job.jd_files') == '' || get(referred, 'job_detail.data.job.jd_files') == null)} type="primary" block><a href={get(referred, 'job_detail.data.job.jd_files')} download>Dowload JD</a></Button>
                     </Card>
                 </Col>
             </Row>
@@ -211,7 +212,7 @@ function jobDetail(props) {
 }
 function mapStateToProps(state) {
     console.log(state);
-    const { referred, profile } = state
-    return { referred, profile }
+    const { referred, profile } = state;
+    return { referred, profile };
 }
-export default connect(mapStateToProps, null)(jobDetail)
+export default connect(mapStateToProps, null)(jobDetail);

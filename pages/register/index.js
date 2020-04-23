@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Form, Input, Button, Checkbox, Tabs, Select, message } from 'antd';
 import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
-import { registerRequest } from '../../containers/profile/actions';
 import Router from 'next/router';
 import { get } from 'lodash';
+import { registerRequest } from '../../containers/profile/actions';
 import './styles.scss';
 
 const { TabPane } = Tabs;
@@ -37,9 +37,9 @@ function Register(props) {
   const onFinish = async (values) => {
     await dispatch(registerRequest(values, role)).then(res => {
       if (!res.status) {
-        return error(res.message)
+        return error(res.message);
       }
-      success(get(res, 'data.message', '').toUpperCase())
+      success(get(res, 'data.message', '').toUpperCase());
       return Router.push(`/login`);
     });
   };
@@ -106,7 +106,7 @@ function Register(props) {
           </Button>
         </Form.Item>
       </Form>
-    )
+    );
   }
 
   return (
@@ -116,7 +116,7 @@ function Register(props) {
         <div>Register</div>
       </div>
       <Tabs defaultActiveKey={role} onChange={(e) => {
-        setRole(e)
+        setRole(e);
       }}>
         <TabPane tab="As Company" key="employers">
           <FormRegister>

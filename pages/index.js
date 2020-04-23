@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux'
-import Link from 'next/link'
+import { connect } from 'react-redux';
+import Link from 'next/link';
 
 function Home () {
   return (
   <div>
     Home!!
   </div>
-  )
+  );
 };
 
 Home.getInitialProps = async function({ reduxStore }) {
-  return {}
-}
+  return {};
+};
 
-export default connect(null, null)(Home)
+export default connect(null, null)(Home);

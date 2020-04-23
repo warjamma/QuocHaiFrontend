@@ -8,8 +8,8 @@
     "start": "next start",
     "production:server": "node index.js",
     "dev:server": "npm run build && nodemon index.js",
-    "eslint:test": "eslint ./",
-    "eslint:fix": "eslint ./ --fix"
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix ."
   },
   "dependencies": {
     "@ant-design/icons": "^4.0.0",
@@ -17,6 +17,7 @@
     "@zeit/next-sass": "^1.0.1",
     "antd": "^4.0.4",
     "axios": "^0.19.2",
+    "babel-eslint": "^10.1.0",
     "cacheable-response": "^1.10.0",
     "dotenv": "^8.2.0",
     "es6-promise": "^4.2.8",

@@ -11,14 +11,14 @@ const warning = (mes) => {
 };
 
 function ResetPassword(props) {
-  const { dispatch, location, isError, history } = props
+  const { dispatch, location, isError, history } = props;
 
   useEffect(() => {
-    console.log(location)
+    console.log(location);
   });
 
   const onFinish = values => {
-    console.log(values)
+    console.log(values);
   };
 
   return (

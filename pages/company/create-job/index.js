@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { createJob } from '../../../containers/company/action';
 import { uploadRequest } from '../../../containers/referred/actions';
 import './styles.scss';
+
 CreateJob.propTypes = {
 
 };
@@ -45,10 +46,10 @@ const initForm = {
   reward: null,
   currency: "",
   jd_files: ''
-}
+};
 
-const role = 'Account Management, Administration, Backend, Branding, Business Analyst, Business Development, CEO, CFO, CMO, Consultant, Content Creator, COO, CTO, Customer Service, Data Analyst, Designer, Developer, DevOps, Digital Marketing, Engineering, Finace/Accounting, Frontend, Fullstack, Game, General management, HR, HSE, Import - Export, Logistic, maintenance, Management, Market Research, marketing, Merchandising, Mobile, Office Management, Operation Management, Operations, Planning, Product Management, Production, Project Management, Public Relation, QA/QC, Quality Control, Recruitment, Research & Development, Researcher, Sales, Scrum Master, Software Architect, Software Development, Supply Chain, Teacher, Techical Sales, Tester, Traditional Marketing, Trainer'
-const language = 'Java, JavaScript, Reactjs, Vuejs, Angular, .Net, Nodejs, ObjectC, Swift, Kotlin, Python, PHP, MySQL, HTML/ CSS, SQL, C#, C++, Spring, AWS, Linux, Cocos2dx, Unity, ASP.NET, Docker, Ruby'
+const role = 'Account Management, Administration, Backend, Branding, Business Analyst, Business Development, CEO, CFO, CMO, Consultant, Content Creator, COO, CTO, Customer Service, Data Analyst, Designer, Developer, DevOps, Digital Marketing, Engineering, Finace/Accounting, Frontend, Fullstack, Game, General management, HR, HSE, Import - Export, Logistic, maintenance, Management, Market Research, marketing, Merchandising, Mobile, Office Management, Operation Management, Operations, Planning, Product Management, Production, Project Management, Public Relation, QA/QC, Quality Control, Recruitment, Research & Development, Researcher, Sales, Scrum Master, Software Architect, Software Development, Supply Chain, Teacher, Techical Sales, Tester, Traditional Marketing, Trainer';
+const language = 'Java, JavaScript, Reactjs, Vuejs, Angular, .Net, Nodejs, ObjectC, Swift, Kotlin, Python, PHP, MySQL, HTML/ CSS, SQL, C#, C++, Spring, AWS, Linux, Cocos2dx, Unity, ASP.NET, Docker, Ruby';
 
 const layout = {
   labelCol: { span: 18 },
@@ -65,7 +66,7 @@ const dummyRequest = ({ file, onSuccess }) => {
 };
 
 function CreateJob(props) {
-  const { dispatch } = props
+  const { dispatch } = props;
   const router = useRouter();
   const { id } = router.query;
 
@@ -79,7 +80,7 @@ function CreateJob(props) {
           
       }
       return message.error(res.error);
-    })
+    });
   };
 
   const onRequest = (value) => {
@@ -89,7 +90,7 @@ function CreateJob(props) {
         return message.success('Upload request');
       }
       return message.error(res.error);
-    })
+    });
   };
 
   const onFinishFailed = errorInfo => {
@@ -97,7 +98,7 @@ function CreateJob(props) {
   };
 
   const onChange = e => {
-    let fileList = [...e.fileList];
+    const fileList = [...e.fileList];
     const last = fileList.slice(-1);
     setFileData(last);
     if(e.file.status === 'done') {
@@ -106,7 +107,7 @@ function CreateJob(props) {
   };
 
   const setting = {
-    onChange: onChange,
+    onChange,
     onRemove: () => setFileLink(''),
     multiple: true,
     listType: "picture",
@@ -120,7 +121,7 @@ function CreateJob(props) {
         <div>Tạo công việc mới</div>
       </div>
       <Row gutter={[16, 16]}>
-        <Col span={18} ><iframe style={{ width: '100%', height: '100vh' }} id="input" value={fileLink} src={fileLink}></iframe></Col>
+        <Col span={18} ><iframe style={{ width: '100%', height: '100vh' }} id="input" value={fileLink} src={fileLink} /></Col>
         <Col span={6}>
           <Upload
             {...setting}
@@ -288,7 +289,7 @@ function CreateJob(props) {
             >
               <InputNumber
                 style={{ width: '100%' }}
-                //defaultValue={1000}
+                // defaultValue={1000}
                 formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                 parser={value => value.replace(/\$\s?|(,*)/g, '')}
               />

@@ -20,7 +20,7 @@ export const companySideBar = [
       },
     ]
   }
-]
+];
 
 export const adminSideBar = [
   {
@@ -31,7 +31,7 @@ export const adminSideBar = [
     name: 'Danh sách công việc',
     url: '/superadmin/job-list'
   },
-]
+];
 
 export const referrerSideBar = [
   // {
@@ -50,4 +50,4 @@ export const referrerSideBar = [
     name: 'Thông tin cá nhân',
     url: '/referrer/profile'
   },
-]
+];

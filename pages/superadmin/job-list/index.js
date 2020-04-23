@@ -1,17 +1,17 @@
 import React, { Component, useState, useEffect, useRef } from 'react';
-import { connect } from 'react-redux'
-import Link from 'next/link'
+import { connect } from 'react-redux';
+import Link from 'next/link';
 import { RedoOutlined, SearchOutlined, QuestionCircleOutlined, CheckOutlined } from '@ant-design/icons';
 import { Table, Row, Col, Button, Tag, Input, Select, Tabs, Modal, Tooltip, Spin } from 'antd';
+import { get, debounce } from 'lodash';
+import Router, { useRouter } from 'next/router';
 import { getListJob } from '../../../containers/referred/actions';
 import { actionApproveJob, actionRejectJob, getAllJobType } from '../../../containers/job/actions';
 import { getAllCompany } from '../../../containers/company/action';
-import { get, debounce } from 'lodash';
-import Router, { useRouter } from 'next/router';
 
-import './styles.scss'
+import './styles.scss';
 
-const { Search } = Input
+const { Search } = Input;
 
 const { Option } = Select;
 
@@ -25,7 +25,7 @@ const initQuery = {
   max_salary: null,
   offset: 0,
   limit: 10,
-}
+};
 
 function itemRender(current, type, originalElement) {
   if (type === 'prev') {
@@ -38,7 +38,7 @@ function itemRender(current, type, originalElement) {
 }
 
 function JobList (props) {
-  const { referred, dispatch } = props
+  const { referred, dispatch } = props;
   const [query, setQuery] = useState(initQuery);
   const [total, setTotal] = useState(null);
   const [activeTab, setTab] = useState('Pending');
@@ -96,7 +96,7 @@ function JobList (props) {
       title: 'Vị trí',
       dataIndex: 'company_id',
       render: (text, record, index) => (
-        <div className="custom-company" onClick={() => Router.push('/job-detail/'+record.id+'')}>    
+        <div className="custom-company" onClick={() => Router.push(`/job-detail/${record.id}`)}>    
             <div className="job-role">
               {
                 record.job_role.map(item => (
@@ -155,65 +155,65 @@ function JobList (props) {
   ];
 
   const changeQuery = (key, value) => {
-    let clone = { ...query };
+    const clone = { ...query };
     clone[key] = typeof value === 'object' ? value.join(', ') : value ;
-    setQuery(clone)
-  }
+    setQuery(clone);
+  };
 
   const onChangeTab = async (value) => {
-    let clone = { ...query };
+    const clone = { ...query };
     if (value === 'Denied') {
       value = 'Reject';
       setTab('Denied');  
-      clone['status'] = value.toLowerCase();
+      clone.status = value.toLowerCase();
     }
     else {
       setTab(value);
-      clone['status'] = value.toLowerCase();
+      clone.status = value.toLowerCase();
     }
     // setTab(value);
     // let clone = { ...query };
     // clone['status'] = value.toLowerCase();
     setQuery(clone);
-    await dispatch(getListJob(clone))
-  }
+    await dispatch(getListJob(clone));
+  };
 
   const handleFind = async () => {
-    let clone = { ...query };
-    clone['offset'] = 0;
-    setQuery(clone)
-    await dispatch(getListJob(clone))
-  }
+    const clone = { ...query };
+    clone.offset = 0;
+    setQuery(clone);
+    await dispatch(getListJob(clone));
+  };
 
   const handleTableChange = async (pagination) => {
-    let clone = { ...query };
-    clone['offset'] = (pagination.current - 1) * 10;
-    clone['limit'] = pagination.pageSize;
-    setQuery(clone)
-    await dispatch(getListJob(clone))
+    const clone = { ...query };
+    clone.offset = (pagination.current - 1) * 10;
+    clone.limit = pagination.pageSize;
+    setQuery(clone);
+    await dispatch(getListJob(clone));
   };
 
   const resetSearch = async () => {
     setQuery(initQuery);
-    await dispatch(getListJob(initQuery))
-  }
+    await dispatch(getListJob(initQuery));
+  };
 
   const approveJob = async (id) => {
     await dispatch(actionApproveJob(id));
     dispatch(getListJob(query));
-  }
+  };
 
   const rejectJob = async () => {
     await dispatch(actionRejectJob(selectedJob, {reject_reason: reason}));
     toggleModal(false);
     setReason('');
     dispatch(getListJob(query));
-  }
+  };
 
   const selectDeny = (id) => {
     toggleModal(true);
-    setSelectedJob(id) 
-  }
+    setSelectedJob(id); 
+  };
 
   useEffect(() => {
     dispatch(getListJob(query));
@@ -337,7 +337,7 @@ function JobList (props) {
         onOk={() => rejectJob()}
         onCancel={() => {
           toggleModal(!visibleModal);
-          setReason('')
+          setReason('');
         }}
       >
         <Input.TextArea placeholder="" autoSize={{ minRows: 4 }} onChange={(e) => setReason(e.target.value)} />
@@ -347,8 +347,8 @@ function JobList (props) {
 };
 
 function mapStateToProps(state) {
-  const { referred } = state
-  return { referred }
+  const { referred } = state;
+  return { referred };
 }
 
-export default connect(mapStateToProps, null)(JobList)
+export default connect(mapStateToProps, null)(JobList);

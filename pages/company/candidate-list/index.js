@@ -4,11 +4,11 @@ import Router from 'next/router';
 import Link from 'next/link';
 import { connect } from 'react-redux';
 import { RedoOutlined, SearchOutlined, DownloadOutlined, UserOutlined, SolutionOutlined, LoadingOutlined, SmileOutlined } from '@ant-design/icons';
-import styled from 'styled-components'
-import { getListCandidate, updateStatusRef } from '../../../containers/company/action';
+import styled from 'styled-components';
 import { get } from 'lodash';
 import moment from 'moment';
-import renderColorStatus from '../../../ultils/renderColorStatus'
+import { getListCandidate, updateStatusRef } from '../../../containers/company/action';
+import renderColorStatus from '../../../ultils/renderColorStatus';
 
 import './styles.scss';
 
@@ -19,18 +19,18 @@ const ButtonAction = styled(Button)`
     border-color: #1890FF;
     color: #fff;
   }
-`
+`;
 
-const { Search } = Input
+const { Search } = Input;
 
-const { Option } = Select
+const { Option } = Select;
 
 const initQuery = {
   key_word: '',
   status: '',
   offset: 0,
   limit: 10,
-}
+};
 
 function CandidateList (props) {
   const [form] = Form.useForm();
@@ -89,7 +89,7 @@ function CandidateList (props) {
 
   const isEditing = record => {
     return record.id === editingKey;
-  }
+  };
 
   const edit = record => {
     form.resetFields();
@@ -108,7 +108,7 @@ function CandidateList (props) {
   const save = async (data) => {
     try {
       const row = await form.validateFields();
-      console.log(row)
+      console.log(row);
       const body = {};
       if(row.status === 'interview_failed' || row.status === 'probation_failed') {
         body.failing_reason = row.failing_reason;
@@ -118,9 +118,9 @@ function CandidateList (props) {
       }
       dispatch(updateStatusRef(data.id, row.status, body)).then(res => {
         if(res.status) {
-          message.success('Update status successfully')
+          message.success('Update status successfully');
         } else {
-          message.warning(res.error)
+          message.warning(res.error);
         }
         dispatch(getListCandidate(query, get(profile, 'data.employer.company_id', '')));
       });
@@ -135,7 +135,7 @@ function CandidateList (props) {
       title: 'Vị trí',
       dataIndex: 'job',
       render: (text, record, index) => (
-        <div className="custom-company" onClick={() => Router.push('/job-detail/'+record.job.id+'')}> 
+        <div className="custom-company" onClick={() => Router.push(`/job-detail/${record.job.id}`)}> 
         <div className="job-role">
           {/* <Link href="/job-detail/[id]" as={`/job-detail/${record.job.id}`}><a>{get(record, 'job', {}).job_role}</a></Link> */}
           {
@@ -276,30 +276,30 @@ function CandidateList (props) {
   });
 
   const handleTableChange = async (pagination) => {
-    let clone = { ...query };
-    clone['offset'] = (pagination.current - 1) * 10;
-    clone['limit'] = pagination.pageSize;
+    const clone = { ...query };
+    clone.offset = (pagination.current - 1) * 10;
+    clone.limit = pagination.pageSize;
     setQuery(clone);
     await dispatch(getListCandidate(clone, get(profile, 'data.employer.company_id', '')));
   };
 
   const onChangeQuery = async (key, value) => {
-    let clone = { ...query }
-    clone[key] = value
-    setQuery(clone)
-  }
+    const clone = { ...query };
+    clone[key] = value;
+    setQuery(clone);
+  };
 
   const handleFilter = async () => {
-    let clone = { ...query };
-    clone['offset'] = 0;
+    const clone = { ...query };
+    clone.offset = 0;
     setQuery(clone);
     await dispatch(getListCandidate(clone, get(profile, 'data.employer.company_id', '')));
-  }
+  };
 
   const resetSearch = async () => {
     setQuery(initQuery);
     await dispatch(getListCandidate(initQuery, get(profile, 'data.employer.company_id', '')));
-  }
+  };
   
   useEffect(() => {
     dispatch(getListCandidate(query, get(profile, 'data.employer.company_id', '')));
@@ -378,8 +378,8 @@ function CandidateList (props) {
 }
 
 function mapStateToProps(state) {
-  const { company, profile } = state
-  return { company, profile }
+  const { company, profile } = state;
+  return { company, profile };
 }
 
-export default connect(mapStateToProps, null)(CandidateList)
+export default connect(mapStateToProps, null)(CandidateList);

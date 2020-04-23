@@ -14,8 +14,8 @@ EditJob.propTypes = {
 
 };
 
-const role = 'Account Management, Administration, Backend, Branding, Business Analyst, Business Development, CEO, CFO, CMO, Consultant, Content Creator, COO, CTO, Customer Service, Data Analyst, Designer, Developer, DevOps, Digital Marketing, Engineering, Finace/Accounting, Frontend, Fullstack, Game, General management, HR, HSE, Import - Export, Logistic, maintenance, Management, Market Research, marketing, Merchandising, Mobile, Office Management, Operation Management, Operations, Planning, Product Management, Production, Project Management, Public Relation, QA/QC, Quality Control, Recruitment, Research & Development, Researcher, Sales, Scrum Master, Software Architect, Software Development, Supply Chain, Teacher, Techical Sales, Tester, Traditional Marketing, Trainer'
-const language = 'Java, JavaScript, Reactjs, Vuejs, Angular, .Net, Nodejs, ObjectC, Swift, Kotlin, Python, PHP, MySQL, HTML/ CSS, SQL, C#, C++, Spring, AWS, Linux, Cocos2dx, Unity, ASP.NET, Docker, Ruby'
+const role = 'Account Management, Administration, Backend, Branding, Business Analyst, Business Development, CEO, CFO, CMO, Consultant, Content Creator, COO, CTO, Customer Service, Data Analyst, Designer, Developer, DevOps, Digital Marketing, Engineering, Finace/Accounting, Frontend, Fullstack, Game, General management, HR, HSE, Import - Export, Logistic, maintenance, Management, Market Research, marketing, Merchandising, Mobile, Office Management, Operation Management, Operations, Planning, Product Management, Production, Project Management, Public Relation, QA/QC, Quality Control, Recruitment, Research & Development, Researcher, Sales, Scrum Master, Software Architect, Software Development, Supply Chain, Teacher, Techical Sales, Tester, Traditional Marketing, Trainer';
+const language = 'Java, JavaScript, Reactjs, Vuejs, Angular, .Net, Nodejs, ObjectC, Swift, Kotlin, Python, PHP, MySQL, HTML/ CSS, SQL, C#, C++, Spring, AWS, Linux, Cocos2dx, Unity, ASP.NET, Docker, Ruby';
 
 const layout = {
   labelCol: { span: 18 },
@@ -30,7 +30,7 @@ const dummyRequest = ({ file, onSuccess }) => {
 
 function EditJob(props) {
   const [form] = Form.useForm();
-  const { dispatch, referred } = props
+  const { dispatch, referred } = props;
   const router = useRouter();
   const { id } = router.query;
   const initForm = get(referred, `job_detail.data.job`, []);
@@ -45,7 +45,7 @@ function EditJob(props) {
         return message.success('Update Job successfully').then(res=>Router.push('/company/job-list'));
       }
       return message.error(res.error);
-    })
+    });
   };
   const onRequest = async (value) => {
     await dispatch(uploadRequest({ value })).then(res => {
@@ -54,14 +54,14 @@ function EditJob(props) {
         return message.success('Upload request');
       }
       return message.error(res.error);
-    })
+    });
 
   };
   const onFinishFailed = errorInfo => {
     console.log('Failed:', errorInfo);
   };
   const onChange = e => {
-    let fileList = [...e.fileList];
+    const fileList = [...e.fileList];
     const last = fileList.slice(-1);
     setFileData(last);
     if(e.file.status === 'done') {
@@ -73,7 +73,7 @@ function EditJob(props) {
     dispatch(getJobById({ id })).then(res => {
       const { data, status } = res;
       if (status) {
-        form.setFieldsValue(data.data.job)
+        form.setFieldsValue(data.data.job);
       }
     });
   }, []);
@@ -82,11 +82,11 @@ function EditJob(props) {
     console.log('Received values of fors', job_id);
     await dispatch(deleteJob(job_id)).then(res => {
       if (res.status) {
-        Router.push('/company/job-list')
+        Router.push('/company/job-list');
         return message.success('Delete candidate successfully');
       }
       return message.error(res.error);
-    })
+    });
   };
 
   function cancel(e) {
@@ -95,7 +95,7 @@ function EditJob(props) {
   }
 
   const setting = {
-    onChange: onChange,
+    onChange,
     onRemove: () => setFileLink(''),
     multiple: true,
     listType: "picture",
@@ -110,7 +110,7 @@ function EditJob(props) {
       </div>
       <Row gutter={[16, 16]}>
         {/* {get(referred, 'candidate_detail', [])} */}
-        <Col span={18} ><iframe style={{ width: '100%', height: '100vh' }} id="input" value={fileLink} src={fileLink == '' ? (get(referred, 'job_detail.data.job.jd_files', []) == '' ? (fileLink) : (get(referred, 'job_detail.data.job.jd_files', []))) : (fileLink)}></iframe></Col>
+        <Col span={18} ><iframe style={{ width: '100%', height: '100vh' }} id="input" value={fileLink} src={fileLink == '' ? (get(referred, 'job_detail.data.job.jd_files', []) == '' ? (fileLink) : (get(referred, 'job_detail.data.job.jd_files', []))) : (fileLink)} /></Col>
         <Col span={6}>
           <Form
             form={form}
@@ -278,7 +278,7 @@ function EditJob(props) {
             >
               <InputNumber
                 style={{ width: '100%' }}
-                //defaultValue={1000}
+                // defaultValue={1000}
                 formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                 parser={value => value.replace(/\$\s?|(,*)/g, '')}
               />
@@ -315,8 +315,8 @@ function EditJob(props) {
 
 function mapStateToProps(state) {
   console.log('memberdetail in state', state);
-  const { referred } = state
-  return { referred }
+  const { referred } = state;
+  return { referred };
 }
 
 export default connect(mapStateToProps, null)(EditJob);
