@@ -54,19 +54,16 @@
     "prettier": "^2.0.5",
     "pretty-quick": "^2.0.1"
   },
-  "precommit": "NODE_ENV=production lint-staged",
-  "lint-staged": {
-    "*.(js|css)": [
-      "git add"
-    ],
-    ".js": [
-      "npm run eslint:test",
-      "npm run eslint:fix"
-    ]
-  },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
     }
+  },
+  "lint-staged": {
+    "*.{js,jsx}": [
+      "pretty-quick --staged",
+      "eslint src/ --fix",
+      "git add"
+    ]
   }
 }
