@@ -1,8 +1,8 @@
-import React, { Component, useState, useEffect, useRef } from 'react';
+/* eslint-disable no-unused-vars */
+import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
-import Link from 'next/link';
 import Router from 'next/router';
-import { RedoOutlined, SearchOutlined, DollarCircleOutlined,FileDoneOutlined } from '@ant-design/icons';
+import { RedoOutlined, SearchOutlined, FileDoneOutlined } from '@ant-design/icons';
 import { Table, Row, Col, Button, Tag, Input, Select, Spin } from 'antd';
 import { get, debounce } from 'lodash';
 import { getListJob } from '../../../containers/referred/actions';
@@ -16,12 +16,14 @@ const { Search } = Input;
 
 const { Option } = Select;
 
+const role = 'Account Management, Administration, Backend, Branding, Business Analyst, Business Development, CEO, CFO, CMO, Consultant, Content Creator, COO, CTO, Customer Service, Data Analyst, Designer, Developer, DevOps, Digital Marketing, Engineering, Finace/Accounting, Frontend, Fullstack, Game, General management, HR, HSE, Import - Export, Logistic, maintenance, Management, Market Research, marketing, Merchandising, Mobile, Office Management, Operation Management, Operations, Planning, Product Management, Production, Project Management, Public Relation, QA/QC, Quality Control, Recruitment, Research & Development, Researcher, Sales, Scrum Master, Software Architect, Software Development, Supply Chain, Teacher, Techical Sales, Tester, Traditional Marketing, Trainer';
+
 const initQuery = {
   company: '',
   key_word: '',
   location: '',
   status: 'accepted',
-  job_type: null,
+  job_role: null,
   min_salary: null,
   max_salary: null,
   offset: 0,
@@ -33,9 +35,13 @@ const columns = [
     title: 'Công ty',
     dataIndex: 'company_id',
     render: (text, record, index) => (
-      <div className="custom-company" onClick={() => Router.push(`/job-detail/${record.id}`)}>
+      <div role="presentation" className="custom-company" onClick={() => Router.push(`/job-detail/${record.id}`)}>
         <div className="logo-company" style={{ width: 100,marginRight: 10}}>
-          <img  style ={{cursor: 'pointer',width: '100%',objectFit: 'cover'}} src={get(record, 'company.avatar') === null ? '/default-avatar.png' : get(record, 'company.avatar')}/>
+          <img
+            style={{cursor: 'pointer',width: '100%',objectFit: 'cover'}}
+            src={get(record, 'company.avatar') === null ? '/default-avatar.png' : get(record, 'company.avatar')}
+            alt="avatar"
+          />
         </div>
         <div className="info-required">
           <b style={{ cursor: 'pointer'}} className="name-company">{get(record, 'company.name', '')}</b>
@@ -59,7 +65,7 @@ const columns = [
     title: 'Vị trí',
     dataIndex: 'company_id',
     render: (text, record, index) => (
-      <div className="custom-company" onClick={() => Router.push(`/job-detail/${record.id}`)}>    
+      <div role="presentation" className="custom-company" onClick={() => Router.push(`/job-detail/${record.id}`)}>    
           <div className="job-role">
             {
               record.job_role.map(item => (
@@ -95,16 +101,6 @@ const columns = [
   },
 ];
 
-function itemRender(current, type, originalElement) {
-  if (type === 'prev') {
-    return <a>Previous</a>;
-  }
-  if (type === 'next') {
-    return <a>Next</a>;
-  }
-  return originalElement;
-}
-
 function JobList (props) {
   const { referred, dispatch } = props;
   const [query, setQuery] = useState(initQuery);
@@ -138,12 +134,6 @@ function JobList (props) {
     setQuery(initQuery);
     await dispatch(getListJob(initQuery));
   };
-
-  useEffect(() => {
-    dispatch(getListJob(query));
-    fetchCompany('');
-    fetchJobType('');
-  }, []);
   
   const fetchCompany = value => {
     setListCompany([]);
@@ -166,6 +156,12 @@ function JobList (props) {
       }
     });
   };
+
+  useEffect(() => {
+    dispatch(getListJob(query));
+    fetchCompany('');
+    fetchJobType('');
+  }, []);
 
   const delayedQuery = useRef(debounce((e, func) => func(e), 800)).current;
 
@@ -196,27 +192,27 @@ function JobList (props) {
                 onSearch={(e) => delayedQuery(e, fetchCompany)}
                 value={query.company}
               >
-                {listCompany.map((d, index) => (
-                  <Option value={d} key={index}>{d}</Option>
+                {listCompany.map((d) => (
+                  <Option value={d} key={d}>{d}</Option>
                 ))}
               </Select>
             </Col>
             <Col span={6}>
-              <b>Loại công việc</b>
+              <b>Vị trí</b>
               <Select
                 allowClear
                 showSearch
-                onChange={(e) => changeQuery('job_type', e)}
+                onChange={(e) => changeQuery('job_role', e)}
                 style={{ width: '100%' }}
-                placeholder="Chọn loại công việc"
+                placeholder="Chọn vị trí"
                 optionFilterProp="children"
-                notFoundContent={fetching ? <Spin size="small" /> : null}
-                filterOption={false}
-                onSearch={(e) => delayedQuery(e, fetchJobType)}
+                filterOption={(input, option) =>
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
                 value={query.job_type}
               >
-                {listJobType.map((d, index) => (
-                  <Option value={d} key={index}>{d}</Option>
+                {role.split(', ').map((d) => (
+                  <Option value={d} key={d}>{d}</Option>
                 ))}
               </Select>
             </Col>

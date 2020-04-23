@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { Component, useState, useEffect } from 'react';
 import { Table, Row, Col,Popconfirm, Button,message, Input, Select, Tag } from 'antd';
 import Router from 'next/router';
@@ -41,6 +42,26 @@ const initQuery = {
 function JobList(props) {
   const { profile, company, dispatch } = props;
   const [query, setQuery] = useState(initQuery);
+
+  useEffect(() => {
+    console.log(query);
+    dispatch(getListJob(query, get(profile, 'data.employer.company_id', '')));
+  }, []);
+
+  const handleDelete = async (jobId) => {
+    await dispatch(deleteJob(jobId)).then(res => {
+      if (res.status) {
+        Router.push('/company/job-list');
+        return message.success('Delete candidate successfully');
+      }
+      return message.error(res.error);
+    });
+  };
+
+  function cancel(e) {
+    message.error('Cancel');
+  }
+
   const columns = [
     // {
     //   title: 'Công việc',
@@ -52,7 +73,7 @@ function JobList(props) {
     title: 'Vị trí',
     dataIndex: 'company_id',
     render: (text, record, index) => (
-      <div className="custom-company" onClick={() => Router.push(`/job-detail/${record.id}`)}>    
+      <div role="presentation" className="custom-company" onClick={() => Router.push(`/job-detail/${record.id}`)}>    
           <div className="job-role">
             {
               record.job_role.map(item => (
@@ -150,27 +171,6 @@ function JobList(props) {
     await dispatch(getListJob(initQuery, get(profile, 'data.employer.company_id', '')));
   };
 
-  const handleDelete = async (job_id) => {
-    console.log('Received values of fors', job_id);
-    await dispatch(deleteJob(job_id)).then(res => {
-      if (res.status) {
-        Router.push('/company/job-list');
-        return message.success('Delete candidate successfully');
-      }
-      return message.error(res.error);
-    });
-  };
-
-  function cancel(e) {
-    console.log(e);
-    message.error('Cance');
-  }
-
-  useEffect(() => {
-    console.log(query);
-    dispatch(getListJob(query, get(profile, 'data.employer.company_id', '')));
-  }, []);
-
   return (
     <div className="jobListContainer">
       <div className="header">
@@ -186,7 +186,7 @@ function JobList(props) {
               <Search value={query.key_word} onChange={(e) => onChangeQuery('key_word', e.target.value)} placeholder="Từ khóa" />
             </Col>
             <Col span={6}>
-              <b>Loại công việc</b>
+              <b>Vị trí</b>
               <Select
                 allowClear
                 showSearch

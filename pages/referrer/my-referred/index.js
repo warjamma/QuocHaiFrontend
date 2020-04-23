@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { Component, useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import Link from 'next/link';
@@ -23,6 +24,24 @@ const initQuery = {
 
 
 function MyReferred(props) {
+  const { dispatch, referred } = props;
+  const [query, setQuery] = useState(initQuery);
+  const [listCompany, setListCompany] = useState([]);
+  const [fetching, setFetching] = useState(false);
+  function cancel(e) {
+    message.error('Cance');
+  }
+
+  const handleDelete = async (candidateId) => {
+    await dispatch(deleteCandidate(candidateId)).then(res => {
+      if (res.status) {
+        Router.push('/referrer/my-referred');
+        return message.success('Delete candidate successfully');
+      }
+      return message.error(res.error);
+    });
+  };
+
   const columns = [
     {
       title: 'Vị trí',
@@ -31,7 +50,7 @@ function MyReferred(props) {
         // <div>
         //   <Link href={`/job-detail/${record.job.id}`}><a className="job-title">{get(record, 'job', {}).job_title}</a></Link>
         // </div>
-        <div onClick={() => Router.push(`/job-detail/${record.job.id}`)}>
+        <div role="presentation" onClick={() => Router.push(`/job-detail/${record.job.id}`)}>
             {
               get(record, 'candidate', {}).job_role.map(item => (
                 <Tag style={{margin:3, cursor: 'pointer'}}  key={item} color="red">{item}</Tag>
@@ -84,17 +103,19 @@ function MyReferred(props) {
       align: 'center',
       editable: true,
       width: 150,
-      render: (text, record, index) => <Tag color={renderColorTag(record.status)}>{record.status.replace('_', ' ')}</Tag>,
+      render: (text, record, index) => <Tag color={renderColorTag(record.status)}>
+        {get(record, 'status', '') === 'on_board' ? 'onboarding' : get(record, 'status', '').replace('_', ' ')}
+      </Tag>,
     },
     {
       title: 'Cập nhật',
       dataIndex: 'candidate_id',
       align: 'center',
       width: 150,
-      render: (candidate_id) => <div className="Action"><Button style={{marginRight:5}} onClick={() => Router.push(`/referrer/edit-cv/${  candidate_id  }`)}  icon={<EditOutlined />} size="small" />
+      render: (candidateId) => <div className="Action"><Button style={{marginRight:5}} onClick={() => Router.push(`/referrer/edit-cv/${  candidateId  }`)}  icon={<EditOutlined />} size="small" />
       <Popconfirm
         title="Are you sure delete title?"
-        onConfirm={() => handleDelete(candidate_id)}
+        onConfirm={() => handleDelete(candidateId)}
         onCancel={cancel}
         okText="Yes"
         cancelText="No"
@@ -104,11 +125,6 @@ function MyReferred(props) {
     },
     
   ];
-
-  const { dispatch, referred } = props;
-  const [query, setQuery] = useState(initQuery);
-  const [listCompany, setListCompany] = useState([]);
-  const [fetching, setFetching] = useState(false);
 
   const onChangeQuery = async (key, value) => {
     const clone = { ...query };
@@ -135,26 +151,7 @@ function MyReferred(props) {
     setQuery(initQuery);
     await dispatch(getListReferred(initQuery));
   };
-  
-  function cancel(e) {
-    console.log(e);
-    message.error('Cance');
-  }
-  const handleDelete = async (candidate_id) => {
-    console.log('Received values of fors', candidate_id);
-    await dispatch(deleteCandidate(candidate_id)).then(res => {
-      if (res.status) {
-        Router.push('/referrer/my-referred');
-        return message.success('Delete candidate successfully');
-      }
-      return message.error(res.error);
-    });
-  };
-  useEffect(() => {
-    dispatch(getListReferred(query));
-    fetchCompany('');
-  }, []);
-
+ 
   const fetchCompany = async value => {
     setListCompany([]);
     setFetching(true);
@@ -165,6 +162,11 @@ function MyReferred(props) {
       }
     });
   };
+
+  useEffect(() => {
+    dispatch(getListReferred(query));
+    fetchCompany('');
+  }, []);
 
   const delayedQuery = useRef(debounce((e, func) => func(e), 800)).current;
 
@@ -181,8 +183,8 @@ function MyReferred(props) {
       >
         <Row gutter={[16, 0]}>
           <Col className="fiter-item" span={14}>
-            <div className="title">Từ khóa: </div>
-            <Input value={query.key} onChange={(e) => onChangeQuery('key_word', e.target.value)} placeholder="Key word..." />
+            <div className="title">Tên ứng viên: </div>
+            <Input value={query.key_word} onChange={(e) => onChangeQuery('key_word', e.target.value)} placeholder="Tìm theo tên ứng viên..." />
           </Col>
           <Col className="fiter-item" span={6} >
             <div className="title">Công ty: </div>
@@ -196,9 +198,10 @@ function MyReferred(props) {
               notFoundContent={fetching ? <Spin size="small" /> : null}
               filterOption={false}
               onSearch={(e) => delayedQuery(e, fetchCompany)}
+              value={query.company_name}
             >
-              {listCompany.map((d, index) => (
-                <Option value={d} key={index}>{d}</Option>
+              {listCompany.map((d) => (
+                <Option value={d} key={d}>{d}</Option>
               ))}
             </Select>
           </Col>
@@ -212,11 +215,11 @@ function MyReferred(props) {
             >
               <Option value="">All</Option>
               <Option value="pending">Pending</Option>
-              <Option value="accepted">Accepted</Option>
-              <Option value="reject">Rejected</Option>
-              <Option value="on_board">On board</Option>
-              <Option value="probation">Probation</Option>
-              <Option value="done">Done</Option>
+              <Option value="confirmed">Confirmed</Option>
+              <Option value="on_board">Onboarding</Option>
+              <Option value="interview_failed">Interview failed</Option>
+              <Option value="probation_passed">Probation passed</Option>
+              <Option value="probation_failed">Probation failed</Option>
             </Select>
           </Col>
           <Col span={24}>

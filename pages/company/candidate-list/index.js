@@ -1,25 +1,16 @@
-import React, { Component, useState, useEffect } from 'react';
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-unused-expressions */
+import React, { useState, useEffect } from 'react';
 import { Table, Row, Col, Button, Input, Select, Tag, Popconfirm, DatePicker, Form, message } from 'antd';
 import Router from 'next/router';
-import Link from 'next/link';
 import { connect } from 'react-redux';
-import { RedoOutlined, SearchOutlined, DownloadOutlined, UserOutlined, SolutionOutlined, LoadingOutlined, SmileOutlined } from '@ant-design/icons';
-import styled from 'styled-components';
+import { RedoOutlined, SearchOutlined, DownloadOutlined } from '@ant-design/icons';
 import { get } from 'lodash';
 import moment from 'moment';
 import { getListCandidate, updateStatusRef } from '../../../containers/company/action';
 import renderColorStatus from '../../../ultils/renderColorStatus';
 
 import './styles.scss';
-
-const ButtonAction = styled(Button)`
-  padding: 0px 10px;
-  &:hover {
-    background: #1890FF;
-    border-color: #1890FF;
-    color: #fff;
-  }
-`;
 
 const { Search } = Input;
 
@@ -64,6 +55,7 @@ function CandidateList (props) {
       <Option value="probation_failed">Probation failed</Option>
     </Select>;
     return (
+      // eslint-disable-next-line react/jsx-props-no-spreading
       <td {...restProps}>
         {editing ? (
           <Form.Item
@@ -108,7 +100,6 @@ function CandidateList (props) {
   const save = async (data) => {
     try {
       const row = await form.validateFields();
-      console.log(row);
       const body = {};
       if(row.status === 'interview_failed' || row.status === 'probation_failed') {
         body.failing_reason = row.failing_reason;
@@ -124,9 +115,9 @@ function CandidateList (props) {
         }
         dispatch(getListCandidate(query, get(profile, 'data.employer.company_id', '')));
       });
-      setEditingKey('');
+      return setEditingKey('');
     } catch (errInfo) {
-      console.log('Validate Failed:', errInfo);
+      return errInfo;
     }
   };
 
@@ -135,7 +126,7 @@ function CandidateList (props) {
       title: 'Vị trí',
       dataIndex: 'job',
       render: (text, record, index) => (
-        <div className="custom-company" onClick={() => Router.push(`/job-detail/${record.job.id}`)}> 
+        <div role="presentation" className="custom-company" onClick={() => Router.push(`/job-detail/${record.job.id}`)}> 
         <div className="job-role">
           {/* <Link href="/job-detail/[id]" as={`/job-detail/${record.job.id}`}><a>{get(record, 'job', {}).job_role}</a></Link> */}
           {
@@ -197,7 +188,9 @@ function CandidateList (props) {
       align: 'center',
       editable: true,
       width: 120,
-      render: (text, record, index) => <Tag color={renderColorStatus(get(record, 'status', ''))}>{get(record, 'status', '').replace('_', ' ')}</Tag>,
+      render: (text, record, index) => <Tag color={renderColorStatus(get(record, 'status', ''))}>
+        {get(record, 'status', '') === 'on_board' ? 'onboarding' : get(record, 'status', '').replace('_', ' ')}
+      </Tag>,
     },
     {
       title: 'Hồ sơ',
@@ -241,18 +234,18 @@ function CandidateList (props) {
                 }
               </div>
             } onConfirm={() => save(record)}>
-              <a disabled={statusIndex === 'confirmed'} style={{ marginRight: 8 }}>
+              <span disabled={statusIndex === 'confirmed'} style={{ marginRight: 8 }}>
                 Save
-              </a>
+              </span>
             </Popconfirm>
             <Popconfirm placement="topRight" title="Sure to cancel?" onConfirm={cancel}>
-              <a>Cancel</a>
+              <span>Cancel</span>
             </Popconfirm>
           </span>
         ) : (
-          <a disabled={get(record, 'status', '') === 'pending'} onClick={() => edit(record)}>
+          <span role="presentation" disabled={get(record, 'status', '') === 'pending'} onClick={() => edit(record)}>
             Edit
-          </a>
+          </span>
         );
       },
     },
@@ -335,7 +328,7 @@ function CandidateList (props) {
                 <Option value="">All</Option>
                 <Option value="pending">Pending</Option>
                 <Option value="confirmed">Confirmed</Option>
-                <Option value="onboarding">Onboarding</Option>
+                <Option value="on_board">Onboarding</Option>
                 <Option value="interview_failed">Interview failed</Option>
                 <Option value="probation_passed">Probation passed</Option>
                 <Option value="probation_failed">Probation failed</Option>
