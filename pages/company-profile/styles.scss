@@ -1,0 +1,70 @@
+.company-profile {
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    div {
+      font-weight: bold;
+      font-size: 16px;
+    }
+  }
+  .filter-box {
+    background: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0px;
+    .body {
+      .salary-form {
+        display: flex;
+        align-items: center;
+        .content {
+          display: block;
+          margin: 0px 10px;
+          &:first-child {
+            margin-left: 0px;
+          }
+        }
+      }
+      b {
+        font-weight: 500;
+      }
+    }
+    .title {
+      font-weight: bold;
+      margin-bottom: 7px;
+      font-size: 16px;
+    }
+    .filter-option {
+      .filter-button {
+        text-align: right;
+        button {
+          &:first-child {
+            margin-right: 10px;
+          }
+        }
+      }
+    }
+  }
+  .custom-company {
+    display: flex;
+    .logo-company {
+      width: 100px;
+      margin-right: 10px;
+      min-width: 100px;
+      img {
+        width: 100%;
+        object-fit: cover;
+      }
+    }
+    .info-required {
+      text-align: left;
+      .job-role {
+        margin: 5px 0px;
+      }
+    }
+  }
+}
