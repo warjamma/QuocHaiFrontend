@@ -16,12 +16,14 @@ const { Search } = Input
 
 const { Option } = Select;
 
+const role = 'Account Management, Administration, Backend, Branding, Business Analyst, Business Development, CEO, CFO, CMO, Consultant, Content Creator, COO, CTO, Customer Service, Data Analyst, Designer, Developer, DevOps, Digital Marketing, Engineering, Finace/Accounting, Frontend, Fullstack, Game, General management, HR, HSE, Import - Export, Logistic, maintenance, Management, Market Research, marketing, Merchandising, Mobile, Office Management, Operation Management, Operations, Planning, Product Management, Production, Project Management, Public Relation, QA/QC, Quality Control, Recruitment, Research & Development, Researcher, Sales, Scrum Master, Software Architect, Software Development, Supply Chain, Teacher, Techical Sales, Tester, Traditional Marketing, Trainer'
+
 const initQuery = {
   company: '',
   key_word: '',
   location: '',
   status: 'accepted',
-  job_type: null,
+  job_role: null,
   min_salary: null,
   max_salary: null,
   offset: 0,
@@ -202,20 +204,20 @@ function JobList (props) {
               </Select>
             </Col>
             <Col span={6}>
-              <b>Loại công việc</b>
+              <b>Vị trí</b>
               <Select
                 allowClear
                 showSearch
-                onChange={(e) => changeQuery('job_type', e)}
+                onChange={(e) => changeQuery('job_role', e)}
                 style={{ width: '100%' }}
-                placeholder="Chọn loại công việc"
+                placeholder="Chọn vị trí"
                 optionFilterProp="children"
-                notFoundContent={fetching ? <Spin size="small" /> : null}
-                filterOption={false}
-                onSearch={(e) => delayedQuery(e, fetchJobType)}
+                filterOption={(input, option) =>
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
                 value={query.job_type}
               >
-                {listJobType.map((d, index) => (
+                {role.split(', ').map((d, index) => (
                   <Option value={d} key={index}>{d}</Option>
                 ))}
               </Select>

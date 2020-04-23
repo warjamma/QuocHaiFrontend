@@ -197,7 +197,9 @@ function CandidateList (props) {
       align: 'center',
       editable: true,
       width: 120,
-      render: (text, record, index) => <Tag color={renderColorStatus(get(record, 'status', ''))}>{get(record, 'status', '').replace('_', ' ')}</Tag>,
+      render: (text, record, index) => <Tag color={renderColorStatus(get(record, 'status', ''))}>
+        {get(record, 'status', '') === 'on_board' ? 'onboarding' : get(record, 'status', '').replace('_', ' ')}
+      </Tag>,
     },
     {
       title: 'Hồ sơ',
@@ -335,7 +337,7 @@ function CandidateList (props) {
                 <Option value="">All</Option>
                 <Option value="pending">Pending</Option>
                 <Option value="confirmed">Confirmed</Option>
-                <Option value="onboarding">Onboarding</Option>
+                <Option value="on_board">Onboarding</Option>
                 <Option value="interview_failed">Interview failed</Option>
                 <Option value="probation_passed">Probation passed</Option>
                 <Option value="probation_failed">Probation failed</Option>

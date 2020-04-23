@@ -186,7 +186,7 @@ function JobList(props) {
               <Search value={query.key_word} onChange={(e) => onChangeQuery('key_word', e.target.value)} placeholder="Từ khóa" />
             </Col>
             <Col span={6}>
-              <b>Loại công việc</b>
+              <b>Vị trí</b>
               <Select
                 allowClear
                 showSearch

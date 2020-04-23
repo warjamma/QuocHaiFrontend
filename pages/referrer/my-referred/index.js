@@ -84,7 +84,9 @@ function MyReferred(props) {
       align: 'center',
       editable: true,
       width: 150,
-      render: (text, record, index) => <Tag color={renderColorTag(record.status)}>{record.status.replace('_', ' ')}</Tag>,
+      render: (text, record, index) => <Tag color={renderColorTag(record.status)}>
+        {get(record, 'status', '') === 'on_board' ? 'onboarding' : get(record, 'status', '').replace('_', ' ')}
+      </Tag>,
     },
     {
       title: 'Cập nhật',
@@ -181,8 +183,8 @@ function MyReferred(props) {
       >
         <Row gutter={[16, 0]}>
           <Col className="fiter-item" span={14}>
-            <div className="title">Từ khóa: </div>
-            <Input value={query.key} onChange={(e) => onChangeQuery('key_word', e.target.value)} placeholder="Key word..." />
+            <div className="title">Tên ứng viên: </div>
+            <Input value={query.key_word} onChange={(e) => onChangeQuery('key_word', e.target.value)} placeholder="Tìm theo tên ứng viên..." />
           </Col>
           <Col className="fiter-item" span={6} >
             <div className="title">Công ty: </div>
@@ -196,6 +198,7 @@ function MyReferred(props) {
               notFoundContent={fetching ? <Spin size="small" /> : null}
               filterOption={false}
               onSearch={(e) => delayedQuery(e, fetchCompany)}
+              value={query.company_name}
             >
               {listCompany.map((d, index) => (
                 <Option value={d} key={index}>{d}</Option>
@@ -209,14 +212,15 @@ function MyReferred(props) {
               placeholder="Trạng thái"
               onChange={(e) => onChangeQuery('status', e)}
               value={query.status}
+              value={query.status}
             >
               <Option value="">All</Option>
               <Option value="pending">Pending</Option>
-              <Option value="accepted">Accepted</Option>
-              <Option value="reject">Rejected</Option>
-              <Option value="on_board">On board</Option>
-              <Option value="probation">Probation</Option>
-              <Option value="done">Done</Option>
+              <Option value="confirmed">Confirmed</Option>
+              <Option value="on_board">Onboarding</Option>
+              <Option value="interview_failed">Interview failed</Option>
+              <Option value="probation_passed">Probation passed</Option>
+              <Option value="probation_failed">Probation failed</Option>
             </Select>
           </Col>
           <Col span={24}>
