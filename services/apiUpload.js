@@ -39,7 +39,7 @@ const APIService1 = {
         })
         .catch((err) => {
           if (headers.length && err.response.status === 401) {
-            window.location.href = "/login"
+            window.location.href = "/login";
           }
           reject(err);
         });

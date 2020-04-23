@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { logOutRequest } from '../containers/profile/actions';
 
 axios.defaults.baseURL = 'https://rocksearch-api.rockship.co';
 

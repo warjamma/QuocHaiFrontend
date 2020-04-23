@@ -1,29 +1,29 @@
-import App from 'next/app'
-import React from 'react'
-import withReduxStore from '../lib/width-redux-store'
-import { Provider } from 'react-redux'
-import { persistStore } from 'redux-persist'
-import { PersistGate } from 'redux-persist/integration/react'
-import BasicLayout from '../layouts/BasicLayout'
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/jsx-props-no-spreading */
+import App from 'next/app';
+import React from 'react';
+import { Provider } from 'react-redux';
+import { persistStore } from 'redux-persist';
+import { PersistGate } from 'redux-persist/integration/react';
 
-import Head from 'next/head'
-import Router from 'next/router'
-import NProgress from 'nprogress'
-import '../theme/index.scss'
+import Head from 'next/head';
+import Router from 'next/router';
+import NProgress from 'nprogress';
 
-import { get } from 'lodash';
+import BasicLayout from '../layouts/BasicLayout';
+import withReduxStore from '../lib/width-redux-store';
+import '../theme/index.scss';
 
 Router.events.on('routeChangeStart', url => {
-  console.log(`Loading: ${url}`)
-  NProgress.start()
-})
-Router.events.on('routeChangeComplete', () => NProgress.done())
-Router.events.on('routeChangeError', () => NProgress.done())
+  NProgress.start();
+});
+Router.events.on('routeChangeComplete', () => NProgress.done());
+Router.events.on('routeChangeError', () => NProgress.done());
 
 class MyApp extends App {
   constructor(props) {
-    super(props)
-    this.persistor = persistStore(props.reduxStore)
+    super(props);
+    this.persistor = persistStore(props.reduxStore);
   }
 
   static async getInitialProps({ Component, ctx }) {
@@ -36,20 +36,19 @@ class MyApp extends App {
   };
 
   render() {
-    const { Component, pageProps, reduxStore } = this.props
+    const { Component, pageProps, reduxStore } = this.props;
     const LayoutWrapper = () => {
       return (
         <BasicLayout>
           <Component {...pageProps} />
         </BasicLayout>
-      )
-    }
+      );
+    };
     return (
       <Provider store={reduxStore}>
         <PersistGate
           loading={<div className="loading-screen">
-            <div className="loader-spinner">
-            </div>
+            <div className="loader-spinner" />
           </div>}
           persistor={this.persistor}
         >
@@ -59,8 +58,8 @@ class MyApp extends App {
           <LayoutWrapper />
         </PersistGate>
       </Provider>
-    )
+    );
   }
 };
 
-export default withReduxStore(MyApp)
+export default withReduxStore(MyApp);

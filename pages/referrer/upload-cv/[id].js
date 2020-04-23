@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable jsx-a11y/iframe-has-title */
+import React, { useState } from 'react';
 import { Col, Row, Form, Input, Button, Upload, message } from 'antd';
 import Router, { useRouter } from 'next/router';
 import { UploadOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
+import { cloneDeep } from 'lodash';
 import { createCandidate,uploadRequest } from '../../../containers/referred/actions';
 import './styles.scss';
-UploadCV.propTypes = {
 
-};
 const initForm = {
 
   availability: "none",
@@ -78,7 +78,7 @@ const initForm = {
   status: "pending",
   updated_at: "2020-04-08T15:56:09.412907",
   verify_token: ""
-}
+};
 const layout = {
   labelCol: { span: 18 },
   wrapperCol: { span: 22 },
@@ -87,37 +87,38 @@ const tailLayout = {
   wrapperCol: { offset: 0, span: 18 },
 };
 
-const dummyRequest = ({ file, onSuccess }) => {
+const dummyRequest = ({ onSuccess }) => {
   setTimeout(() => {
     onSuccess("ok");
   }, 0);
 };
 
 function UploadCV(props) {
-  const { dispatch } = props
+  const { dispatch } = props;
   const router = useRouter();
   const { id } = router.query;
 
   const [fileLink, setFileLink] = useState('');
   const [fileData, setFileData] = useState([]);
   const onFinish = async (value) => {
-    value.cv = fileLink;
-    value.phone_number=initForm.phone_number;
-    await dispatch(createCandidate({ ...initForm, ...value },id )).then(res => {
+    const data = cloneDeep(value);
+    data.cv = fileLink;
+    data.phone_number=initForm.phone_number;
+    dispatch(createCandidate({ ...initForm, ...data },id )).then(res => {
       if (res.status) {
         return message.success('Create candidate successfully').then(() => Router.push(`/job-detail/${id}`));
       }
       return message.error(res.error);
-    })
+    });
   };
   const onRequest = async (value) => {
-    await dispatch(uploadRequest({ value })).then(res => {
+    dispatch(uploadRequest({ value })).then(res => {
       setFileLink(res.data);
       if (res.status) {
         return message.success('Upload request');
       }
       return message.error(res.error);
-    })
+    });
 
   };
   const onFinishFailed = errorInfo => {
@@ -125,7 +126,7 @@ function UploadCV(props) {
   };
   
   const onChange = e => {
-    let fileList = [...e.fileList];
+    const fileList = [...e.fileList];
     const last = fileList.slice(-1);
     setFileData(last);
     if(e.file.status === 'done') {
@@ -134,7 +135,7 @@ function UploadCV(props) {
   };
 
   const setting = {
-    onChange: onChange,
+    onChange,
     onRemove: () => setFileLink(''),
     multiple: true,
     listType: "picture",
@@ -148,7 +149,7 @@ function UploadCV(props) {
         <div>Hồ sơ ứng viên</div>
       </div>
       <Row gutter={[16, 16]}>
-        <Col span={18} ><iframe style={{ width: '100%', height: '100vh' }} id="input" value={fileLink} src={fileLink}></iframe></Col>
+        <Col span={18} ><iframe style={{ width: '100%', height: '100vh' }} id="input" value={fileLink} src={fileLink} /></Col>
         <Col span={6}>
           <Upload
             {...setting}
@@ -201,7 +202,7 @@ function UploadCV(props) {
               <Button type="primary" htmlType="submit">
                 Gửi ứng viên
               </Button>
-              <Button onClick={() => Router.push('/job-detail/' + id + '')} htmlType="button" style={{ margin: '0 8px' }} >
+              <Button onClick={() => Router.push(`/job-detail/${  id  }`)} htmlType="button" style={{ margin: '0 8px' }} >
                 Hủy
               </Button>
             </Form.Item>

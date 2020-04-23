@@ -1,22 +1,22 @@
-import React, { Component, useState, useEffect, useRef } from 'react';
-import { connect } from 'react-redux'
-import Link from 'next/link'
+/* eslint-disable no-unused-vars */
+import React, { useState, useEffect, useRef } from 'react';
+import { connect } from 'react-redux';
 import Router from 'next/router';
-import { RedoOutlined, SearchOutlined, DollarCircleOutlined,FileDoneOutlined } from '@ant-design/icons';
+import { RedoOutlined, SearchOutlined, FileDoneOutlined } from '@ant-design/icons';
 import { Table, Row, Col, Button, Tag, Input, Select, Spin } from 'antd';
+import { get, debounce } from 'lodash';
 import { getListJob } from '../../../containers/referred/actions';
 import { getAllCompany } from '../../../containers/company/action';
 import { getAllJobType } from '../../../containers/job/actions';
 
-import { get, debounce } from 'lodash';
 
-import './styles.scss'
+import './styles.scss';
 
-const { Search } = Input
+const { Search } = Input;
 
 const { Option } = Select;
 
-const role = 'Account Management, Administration, Backend, Branding, Business Analyst, Business Development, CEO, CFO, CMO, Consultant, Content Creator, COO, CTO, Customer Service, Data Analyst, Designer, Developer, DevOps, Digital Marketing, Engineering, Finace/Accounting, Frontend, Fullstack, Game, General management, HR, HSE, Import - Export, Logistic, maintenance, Management, Market Research, marketing, Merchandising, Mobile, Office Management, Operation Management, Operations, Planning, Product Management, Production, Project Management, Public Relation, QA/QC, Quality Control, Recruitment, Research & Development, Researcher, Sales, Scrum Master, Software Architect, Software Development, Supply Chain, Teacher, Techical Sales, Tester, Traditional Marketing, Trainer'
+const role = 'Account Management, Administration, Backend, Branding, Business Analyst, Business Development, CEO, CFO, CMO, Consultant, Content Creator, COO, CTO, Customer Service, Data Analyst, Designer, Developer, DevOps, Digital Marketing, Engineering, Finace/Accounting, Frontend, Fullstack, Game, General management, HR, HSE, Import - Export, Logistic, maintenance, Management, Market Research, marketing, Merchandising, Mobile, Office Management, Operation Management, Operations, Planning, Product Management, Production, Project Management, Public Relation, QA/QC, Quality Control, Recruitment, Research & Development, Researcher, Sales, Scrum Master, Software Architect, Software Development, Supply Chain, Teacher, Techical Sales, Tester, Traditional Marketing, Trainer';
 
 const initQuery = {
   company: '',
@@ -28,16 +28,20 @@ const initQuery = {
   max_salary: null,
   offset: 0,
   limit: 10,
-}
+};
 
 const columns = [
   {
     title: 'Công ty',
     dataIndex: 'company_id',
     render: (text, record, index) => (
-      <div className="custom-company" onClick={() => Router.push('/job-detail/'+record.id+'')}>
+      <div role="presentation" className="custom-company" onClick={() => Router.push(`/job-detail/${record.id}`)}>
         <div className="logo-company" style={{ width: 100,marginRight: 10}}>
-          <img  style ={{cursor: 'pointer',width: '100%',objectFit: 'cover'}} src={get(record, 'company.avatar') === null ? '/default-avatar.png' : get(record, 'company.avatar')}/>
+          <img
+            style={{cursor: 'pointer',width: '100%',objectFit: 'cover'}}
+            src={get(record, 'company.avatar') === null ? '/default-avatar.png' : get(record, 'company.avatar')}
+            alt="avatar"
+          />
         </div>
         <div className="info-required">
           <b style={{ cursor: 'pointer'}} className="name-company">{get(record, 'company.name', '')}</b>
@@ -61,7 +65,7 @@ const columns = [
     title: 'Vị trí',
     dataIndex: 'company_id',
     render: (text, record, index) => (
-      <div className="custom-company" onClick={() => Router.push('/job-detail/'+record.id+'')}>    
+      <div role="presentation" className="custom-company" onClick={() => Router.push(`/job-detail/${record.id}`)}>    
           <div className="job-role">
             {
               record.job_role.map(item => (
@@ -97,18 +101,8 @@ const columns = [
   },
 ];
 
-function itemRender(current, type, originalElement) {
-  if (type === 'prev') {
-    return <a>Previous</a>;
-  }
-  if (type === 'next') {
-    return <a>Next</a>;
-  }
-  return originalElement;
-}
-
 function JobList (props) {
-  const { referred, dispatch } = props
+  const { referred, dispatch } = props;
   const [query, setQuery] = useState(initQuery);
   const [total, setTotal] = useState(null);
   const [listCompany, setListCompany] = useState([]);
@@ -116,36 +110,30 @@ function JobList (props) {
   const [listJobType, setListJobType] = useState([]);
 
   const changeQuery = (key, value) => {
-    let clone = { ...query };
+    const clone = { ...query };
     clone[key] = typeof value === 'object' ? value.join(', ') : value ;
-    setQuery(clone)
-  }
+    setQuery(clone);
+  };
 
   const handleFind = async () => {
-    let clone = { ...query };
-    clone['offset'] = 0;
-    setQuery(clone)
-    await dispatch(getListJob(clone))
-  }
+    const clone = { ...query };
+    clone.offset = 0;
+    setQuery(clone);
+    await dispatch(getListJob(clone));
+  };
 
   const handleTableChange = async (pagination) => {
-    let clone = { ...query };
-    clone['offset'] = (pagination.current-1) * 10;
-    clone['limit'] = pagination.pageSize;
-    setQuery(clone)
-    await dispatch(getListJob(clone))
+    const clone = { ...query };
+    clone.offset = (pagination.current-1) * 10;
+    clone.limit = pagination.pageSize;
+    setQuery(clone);
+    await dispatch(getListJob(clone));
   };
   
   const resetSearch = async () => {
     setQuery(initQuery);
-    await dispatch(getListJob(initQuery))
-  }
-
-  useEffect(() => {
-    dispatch(getListJob(query));
-    fetchCompany('');
-    fetchJobType('');
-  }, []);
+    await dispatch(getListJob(initQuery));
+  };
   
   const fetchCompany = value => {
     setListCompany([]);
@@ -168,6 +156,12 @@ function JobList (props) {
       }
     });
   };
+
+  useEffect(() => {
+    dispatch(getListJob(query));
+    fetchCompany('');
+    fetchJobType('');
+  }, []);
 
   const delayedQuery = useRef(debounce((e, func) => func(e), 800)).current;
 
@@ -198,8 +192,8 @@ function JobList (props) {
                 onSearch={(e) => delayedQuery(e, fetchCompany)}
                 value={query.company}
               >
-                {listCompany.map((d, index) => (
-                  <Option value={d} key={index}>{d}</Option>
+                {listCompany.map((d) => (
+                  <Option value={d} key={d}>{d}</Option>
                 ))}
               </Select>
             </Col>
@@ -217,8 +211,8 @@ function JobList (props) {
                 }
                 value={query.job_type}
               >
-                {role.split(', ').map((d, index) => (
-                  <Option value={d} key={index}>{d}</Option>
+                {role.split(', ').map((d) => (
+                  <Option value={d} key={d}>{d}</Option>
                 ))}
               </Select>
             </Col>
@@ -300,8 +294,8 @@ function JobList (props) {
 };
 
 function mapStateToProps(state) {
-  const { referred } = state
-  return { referred }
+  const { referred } = state;
+  return { referred };
 }
 
-export default connect(mapStateToProps, null)(JobList)
+export default connect(mapStateToProps, null)(JobList);

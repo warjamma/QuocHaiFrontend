@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+/* eslint-disable react/jsx-props-no-spreading */
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Form, Input, Button, Checkbox, Tabs, Select, message } from 'antd';
 import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
-import { registerRequest } from '../../containers/profile/actions';
 import Router from 'next/router';
 import { get } from 'lodash';
+import { registerRequest } from '../../containers/profile/actions';
 import './styles.scss';
 
 const { TabPane } = Tabs;
@@ -37,9 +38,9 @@ function Register(props) {
   const onFinish = async (values) => {
     await dispatch(registerRequest(values, role)).then(res => {
       if (!res.status) {
-        return error(res.message)
+        return error(res.message);
       }
-      success(get(res, 'data.message', '').toUpperCase())
+      success(get(res, 'data.message', '').toUpperCase());
       return Router.push(`/login`);
     });
   };
@@ -91,7 +92,8 @@ function Register(props) {
     </Form.Item>
   );
 
-  function FormRegister(props) {
+  function FormRegister() {
+    const { children } = props;
     return (
       <Form
         {...formItemLayout}
@@ -99,14 +101,14 @@ function Register(props) {
         className="customForm"
         onFinish={onFinish}
       >
-        {props.children}
+        {children}
         <Form.Item className="groupButtonLogin">
           <Button className="buttonLogin" type="primary" htmlType="submit">
             Register
           </Button>
         </Form.Item>
       </Form>
-    )
+    );
   }
 
   return (
@@ -116,7 +118,7 @@ function Register(props) {
         <div>Register</div>
       </div>
       <Tabs defaultActiveKey={role} onChange={(e) => {
-        setRole(e)
+        setRole(e);
       }}>
         <TabPane tab="As Company" key="employers">
           <FormRegister>
@@ -188,7 +190,7 @@ function Register(props) {
             </Form.Item>
             <Form.Item name="agreement" valuePropName="checked">
               <Checkbox>
-                I have read the <a href="">agreement</a>
+                I have read the agreement
               </Checkbox>
             </Form.Item>
           </FormRegister>
@@ -257,7 +259,7 @@ function Register(props) {
             </Form.Item>
             <Form.Item name="agreement" valuePropName="checked">
               <Checkbox>
-                I have read the <a href="">agreement</a>
+                I have read the agreement
               </Checkbox>
             </Form.Item>
           </FormRegister>
@@ -265,9 +267,6 @@ function Register(props) {
       </Tabs>
     </div>
   );
-}
-
-function mapStateToProps(state) {
 }
 
 export default connect()(Register);

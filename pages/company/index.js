@@ -1,18 +1,12 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux'
-import Link from 'next/link'
+import React from 'react';
+import { connect } from 'react-redux';
 
 function OverView () {
-  console.log('...a1212')
   return (
     <div>
       OverView!!
     </div>
-    )
+    );
 };
 
-OverView.getInitialProps = async function({ reduxStore }) {
-  return {}
-}
-
-export default connect(null, null)(OverView)
+export default connect(null, null)(OverView);

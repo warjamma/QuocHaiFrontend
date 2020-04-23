@@ -1,13 +1,14 @@
+/* eslint-disable prefer-promise-reject-errors */
+/* eslint-disable react/jsx-props-no-spreading */
 import React, { useState } from 'react';
-import { connect } from 'react-redux'
-import { Card, Input, Form, Row, Col, notification, Tabs, Select, Button, Upload, Typography } from 'antd';
+import { connect } from 'react-redux';
+import { Card, Input, Form, Row, Col, notification, Tabs, Button, Upload } from 'antd';
 import {
-  SaveTwoTone, EditTwoTone, EditOutlined, UploadOutlined
-  //UploadOutlined,
+  SaveTwoTone, EditTwoTone, UploadOutlined
+  // UploadOutlined,
 } from '@ant-design/icons';
-import './styles.scss'
-const { Title } = Typography;
-const { Option } = Select;
+import './styles.scss';
+
 const layout = {
   labelCol: { span: 5 },
   wrapperCol: { span: 18 },
@@ -24,7 +25,7 @@ function TabChange({ status, fields }) {
         <EditUser
           status={status}
           fields={fields}
-        ></EditUser>
+         />
       </TabPane>
       <TabPane tab="Password" key="2">
         <ChangePassword />
@@ -87,7 +88,7 @@ function ChangePassword() {
     </Form>
   );
 }
-function EditUser({ onChange, fields, status }) {
+function EditUser({ fields, status }) {
   // const prefixSelector = (
   //   <Form.Item name="prefix" noStyle>
   //     <Select style={{ width: 70 }} disabled={!status}  >
@@ -162,7 +163,7 @@ function EditUser({ onChange, fields, status }) {
 function MyProfile() {
   const [status, setStatus] = useState(false);
   const isEdit = () => {
-    setStatus(!status)
+    setStatus(!status);
   };
   const updateUser = () => {
     notification.open({
@@ -170,7 +171,7 @@ function MyProfile() {
       description:
         'Click me to save',
       onClick: () => {
-        setStatus(!status)
+        setStatus(!status);
         console.log('Notification Clicked!');
 
       },
@@ -208,15 +209,6 @@ function MyProfile() {
       value: 'Nguyen Van A',
     },
   ]);
-  const normFile = e => {
-    console.log('Upload event:', e);
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e && e.fileList;
-  };
-
-
 
   return (
     <div className="profile" >
@@ -229,7 +221,7 @@ function MyProfile() {
             <Card
               bordered={false}
               extra={status ? (
-                <div onClick={updateUser}  >
+                <div role="presentation" onClick={updateUser}  >
                   <SaveTwoTone />&nbsp;
                   <input value="save" type="submit" form="global_state" style={{
                     color: '#096dd9',
@@ -238,19 +230,23 @@ function MyProfile() {
                   }} />
                 </div>
               ) : (
-                  <div onClick={isEdit}>
+                  <div role="presentation" onClick={isEdit}>
                     <EditTwoTone />&nbsp;
-                    <a href='#'>Edit</a>
+                    <span>Edit</span>
                   </div>
                 )} >
               {status ? (<TabChange status={status} fields={fields} />) :
-                (<EditUser status={status} fields={fields}></EditUser>)}
+                (<EditUser status={status} fields={fields} />)}
             </Card>
           </Col>
           <Col span={8} >
             <div className="site-card-border-less-wrapper">
               <Card title="Hình đại diện" bordered={false} style={{ width: 300 }}>
-                <img style={{ width: 250, height: 250, objectFit: 'cover' }} src=' https://ai.whis.tech/media/image/5e9b8143ba922d1909a10196.jpg' />
+                <img
+                  style={{ width: 250, height: 250, objectFit: 'cover' }}
+                  src=' https://ai.whis.tech/media/image/5e9b8143ba922d1909a10196.jpg'
+                  alt=""
+                />
                 {/* <img disabled src={fileLink} style={fileLink ? ({ width: 250, height: 250, objectFit: 'cover' }) : ({ height: 0 })} /> */}
                 <div style={{ textAlign: 'center', marginTop: 10 }}>
                   <Upload >

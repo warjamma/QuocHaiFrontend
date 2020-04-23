@@ -1,41 +1,40 @@
-import api from '../../services/api'
-var qs = require('qs');
+import api from '../../services/api';
+
+const qs = require('qs');
 
 export function createJob(payload) {
-  return async dispatch => {
+  return async () => {
     try {
       await api.sendRequestWithToken('post', '/jobs', null, null, payload);
-      return { status: true }
+      return { status: true };
     } catch (error) {
-      const { data } = error.response
+      const { data } = error.response;
       return { status: false, error: data.message };
     }
   };
 }
 
 export function updateJob(payload,id) {
-  return async dispatch => {
+  return async () => {
     try {
-      var responseId = await api.sendRequestWithToken('put', `/jobs/${id}`, null, { 'Content-type': 'application/json' }, payload)
-        .then(response => response)
+      await api.sendRequestWithToken('put', `/jobs/${id}`, null, { 'Content-type': 'application/json' }, payload);
+      return { status: true };
     } catch (error) {
-      const { data } = error.response
+      const { data } = error.response;
       return { status: false, error: data.message };
     }
-    return { status: true }
   };
 }
 
 export function deleteJob(payload) {
-  return async dispatch => {
+  return async () => {
     try {
-      var responseId = await api.sendRequestWithToken('delete', `/jobs/${payload}`, null, null, null)
-        .then(response => response)
+      await api.sendRequestWithToken('delete', `/jobs/${payload}`, null, null, null);
+      return { status: true };
     } catch (error) {
-      const { data } = error.response
+      const { data } = error.response;
       return { status: false, error: data.message };
     }
-    return { status: true }
   };
 }
 
@@ -43,10 +42,10 @@ export function getJobById(params) {
   return async dispatch => {
     try {
       const { data } = await api.sendRequestWithToken('get', `/jobs/${params.id}`);
-      dispatch({ type: "GET_JOB_BY_ID_SUCCESS", data: data });
-      return { status: true, data }
+      dispatch({ type: "GET_JOB_BY_ID_SUCCESS", data });
+      return { status: true, data };
     } catch (error) {
-      const { data } = error.response
+      const { data } = error.response;
       return dispatch({ type: "GET_JOB_BY_ID_FAILURE", error: data.message });
     }
   };
@@ -57,9 +56,9 @@ export function getListJob(params, companyId) {
       try {
         dispatch({ type: "GET_LIST_REQUEST" });
         const { data } = await api.sendRequestWithToken('get', `/companies/${companyId}/jobs?${qs.stringify(params)}`);
-        dispatch({ type: "GET_LIST_JOB_SUCCESS", data: data });
+        return dispatch({ type: "GET_LIST_JOB_SUCCESS", data });
       } catch (error) {
-        const { data } = error.response
+        const { data } = error.response;
         return dispatch({ type: "GET_LIST_JOB_SUCCESS_FAILURE", error: data.message });
       }
     };
@@ -70,20 +69,20 @@ export function getListCandidate(params, companyId) {
     try {
       dispatch({ type: "GET_LIST_REQUEST" });
       const { data } = await api.sendRequestWithToken('get', `/companies/${companyId}/refers?${qs.stringify(params)}`);
-      dispatch({ type: "GET_LIST_CANDIDATE_SUCCESS", data: data });
+      return dispatch({ type: "GET_LIST_CANDIDATE_SUCCESS", data });
     } catch (error) {
-      const { data } = error.response
+      const { data } = error.response;
       return dispatch({ type: "GET_LIST_CANDIDATE_SUCCESS_FAILURE", error: data.message });
     }
   };
 }
 export function updateStatusRef(referId, status, body) {
-  return async dispatch => {
+  return async () => {
     try {
       const { data } = await api.sendRequestWithToken('put', `/refers/${referId}/${status}`, null, null, body);
-      return { status: true, data: data }
+      return { status: true, data };
     } catch (error) {
-      return { status: false, error: data.message };
+      return { status: false, error: error.message };
     }
   };
 }
@@ -91,17 +90,17 @@ export function updateStatusRef(referId, status, body) {
 export function uploadRequest(payload, name) {
   const body = { mim_type: "application/pdf" };
   const header = { "Content-Type": "application/json" };
-  return async dispatch => {
+  return async () => {
     try {
-      var response = await api.sendRequest('post', '/upload/request', null, header, body)
+      const response = await api.sendRequest('post', '/upload/request', null, header, body)
         .then(response => response.data.presign_url);
-      var body2 = response.fields;
-      var data = new FormData();
-      for (let property in body2) {
-        data.append(`${property}`, `${body2[property]}`)
+      const body2 = response.fields;
+      const data = new FormData();
+      for (const property in body2) {
+        data.append(`${property}`, `${body2[property]}`);
       }
       data.append("file", payload.value[0], name);
-      var tmp = await axios({
+      const tmp = await axios({
         method: 'post',
         url: response.url,
         data,
@@ -118,12 +117,12 @@ export function uploadRequest(payload, name) {
 }
 
 export function getAllCompany(params) {
-  return async dispatch => {
+  return async () => {
     try {
       const { data } = await api.sendRequestWithToken('get', `/companies/names?${qs.stringify(params)}`);
-      return { status: true, data }
+      return { status: true, data };
     } catch (error) {
-      const { data } = error.response
+      return { status: false, error };
     }
   };
 }

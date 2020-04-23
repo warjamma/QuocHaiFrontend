@@ -1,15 +1,16 @@
+/* eslint-disable no-unused-vars */
 import React, { Component, useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import Link from 'next/link';
 import { RedoOutlined, SearchOutlined, DownloadOutlined, DeleteTwoTone ,EditOutlined,DeleteOutlined} from '@ant-design/icons';
 import { Table, Tag, Button, Popconfirm, Form, Row, Col, message, Input, Select, Spin } from 'antd';
+import { get, debounce } from 'lodash';
+import moment from 'moment';
+import Router from 'next/router';
 import { getListReferred, deleteCandidate } from '../../../containers/referred/actions';
 import { getAllCompany } from '../../../containers/company/action';
 import renderColorTag from '../../../ultils/renderColorStatus';
-import { get, debounce } from 'lodash';
-import moment from 'moment';
-import './styles.scss'
-import Router from 'next/router';
+import './styles.scss';
 
 const { Option } = Select;
 const initQuery = {
@@ -18,11 +19,29 @@ const initQuery = {
   // status: null,
   offset: 0,
   limit: 10,
-}
+};
 
 
 
 function MyReferred(props) {
+  const { dispatch, referred } = props;
+  const [query, setQuery] = useState(initQuery);
+  const [listCompany, setListCompany] = useState([]);
+  const [fetching, setFetching] = useState(false);
+  function cancel(e) {
+    message.error('Cance');
+  }
+
+  const handleDelete = async (candidateId) => {
+    await dispatch(deleteCandidate(candidateId)).then(res => {
+      if (res.status) {
+        Router.push('/referrer/my-referred');
+        return message.success('Delete candidate successfully');
+      }
+      return message.error(res.error);
+    });
+  };
+
   const columns = [
     {
       title: 'Vị trí',
@@ -31,7 +50,7 @@ function MyReferred(props) {
         // <div>
         //   <Link href={`/job-detail/${record.job.id}`}><a className="job-title">{get(record, 'job', {}).job_title}</a></Link>
         // </div>
-        <div onClick={() => Router.push('/job-detail/'+record.job.id+'')}>
+        <div role="presentation" onClick={() => Router.push(`/job-detail/${record.job.id}`)}>
             {
               get(record, 'candidate', {}).job_role.map(item => (
                 <Tag style={{margin:3, cursor: 'pointer'}}  key={item} color="red">{item}</Tag>
@@ -93,10 +112,10 @@ function MyReferred(props) {
       dataIndex: 'candidate_id',
       align: 'center',
       width: 150,
-      render: (candidate_id) => <div className="Action"><Button style={{marginRight:5}} onClick={() => Router.push('/referrer/edit-cv/' + candidate_id + '')}  icon={<EditOutlined />} size="small" />
+      render: (candidateId) => <div className="Action"><Button style={{marginRight:5}} onClick={() => Router.push(`/referrer/edit-cv/${  candidateId  }`)}  icon={<EditOutlined />} size="small" />
       <Popconfirm
         title="Are you sure delete title?"
-        onConfirm={() => handleDelete(candidate_id)}
+        onConfirm={() => handleDelete(candidateId)}
         onCancel={cancel}
         okText="Yes"
         cancelText="No"
@@ -107,28 +126,23 @@ function MyReferred(props) {
     
   ];
 
-  const { dispatch, referred } = props
-  const [query, setQuery] = useState(initQuery)
-  const [listCompany, setListCompany] = useState([]);
-  const [fetching, setFetching] = useState(false);
-
   const onChangeQuery = async (key, value) => {
-    let clone = { ...query }
-    clone[key] = value
-    setQuery(clone)
-  }
+    const clone = { ...query };
+    clone[key] = value;
+    setQuery(clone);
+  };
 
   const handleFilter = async () => {
-    let clone = { ...query };
-    clone['offset'] = 0;
+    const clone = { ...query };
+    clone.offset = 0;
     setQuery(clone);
-    await dispatch(getListReferred(clone))
-  }
+    await dispatch(getListReferred(clone));
+  };
 
   const handleTableChange = async (pagination) => {
-    let clone = { ...query };
-    clone['offset'] = (pagination.current - 1) * 10;
-    clone['limit'] = pagination.pageSize;
+    const clone = { ...query };
+    clone.offset = (pagination.current - 1) * 10;
+    clone.limit = pagination.pageSize;
     setQuery(clone);
     await dispatch(getListReferred(clone));
   };
@@ -136,27 +150,8 @@ function MyReferred(props) {
   const resetSearch = async () => {
     setQuery(initQuery);
     await dispatch(getListReferred(initQuery));
-  }
-  
-  function cancel(e) {
-    console.log(e);
-    message.error('Cance');
-  }
-  const handleDelete = async (candidate_id) => {
-    console.log('Received values of fors', candidate_id);
-    await dispatch(deleteCandidate(candidate_id)).then(res => {
-      if (res.status) {
-        Router.push('/referrer/my-referred')
-        return message.success('Delete candidate successfully');
-      }
-      return message.error(res.error);
-    })
   };
-  useEffect(() => {
-    dispatch(getListReferred(query));
-    fetchCompany('');
-  }, []);
-
+ 
   const fetchCompany = async value => {
     setListCompany([]);
     setFetching(true);
@@ -167,6 +162,11 @@ function MyReferred(props) {
       }
     });
   };
+
+  useEffect(() => {
+    dispatch(getListReferred(query));
+    fetchCompany('');
+  }, []);
 
   const delayedQuery = useRef(debounce((e, func) => func(e), 800)).current;
 
@@ -200,8 +200,8 @@ function MyReferred(props) {
               onSearch={(e) => delayedQuery(e, fetchCompany)}
               value={query.company_name}
             >
-              {listCompany.map((d, index) => (
-                <Option value={d} key={index}>{d}</Option>
+              {listCompany.map((d) => (
+                <Option value={d} key={d}>{d}</Option>
               ))}
             </Select>
           </Col>
@@ -211,7 +211,6 @@ function MyReferred(props) {
               style={{ width: '100%' }}
               placeholder="Trạng thái"
               onChange={(e) => onChangeQuery('status', e)}
-              value={query.status}
               value={query.status}
             >
               <Option value="">All</Option>
@@ -249,12 +248,12 @@ function MyReferred(props) {
         onChange={handleTableChange}
       />
     </div>
-  )
+  );
 };
 
 function mapStateToProps(state) {
-  const { referred } = state
-  return { referred }
+  const { referred } = state;
+  return { referred };
 }
 
-export default connect(mapStateToProps, null)(MyReferred)
+export default connect(mapStateToProps, null)(MyReferred);
