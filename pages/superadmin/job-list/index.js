@@ -55,8 +55,8 @@ function JobList (props) {
       dataIndex: 'company_id',
       render: (text, record, index) => (
         <div className="custom-company">
-          <div className="logo-company" style={{ width: 100,marginRight: 10}}>
-            <img style ={{cursor: 'pointer',width: '100%',objectFit: 'cover'}} src={get(record, 'company.avatar') === null ? '/default-avatar.png' : get(record, 'company.avatar')}/>
+          <div className="logo-company" >
+            <img src={get(record, 'company.avatar') === null ? '/default-avatar.png' : get(record, 'company.avatar')}/>
           </div>
           <div className="info-required">
             <b className="name-company" onClick={()=>Router.push(`/company-profile/${get(record, 'company_id')}`)}>{get(record, 'company.name', '')}</b>
@@ -140,7 +140,7 @@ function JobList (props) {
             )
           }
           {
-            activeTab === 'Denied' && (
+            activeTab === 'Reject' && (
               <div>
                 <Button style={{ marginBottom: 7 }} type="primary" onClick={() => approveJob(record.id)}>Approve</Button>
                 <Tooltip placement="left" title={record.reject_reason}>
@@ -299,7 +299,7 @@ function JobList (props) {
           activeKey={activeTab}
           type="card"
         >
-          {[{title: 'Pending'}, {title: 'Accepted'}, {title: ' Denied'}].map(pane => (
+          {[{title: 'Pending'}, {title: 'Accepted'}, {title: 'Reject'}].map(pane => (
             <Tabs.TabPane tab={pane.title} key={pane.title}>
               <Table
                 bordered
