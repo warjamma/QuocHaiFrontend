@@ -58,10 +58,10 @@ function MyReferred(props) {
     },
     {
       title: 'Level',
-      dataIndex: 'created',
+      dataIndex: 'job',
       align: 'center',
       render: (text, record, index) => (
-        get(record, 'candidate', {}).job_level.map(item => (
+        get(record, 'job', {}).job_levels.map(item => (
           <Tag key={item} color="blue">{item}</Tag>
         ))
       )
@@ -74,9 +74,9 @@ function MyReferred(props) {
     },
     {
       title: 'Onboarding date',
-      dataIndex: 'status',
+      dataIndex: 'on_boarding_at',
       align: 'center',
-      render: (text, record, index) => <div>{moment(get(record, 'created_at', '')).format('DD-MM-YYYY')}</div>,
+      render: (text, record, index) => <div>{get(record, 'on_boarding_at')?moment(get(record, 'on_boarding_at', '')).format('DD-MM-YYYY'):('N/A')}</div>,
     },
     {
       title: 'Trạng thái',
