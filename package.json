@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "production:server": "node index.js",
-    "dev:server": "npm run build && nodemon index.js"
+    "dev:server": "npm run build && nodemon index.js",
+    "eslint:test": "eslint ./",
+    "eslint:fix": "eslint ./ --fix"
   },
   "dependencies": {
     "@ant-design/icons": "^4.0.0",
