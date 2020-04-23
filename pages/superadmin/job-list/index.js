@@ -55,39 +55,57 @@ function JobList (props) {
       dataIndex: 'company_id',
       render: (text, record, index) => (
         <div className="custom-company">
-          <div className="logo-company">
+          <div className="logo-company" >
             <img src={get(record, 'company.avatar') === null ? '/default-avatar.png' : get(record, 'company.avatar')}/>
           </div>
           <div className="info-required">
             <b className="name-company" onClick={()=>Router.push(`/company-profile/${get(record, 'company_id')}`)}>{get(record, 'company.name', '')}</b>
-            <div className="job-role">
+            {/* <div className="job-role">
               <span>Vị trí tuyển dụng : </span>
               {
                 record.job_role.map(item => (
                   <Tag color="blue" key={item}>{item}</Tag>
                 ))
               }
-            </div>
+            </div> */}
             <div className="job-level">
-              <span>Level yêu cầu : </span>
+              <span>Cấp độ: </span>
               {
                 record.job_levels.map(item => (
                   <Tag color="blue" key={item}>{item}</Tag>
                 ))
               }
             </div>
+            <div className="job-level">
+              <span>Số lượng yêu cầu: {record.vacancy_number} </span>
+            </div>
           </div>
         </div>
       ),
     },
+    // {
+    //   title: 'Công việc',
+    //   dataIndex: 'job_title',
+    //   render: (text, record, index) => (
+    //     <div>
+    //       <Link href={`/job-detail/${record.id}`}><a className="job-title">{get(record, 'job_title', '')}</a></Link>
+    //     </div>
+    //   )
+    // },
     {
-      title: 'Công việc',
-      dataIndex: 'job_title',
+      title: 'Vị trí',
+      dataIndex: 'company_id',
       render: (text, record, index) => (
-        <div>
-          <Link href={`/job-detail/${record.id}`}><a className="job-title">{get(record, 'job_title', '')}</a></Link>
+        <div className="custom-company" onClick={() => Router.push('/job-detail/'+record.id+'')}>    
+            <div className="job-role">
+              {
+                record.job_role.map(item => (
+                  <Tag style={{margin:3, cursor: 'pointer'}} color="blue" key={item}>{item}</Tag>
+                ))
+              }         
+            </div>
         </div>
-      )
+      ),
     },
     {
       title: 'Mức thưởng',
