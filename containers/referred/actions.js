@@ -92,6 +92,7 @@ export function deleteCandidate(payload) {
     }
   };
 }
+
 export function uploadRequest(payload, name) {
   const body = { mim_type: "application/pdf" };
   const header = { "Content-Type": "application/json" };
