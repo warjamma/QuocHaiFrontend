@@ -52,8 +52,8 @@ function MyReferred(props) {
         // </div>
         <div role="presentation" onClick={() => Router.push(`/job-detail/${record.job.id}`)}>
             {
-              get(record, 'candidate', {}).job_role.map(item => (
-                <Tag style={{margin:3, cursor: 'pointer'}}  key={item} color="red">{item}</Tag>
+              get(record, 'job', {}).job_role.map(item => (
+                <Tag style={{margin:3, cursor: 'pointer'}}  key={item} color="blue">{item}</Tag>
               ))
             }
           </div>
