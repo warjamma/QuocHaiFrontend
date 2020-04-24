@@ -3,8 +3,9 @@ export const exampleInitialState = {
   list_job: null,
   list_referred: null,
   candidate_detail: null,
-  job_detail:null,
+  job_detail: null,
   is_loading: false,
+  company_detail:null,
 };
 
 export default (state = exampleInitialState, action) => {
@@ -33,6 +34,16 @@ export default (state = exampleInitialState, action) => {
       return {
         ...state,
         ...{ job_detail: [] },
+      };
+    case 'GET_COMPANY_BY_ID_SUCCESS':
+      return {
+        ...state,
+        ...{ company_detail: action.data },
+      };
+    case 'GET_COMPANY_BY_ID_FAILURE':
+      return {
+        ...state,
+        ...{ company_detail: [] },
       };
     case 'GET_LIST_REFERRED_SUCCESS':
       return {

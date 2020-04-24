@@ -35,7 +35,7 @@ const columns = [
     title: 'Công ty',
     dataIndex: 'company_id',
     render: (text, record, index) => (
-      <div role="presentation" className="custom-company" onClick={() => Router.push(`/job-detail/${record.id}`)}>
+      <div role="presentation" className="custom-company" onClick={()=>Router.push(`/company-profile/${get(record, 'company_id')}`)}>
         <div className="logo-company" style={{ width: 100,marginRight: 10}}>
           <img
             style={{cursor: 'pointer',width: '100%',objectFit: 'cover'}}
@@ -44,7 +44,7 @@ const columns = [
           />
         </div>
         <div className="info-required">
-          <b style={{ cursor: 'pointer'}} className="name-company">{get(record, 'company.name', '')}</b>
+        <b role="presentation" className="name-company" onClick={()=>Router.push(`/company-profile/${get(record, 'company_id')}`)}>{get(record, 'company.name', '')}</b>
           <div className="job-level">
             <span>Cấp độ:&nbsp;</span>
             {
@@ -56,6 +56,9 @@ const columns = [
           <div className="job-role">
             <span>Số lượng yêu cầu: {record.vacancy_number} </span>
           </div>
+          <div className="job-level">
+              <span>Địa điểm: <Tag color="blue">{record.locations}</Tag> </span>
+            </div>
           
         </div>
       </div>
