@@ -25,7 +25,7 @@ function TabChange({ status, fields }) {
         <EditUser
           status={status}
           fields={fields}
-         />
+        />
       </TabPane>
       <TabPane tab="Password" key="2">
         <ChangePassword />
@@ -100,7 +100,6 @@ function EditUser({ fields, status }) {
   //   </Form.Item>
   // );
   const onFinish = values => {
-    console.log('Received values of form: ', values);
   };
   return (
     <Form
@@ -140,7 +139,7 @@ function EditUser({ fields, status }) {
         rules={[{ required: true, message: 'Please input your phone number!' }]}
       >
         {/* addonBefore={prefixSelector} */}
-        <Input  disabled={!status} />
+        <Input disabled={!status} />
       </Form.Item>
       <Form.Item name='bankName' label="Bank name" >
         <Input disabled={!status} />
@@ -172,7 +171,6 @@ function MyProfile() {
         'Click me to save',
       onClick: () => {
         setStatus(!status);
-        console.log('Notification Clicked!');
 
       },
       style: { cursor: 'pointer' },
@@ -215,7 +213,7 @@ function MyProfile() {
       <div className="header">
         <div>Thông tin cá nhân</div>
       </div>
-      <div className=" filter-box" style={{ marginTop: 10 }}>
+      <div className=" filter-box"  >
         <Row gutter={[16, 16]}>
           <Col span={16} >
             <Card
@@ -257,11 +255,8 @@ function MyProfile() {
                 </div>
               </Card>
             </div>
-
           </Col>
-
         </Row>
-
       </div>
     </div>
   );

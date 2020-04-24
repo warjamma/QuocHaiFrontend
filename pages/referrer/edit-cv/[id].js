@@ -96,14 +96,15 @@ function EditCV(props) {
   };
 
   return (
-    <div className="EditCV" style={{ backgroundColor: 'white' }}>
+    <div className="Edit-CV" style={{ backgroundColor: 'white' }}>
       <div className="header">
         <div>Hồ sơ ứng viên</div>
       </div>
+      <div className="form-body">
       <Row gutter={[16, 16]}>
         {/* {get(referred, 'candidate_detail', [])} */}
         <Col span={18}>
-          <iframe style={{ width: '100%', height: '100vh' }} id="input" value={fileLink} src={fileLink === '' ? (get(referred, 'candidate_detail.data.candidate.cv', []) === ''?(fileLink):(get(referred, 'candidate_detail.data.candidate.cv', []))) : (fileLink)} /></Col>
+          <iframe  className="view-pdf" id="input" value={fileLink} src={fileLink === '' ? (get(referred, 'candidate_detail.data.candidate.cv', []) === ''?(fileLink):(get(referred, 'candidate_detail.data.candidate.cv', []))) : (fileLink)} /></Col>
         <Col span={6}>
           <Upload
             {...setting}
@@ -174,13 +175,14 @@ function EditCV(props) {
                   Xóa
                 </Button> */}
               </Popconfirm>
-              <Button style={{ margin: '0 8px' }}  onClick={() => Router.push('/referrer/my-referred')} htmlType="button"  >
+              <Button className="btn-cance"  onClick={() => Router.push('/referrer/my-referred')} htmlType="button"  >
                 Hủy
               </Button>
             </Form.Item>
           </Form>
         </Col>
       </Row>
+      </div>
     </div>
   );
 }

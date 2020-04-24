@@ -1,43 +1,24 @@
-.uploadcv{
-  .ant-row.ant-form-item{
-    margin-bottom: 5px;
+.Edit-CV {
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    div {
+      font-weight: bold;
+      font-size: 16px;
+    }
   }
-}
-
-.upload-btn-wrapper {
-  position: relative;
-  overflow: hidden;
-  display: inline-block;
-  
-}
-.btn {
-  border: 1px solid gray;
-  color: gray;
-  background-color: white;
-  padding: 5px 20px;
-  border-radius: 8px;
-  // font-size: 10px;
-  font-weight: bold;
-  
-}
-
-.upload-btn-wrapper input[type=file] {
-  font-size: 100px;
-  position: absolute;
-  left: 0;
-  top: 0;
-  opacity: 0;
-}
-
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: #fff;
-  border-radius: 5px;
-  padding: 10px;
-  div {
-    font-weight: bold;
+  .form-body {
     font-size: 16px;
+    .view-pdf {
+      width: 100%;
+      height: 100vh;
+    }
+    .btn-cance {
+      margin: 0 8px;
+    }
   }
 }
