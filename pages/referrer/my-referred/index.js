@@ -50,10 +50,10 @@ function MyReferred(props) {
         // <div>
         //   <Link href={`/job-detail/${record.job.id}`}><a className="job-title">{get(record, 'job', {}).job_title}</a></Link>
         // </div>
-        <div role="presentation" onClick={() => Router.push(`/job-detail/${record.job.id}`)}>
+        <div className="job-role"role="presentation" onClick={() => Router.push(`/job-detail/${record.job.id}`)}>
             {
-              get(record, 'candidate', {}).job_role.map(item => (
-                <Tag style={{margin:3, cursor: 'pointer'}}  key={item} color="red">{item}</Tag>
+              get(record, 'job', {}).job_role.map(item => (
+                <Tag className="tag-refer" key={item} color="blue">{item}</Tag>
               ))
             }
           </div>
@@ -81,7 +81,7 @@ function MyReferred(props) {
       align: 'center',
       render: (text, record, index) => (
         get(record, 'job', {}).job_levels.map(item => (
-          <Tag key={item} color="blue">{item}</Tag>
+          <Tag onClick={() => Router.push(`/job-detail/${record.job.id}`)} className="tag-refer" key={item} color="blue">{item}</Tag>
         ))
       )
     },

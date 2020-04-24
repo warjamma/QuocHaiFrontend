@@ -4,6 +4,19 @@ import api from '../../services/api';
 const qs = require('qs');
 const axios = require('axios');
 
+export function getCompanyById(params) {
+  // console.log('params', params);
+  return async dispatch => {
+    try {
+      const { data } = await api.sendRequestWithToken('get', `/companies/${params.id}`);
+      dispatch({ type: "GET_COMPANY_BY_ID_SUCCESS", data });
+      return { status: true, data };
+    } catch (error) {
+      const { data } = error.response;
+      return dispatch({ type: "GET_COMPANY_BY_ID_FAILURE", error: data.message });
+    }
+  };
+}
 export function getListJob(params) {
   return async dispatch => {
     try {

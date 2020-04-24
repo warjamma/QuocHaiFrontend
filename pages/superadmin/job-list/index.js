@@ -138,6 +138,9 @@ function JobList (props) {
             <div className="job-level">
               <span>Số lượng yêu cầu: {record.vacancy_number} </span>
             </div>
+            <div className="job-level">
+              <span>Địa điểm: <Tag color="blue">{record.locations}</Tag> </span>
+            </div>
           </div>
         </div>
       ),

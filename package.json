@@ -71,5 +71,4 @@
       "pre-commit": "lint-staged"
     }
   }
-
 }

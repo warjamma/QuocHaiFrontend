@@ -127,7 +127,7 @@ function jobDetail(props) {
                         <Title level={3}>Job Levels</Title>
                         <ul>
                             {get(referred, 'job_detail.data.job.job_levels', []).map((value, key) => {
-                                return <li key={key} style={{ fontWeight: 'bold', marginLeft: 10 }} level={4}>{value}</li>;
+                                return <li key={key} style={{ fontWeight: 'bold'}} level={4}>{value}</li>;
                             })}
 
                         </ul>

@@ -35,27 +35,29 @@ const columns = [
     title: 'Công ty',
     dataIndex: 'company_id',
     render: (text, record, index) => (
-      <div role="presentation" className="custom-company" onClick={() => Router.push(`/job-detail/${record.id}`)}>
-        <div className="logo-company" style={{ width: 100,marginRight: 10}}>
+      <div role="presentation" className="custom-company" >
+        <div className="logo-company"  >
           <img
-            style={{cursor: 'pointer',width: '100%',objectFit: 'cover'}}
             src={get(record, 'company.avatar') === null ? '/default-avatar.png' : get(record, 'company.avatar')}
             alt="avatar"
           />
         </div>
         <div className="info-required">
-          <b style={{ cursor: 'pointer'}} className="name-company">{get(record, 'company.name', '')}</b>
+        <b role="presentation" className="name-company" onClick={()=>Router.push(`/company-profile/${get(record, 'company_id')}`)}>{get(record, 'company.name', '')}</b>
           <div className="job-level">
             <span>Cấp độ:&nbsp;</span>
             {
               record.job_levels.map(item => (
-                <Tag style={{margin:2, cursor: 'pointer'}} color="blue" key={item}>{item}</Tag>
+                <Tag onClick={() => Router.push(`/job-detail/${record.id}`)} className="tag-level"  color="blue" key={item}>{item}</Tag>
               ))
             }
           </div>
           <div className="job-role">
             <span>Số lượng yêu cầu: {record.vacancy_number} </span>
           </div>
+          <div className="job-level">
+              <span>Địa điểm: <Tag onClick={() => Router.push(`/job-detail/${record.id}`)} color="blue">{record.locations}</Tag> </span>
+            </div>
           
         </div>
       </div>
@@ -65,11 +67,11 @@ const columns = [
     title: 'Vị trí',
     dataIndex: 'company_id',
     render: (text, record, index) => (
-      <div role="presentation" className="custom-company" onClick={() => Router.push(`/job-detail/${record.id}`)}>    
+      <div role="presentation" className="custom-role" onClick={() => Router.push(`/job-detail/${record.id}`)}>    
           <div className="job-role">
             {
               record.job_role.map(item => (
-                <Tag style={{margin:3, cursor: 'pointer'}} color="blue" key={item}>{item}</Tag>
+                <Tag className="tag-role" color="blue" key={item}>{item}</Tag>
               ))
             }         
           </div>
@@ -97,7 +99,7 @@ const columns = [
     title: 'Giới thiệu của tôi',
     dataIndex: 'address',
     align: 'center',
-    render: ()=><div style={{fontSize:23}}><FileDoneOutlined /></div>
+    render: ()=><div className="my-referred" ><FileDoneOutlined /></div>
   },
 ];
 

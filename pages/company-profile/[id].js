@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useRouter } from 'next/router';
 import { Button, Row, Col, Rate, Typography } from 'antd';
+import { get } from 'lodash';
 import {
     CalendarOutlined,
     FieldTimeOutlined,
@@ -10,7 +11,7 @@ import {
     FlagOutlined,
     SettingOutlined
 } from '@ant-design/icons';
-import { getJobById } from '../../containers/referred/actions';
+import { getCompanyById } from '../../containers/referred/actions';
 import './styles.scss';
 
 
@@ -20,9 +21,9 @@ function jobDetail(props) {
     const router = useRouter();
     const { id } = router.query;
 
-    const { dispatch } = props;
+    const { dispatch,referred } = props;
     useEffect(() => {
-        dispatch(getJobById({ id }));
+        dispatch(getCompanyById({ id }));
     }, []);
 
 
@@ -34,7 +35,7 @@ function jobDetail(props) {
                     <Col span={4} ><img style={{ padding: 'auto', margin: 'auto', display: 'block' }} alt="example" src="https://cdn.itviec.com/employers/fpt-software/logo/w170/mir3HT3xtedbECJY5jVeRRgV/fpt-software-logo.png" /></Col>
                     <Col span={15} >
                         <div style={{ background: 'white', padding: 20 }} >
-                            <Title level={3}>ROCKSHIP</Title>
+                            <Title level={3}>{get(referred, 'company_detail.data.company.name',[])}</Title>
                             <div>The leading provider of software outsourcing services in Vietnam</div>
                             <div ><SettingOutlined />&nbsp;Outsourcing</div>
                             <div ><UsergroupAddOutlined />&nbsp;1000+</div>
@@ -69,7 +70,7 @@ function jobDetail(props) {
                             <Title level={3}>Location</Title>
                             <div style={{ fontSize: 16 }}>Centec Tower, 72 Nguyen Thi Minh Khai Street, HCMC District 3 Ho Chi Minh</div>
                             <div />
-                            
+
                         </div>
                     </div>
                 </Col>

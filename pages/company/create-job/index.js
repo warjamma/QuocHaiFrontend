@@ -45,8 +45,7 @@ const initForm = {
   currency: "",
   jd_files: ''
 };
-
-const role = 'Account Management, Administration, Backend, Branding, Business Analyst, Business Development, CEO, CFO, CMO, Consultant, Content Creator, COO, CTO, Customer Service, Data Analyst, Designer, Developer, DevOps, Digital Marketing, Engineering, Finace/Accounting, Frontend, Fullstack, Game, General management, HR, HSE, Import - Export, Logistic, maintenance, Management, Market Research, marketing, Merchandising, Mobile, Office Management, Operation Management, Operations, Planning, Product Management, Production, Project Management, Public Relation, QA/QC, Quality Control, Recruitment, Research & Development, Researcher, Sales, Scrum Master, Software Architect, Software Development, Supply Chain, Teacher, Techical Sales, Tester, Traditional Marketing, Trainer';
+const role = [['Account Management'], ['Administration'], ['Backend'], ['Branding'], ['Business Analyst'], ['Business Development'], ['CEO'], ['CFO'], ['CMO'], ['Consultant'], ['Content Creator'], ['COO'], ['CTO'], ['Customer Service'], ['Data Analyst'], ['Designer'], ['Developer'], ['DevOps'], ['Digital Marketing'], ['Engineering'], ['Finace/Accounting'], ['Frontend'], ['Fullstack'], ['Game'], ['General management'], ['HR'], ['HSE'], ['Import - Export'], ['Logistic'], ['maintenance'], ['Management'], ['Market Research'], ['marketing'], ['Merchandising'], ['Mobile'], ['Office Management'], ['Operation Management'], ['Operations'], ['Planning'], ['Product Management'], ['Production'], ['Project Management'], ['Public Relation'], ['QA/QC'], ['Quality Control'], ['Recruitment'], ['Research & Development'], ['Researcher'], ['Sales'], ['Scrum Master'], ['Software Architect'], ['Software Development'], ['Supply Chain'], ['Teacher'], ['Techical Sales'], ['Tester'], ['Traditional Marketing'], ['Trainer']];
 const language = 'Java, JavaScript, Reactjs, Vuejs, Angular, .Net, Nodejs, ObjectC, Swift, Kotlin, Python, PHP, MySQL, HTML/ CSS, SQL, C#, C++, Spring, AWS, Linux, Cocos2dx, Unity, ASP.NET, Docker, Ruby';
 
 const layout = {
@@ -151,8 +150,7 @@ function CreateJob(props) {
             >
               <Select style={{ width: '100%' }}>
                 {
-                  role.split(', ')
-                    .map(item => (
+                  role.map(item => (
                       <Select.Option key={item} value={item}>{item}</Select.Option>
                     ))
                 }

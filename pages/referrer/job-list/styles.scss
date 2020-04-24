@@ -50,19 +50,37 @@
   }
   .custom-company {
     display: flex;
-    // .logo-company {
-    //   width: 100px;
-    //   margin-right: 10px;
-    //   // img {
-    //   //   width: 100%;
-    //   //   object-fit: cover;
-    //   // }
-    // }
+    .logo-company {
+      width: 100px;
+      margin-right: 10px;
+      img {
+        width: 100%;
+        object-fit: cover;
+      }
+    }
     .info-required {
       text-align: left;
+      .job-level {
+        .tag-level {
+          margin: 2;
+          cursor: pointer;
+        }
+      }
       .job-role {
         margin: 5px 0px;
       }
+      b.name-company {
+        cursor: pointer;
+      }
     }
+  }
+  .custom-role{
+    .tag-role {
+      margin: 2;
+      cursor: pointer;
+    }
+  }
+  .my-referred{
+    font-size:23px;
   }
 }
