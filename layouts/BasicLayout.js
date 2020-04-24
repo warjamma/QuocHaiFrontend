@@ -120,7 +120,7 @@ function BasicLayout(props) {
                   >
                     {
                       item.subMenu.map((pk, key) => (
-                        <Menu.Item className="subItem" key={key + 1}>
+                        <Menu.Item className="subItem" key={key + 1} onClick={() => Router.push(`${pk.url}/${get(profile, 'data.employer.company.id', [])}`)}>
                           <FileOutlined />
                           <span>{pk.name}</span>
                         </Menu.Item>
