@@ -12,7 +12,7 @@ export const companySideBar = [
     subMenu: [
       {
         name: 'Thông tin công ty',
-        url: '/company/profile'
+        url: '/company-profile'
       },
       {
         name: 'Nhân viên',

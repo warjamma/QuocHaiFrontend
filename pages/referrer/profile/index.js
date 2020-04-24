@@ -20,7 +20,7 @@ function callback(key) {
 }
 function TabChange({ status, fields }) {
   return (
-    <Tabs defaultActiveKey="1" onChange={callback}>
+    <Tabs className="form-body" defaultActiveKey="1" onChange={callback}>
       <TabPane tab="My profile" key="1">
         <EditUser
           status={status}
@@ -215,17 +215,13 @@ function MyProfile() {
       </div>
       <div className=" filter-box"  >
         <Row gutter={[16, 16]}>
-          <Col span={16} >
+          <Col className="left-profile" span={16} >
             <Card
               bordered={false}
               extra={status ? (
-                <div role="presentation" onClick={updateUser}  >
+                <div className="edit" role="presentation" onClick={updateUser}  >
                   <SaveTwoTone />&nbsp;
-                  <input value="save" type="submit" form="global_state" style={{
-                    color: '#096dd9',
-                    background: 'white',
-                    border: 'none', padding: '0'
-                  }} />
+                  <input className="change-edit"  value="save" type="submit" form="global_state" />
                 </div>
               ) : (
                   <div role="presentation" onClick={isEdit}>
@@ -234,21 +230,20 @@ function MyProfile() {
                   </div>
                 )} >
               {status ? (<TabChange status={status} fields={fields} />) :
-                (<EditUser status={status} fields={fields} />)}
+                (<EditUser  status={status} fields={fields} />)}
             </Card>
           </Col>
-          <Col span={8} >
+          <Col className="right-profile" span={8} >
             <div className="site-card-border-less-wrapper">
               <Card title="Hình đại diện" bordered={false} style={{ width: 300 }}>
                 <img
-                  style={{ width: 250, height: 250, objectFit: 'cover' }}
                   src=' https://ai.whis.tech/media/image/5e9b8143ba922d1909a10196.jpg'
                   alt=""
                 />
                 {/* <img disabled src={fileLink} style={fileLink ? ({ width: 250, height: 250, objectFit: 'cover' }) : ({ height: 0 })} /> */}
-                <div style={{ textAlign: 'center', marginTop: 10 }}>
+                <div className="upload-img" >
                   <Upload >
-                    <Button disabled={!status} style={{ margin: 'auto', padding: 'auto' }}>
+                    <Button className="btn-upload" disabled={!status} >
                       <UploadOutlined /> Click to upload
                 </Button>
                   </Upload>
