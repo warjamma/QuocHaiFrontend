@@ -1,0 +1,48 @@
+.profile {
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    div {
+      font-weight: bold;
+      font-size: 16px;
+    }
+  }
+  .filter-box {
+    margin-top: 10px;
+    background: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0px;
+    .left-profile {
+      .edit {
+        .change-edit {
+          color: #096dd9;
+          background: white;
+          border: none;
+          padding: 0px;
+        }
+      }
+    }
+    .right-profile {
+      .site-card-border-less-wrapper {
+        img {
+          width: 250;
+          height: 250px;
+          object-fit: cover;
+        }
+        .upload-img {
+          text-align: center;
+          margin-top: 10px;
+          .btn-upload {
+            margin: auto;
+            padding: auto;
+          }
+        }
+      }
+    }
+  }
+}

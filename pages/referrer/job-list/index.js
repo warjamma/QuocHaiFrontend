@@ -71,7 +71,7 @@ const columns = [
           <div className="job-role">
             {
               record.job_role.map(item => (
-                <Tag className="tag-role" color="blue" key={item}>{item}</Tag>
+                <b className="name-role" color="blue" key={item}>{item}</b>
               ))
             }         
           </div>
