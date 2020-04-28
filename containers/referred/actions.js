@@ -135,3 +135,33 @@ export function uploadRequest(payload, name) {
     }
   };
 }
+
+export function uploadRequestImg(payload, name) {
+  const body = { mim_type: "image/jpeg" };
+  const header = { "Content-Type": "application/json" };
+  return async dispatch => {
+    try {
+      const response = await api.sendRequest('post', '/upload/request', null, header, body)
+        .then(response => response.data.presign_url);
+      const body2 = response.fields;
+      const data = new FormData();
+      for (const property in body2) {
+        data.append(`${property}`, `${body2[property]}`);
+      }
+      data.append("file", get(payload, 'value.originFileObj', ''), name);
+      const tmp = await axios({
+        method: 'post',
+        url: response.url,
+        data,
+        headers: { "content-type": "application/x-www-form-urlencoded" }
+      });
+      const response2 = await api.sendRequest('post', '/upload/verify', null, { 'content-type': 'application/json' }, {
+        key: response.fields.key
+      }).then(response => response.data.data);
+      return { status: true, data: response2 };
+    } catch (error) {
+      return { status: false, error: 'Fail to upload' };;
+    }
+  };
+}
+
