@@ -37,4 +37,15 @@
       }
     }
   }
+  .custom-role{
+    b.name-role {
+      color: #3273dc;
+      display: block;
+      text-align: center;
+    }
+    b.name-role:hover {
+      color: hotpink;
+      cursor: pointer;
+    }
+  }
 }

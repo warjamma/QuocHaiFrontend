@@ -50,10 +50,10 @@ function MyReferred(props) {
         // <div>
         //   <Link href={`/job-detail/${record.job.id}`}><a className="job-title">{get(record, 'job', {}).job_title}</a></Link>
         // </div>
-        <div className="job-role"role="presentation" onClick={() => Router.push(`/job-detail/${record.job.id}`)}>
+        <div className="custom-role"role="presentation" onClick={() => Router.push(`/job-detail/${record.job.id}`)}>
             {
               get(record, 'job', {}).job_role.map(item => (
-                <Tag className="tag-refer" key={item} color="blue">{item}</Tag>
+                <b className="name-role" key={item} color="blue">{item}</b>
               ))
             }
           </div>

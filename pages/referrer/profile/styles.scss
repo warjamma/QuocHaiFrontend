@@ -10,6 +10,10 @@
       font-weight: bold;
       font-size: 16px;
     }
+    .eye-view:hover {
+      color: blue;
+      cursor: pointer;
+    }
   }
   .filter-box {
     margin-top: 10px;
@@ -25,6 +29,9 @@
           border: none;
           padding: 0px;
         }
+      }
+      .ant-row.ant-form-item {
+        margin-bottom: 5px;
       }
     }
     .right-profile {

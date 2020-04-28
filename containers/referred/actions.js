@@ -4,6 +4,32 @@ import api from '../../services/api';
 const qs = require('qs');
 const axios = require('axios');
 
+export function updateProfile(payload, id) {
+  return async () => {
+    try {
+      await api.sendRequestWithToken('put', `/recruiters/me`, null, { 'Content-type': 'application/json' }, payload);
+      return { status: true };
+    } catch (error) {
+      const { data } = error.response;
+      return { status: false, error: data.message };
+    }
+  };
+}
+export function getProfileById(params) {
+  
+  return async dispatch => {
+    try {
+      const { data } = await api.sendRequestWithToken('get', `/recruiters/me`);
+      dispatch({ type: "GET_RECRUITERS_BY_ID_SUCCESS", data });
+      console.log('sssssssssss',data)
+      return { status: true, data };
+    } catch (error) {
+      const { data } = error.response;
+      return dispatch({ type: "GET_RECRUITERS_BY_ID_FAILURE", error: data.message });
+    }
+  };
+}
+
 export function getCompanyById(params) {
   // console.log('params', params);
   return async dispatch => {
