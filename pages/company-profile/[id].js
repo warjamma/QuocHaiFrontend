@@ -5,11 +5,10 @@ import { useRouter } from 'next/router';
 import { Button, Row, Col, Rate, Typography } from 'antd';
 import { get } from 'lodash';
 import {
-    CalendarOutlined,
-    FieldTimeOutlined,
-    UsergroupAddOutlined,
-    FlagOutlined,
-    SettingOutlined
+    FacebookOutlined,
+    LinkedinOutlined,
+    MailOutlined,
+    PhoneOutlined
 } from '@ant-design/icons';
 import { getCompanyById } from '../../containers/referred/actions';
 import './styles.scss';
@@ -21,27 +20,26 @@ function jobDetail(props) {
     const router = useRouter();
     const { id } = router.query;
 
-    const { dispatch,referred } = props;
+    const { dispatch, referred } = props;
     useEffect(() => {
         dispatch(getCompanyById({ id }));
     }, []);
 
 
     return (
-        <div className="company-profile" style={{ padding: 30 }}>
+        <div className="company-profile" >
             <div className="header" style={{ backgroud: '#fff', fontWeight: 'bold' }}>Company profile</div>
             <div className="content">
                 <Row gutter={[16, 16]}>
-                    <Col span={4} ><img style={{ padding: 'auto', margin: 'auto', display: 'block' }} alt="example" src="https://cdn.itviec.com/employers/fpt-software/logo/w170/mir3HT3xtedbECJY5jVeRRgV/fpt-software-logo.png" /></Col>
+                    <Col span={4} ><img style={{ padding: 'auto', margin: 'auto', display: 'block',height:250,width:250,objectFit: 'cover' }} alt="example" src={get(referred, 'company_detail.data.company.avatar', [])} /></Col>
                     <Col span={15} >
                         <div style={{ background: 'white', padding: 20 }} >
-                            <Title level={3}>{get(referred, 'company_detail.data.company.name',[])}</Title>
-                            <div>The leading provider of software outsourcing services in Vietnam</div>
-                            <div ><SettingOutlined />&nbsp;Outsourcing</div>
-                            <div ><UsergroupAddOutlined />&nbsp;1000+</div>
-                            <div ><FlagOutlined />&nbsp;Vietnam</div>
-                            <div ><CalendarOutlined />&nbsp;Monday - Friday</div>
-                            <div ><FieldTimeOutlined />&nbsp;Extra salary for OT</div>
+                            <Title level={3}>{get(referred, 'company_detail.data.company.name', [])}</Title>
+                            <div>{get(referred, 'company_detail.data.company.address', [])}</div>
+                            <div ><FacebookOutlined />&nbsp;{get(referred, 'company_detail.data.company.facebook')}</div>
+                            <div ><MailOutlined />&nbsp;{get(referred, 'company_detail.data.company.email_cc')}</div>
+                            <div ><LinkedinOutlined />&nbsp;{get(referred, 'company_detail.data.company.linked_in')}</div>
+                            <div ><PhoneOutlined />&nbsp;{get(referred, 'company_detail.data.company.phone_number')}</div>
                         </div>
                     </Col>
                     <Col span={5} >
@@ -55,6 +53,15 @@ function jobDetail(props) {
                 <Col span={16} >
                     <div style={{ background: 'white' }}>
                         <div style={{ background: 'white', padding: 20 }} >
+                            <Title level={3}>About company</Title>
+                            <ul>
+                                <li>{get(referred, 'company_detail.data.company.about', [])}</li>
+                                <li>{get(referred, 'company_detail.data.company.company_benefit', [])}ROCKSHIP is a Software Consultancy Agency with new and innovative technology solutions in Blockchain,</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div style={{ background: 'white' }}>
+                        <div style={{ background: 'white', padding: 20 }} >
                             <Title level={3}>Why You'll Love Working Here</Title>
                             <ul>
                                 <li>Develop innovative product using the latest technologies</li>
@@ -64,11 +71,10 @@ function jobDetail(props) {
                             </ul>
                         </div>
                     </div>
-
-                    <div style={{ background: 'white', marginTop: 20 }}>
+                    <div style={{ background: 'white', marginTop: 0 }}>
                         <div style={{ background: 'white', padding: 20 }} >
                             <Title level={3}>Location</Title>
-                            <div style={{ fontSize: 16 }}>Centec Tower, 72 Nguyen Thi Minh Khai Street, HCMC District 3 Ho Chi Minh</div>
+                            <div style={{ fontSize: 16 }}>Centec Tower, {get(referred, 'company_detail.data.company.address', [])}</div>
                             <div />
 
                         </div>

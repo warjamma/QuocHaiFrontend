@@ -30,8 +30,17 @@
           padding: 0px;
         }
       }
+      .is-edit {
+        cursor: pointer;
+      }
       .ant-row.ant-form-item {
         margin-bottom: 5px;
+      }
+      .bold-span {
+        font-weight: bold;
+      }
+      .ant-row.row-detail {
+        padding-top: 24px;
       }
     }
     .right-profile {

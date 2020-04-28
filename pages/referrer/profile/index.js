@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Router from 'next/router';
 import {
-  SaveTwoTone, EditTwoTone, UploadOutlined, EyeOutlined
+  EditTwoTone, UploadOutlined
   // UploadOutlined
 } from '@ant-design/icons';
 import { connect } from 'react-redux';
@@ -19,7 +19,7 @@ const layout = {
   layout: "vertical"
 };
 const tailLayout = {
-  wrapperCol: { offset: 0, span: 0 }
+  wrapperCol: { offset: 0, span: 0 },
 };
 const { TabPane } = Tabs;
 function callback(key) {
@@ -104,42 +104,41 @@ function ChangePassword(props) {
       >
         <Input.Password />
       </Form.Item>
-      <Form.Item  {...tailLayout} >
+      <Form.Item  {...tailLayout} style={{ marginTop: 10 }} >
         <Button type="primary" htmlType="submit" >
-          <SaveTwoTone />&nbsp;Cập nhật</Button>
+          Cập nhật</Button>
+        <Button style={{ marginLeft: 5 }} onClick={() => Router.push('/referrer/profile')} >
+          Hủy</Button>
       </Form.Item>
     </Form>
   );
 }
 function EditUser({ status, profile, referred, initForm, dispatch, fileLink, form }) {
 
+  const hiddenInput = () => {
+    if (status) {
+      return { color: 'red' };
+    }
 
+    return { visibility: 'hidden', height: 0 };
+  };
+  const hiddenDiv = () => {
+    if (status) {
+      return { visibility: 'hidden', height: 0 };
+    }
+    return { padding: 0 };
+  };
+  const hiddenBtn = () => {
+    if (status) {
+      return {marginTop: 10};
+    }
+    return {  visibility: 'hidden'};
+  };
   const onFinish = async (value) => {
     const data = cloneDeep(value);
     if (fileLink) {
       data.avatar = fileLink;
     }
-    // // eslint-disable-next-line no-param-reassign
-    // initForm.career_site = "https://Trash.co";
-    // // eslint-disable-next-line no-param-reassign
-    // initForm.in_charge_by = "ACV";
-    // // eslint-disable-next-line no-param-reassign
-    // initForm.last_year_revenue = 2;
-    // // eslint-disable-next-line no-param-reassign
-    // initForm.role = "Trash";
-    // // eslint-disable-next-line no-param-reassign
-    // initForm.linked_in = "https://Trash.co";
-    // // eslint-disable-next-line no-param-reassign
-    // initForm.youtube = "https://Trash.co";
-    // // eslint-disable-next-line no-param-reassign
-    // initForm.vission = "https://Trash.co";
-    // // eslint-disable-next-line no-param-reassign
-    // initForm.product = "https://Trash.co";
-    // // eslint-disable-next-line no-param-reassign
-    // initForm.company_size = "https://Trash.co";
-    // // eslint-disable-next-line no-param-reassign
-    // initForm.skype = ["it suck", "suck"];
-
     await dispatch(updateProfile({ ...initForm, ...data }, get(profile, 'data.recruiter.id', []))).then(res => {
       if (res.status) {
         return message.success('Update Profile successfully');
@@ -155,17 +154,20 @@ function EditUser({ status, profile, referred, initForm, dispatch, fileLink, for
       name="global_state"
       onFinish={onFinish}
     >
-      <Form.Item name="first_name" label="Tên " rules={[{ required: true, message: 'This field is required !' }]}>
+      <Form.Item style={hiddenInput()} name="first_name" label="Tên " rules={[{ required: true, message: 'This field is required !' }]}>
         <Input disabled={!status} />
       </Form.Item>
-      <Form.Item name="last_name" label="Họ tên đệm" rules={[{ required: true, message: 'This field is required !' }]}>
+      <div style={hiddenDiv()} ><span className='bold-span'>Tên: </span>{get(referred, 'recruiter_detail.data.recruiter.first_name', [])}</div>
+      <Form.Item style={hiddenInput()} name="last_name" label="Họ tên đệm" rules={[{ required: true, message: 'This field is required !' }]}>
         <Input disabled={!status} />
       </Form.Item>
-      <Form.Item name="phone_number" label="Điện thoại" rules={[{ required: true, message: 'This field is required !' }]} >
+      <div style={hiddenDiv()} ><span className='bold-span'>Họ tên đệm: </span>{get(referred, 'recruiter_detail.data.recruiter.last_name', [])}</div>
+      <Form.Item style={hiddenInput()} name="phone_number" label="Điện thoại" rules={[{ required: true, message: 'This field is required !' }]} >
         <Input disabled={!status} />
       </Form.Item>
+      <div style={hiddenDiv()} ><span className='bold-span'>Số điện thoại: </span>  {get(referred, 'recruiter_detail.data.recruiter.phone_number', [])}</div>
       <Form.Item
-
+        style={hiddenInput()}
         // name="email"
         label="E-mail"
       // rules={[
@@ -181,26 +183,83 @@ function EditUser({ status, profile, referred, initForm, dispatch, fileLink, for
       >
         <Input disabled={!status} />
       </Form.Item>
+      <div style={hiddenDiv()} ><span className='bold-span'>Email: </span>{get(referred, 'recruiter_detail.data.recruiter.name', [])}</div>
       <Form.Item
+        style={hiddenInput()}
         // name='address'
         label="Tên ngân hàng"  >
         <Input disabled={!status} />
       </Form.Item>
+      <div style={hiddenDiv()} ><span className='bold-span'>Tên ngân hàng: </span> {get(referred, 'recruiter_detail.data.recruiter.name', [])}</div>
       <Form.Item
+        style={hiddenInput()}
         // name='website' 
         label="Số tài khoản"  >
         <Input disabled={!status} />
       </Form.Item>
+      <div style={hiddenDiv()} ><span className='bold-span'>Số tài khoản: </span>{get(referred, 'recruiter_detail.data.recruiter.name', [])}</div>
       <Form.Item
+        style={hiddenInput()}
         // name='facebook'
         label="Tên chủ thẻ"  >
         <Input disabled={!status} />
       </Form.Item>
-      <Form.Item  {...tailLayout}>
+      <div style={hiddenDiv()} ><span className='bold-span'>Tên chủ thẻ: </span> {get(referred, 'recruiter_detail.data.recruiter.name', [])}</div>
+      <Form.Item
+        {...tailLayout} style={hiddenBtn()}>
         <Button disabled={!status} type="primary" htmlType="submit" >
-          <SaveTwoTone />&nbsp;Cập nhật</Button>
+          Cập nhật</Button>
+        <Button disabled={!status} style={{ marginLeft: 5 }} onClick={() => Router.push('/referrer/profile')} >
+          Hủy</Button>
       </Form.Item>
     </Form >
+  );
+
+}
+function EditUser2({ referred,form }) {
+  return (
+    <form form={form}>
+      <Row className='row-detail'>
+        <Col span={3}><span className='bold-span'>Tên: </span></Col>
+        <Col span={19}>{get(referred, 'recruiter_detail.data.recruiter.first_name', [])}</Col>
+      </Row>
+
+      <Row className='row-detail'>
+        <Col span={3}><span className='bold-span'>Họ tên đệm: </span></Col>
+        <Col span={19}>{get(referred, 'recruiter_detail.data.recruiter.last_name', [])}</Col>
+      </Row>
+
+      <Row className='row-detail'>
+        <Col span={3}><span className='bold-span'>Email: </span></Col>
+        <Col span={19}>{get(referred, 'recruiter_detail.data.recruiter.email', [])}</Col>
+      </Row>
+
+      <Row className='row-detail'>
+        <Col span={3}><span className='bold-span'>Điện thoại: </span></Col>
+        <Col span={19}>{get(referred, 'recruiter_detail.data.recruiter.phone_number', [])}</Col>
+      </Row>
+
+      <Row className='row-detail'>
+        <Col span={3}><span className='bold-span'>Tên ngân hàng: </span></Col>
+        <Col span={19}>{get(referred, 'recruiter_detail.data.recruiter.bank_name', [])}</Col>
+      </Row>
+
+      <Row className='row-detail'>
+        <Col span={3}><span className='bold-span'>Số tài khoản: </span></Col>
+        <Col span={19}>{get(referred, 'recruiter_detail.data.recruiter.bank_number', [])}</Col>
+      </Row>
+
+      <Row className='row-detail'>
+        <Col span={3}><span className='bold-span'>Chủ tài khoản: </span></Col>
+        <Col span={19}>{get(referred, 'recruiter_detail.data.recruiter.bank_user', [])}</Col>
+      </Row>
+      
+
+      <Row className='row-detail'>
+        <Col span={3}><span className='bold-span'>Giới thiệu công ty: </span></Col>
+        <Col span={18}>{get(referred, 'company_detail.data.company.about', [])}</Col>
+      </Row>
+    </form>
   );
 
 }
@@ -214,7 +273,12 @@ function CompanyProfile(props) {
     setStatus(!status);
   };
   const { profile, referred, dispatch } = props;
-
+  const hiddenBtn = () => {
+    if (status) {
+      return {display:'block'};
+    }
+    return {  visibility: 'hidden'};
+  };
   const updateUser = () => {
     notification.open({
       message: 'Confirm save',
@@ -255,8 +319,6 @@ function CompanyProfile(props) {
           form.setFieldsValue(data.data.recruiter);
         }
       });
-    // form.setFieldsValue(get(profile, 'data.recruiter'));
-
   }, []);
   const setting = {
     onChange,
@@ -267,7 +329,7 @@ function CompanyProfile(props) {
     customRequest: dummyRequest
   };
 
-  const initForm = get(referred, 'recruiter_detail.data.recruiter', []) ;
+  const initForm = get(referred, 'recruiter_detail.data.recruiter', []);
   return (
     <div className="profile" >
       <div className="header">
@@ -281,18 +343,18 @@ function CompanyProfile(props) {
               bordered={false}
               extra={status ? (
                 <div className="edit" role="presentation" onClick={updateUser}  >
-                  <SaveTwoTone />&nbsp;
+                  {/* <SaveTwoTone />&nbsp; */}
                   {/* <input className="change-edit" value="save" type="submit" form="global_state" /> */}
-                  <input className="change-edit" value="save" type="submit" />
+                  {/* <input className="change-edit" value="save" type="submit" /> */}
                 </div>
               ) : (
-                  <div role="presentation" onClick={isEdit}>
+                  <div className="is-edit" role="presentation" onClick={isEdit}>
                     <EditTwoTone />&nbsp;
                     <span>Edit</span>
                   </div>
                 )} >
               {status ? (<TabChange fileLink={fileLink} form={form} dispatch={dispatch} initForm={initForm} referred={referred} status={status} profile={profile} />) :
-                (<EditUser fileLink={fileLink} form={form} dispatch={dispatch} initForm={initForm} referred={referred} status={status} profile={profile} />)}
+                (<EditUser2 fileLink={fileLink} form={form} dispatch={dispatch} initForm={initForm} referred={referred} status={status} profile={profile} />)}
             </Card>
           </Col>
           <Col className="right-profile" span={8} >
@@ -300,15 +362,14 @@ function CompanyProfile(props) {
               <Card title="Hình đại diện" bordered={false} style={{ width: 300 }}>
                 <div className="bouder-img">
                   <img
-                    style={{ width: 250, height: 250, objectFit: 'cover', margin: 'auto', display: 'block' }}
+                    style={get(referred, 'company_detail.data.company.avatar', []) ? { width: 250, height: 250, objectFit: 'cover', margin: 'auto', display: 'block' } : { height: 0 }}
                     // eslint-disable-next-line no-nested-ternary
                     src={fileLink === '' ? (get(referred, 'recruiter_detail.data.recruiter.avatar', []) === '' ? (fileLink) : (get(referred, 'recruiter_detail.data.recruiter.avatar', []))) : (fileLink)}
                     alt=""
                   />
                 </div>
-                {/* <img disabled src={fileLink} style={fileLink ? ({ width: 250, height: 250, objectFit: 'cover' }) : ({ height: 0 })} /> */}
-                <div className="upload-img" >
-                  <Upload
+                <div className="upload-img"  style={hiddenBtn()} >
+                  <Upload     
                     {...setting}
                     // fileList={fileData}
                     showUploadList={false}
@@ -326,7 +387,6 @@ function CompanyProfile(props) {
     </div>
   );
 }
-
 function mapStateToProps(state) {
   console.log('State profile refer', state);
   const { referred, profile } = state;
