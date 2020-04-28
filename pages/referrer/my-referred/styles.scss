@@ -31,27 +31,19 @@
       }
     }
   }
-  .custom-company {
-    display: flex;
-    .logo-company {
-      width: 100px;
-      min-width: 100px;
-      margin-right: 10px;
-      img {
-        width: 100%;
-        object-fit: cover;
-      }
-    }
-    .info-required {
-      text-align: left;
-      .job-role {
-        margin: 5px 0px;
-      }
-    }
-  }
-
   .tag-refer {
     margin: 3;
     cursor: pointer;
+  }
+  .custom-role{
+    b.name-role {
+      color: #3273dc;
+      display: block;
+      text-align: center;
+    }
+    b.name-role:hover {
+      color: hotpink;
+      cursor: pointer;
+    }
   }
 }

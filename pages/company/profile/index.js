@@ -1,8 +1,9 @@
 /* eslint-disable prefer-promise-reject-errors */
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useEffect } from 'react';
+import Router from 'next/router';
 import {
-  SaveTwoTone, EditTwoTone, UploadOutlined
+  SaveTwoTone, EditTwoTone, UploadOutlined, EyeOutlined
   // UploadOutlined
 } from '@ant-design/icons';
 import { connect } from 'react-redux';
@@ -13,12 +14,12 @@ import { uploadRequestImg } from '../../../containers/referred/actions';
 import './styles.scss';
 
 const layout = {
-  labelCol: { span: 5 },
-  wrapperCol: { span: 18 },
-  layout: "horizontal"
+  labelCol: { span: 0 },
+  wrapperCol: { span: 12 },
+  layout: "vertical"
 };
 const tailLayout = {
-  wrapperCol: { offset: 5, span: 0 },
+  wrapperCol: { offset: 0, span: 0 },
 };
 const { TabPane } = Tabs;
 function callback(key) {
@@ -110,7 +111,7 @@ function ChangePassword(props) {
     </Form>
   );
 }
-function EditUser({ status, profile, initForm, dispatch, fileLink, form }) {
+function EditUser({ status, profile, referred, initForm, dispatch, fileLink, form }) {
 
 
   const onFinish = async (value) => {
@@ -118,21 +119,30 @@ function EditUser({ status, profile, initForm, dispatch, fileLink, form }) {
     if (fileLink) {
       data.avatar = fileLink;
     }
+    // eslint-disable-next-line no-param-reassign
     initForm.career_site = "https://Trash.co";
-    //initForm.avatar = "https://media.licdn.com/dms/image/C560BAQHMnA03XDdf3w/company-logo_200_200/0?e=2159024400&v=beta&t=C7KMOtnrJwGrMXmgIk2u1B8a7VRfgxMwXng9cdP9kZk";
+    // eslint-disable-next-line no-param-reassign
     initForm.in_charge_by = "ACV";
+    // eslint-disable-next-line no-param-reassign
     initForm.last_year_revenue = 2;
+    // eslint-disable-next-line no-param-reassign
     initForm.role = "Trash";
+    // eslint-disable-next-line no-param-reassign
     initForm.linked_in = "https://Trash.co";
+    // eslint-disable-next-line no-param-reassign
     initForm.youtube = "https://Trash.co";
+    // eslint-disable-next-line no-param-reassign
     initForm.vission = "https://Trash.co";
+    // eslint-disable-next-line no-param-reassign
     initForm.product = "https://Trash.co";
+    // eslint-disable-next-line no-param-reassign
     initForm.company_size = "https://Trash.co";
+    // eslint-disable-next-line no-param-reassign
     initForm.expectation_knowledge = ["it suck", "suck"];
 
     await dispatch(updateProfile({ ...initForm, ...data }, get(profile, 'data.employer.company.id', []))).then(res => {
       if (res.status) {
-        return message.success('Update Profile successfully');
+        return message.success('Update Profile successfully').then(() => Router.push(`/company-profile/${get(referred, 'company_detail.data.company.id', [])}`));
       }
       return message.error(res.error);
     });
@@ -145,7 +155,7 @@ function EditUser({ status, profile, initForm, dispatch, fileLink, form }) {
       name="global_state"
       onFinish={onFinish}
     >
-      <Form.Item name="name" label="Tên" rules={[{ required: true, message: 'This field is required !' }]}>
+      <Form.Item name="name" label="Tên công ty" rules={[{ required: true, message: 'This field is required !' }]}>
         <Input disabled={!status} />
       </Form.Item>
       <Form.Item name="phone_number" label="Điện thoại" rules={[{ required: true, message: 'This field is required !' }]} >
@@ -155,16 +165,16 @@ function EditUser({ status, profile, initForm, dispatch, fileLink, form }) {
 
         // name="email"
         label="E-mail"
-      // rules={[
-      //   {
-      //     type: 'email',
-      //     message: 'The input is not valid E-mail!',
-      //   },
-      //   {
-      //     required: true,
-      //     message: 'Please input your E-mail!',
-      //   },
-      // ]}
+      rules={[
+        {
+          type: 'email',
+          message: 'The input is not valid E-mail!',
+        },
+        {
+          required: true,
+          message: 'Please input your E-mail!',
+        },
+      ]}
       >
         <Input disabled={!status} />
       </Form.Item>
@@ -175,9 +185,9 @@ function EditUser({ status, profile, initForm, dispatch, fileLink, form }) {
       >
         <Input disabled={!status} />
       </Form.Item>
-      <Form.Item name="email_cc" label="Email CC"  >
+      {/* <Form.Item name="email_cc" label="Email CC"  >
         <Input disabled={!status} />
-      </Form.Item>
+      </Form.Item> */}
 
       <Form.Item name='address' label="Địa chỉ"  >
         <Input disabled={!status} />
@@ -272,12 +282,13 @@ function CompanyProfile(props) {
   return (
     <div className="profile" >
       <div className="header">
-        <div>Hồ sơ công ty</div>
+        <div>Hồ sơ công ty </div><EyeOutlined className="eye-view" style={{ float: 'right', marginRight: 20, fontSize: 20 }} onClick={() => Router.push(`/company-profile/${get(referred, 'company_detail.data.company.id', [])}`)} />
       </div>
       <div className=" filter-box"  >
         <Row gutter={[16, 16]}>
           <Col className="left-profile" span={16} >
             <Card
+              title="Thông tin"
               bordered={false}
               extra={status ? (
                 <div className="edit" role="presentation" onClick={updateUser}  >
@@ -301,9 +312,9 @@ function CompanyProfile(props) {
                 <div className="bouder-img">
                   <img
                     style={{ width: 250, height: 250, objectFit: 'cover', margin: 'auto', display: 'block' }}
-                    src={fileLink === '' ? (get(referred, 'company_detail.data.company.avatar', []) === '' ? (fileLink) : (get(referred, 'company_detail.data.company.avatar', []))) : (fileLink)}src={fileLink === '' ? (get(referred, 'company_detail.data.company.avatar', []) === '' ? (fileLink) : (get(referred, 'company_detail.data.company.avatar', []))) : (fileLink)}
+                    src={fileLink === '' ? (get(referred, 'company_detail.data.company.avatar', []) === '' ? (fileLink) : (get(referred, 'company_detail.data.company.avatar', []))) : (fileLink)} src={fileLink === '' ? (get(referred, 'company_detail.data.company.avatar', []) === '' ? (fileLink) : (get(referred, 'company_detail.data.company.avatar', []))) : (fileLink)}
                     // src={get(referred, 'company_detail.data.company.avatar', [])}
-                   alt=""
+                    alt=""
                   // value={fileLink}
                   />
                 </div>

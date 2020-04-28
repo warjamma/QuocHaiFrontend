@@ -17,7 +17,7 @@ function Verify (props) {
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
-      Router.push(query.role === 'employers' ? '/company' : '/referrer');
+      Router.push(query.role === 'employers' ? '/company/job-list' : '/referrer/job-list');
     }
   });
 

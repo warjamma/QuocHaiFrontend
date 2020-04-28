@@ -6,6 +6,7 @@ export const exampleInitialState = {
   job_detail: null,
   is_loading: false,
   company_detail:null,
+  recruiter_detail:null,
 };
 
 export default (state = exampleInitialState, action) => {
@@ -65,6 +66,16 @@ export default (state = exampleInitialState, action) => {
         ...state,
         ...{ candidate_detail: [] },
       };
+      case 'GET_RECRUITERS_BY_ID_SUCCESS':
+        return {
+          ...state,
+          ...{ recruiter_detail: action.data },
+        };
+      case 'GET_RECRUITERS_BY_ID_FAILURE':
+        return {
+          ...state,
+          ...{ recruiter_detail: [] },
+        }; 
     default:
       return state;
   }

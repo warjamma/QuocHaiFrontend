@@ -60,6 +60,13 @@
         object-fit: cover;
       }
     }
+    b.name-company {
+      color: #3273dc;
+    }
+    b.name-company:hover {
+      color: hotpink;
+      cursor: pointer;
+    }
     .info-required {
       text-align: left;
       .job-role {
@@ -82,11 +89,16 @@
   .ant-tabs-bar {
     margin-bottom: -2px;
   }
-  b.name-company {
-    color: #3273dc;
+  .custom-role{
+    b.name-role {
+      color: #3273dc;
+      display: block;
+      text-align: center;
+    }
+    b.name-role:hover {
+      color: hotpink;
+      cursor: pointer;
+    }
   }
-  b.name-company:hover {
-    color: hotpink;
-    cursor: pointer;
-  }
+ 
 }

@@ -126,12 +126,12 @@ function CandidateList (props) {
       title: 'Vị trí',
       dataIndex: 'job',
       render: (text, record, index) => (
-        <div role="presentation" className="custom-company" onClick={() => Router.push(`/job-detail/${record.job.id}`)}> 
+        <div role="presentation" className="custom-role" onClick={() => Router.push(`/job-detail/${record.job.id}`)}> 
         <div className="job-role">
           {/* <Link href="/job-detail/[id]" as={`/job-detail/${record.job.id}`}><a>{get(record, 'job', {}).job_role}</a></Link> */}
           {
               get(record, 'job', {}).job_role.map(item => (
-                <Tag style={{margin:3, cursor: 'pointer'}} color="blue" key={item}>{item}</Tag>
+                <b className="name-role" key={item}>{item}</b>
               ))
             } 
         </div>

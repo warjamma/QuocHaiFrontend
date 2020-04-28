@@ -70,13 +70,23 @@
         margin: 5px 0px;
       }
       b.name-company {
+        color: #3273dc;
+        cursor: pointer;
+      }
+      b.name-company:hover {
+        color: hotpink;
         cursor: pointer;
       }
     }
   }
   .custom-role{
-    .tag-role {
-      margin: 2;
+    b.name-role {
+      color: #3273dc;
+      display: block;
+      text-align: center;
+    }
+    b.name-role:hover {
+      color: hotpink;
       cursor: pointer;
     }
   }
