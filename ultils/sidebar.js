@@ -44,7 +44,7 @@ export const referrerSideBar = [
   },
   {
     name: 'Đã giới thiệu',
-    url: '/referrer/my-referred'
+    url: '/referrer/my-referred/all'
   },
   {
     name: 'Thông tin cá nhân',

@@ -40,7 +40,7 @@ function EditCV(props) {
     }
     await dispatch(updateCandidate({ ...initForm, ...data }, id)).then(res => {
       if (res.status) {
-        Router.push('/referrer/my-referred');
+        Router.push('/referrer/my-referred/all');
         return message.success('Update candidate successfully');
       }
       return message.error(res.error);

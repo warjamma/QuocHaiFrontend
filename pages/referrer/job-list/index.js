@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
@@ -5,7 +7,7 @@ import Router from 'next/router';
 import { RedoOutlined, SearchOutlined, FileDoneOutlined } from '@ant-design/icons';
 import { Table, Row, Col, Button, Tag, Input, Select, Spin } from 'antd';
 import { get, debounce } from 'lodash';
-import { getListJob } from '../../../containers/referred/actions';
+import { getListJob, getCountMyRefer } from '../../../containers/referred/actions';
 import { getAllCompany } from '../../../containers/company/action';
 import { getAllJobType } from '../../../containers/job/actions';
 
@@ -43,12 +45,12 @@ const columns = [
           />
         </div>
         <div className="info-required">
-        <b role="presentation" className="name-company" onClick={()=>Router.push(`/company-profile/${get(record, 'company_id')}`)}>{get(record, 'company.name', '')}</b>
+          <b role="presentation" className="name-company" onClick={() => Router.push(`/company-profile/${get(record, 'company_id')}`)}>{get(record, 'company.name', '')}</b>
           <div className="job-level">
             <span>Cấp độ:&nbsp;</span>
             {
               record.job_levels.map(item => (
-                <Tag onClick={() => Router.push(`/job-detail/${record.id}`)} className="tag-level"  color="blue" key={item}>{item}</Tag>
+                <Tag onClick={() => Router.push(`/job-detail/${record.id}`)} className="tag-level" color="blue" key={item}>{item}</Tag>
               ))
             }
           </div>
@@ -56,9 +58,9 @@ const columns = [
             <span>Số lượng yêu cầu: {record.vacancy_number} </span>
           </div>
           <div className="job-level">
-              <span>Địa điểm: <Tag onClick={() => Router.push(`/job-detail/${record.id}`)} color="blue">{record.locations}</Tag> </span>
-            </div>
-          
+            <span>Địa điểm: <Tag onClick={() => Router.push(`/job-detail/${record.id}`)} color="blue">{record.locations}</Tag> </span>
+          </div>
+
         </div>
       </div>
     ),
@@ -67,14 +69,14 @@ const columns = [
     title: 'Vị trí',
     dataIndex: 'company_id',
     render: (text, record, index) => (
-      <div role="presentation" className="custom-role" onClick={() => Router.push(`/job-detail/${record.id}`)}>    
-          <div className="job-role">
-            {
-              record.job_role.map(item => (
-                <b className="name-role" color="blue" key={item}>{item}</b>
-              ))
-            }         
-          </div>
+      <div role="presentation" className="custom-role" onClick={() => Router.push(`/job-detail/${record.id}`)}>
+        <div className="job-role">
+          {
+            record.job_role.map(item => (
+              <b className="name-role" color="blue" key={item}>{item}</b>
+            ))
+          }
+        </div>
       </div>
     ),
   },
@@ -92,18 +94,20 @@ const columns = [
   },
   {
     title: 'Đã ứng tuyển',
-    dataIndex: 'vacancy_number',
-    align: 'center'
+    dataIndex: 'current_applied',
+    align: 'center',
+    render: (record) => <div>{record}</div>
   },
   {
     title: 'Giới thiệu của tôi',
-    dataIndex: 'address',
+    dataIndex: 'count_my_refer',
     align: 'center',
-    render: ()=><div className="my-referred" ><FileDoneOutlined /></div>
+    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+    render: (text, record, index) => <b onClick={() => Router.push(`/referrer/my-referred/${get(record, 'company.name')}`)} className="bold-number">{record.count_my_refer} CV </b>
   },
 ];
 
-function JobList (props) {
+function JobList(props) {
   const { referred, dispatch } = props;
   const [query, setQuery] = useState(initQuery);
   const [total, setTotal] = useState(null);
@@ -113,7 +117,7 @@ function JobList (props) {
 
   const changeQuery = (key, value) => {
     const clone = { ...query };
-    clone[key] = typeof value === 'object' ? value.join(', ') : value ;
+    clone[key] = typeof value === 'object' ? value.join(', ') : value;
     setQuery(clone);
   };
 
@@ -126,21 +130,21 @@ function JobList (props) {
 
   const handleTableChange = async (pagination) => {
     const clone = { ...query };
-    clone.offset = (pagination.current-1) * 10;
+    clone.offset = (pagination.current - 1) * 10;
     clone.limit = pagination.pageSize;
     setQuery(clone);
     await dispatch(getListJob(clone));
   };
-  
+
   const resetSearch = async () => {
     setQuery(initQuery);
     await dispatch(getListJob(initQuery));
   };
-  
+
   const fetchCompany = value => {
     setListCompany([]);
     setFetching(true);
-    dispatch(getAllCompany({offset: 0, limit: 50, key_word: value})).then(res => {
+    dispatch(getAllCompany({ offset: 0, limit: 50, key_word: value })).then(res => {
       if (res.status) {
         setListCompany(get(res, 'data.items.company_name'));
         setFetching(false);
@@ -151,7 +155,7 @@ function JobList (props) {
   const fetchJobType = value => {
     setListJobType([]);
     setFetching(true);
-    dispatch(getAllJobType({offset: 0, limit: 50, key_word: value})).then(res => {
+    dispatch(getAllJobType({ offset: 0, limit: 50, key_word: value })).then(res => {
       if (res.status) {
         setListJobType(get(res, 'data.items.job_type'));
         setFetching(false);
@@ -161,11 +165,28 @@ function JobList (props) {
 
   useEffect(() => {
     dispatch(getListJob(query));
+    dispatch(getCountMyRefer());
     fetchCompany('');
     fetchJobType('');
   }, []);
 
   const delayedQuery = useRef(debounce((e, func) => func(e), 800)).current;
+  const data = get(referred, 'list_job.items.job', []);
+  const data2 = get(referred, 'list_count_my_refer.items.jobs', []);
+  // console.log('data2', data2);
+  // eslint-disable-next-line no-plusplus
+  for (let i = 0; i < data.length; i++) {
+    // eslint-disable-next-line no-plusplus
+    for (let j = 0; j < data2.length; j++) {
+      if (data[i].id === data2[j].id) {
+        data[i].count_my_refer = data2[j].count_my_refer;
+      }
+    }
+    if(!data[i].count_my_refer){
+      data[i].count_my_refer='0';
+    }
+  }
+  // console.log('data', data);
 
   return (
     <div className="jobListContainer">
@@ -178,7 +199,7 @@ function JobList (props) {
           <Row gutter={[16, 16]} className="body">
             <Col span={12}>
               <b>Từ khóa</b>
-              <Search value={query.key_word} onChange={(e) => changeQuery('key_word', e.target.value)} placeholder="Từ khóa"/>
+              <Search value={query.key_word} onChange={(e) => changeQuery('key_word', e.target.value)} placeholder="Từ khóa" />
             </Col>
             <Col span={6}>
               <b>Công ty</b>
@@ -244,9 +265,9 @@ function JobList (props) {
               <b>Mức lương</b>
               <div className="salary-form">
                 <span className="content">từ</span>
-                <Input value={query.min_salary} onChange={(e) => changeQuery('min_salary', e.target.value)} addonAfter={<span>$</span>}/>
+                <Input value={query.min_salary} onChange={(e) => changeQuery('min_salary', e.target.value)} addonAfter={<span>$</span>} />
                 <span className="content">đến</span>
-                <Input value={query.max_salary} onChange={(e) => changeQuery('max_salary', e.target.value)} addonAfter={<span>$</span>}/>
+                <Input value={query.max_salary} onChange={(e) => changeQuery('max_salary', e.target.value)} addonAfter={<span>$</span>} />
               </div>
             </Col>
             {/* <Col span={6}>
@@ -268,7 +289,7 @@ function JobList (props) {
             </Col> */}
           </Row>
           <div className="filter-button">
-            <Button onClick={() => handleFind()} icon={<SearchOutlined />}  type="primary">Tìm kiếm</Button>
+            <Button onClick={() => handleFind()} icon={<SearchOutlined />} type="primary">Tìm kiếm</Button>
             <Button icon={<RedoOutlined />} onClick={() => resetSearch()} type="primary">Làm mới</Button>
           </div>
         </Col>
@@ -279,10 +300,10 @@ function JobList (props) {
           bordered
           rowKey="id"
           columns={columns}
-          dataSource={get(referred, 'list_job.items.job', [])}
+          dataSource={data}
           pagination={{
             pageSize: query.limit,
-            total: get(referred, 'list_job.extra_data.total',0),
+            total: get(referred, 'list_job.extra_data.total', 0),
             showSizeChanger: true,
             pageSizeOptions: ['10', '20', '30', '50'],
             size: 'small',
@@ -296,6 +317,7 @@ function JobList (props) {
 };
 
 function mapStateToProps(state) {
+  // console.log(state);
   const { referred } = state;
   return { referred };
 }
