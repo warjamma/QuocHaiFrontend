@@ -5,8 +5,9 @@ export const exampleInitialState = {
   candidate_detail: null,
   job_detail: null,
   is_loading: false,
-  company_detail:null,
-  recruiter_detail:null,
+  company_detail: null,
+  recruiter_detail: null,
+  list_count_my_refer:null,
 };
 
 export default (state = exampleInitialState, action) => {
@@ -46,6 +47,16 @@ export default (state = exampleInitialState, action) => {
         ...state,
         ...{ company_detail: [] },
       };
+    case 'GET_COUNT_MY_REFER_SUCCESS':
+      return {
+        ...state,
+        ...{ list_count_my_refer: action.data, is_loading: false },
+      };
+    case 'GET_COUNT_MY_REFER_FAILURE':
+      return {
+        ...state,
+        ...{ list_count_my_refer: [], is_loading: false },
+      };
     case 'GET_LIST_REFERRED_SUCCESS':
       return {
         ...state,
@@ -66,16 +77,16 @@ export default (state = exampleInitialState, action) => {
         ...state,
         ...{ candidate_detail: [] },
       };
-      case 'GET_RECRUITERS_BY_ID_SUCCESS':
-        return {
-          ...state,
-          ...{ recruiter_detail: action.data },
-        };
-      case 'GET_RECRUITERS_BY_ID_FAILURE':
-        return {
-          ...state,
-          ...{ recruiter_detail: [] },
-        }; 
+    case 'GET_RECRUITERS_BY_ID_SUCCESS':
+      return {
+        ...state,
+        ...{ recruiter_detail: action.data },
+      };
+    case 'GET_RECRUITERS_BY_ID_FAILURE':
+      return {
+        ...state,
+        ...{ recruiter_detail: [] },
+      };
     default:
       return state;
   }

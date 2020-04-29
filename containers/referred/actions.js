@@ -21,7 +21,6 @@ export function getProfileById(params) {
     try {
       const { data } = await api.sendRequestWithToken('get', `/recruiters/me`);
       dispatch({ type: "GET_RECRUITERS_BY_ID_SUCCESS", data });
-      console.log('sssssssssss',data)
       return { status: true, data };
     } catch (error) {
       const { data } = error.response;
@@ -29,7 +28,18 @@ export function getProfileById(params) {
     }
   };
 }
-
+export function getCountMyRefer() {
+  return async dispatch => {
+    try {
+      dispatch({ type: "GET_LIST_REQUEST" });
+      const { data } = await api.sendRequestWithToken('get', `/recruiters/me/jobs?`);
+      return dispatch({ type: "GET_COUNT_MY_REFER_SUCCESS", data });
+    } catch (error) {
+      const { data } = error.response;
+      return dispatch({ type: "GET_COUNT_MY_REFER_FAILURE", error: data.message });
+    }
+  };
+}
 export function getCompanyById(params) {
   // console.log('params', params);
   return async dispatch => {

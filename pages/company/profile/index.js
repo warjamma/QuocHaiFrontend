@@ -15,7 +15,7 @@ import './styles.scss';
 
 const layout = {
   labelCol: { span: 0 },
-  wrapperCol: { span: 18},
+  wrapperCol: { span: 16},
   layout: "vertical"
 };
 const tailLayout = {

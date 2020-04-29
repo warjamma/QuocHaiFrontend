@@ -2,11 +2,11 @@
 import React, { Component, useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import Link from 'next/link';
-import { RedoOutlined, SearchOutlined, DownloadOutlined, DeleteTwoTone ,EditOutlined,DeleteOutlined} from '@ant-design/icons';
+import { RedoOutlined, SearchOutlined, DownloadOutlined, DeleteTwoTone, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { Table, Tag, Button, Popconfirm, Form, Row, Col, message, Input, Select, Spin } from 'antd';
 import { get, debounce } from 'lodash';
 import moment from 'moment';
-import Router from 'next/router';
+import Router, { useRouter } from 'next/router';
 import { getListReferred, deleteCandidate } from '../../../containers/referred/actions';
 import { getAllCompany } from '../../../containers/company/action';
 import renderColorTag from '../../../ultils/renderColorStatus';
@@ -28,6 +28,13 @@ function MyReferred(props) {
   const [query, setQuery] = useState(initQuery);
   const [listCompany, setListCompany] = useState([]);
   const [fetching, setFetching] = useState(false);
+  const router = useRouter();
+  const { id } = router.query;
+  if(id!=='all'){
+    initQuery.company_name=id;
+  }
+  
+
   function cancel(e) {
     message.error('Cance');
   }
@@ -50,13 +57,13 @@ function MyReferred(props) {
         // <div>
         //   <Link href={`/job-detail/${record.job.id}`}><a className="job-title">{get(record, 'job', {}).job_title}</a></Link>
         // </div>
-        <div className="custom-role"role="presentation" onClick={() => Router.push(`/job-detail/${record.job.id}`)}>
-            {
-              get(record, 'job', {}).job_role.map(item => (
-                <b className="name-role" key={item} color="blue">{item}</b>
-              ))
-            }
-          </div>
+        <div className="custom-role" role="presentation" onClick={() => Router.push(`/job-detail/${record.job.id}`)}>
+          {
+            get(record, 'job', {}).job_role.map(item => (
+              <b className="name-role" key={item} color="blue">{item}</b>
+            ))
+          }
+        </div>
       )
     },
     {
@@ -95,7 +102,7 @@ function MyReferred(props) {
       title: 'Onboarding date',
       dataIndex: 'on_boarding_at',
       align: 'center',
-      render: (text, record, index) => <div>{get(record, 'on_boarding_at')?moment(get(record, 'on_boarding_at', '')).format('DD-MM-YYYY'):('N/A')}</div>,
+      render: (text, record, index) => <div>{get(record, 'on_boarding_at') ? moment(get(record, 'on_boarding_at', '')).format('DD-MM-YYYY') : ('N/A')}</div>,
     },
     {
       title: 'Trạng thái',
@@ -112,18 +119,18 @@ function MyReferred(props) {
       dataIndex: 'candidate_id',
       align: 'center',
       width: 150,
-      render: (candidateId) => <div className="Action"><Button style={{marginRight:5}} onClick={() => Router.push(`/referrer/edit-cv/${  candidateId  }`)}  icon={<EditOutlined />} size="small" />
-      <Popconfirm
-        title="Are you sure delete title?"
-        onConfirm={() => handleDelete(candidateId)}
-        onCancel={cancel}
-        okText="Yes"
-        cancelText="No"
-      >
-        <Button icon={<DeleteOutlined />} size="small" />
-      </Popconfirm></div>
+      render: (candidateId) => <div className="Action"><Button style={{ marginRight: 5 }} onClick={() => Router.push(`/referrer/edit-cv/${candidateId}`)} icon={<EditOutlined />} size="small" />
+        <Popconfirm
+          title="Are you sure delete title?"
+          onConfirm={() => handleDelete(candidateId)}
+          onCancel={cancel}
+          okText="Yes"
+          cancelText="No"
+        >
+          <Button icon={<DeleteOutlined />} size="small" />
+        </Popconfirm></div>
     },
-    
+
   ];
 
   const onChangeQuery = async (key, value) => {
@@ -151,11 +158,11 @@ function MyReferred(props) {
     setQuery(initQuery);
     await dispatch(getListReferred(initQuery));
   };
- 
+
   const fetchCompany = async value => {
     setListCompany([]);
     setFetching(true);
-    await dispatch(getAllCompany({offset: 0, limit: 50, key_word: value})).then(res => {
+    await dispatch(getAllCompany({ offset: 0, limit: 50, key_word: value })).then(res => {
       if (res.status) {
         setListCompany(get(res, 'data.items.company_name'));
         setFetching(false);
