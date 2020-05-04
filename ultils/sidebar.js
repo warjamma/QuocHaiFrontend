@@ -40,7 +40,7 @@ export const referrerSideBar = [
   // },
   {
     name: 'Công việc',
-    url: '/referrer/job-list'
+    url: '/referrer/job-list/all'
   },
   {
     name: 'Đã giới thiệu',

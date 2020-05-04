@@ -2,8 +2,8 @@
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect, useRef } from 'react';
+import Router, { useRouter } from 'next/router';
 import { connect } from 'react-redux';
-import Router from 'next/router';
 import { RedoOutlined, SearchOutlined, FileDoneOutlined } from '@ant-design/icons';
 import { Table, Row, Col, Button, Tag, Input, Select, Spin } from 'antd';
 import { get, debounce } from 'lodash';
@@ -114,7 +114,11 @@ function JobList(props) {
   const [listCompany, setListCompany] = useState([]);
   const [fetching, setFetching] = useState(false);
   const [listJobType, setListJobType] = useState([]);
-
+  const router = useRouter();
+  const { id } = router.query;
+  if(id!=='all'){
+    initQuery.company=id;
+  }
   const changeQuery = (key, value) => {
     const clone = { ...query };
     clone[key] = typeof value === 'object' ? value.join(', ') : value;
