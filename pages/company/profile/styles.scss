@@ -39,16 +39,16 @@
       .bold-span {
         font-weight: bold;
       }
-      .ant-row.row-detail {
-        padding-top: 24px;
-      }
+      // .ant-row.row-detail {
+      //   margin-top: 24px;
+      // }
     }
     .right-profile {
       .site-card-border-less-wrapper {
         img {
           width: 250;
           height: 250px;
-          object-fit: cover;
+          object-fit: scale-down;
         }
         .upload-img {
           text-align: center;

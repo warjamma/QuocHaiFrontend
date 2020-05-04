@@ -4,12 +4,10 @@ import React, { useState, useEffect } from 'react';
 import Router from 'next/router';
 import {
   EditTwoTone, UploadOutlined
-  // UploadOutlined
 } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import { Card, Input, Form, Row, Col, notification, Tabs, Button, Upload, message } from 'antd';
 import { get, cloneDeep } from 'lodash';
-// import { updateProfile, getProfileById } from '../../../containers/company/action';
 import { uploadRequestImg, updateProfile, getProfileById } from '../../../containers/referred/actions';
 import './styles.scss';
 
@@ -124,15 +122,15 @@ function EditUser({ status, profile, referred, initForm, dispatch, fileLink, for
   };
   const hiddenDiv = () => {
     if (status) {
-      return { visibility: 'hidden', height: 0 };
+      return { visibility: 'hidden', height: 0 ,padding: '0',margin:0 };
     }
-    return { padding: 0 };
+    return { paddingTop: 24 };
   };
   const hiddenBtn = () => {
     if (status) {
-      return {marginTop: 10};
+      return { marginTop: 10 };
     }
-    return {  visibility: 'hidden'};
+    return { visibility: 'hidden' };
   };
   const onFinish = async (value) => {
     const data = cloneDeep(value);
@@ -157,54 +155,75 @@ function EditUser({ status, profile, referred, initForm, dispatch, fileLink, for
       <Form.Item style={hiddenInput()} name="first_name" label="Tên " rules={[{ required: true, message: 'This field is required !' }]}>
         <Input disabled={!status} />
       </Form.Item>
-      <div style={hiddenDiv()} ><span className='bold-span'>Tên: </span>{get(referred, 'recruiter_detail.data.recruiter.first_name', [])}</div>
+      <Row className='row-detail' style={hiddenDiv()}>
+        <Col span={3}><span className='bold-span'>Tên: </span></Col>
+        <Col span={19}>{get(referred, 'recruiter_detail.data.recruiter.first_name', [])}</Col>
+      </Row>
       <Form.Item style={hiddenInput()} name="last_name" label="Họ tên đệm" rules={[{ required: true, message: 'This field is required !' }]}>
         <Input disabled={!status} />
       </Form.Item>
-      <div style={hiddenDiv()} ><span className='bold-span'>Họ tên đệm: </span>{get(referred, 'recruiter_detail.data.recruiter.last_name', [])}</div>
+      <Row className='row-detail' style={hiddenDiv()}>
+        <Col span={3}><span className='bold-span'>Họ tên đệm: </span></Col>
+        <Col span={19}>{get(referred, 'recruiter_detail.data.recruiter.last_name', [])}</Col>
+      </Row>
       <Form.Item style={hiddenInput()} name="phone_number" label="Điện thoại" rules={[{ required: true, message: 'This field is required !' }]} >
         <Input disabled={!status} />
       </Form.Item>
-      <div style={hiddenDiv()} ><span className='bold-span'>Số điện thoại: </span>  {get(referred, 'recruiter_detail.data.recruiter.phone_number', [])}</div>
+      <Row className='row-detail' style={hiddenDiv()}>
+        <Col span={3}><span className='bold-span'>Email: </span></Col>
+        <Col span={19}>{get(referred, 'recruiter_detail.data.recruiter.email', [])}</Col>
+      </Row>
       <Form.Item
         style={hiddenInput()}
-        // name="email"
+        name="email"
         label="E-mail"
-      // rules={[
-      //   {
-      //     type: 'email',
-      //     message: 'The input is not valid E-mail!',
-      //   },
-      //   {
-      //     required: true,
-      //     message: 'Please input your E-mail!',
-      //   },
-      // ]}
+        rules={[
+          {
+            type: 'email',
+            message: 'The input is not valid E-mail!',
+          },
+          {
+            required: true,
+            message: 'Please input your E-mail!',
+          },
+        ]}
       >
         <Input disabled={!status} />
       </Form.Item>
-      <div style={hiddenDiv()} ><span className='bold-span'>Email: </span>{get(referred, 'recruiter_detail.data.recruiter.name', [])}</div>
+      <Row className='row-detail' style={hiddenDiv()}>
+        <Col span={3}><span className='bold-span'>Điện thoại: </span></Col>
+        <Col span={19}>{get(referred, 'recruiter_detail.data.recruiter.phone_number', [])}</Col>
+      </Row>
       <Form.Item
         style={hiddenInput()}
-        // name='address'
+        name='bank_name'
         label="Tên ngân hàng"  >
         <Input disabled={!status} />
       </Form.Item>
-      <div style={hiddenDiv()} ><span className='bold-span'>Tên ngân hàng: </span> {get(referred, 'recruiter_detail.data.recruiter.name', [])}</div>
+      <Row className='row-detail' style={hiddenDiv()}>
+        <Col span={3}><span className='bold-span'>Tên ngân hàng: </span></Col>
+        <Col span={19}>{get(referred, 'recruiter_detail.data.recruiter.bank_name', [])}</Col>
+      </Row>
       <Form.Item
         style={hiddenInput()}
-        // name='website' 
+        name='bank_number'
         label="Số tài khoản"  >
         <Input disabled={!status} />
       </Form.Item>
-      <div style={hiddenDiv()} ><span className='bold-span'>Số tài khoản: </span>{get(referred, 'recruiter_detail.data.recruiter.name', [])}</div>
+      <Row className='row-detail' style={hiddenDiv()}>
+        <Col span={3}><span className='bold-span'>Số tài khoản: </span></Col>
+        <Col span={19}>{get(referred, 'recruiter_detail.data.recruiter.bank_number', [])}</Col>
+      </Row>
       <Form.Item
         style={hiddenInput()}
-        // name='facebook'
+        name='bank_user'
         label="Tên chủ thẻ"  >
         <Input disabled={!status} />
       </Form.Item>
-      <div style={hiddenDiv()} ><span className='bold-span'>Tên chủ thẻ: </span> {get(referred, 'recruiter_detail.data.recruiter.name', [])}</div>
+      <Row className='row-detail' style={hiddenDiv()}>
+        <Col span={3}><span className='bold-span'>Chủ tài khoản: </span></Col>
+        <Col span={19}>{get(referred, 'recruiter_detail.data.recruiter.bank_user', [])}</Col>
+      </Row>
       <Form.Item
         {...tailLayout} style={hiddenBtn()}>
         <Button disabled={!status} type="primary" htmlType="submit" >
@@ -213,53 +232,6 @@ function EditUser({ status, profile, referred, initForm, dispatch, fileLink, for
           Hủy</Button>
       </Form.Item>
     </Form >
-  );
-
-}
-function EditUser2({ referred,form }) {
-  return (
-    <form form={form}>
-      <Row className='row-detail'>
-        <Col span={3}><span className='bold-span'>Tên: </span></Col>
-        <Col span={19}>{get(referred, 'recruiter_detail.data.recruiter.first_name', [])}</Col>
-      </Row>
-
-      <Row className='row-detail'>
-        <Col span={3}><span className='bold-span'>Họ tên đệm: </span></Col>
-        <Col span={19}>{get(referred, 'recruiter_detail.data.recruiter.last_name', [])}</Col>
-      </Row>
-
-      <Row className='row-detail'>
-        <Col span={3}><span className='bold-span'>Email: </span></Col>
-        <Col span={19}>{get(referred, 'recruiter_detail.data.recruiter.email', [])}</Col>
-      </Row>
-
-      <Row className='row-detail'>
-        <Col span={3}><span className='bold-span'>Điện thoại: </span></Col>
-        <Col span={19}>{get(referred, 'recruiter_detail.data.recruiter.phone_number', [])}</Col>
-      </Row>
-
-      <Row className='row-detail'>
-        <Col span={3}><span className='bold-span'>Tên ngân hàng: </span></Col>
-        <Col span={19}>{get(referred, 'recruiter_detail.data.recruiter.bank_name', [])}</Col>
-      </Row>
-
-      <Row className='row-detail'>
-        <Col span={3}><span className='bold-span'>Số tài khoản: </span></Col>
-        <Col span={19}>{get(referred, 'recruiter_detail.data.recruiter.bank_number', [])}</Col>
-      </Row>
-
-      <Row className='row-detail'>
-        <Col span={3}><span className='bold-span'>Chủ tài khoản: </span></Col>
-        <Col span={19}>{get(referred, 'recruiter_detail.data.recruiter.bank_user', [])}</Col>
-      </Row>
-      
-
-      <Row className='row-detail'>
-        <Col span={3}><span className='bold-span'>Giới thiệu công ty: </span></Col>
-        <Col span={18}>{get(referred, 'company_detail.data.company.about', [])}</Col>
-      </Row>
-    </form>
   );
 
 }
@@ -275,9 +247,9 @@ function CompanyProfile(props) {
   const { profile, referred, dispatch } = props;
   const hiddenBtn = () => {
     if (status) {
-      return {display:'block'};
+      return { display: 'block' };
     }
-    return {  visibility: 'hidden'};
+    return { visibility: 'hidden' };
   };
   const updateUser = () => {
     notification.open({
@@ -354,7 +326,7 @@ function CompanyProfile(props) {
                   </div>
                 )} >
               {status ? (<TabChange fileLink={fileLink} form={form} dispatch={dispatch} initForm={initForm} referred={referred} status={status} profile={profile} />) :
-                (<EditUser2 fileLink={fileLink} form={form} dispatch={dispatch} initForm={initForm} referred={referred} status={status} profile={profile} />)}
+                (<EditUser fileLink={fileLink} form={form} dispatch={dispatch} initForm={initForm} referred={referred} status={status} profile={profile} />)}
             </Card>
           </Col>
           <Col className="right-profile" span={8} >
@@ -362,14 +334,14 @@ function CompanyProfile(props) {
               <Card title="Hình đại diện" bordered={false} style={{ width: 300 }}>
                 <div className="bouder-img">
                   <img
-                    style={get(referred, 'company_detail.data.company.avatar', []) ? { width: 250, height: 250, objectFit: 'cover', margin: 'auto', display: 'block' } : { height: 0 }}
+                    style={get(referred, 'company_detail.data.company.avatar', []) ? { width: 250, height: 250, objectFit: 'scale-down', margin: 'auto', display: 'block' } : { height: 0 }}
                     // eslint-disable-next-line no-nested-ternary
                     src={fileLink === '' ? (get(referred, 'recruiter_detail.data.recruiter.avatar', []) === '' ? (fileLink) : (get(referred, 'recruiter_detail.data.recruiter.avatar', []))) : (fileLink)}
                     alt=""
                   />
                 </div>
-                <div className="upload-img"  style={hiddenBtn()} >
-                  <Upload     
+                <div className="upload-img" style={hiddenBtn()} >
+                  <Upload
                     {...setting}
                     // fileList={fileData}
                     showUploadList={false}
@@ -388,7 +360,7 @@ function CompanyProfile(props) {
   );
 }
 function mapStateToProps(state) {
-  console.log('State profile refer', state);
+  // console.log('State profile refer', state);
   const { referred, profile } = state;
   return { referred, profile };
 }
