@@ -31,7 +31,7 @@ function jobDetail(props) {
             <div className="header" style={{ backgroud: '#fff', fontWeight: 'bold' }}>Company profile</div>
             <div className="content">
                 <Row gutter={[16, 16]}>
-                    <Col span={4} ><img style={{ padding: 'auto', margin: 'auto', display: 'block',height:250,width:250,objectFit: 'cover' }} alt="example" src={get(referred, 'company_detail.data.company.avatar', [])} /></Col>
+                    <Col span={4} ><img style={{ padding: 'auto', margin: 'auto', display: 'block',height:250,width:250,objectFit: 'scale-down' }} alt="example" src={get(referred, 'company_detail.data.company.avatar', [])} /></Col>
                     <Col span={15} >
                         <div style={{ background: 'white', padding: 20 }} >
                             <Title level={3}>{get(referred, 'company_detail.data.company.name', [])}</Title>
