@@ -122,7 +122,7 @@ function EditUser({ status, profile, referred, initForm, dispatch, fileLink, for
   };
   const hiddenDiv = () => {
     if (status) {
-      return { visibility: 'hidden', height: 0 ,padding: '0',margin:0 };
+      return { visibility: 'hidden', height: 0, padding: '0', margin: 0 };
     }
     return { paddingTop: 24 };
   };
@@ -137,9 +137,36 @@ function EditUser({ status, profile, referred, initForm, dispatch, fileLink, for
     if (fileLink) {
       data.avatar = fileLink;
     }
+    else if (!initForm.avatar) {
+      data.avatar = "";
+    }
+    else {
+      data.avatar = initForm.avatar;
+    }
+    if (!value.bank_name) {
+      data.bank_name = "";
+    }
+    if (!value.bank_number) {
+      data.bank_number = "";
+    }
+    if (!value.bank_user) {
+      data.bank_user = "";
+    }
+    data.about = " ";
+    data.last_name = " ";
+    data.address = " ";
+    data.technical_specializes = ["Trash", "Trash"];
+    data.job_levels = ["Trash", "Trash"];
+    data.informative_in = ["Trash", "Trash"];
+    data.candidate_skills = ["Trash", "Trash"];
+    data.languages = ["Trash", "Trash"];
+    data.locations = ["Trash", "Trash"];
+    data.facebook = " ";
+    data.linked_in = " ";
+    data.skype = " ";
     await dispatch(updateProfile({ ...initForm, ...data }, get(profile, 'data.recruiter.id', []))).then(res => {
       if (res.status) {
-        return message.success('Update Profile successfully');
+        return message.success('Update Profile successfully').then(() => Router.push(`/referrer/profile`));;
       }
       return message.error(res.error);
     });
@@ -152,26 +179,19 @@ function EditUser({ status, profile, referred, initForm, dispatch, fileLink, for
       name="global_state"
       onFinish={onFinish}
     >
-      <Form.Item style={hiddenInput()} name="first_name" label="Tên " rules={[{ required: true, message: 'This field is required !' }]}>
+      <Form.Item style={hiddenInput()} name="first_name" label="Họ tên " rules={[{ required: true, message: 'This field is required !' }]}>
         <Input disabled={!status} />
       </Form.Item>
       <Row className='row-detail' style={hiddenDiv()}>
         <Col span={3}><span className='bold-span'>Tên: </span></Col>
         <Col span={19}>{get(referred, 'recruiter_detail.data.recruiter.first_name', [])}</Col>
       </Row>
-      <Form.Item style={hiddenInput()} name="last_name" label="Họ tên đệm" rules={[{ required: true, message: 'This field is required !' }]}>
-        <Input disabled={!status} />
-      </Form.Item>
-      <Row className='row-detail' style={hiddenDiv()}>
-        <Col span={3}><span className='bold-span'>Họ tên đệm: </span></Col>
-        <Col span={19}>{get(referred, 'recruiter_detail.data.recruiter.last_name', [])}</Col>
-      </Row>
       <Form.Item style={hiddenInput()} name="phone_number" label="Điện thoại" rules={[{ required: true, message: 'This field is required !' }]} >
         <Input disabled={!status} />
       </Form.Item>
       <Row className='row-detail' style={hiddenDiv()}>
-        <Col span={3}><span className='bold-span'>Email: </span></Col>
-        <Col span={19}>{get(referred, 'recruiter_detail.data.recruiter.email', [])}</Col>
+        <Col span={3}><span className='bold-span'>Điện thoại: </span></Col>
+        <Col span={19}>{get(referred, 'recruiter_detail.data.recruiter.phone_number', [])}</Col>
       </Row>
       <Form.Item
         style={hiddenInput()}
@@ -191,8 +211,8 @@ function EditUser({ status, profile, referred, initForm, dispatch, fileLink, for
         <Input disabled={!status} />
       </Form.Item>
       <Row className='row-detail' style={hiddenDiv()}>
-        <Col span={3}><span className='bold-span'>Điện thoại: </span></Col>
-        <Col span={19}>{get(referred, 'recruiter_detail.data.recruiter.phone_number', [])}</Col>
+        <Col span={3}><span className='bold-span'>Email: </span></Col>
+        <Col span={19}>{get(referred, 'recruiter_detail.data.recruiter.email', [])}</Col>
       </Row>
       <Form.Item
         style={hiddenInput()}
@@ -300,6 +320,21 @@ function CompanyProfile(props) {
     // accept: ".pdf",
     customRequest: dummyRequest
   };
+  const changeCSSUpload = () => {
+    if (!get(referred, 'recruiter_detail.data.recruiter.avatar', [])) {
+      if (fileLink) {
+        return {
+          width: 250, height: 250, objectFit: 'scale-down', margin: 'auto', display: 'block'
+        };
+      }
+        return { height: 0 };  
+    }
+
+    return {
+      width: 250, height: 250, objectFit: 'scale-down', margin: 'auto', display: 'block'
+    };
+
+  };
 
   const initForm = get(referred, 'recruiter_detail.data.recruiter', []);
   return (
@@ -334,7 +369,7 @@ function CompanyProfile(props) {
               <Card title="Hình đại diện" bordered={false} style={{ width: 300 }}>
                 <div className="bouder-img">
                   <img
-                    style={get(referred, 'company_detail.data.company.avatar', []) ? { width: 250, height: 250, objectFit: 'scale-down', margin: 'auto', display: 'block' } : { height: 0 }}
+                    style={changeCSSUpload()}
                     // eslint-disable-next-line no-nested-ternary
                     src={fileLink === '' ? (get(referred, 'recruiter_detail.data.recruiter.avatar', []) === '' ? (fileLink) : (get(referred, 'recruiter_detail.data.recruiter.avatar', []))) : (fileLink)}
                     alt=""
@@ -360,7 +395,7 @@ function CompanyProfile(props) {
   );
 }
 function mapStateToProps(state) {
-  // console.log('State profile refer', state);
+  console.log('State profile refer', state);
   const { referred, profile } = state;
   return { referred, profile };
 }

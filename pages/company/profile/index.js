@@ -122,7 +122,7 @@ function EditUser({ status, profile, referred, initForm, dispatch, fileLink, for
   };
   const hiddenDiv = () => {
     if (status) {
-      return { visibility: 'hidden', height: 0 ,padding: '0',margin:0};
+      return { visibility: 'hidden', height: 0, padding: '0', margin: 0 };
     }
     return { paddingTop: 24 };
   };
@@ -137,25 +137,36 @@ function EditUser({ status, profile, referred, initForm, dispatch, fileLink, for
     if (fileLink) {
       data.avatar = fileLink;
     }
-    // eslint-disable-next-line no-param-reassign
-    initForm.in_charge_by = "ACV";
-    // eslint-disable-next-line no-param-reassign
-    initForm.last_year_revenue = 2;
-    // eslint-disable-next-line no-param-reassign
-    initForm.role = "Trash";
-    // eslint-disable-next-line no-param-reassign
-    initForm.linked_in = "https://Trash.co";
-    // eslint-disable-next-line no-param-reassign
-    initForm.youtube = "https://Trash.co";
-    // eslint-disable-next-line no-param-reassign
-    initForm.vission = "https://Trash.co";
-    // eslint-disable-next-line no-param-reassign
-    initForm.product = "https://Trash.co";
-    // eslint-disable-next-line no-param-reassign
-    initForm.company_size = "https://Trash.co";
-    // eslint-disable-next-line no-param-reassign
-    initForm.expectation_knowledge = ["it suck", "suck"];
-
+    else if (!initForm.avatar) {
+      data.avatar = "";
+    }
+    else {
+      data.avatar = initForm.avatar;
+    }
+    if (!value.about) {
+      data.about = "";
+    }
+    if (!value.facebook) {
+      data.facebook = "";
+    }
+    if (!value.career_site) {
+      data.career_site = "";
+    }
+    if (!value.employee_benefit) {
+      data.employee_benefit = "";
+    }
+    if (!value.hotline) {
+      data.hotline = "";
+    }
+    data.in_charge_by = "ACV";
+    data.last_year_revenue = 2;
+    data.role = "Trash";
+    data.linked_in = "https://Trash.co";
+    data.youtube = "https://Trash.co";
+    data.vission = "https://Trash.co";
+    data.product = "https://Trash.co";
+    data.company_size = "https://Trash.co";
+    data.expectation_knowledge = ["it suck", "suck"];
     await dispatch(updateProfile({ ...initForm, ...data }, get(profile, 'data.employer.company.id', []))).then(res => {
       if (res.status) {
         return message.success('Update Profile successfully').then(() => Router.push(`/company-profile/${get(referred, 'company_detail.data.company.id', [])}`));
@@ -217,7 +228,7 @@ function EditUser({ status, profile, referred, initForm, dispatch, fileLink, for
         <Col span={3}><span className='bold-span'>Hotline: </span></Col>
         <Col span={19}>{get(referred, 'company_detail.data.company.hotline', [])}</Col>
       </Row>
-      <Form.Item name='address' label="Địa chỉ" style={hiddenInput()} >
+      <Form.Item name='address' label="Địa chỉ" style={hiddenInput()} rules={[{ required: true, message: 'This field is required !' }]}>
         <Input disabled={!status} />
       </Form.Item>
       <Row className='row-detail' style={hiddenDiv()}>
@@ -336,6 +347,21 @@ function CompanyProfile(props) {
     // accept: ".pdf",
     customRequest: dummyRequest
   };
+  const changeCSSUpload = () => {
+    if (!get(referred, 'recruiter_detail.data.recruiter.avatar', [])) {
+      if (fileLink) {
+        return {
+          width: 250, height: 250, objectFit: 'scale-down', margin: 'auto', display: 'block'
+        };
+      }
+        return { height: 0 };  
+    }
+
+    return {
+      width: 250, height: 250, objectFit: 'scale-down', margin: 'auto', display: 'block'
+    };
+
+  };
 
   const initForm = get(referred, 'company_detail.data.company', []);
   return (
@@ -362,7 +388,7 @@ function CompanyProfile(props) {
                   </div>
                 )} >
               {status ? (<TabChange fileLink={fileLink} form={form} dispatch={dispatch} initForm={initForm} referred={referred} status={status} profile={profile} />) :
-                (<EditUser referred={referred}  form={form} />)}
+                (<EditUser referred={referred} form={form} />)}
             </Card>
           </Col>
           <Col className="right-profile" span={8} >
@@ -370,7 +396,7 @@ function CompanyProfile(props) {
               <Card title="Logo" bordered={false} style={{ width: 300 }}>
                 <div className="bouder-img">
                   <img
-                    style={get(referred, 'company_detail.data.company.avatar', []) ? { width: 250, height: 250, objectFit: 'scale-down', margin: 'auto', display: 'block' } : { height: 0 }}
+                    style={changeCSSUpload()}
                     // eslint-disable-next-line no-nested-ternary
                     src={fileLink === '' ? (get(referred, 'company_detail.data.company.avatar', []) === '' ? (fileLink) : (get(referred, 'company_detail.data.company.avatar', []))) : (fileLink)}
                     alt=""
