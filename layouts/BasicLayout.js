@@ -34,6 +34,15 @@ const error = (mess) => {
 function BasicLayout(props) {
   const { dispatch, profile, children } = props;
   const [collapsed, setcollapsed] = useState(false);
+  const logOut = async () => {
+    
+    await dispatch(logOutRequest());
+    Router.push('/login');
+  };
+  useEffect(() => {
+    const timer = setTimeout(()=>logOut(), 3600 * 1000);
+     return () => clearTimeout(timer);
+  }, []);
   useEffect(() => {
     if (get(profile, 'error', false) && (get(profile, 'message', ''))) {
       error(get(profile, 'message', ''));
@@ -68,7 +77,6 @@ function BasicLayout(props) {
       </div>
     </Menu>
   );
-
   const menu = (
     <Menu className="dropdownProfile">
       <Menu.Item key="1">
@@ -76,9 +84,9 @@ function BasicLayout(props) {
         Thông tin cá nhân
       </Menu.Item>
       <Menu.Item key="2" onClick={async () => {
-          await dispatch(logOutRequest());
-          Router.push('/login');
-        }}
+        await dispatch(logOutRequest());
+        Router.push('/login');
+      }}
       >
         <LogoutOutlined />
         Đăng xuất
@@ -109,25 +117,25 @@ function BasicLayout(props) {
                     </span>
                   </Menu.Item>
                 ) : (
-                  <SubMenu
-                    key="4"
-                    title={
-                      <span>
-                        <UserOutlined />
-                        <span>{item.name}</span>
-                      </span>
-                    }
-                  >
-                    {
-                      item.subMenu.map((pk, key) => (
-                        <Menu.Item className="subItem" key={key + 1} onClick={() => Router.push(`${pk.url}`)}>
-                          <FileOutlined />
-                          <span>{pk.name}</span>
-                        </Menu.Item>
-                      ))
-                    }
-                  </SubMenu>
-                )
+                    <SubMenu
+                      key="4"
+                      title={
+                        <span>
+                          <UserOutlined />
+                          <span>{item.name}</span>
+                        </span>
+                      }
+                    >
+                      {
+                        item.subMenu.map((pk, key) => (
+                          <Menu.Item className="subItem" key={key + 1} onClick={() => Router.push(`${pk.url}`)}>
+                            <FileOutlined />
+                            <span>{pk.name}</span>
+                          </Menu.Item>
+                        ))
+                      }
+                    </SubMenu>
+                  )
               ))
             }
           </Menu>
@@ -162,7 +170,7 @@ function BasicLayout(props) {
         </Layout>
       </Layout>
     );
-  } 
+  }
   return (
     <>
       <div className="container-box authenticate-page">

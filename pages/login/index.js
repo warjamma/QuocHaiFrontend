@@ -23,7 +23,7 @@ function Login(props) {
   useEffect(() => {
     if (get(profile, 'data.token', '')) {
       success('Login successfully!');
-      Router.push(get(profile, 'data.employer', '') ? '/company/job-list' : '/referrer/job-list');
+      Router.push(get(profile, 'data.employer', '') ? '/company/job-list' : '/referrer/job-list/all');
     }
   });
 
