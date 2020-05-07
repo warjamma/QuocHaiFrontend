@@ -175,22 +175,20 @@ function JobList(props) {
   }, []);
 
   const delayedQuery = useRef(debounce((e, func) => func(e), 800)).current;
-  const data = get(referred, 'list_job.items.job', []);
-  const data2 = get(referred, 'list_count_my_refer.items.jobs', []);
-  // console.log('data2', data2);
-  // eslint-disable-next-line no-plusplus
-  for (let i = 0; i < data.length; i++) {
-    // eslint-disable-next-line no-plusplus
-    for (let j = 0; j < data2.length; j++) {
-      if (data[i].id === data2[j].id) {
-        data[i].count_my_refer = data2[j].count_my_refer;
-      }
-    }
-    if(!data[i].count_my_refer){
-      data[i].count_my_refer='0';
-    }
-  }
-  // console.log('data', data);
+  // const data = get(referred, 'list_job.items.job', []);
+  // const data2 = get(referred, 'list_count_my_refer.items.jobs', []);
+  // // eslint-disable-next-line no-plusplus
+  // for (let i = 0; i < data.length; i++) {
+  //   // eslint-disable-next-line no-plusplus
+  //   for (let j = 0; j < data2.length; j++) {
+  //     if (data[i].id === data2[j].id) {
+  //       data[i].count_my_refer = data2[j].count_my_refer;
+  //     }
+  //   }
+  //   if(!data[i].count_my_refer){
+  //     data[i].count_my_refer='0';
+  //   }
+  // }
 
   return (
     <div className="jobListContainer">
@@ -304,7 +302,7 @@ function JobList(props) {
           bordered
           rowKey="id"
           columns={columns}
-          dataSource={data}
+          dataSource={get(referred, 'list_job.items.job', [])}
           pagination={{
             pageSize: query.limit,
             total: get(referred, 'list_job.extra_data.total', 0),

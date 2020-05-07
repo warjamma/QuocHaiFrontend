@@ -58,17 +58,13 @@ function jobDetail(props) {
                     <div style={{ background: 'white' }}>
                         <div style={{ background: 'white', padding: 20 }} >
                             <Title level={3}>About company</Title>
-                            <ul>
-                                <li>{get(referred, 'company_detail.data.company.about', [])}</li>
-                            </ul>
+                            <div  > {get(referred, 'company_detail.data.company.about', [])}</div>
                         </div>
                     </div>
                     <div style={{ background: 'white' }}>
                         <div style={{ background: 'white', padding: 20 }} >
                             <Title level={3}>Employee benefit</Title>
-                            <ul>
-                                <li >{get(referred, 'company_detail.data.company.employee_benefit', [])}</li>
-                            </ul>
+                            <div  > {get(referred, 'company_detail.data.company.employee_benefit', [])}</div>
                         </div>
                     </div>
                     <div style={{ background: 'white', marginTop: 0 }}>
