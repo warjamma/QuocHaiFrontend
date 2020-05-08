@@ -6,7 +6,7 @@ import {
   EditTwoTone, UploadOutlined
 } from '@ant-design/icons';
 import { connect } from 'react-redux';
-import { Card, Input, Form, Row, Col, notification, Tabs, Button, Upload, message } from 'antd';
+import { Card, Input, Form, Row, Col, notification, Select, Tabs, Button, Upload, message } from 'antd';
 import { get, cloneDeep } from 'lodash';
 import { uploadRequestImg, updateProfile, getProfileById } from '../../../containers/referred/actions';
 import './styles.scss';
@@ -28,7 +28,7 @@ const dummyRequest = ({ onSuccess }) => {
     onSuccess("ok");
   }, 0);
 };
-
+const { Option } = Select;
 
 function TabChange({ status, profile, referred, initForm, dispatch, form, fileLink }) {
   return (
@@ -171,7 +171,7 @@ function EditUser({ status, profile, referred, initForm, dispatch, fileLink, for
       return message.error(res.error);
     });
   };
-
+  const bankName = ['TMCP NGOAI THUONG VIET NAM(VIETCOMBANK)','BUSAN', 'BANK OF INDIA', 'E.SUN', 'KY THUONG VN(TECHCOMBANK)', 'VIET NAM THUONG TIN(VIETBANK)', 'SHINHAN VN','HONGKONG AND SHANGHAI BANK (HSBC)','SAI GON THUONG TIN(SACOMBANK)','DBS BANK LTD CN HCM','UOB VIETNAM(UOB VN)','NNO&PT NONG THON VN(AGRIBANK','SAI GON(SCB)','DONG A(DONG A BANK','BAN VIET(CIET CAPITAL BANK','BUU DIEN LIEN VIET(LIEN VIET POST BANK)','SIAM COMMERCIAL BANK PUBLIC COMBANK','MAY BANK(HN)','BANK OF CHINA','JD MORGAN CHASE BANK','SUMITIMO MITSUI BANKING CORPORA..','BNP PARIBAS CHI NHANH HN','CONG THUONG VN(VIETTINBANK)','XUATNHAPKHAU(EXIMBANK)','SAI GON CONG THUONG(SAIGONBANK)','VIET NAM THINH VUONG(VP BANK)','QUAN DOI(MB)','DAI DUONG(OCEANBANK)','DAU KHI TOAN CAU(GPBANK)','DONG NAM A(SEABANK)','XANG DAU PETROLIMEX(PGBANK)','SAI GON- HA NOI(SHB)','TIEN PHONG(TIEN PHONG BANK)','CITI BANK HN','HANG HAI HN(MARITIME BANK)','QUOC DAN(NCB)','OVERSEA-CHINESE BANKING CORP LTD','CHINA CONSTRUCTION BANK CORPOR..','CIMB BANK','CHINH SACH XA HOI(VBSP)','XAY DUNG VN(CB BANK)','AN BINH(ABBANK)','A CHAY(ACB)','PHUONG DONG(OCB)','BAO VIET(BAO VIET BANK)','NAM A(NAM A BANK)','WOORI RANK VIET NAM','BANGKOK BANK HANOI','BANGKOK BANK HCM','CTI BANK','PUBLIC BANK VN','BPCE IOM','FIRST COMMERCIAL BANK HANOI','MIZUHO CORPORATE BANK LTD.,HN','BANK OF COMMUNICATIONS','DEUTSCHE BANK','CTBC (NHTM CHINATRUST)','NH SINOPAC','TAIPEI FUBONC.B','KIENLONG (KIEN LING BANK)','PHAT TRIEN TP HCM(HD BANK)','DAI CHUNG(PVCOMBANK)','BAC A(BAC A BANK)','VIET A (VIET A BANK)','PHAT TRIEN VIET NAM(VDB)','STANDARD CHARTERED BANK','HONG LEONG VN','BNP-PARIBAS CN HCM','HONG LEONG VN','BNP-PARIBAS CN HCM','MIZUHO CORPORATE BANK,LTD','INDUSTRIAL 7 COMMERCIAL BANK OF..','QUOC TE(VIB)','DAU TU VA PHAT TRIEN VN(BIDV)'];
   return (
     <Form
       form={form}
@@ -218,7 +218,20 @@ function EditUser({ status, profile, referred, initForm, dispatch, fileLink, for
         style={hiddenInput()}
         name='bank_name'
         label="Tên ngân hàng"  >
-        <Input disabled={!status} />
+        <Select
+          allowClear
+          showSearch
+          style={{ width: '100%' }}
+          placeholder="Công ty"
+          optionFilterProp="children"
+          filterOption={(input, option) =>
+            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
+        >
+          {bankName.map((d) => (
+            <Option value={d} key={d}>{d}</Option>
+          ))}
+        </Select>
       </Form.Item>
       <Row className='row-detail' style={hiddenDiv()}>
         <Col span={3}><span className='bold-span'>Tên ngân hàng: </span></Col>
@@ -327,7 +340,7 @@ function CompanyProfile(props) {
           width: 250, height: 250, objectFit: 'scale-down', margin: 'auto', display: 'block'
         };
       }
-        return { height: 0 };  
+      return { height: 0 };
     }
 
     return {

@@ -42,11 +42,14 @@ function MyReferred(props) {
   const handleDelete = async (candidateId) => {
     await dispatch(deleteCandidate(candidateId)).then(res => {
       if (res.status) {
-        Router.push('/referrer/my-referred');
+        Router.push('/referrer/my-referred/all');
         return message.success('Delete candidate successfully');
       }
       return message.error(res.error);
     });
+  };
+  const disabledBtn = () => {
+    return true;
   };
 
   const columns = [
@@ -119,15 +122,16 @@ function MyReferred(props) {
       dataIndex: 'candidate_id',
       align: 'center',
       width: 150,
-      render: (candidateId) => <div className="Action"><Button style={{ marginRight: 5 }} onClick={() => Router.push(`/referrer/edit-cv/${candidateId}`)} icon={<EditOutlined />} size="small" />
+      render: (text, record, index) => <div className="Action"><Button    style={{ marginRight: 5 }} onClick={() => Router.push(`/referrer/edit-cv/${get(record, 'candidate_id', '')}`)} icon={<EditOutlined />} size="small" />
         <Popconfirm
+          disabled={get(record, 'status', '') === 'on_board' ? disabledBtn() : false} 
           title="Are you sure delete title?"
-          onConfirm={() => handleDelete(candidateId)}
+          onConfirm={() => handleDelete(get(record, 'candidate_id', ''))}
           onCancel={cancel}
           okText="Yes"
           cancelText="No"
         >
-          <Button icon={<DeleteOutlined />} size="small" />
+          <Button disabled={get(record, 'status', '') === 'on_board' ? disabledBtn() : false}   icon={<DeleteOutlined />} size="small" />
         </Popconfirm></div>
     },
 
