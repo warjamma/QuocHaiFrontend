@@ -63,9 +63,9 @@ function jobDetail(props) {
                         <div style={{ background: 'white', padding: 20 }} >
                             <Title level={3}>{get(referred, 'job_detail.data.job.company.name')}</Title>
                             <div>{get(referred, 'job_detail.data.job.company.address')}</div>
-                            <div ><FacebookOutlined />&nbsp;<a href={get(referred, 'job_detail.data.job.company.facebook')}>{get(referred, 'job_detail.data.job.company.facebook')}</a></div>
+                            <div ><FacebookOutlined />&nbsp;<a href={get(referred, 'job_detail.data.job.company.facebook')} rel="noopener noreferrer" to target="_blank" >{get(referred, 'job_detail.data.job.company.facebook')}</a></div>
                             <div ><MailOutlined />&nbsp;<a>{get(referred, 'job_detail.data.job.company.email_cc')}</a></div>
-                            <div ><IeOutlined />&nbsp;<a href={get(referred, 'job_detail.data.job.company.career_site')}>{get(referred, 'job_detail.data.job.company.career_site')}</a></div>
+                            <div ><IeOutlined />&nbsp;<a href={get(referred, 'job_detail.data.job.company.career_site')} rel="noopener noreferrer" to target="_blank">{get(referred, 'job_detail.data.job.company.career_site')}</a></div>
                             <div ><PhoneOutlined />&nbsp;<a>{get(referred, 'job_detail.data.job.company.phone_number')}</a></div>
                             <br />
                             <span style={{ color: '#68ba50', fontSize: '16px', textAlign: 'center', display: 'block' }}>
