@@ -222,7 +222,7 @@ function EditUser({ status, profile, referred, initForm, dispatch, fileLink, for
           allowClear
           showSearch
           style={{ width: '100%' }}
-          placeholder="Công ty"
+          // placeholder="Bank name"
           optionFilterProp="children"
           filterOption={(input, option) =>
             option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
