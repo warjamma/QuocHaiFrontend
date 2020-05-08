@@ -37,9 +37,9 @@ function jobDetail(props) {
                         <div style={{ background: 'white', padding: 20 }} >
                             <Title level={3}>{get(referred, 'company_detail.data.company.name', [])}</Title>
                             <div>{get(referred, 'company_detail.data.company.address', [])}</div>
-                            <div ><FacebookOutlined />&nbsp;<a href={get(referred, 'company_detail.data.company.facebook')}>{get(referred, 'company_detail.data.company.facebook')}</a></div>
+                            <div ><FacebookOutlined />&nbsp;<a href={get(referred, 'company_detail.data.company.facebook')}rel="noopener noreferrer" to target="_blank">{get(referred, 'company_detail.data.company.facebook')}</a></div>
                             <div ><MailOutlined />&nbsp;<a>{get(referred, 'company_detail.data.company.email_cc')}</a></div>
-                            <div ><IeOutlined />&nbsp;<a href={get(referred, 'company_detail.data.company.career_site')}>{get(referred, 'company_detail.data.company.career_site')}</a></div>
+                            <div ><IeOutlined />&nbsp;<a href={get(referred, 'company_detail.data.company.career_site')} rel="noopener noreferrer" to target="_blank">{get(referred, 'company_detail.data.company.career_site')}</a></div>
                             <div ><PhoneOutlined />&nbsp;<a>{get(referred, 'company_detail.data.company.phone_number')}</a></div>
                         </div>
                     </Col>
