@@ -92,6 +92,18 @@ export function getListReferred(params) {
     }
   };
 }
+export function getListCandidates(params) {
+  return async dispatch => {
+    try {
+      dispatch({ type: "GET_LIST_REQUEST" });
+      const { data } = await api.sendRequestWithToken('get', `/candidates?${qs.stringify(params)}`);
+      return dispatch({ type: "GET_LIST_CANDIDATES_SUCCESS", data });
+    } catch (error) {
+      const { data } = error.response;
+      return dispatch({ type: "GET_LIST_CANDIDATES_FAILURE", error: data.message });
+    }
+  };
+}
 
 export function createCandidate(payload, idJob) {
   return async () => {
@@ -99,6 +111,17 @@ export function createCandidate(payload, idJob) {
       api.sendRequestWithToken('post', '/candidates', null, null, payload).then(response => {
         api.sendRequestWithToken('post', '/refers', null, { 'Content-Type': 'application/json' }, { "job_id": idJob, "candidate_id": response.data.data.candidate.id });
       });
+      return { status: true };
+    } catch (error) {
+      const { data } = error.response;
+      return { status: false, error: data.message };
+    }
+  };
+}
+export function createCandidateNoAddJob(payload) {
+  return async () => {
+    try {
+      api.sendRequestWithToken('post', '/candidates', null, null, payload);
       return { status: true };
     } catch (error) {
       const { data } = error.response;
@@ -152,6 +175,7 @@ export function uploadRequest(payload, name) {
         .then(response => response.data.presign_url);
       const body2 = response.fields;
       const data = new FormData();
+      // eslint-disable-next-line guard-for-in
       for (const property in body2) {
         data.append(`${property}`, `${body2[property]}`);
       }
@@ -164,6 +188,7 @@ export function uploadRequest(payload, name) {
       });
       const response2 = await api.sendRequest('post', '/upload/verify', null, { 'content-type': 'application/json' }, {
         key: response.fields.key
+      // eslint-disable-next-line no-shadow
       }).then(response => response.data.data);
       return { status: true, data: response2 };
     } catch (error) {

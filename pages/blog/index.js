@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Row, Col, Button, Select, Menu, Typography, Card, Layout } from 'antd';
 import { MailOutlined, DollarOutlined } from '@ant-design/icons';
 import Router from 'next/router';
-import Link from 'next/link';
 import './styles.scss';
 
 const { Title } = Typography;
@@ -23,14 +22,13 @@ function Home() {
             <img src="https://www.rockship.co/images/rs-logo-img.png" alt="#" />
           </Col> */}
           <Col span={9} >
-            <a href="/"><img className="name-logo" src="https://www.rockship.co/images/rs-logo-text.png" alt="#" /></a>
+            <a href="/"  ><img className="name-logo" src="https://www.rockship.co/images/rs-logo-text.png" alt="#" /></a>
+
           </Col>
           <Col span={9} className="task-bar">
             <Menu onClick={handleClick} selectedKeys={[current]} mode="horizontal">
               <Menu.Item key="home" icon={<MailOutlined />}>
-                <Link href="/">
-                  <a href="/" style={{ color: 'white' }}>All jobs</a>
-                </Link>
+                <a href="/" style={{ color: 'white' }}>All jobs</a>
               </Menu.Item>
               <Menu.Item key="it-companies" icon={<MailOutlined />}>
                 IT Companies
@@ -39,7 +37,7 @@ function Home() {
                 <a href="/blog" style={{ color: 'white' }}>Blog</a>
               </Menu.Item>
               <Menu.Item key="upload-cv" icon={<MailOutlined />}>
-                <a href="/upload-candidate" style={{ color: 'white' }}>Upload cv</a>
+                <a href="/upload-candidate/e93fc859-8c27-4d29-a540-fcefbe545f85" style={{ color: 'white' }}>Upload cv</a>
               </Menu.Item>
               <Menu.Item key="login" icon={<MailOutlined />}>
                 <a href="/login" style={{ color: 'white' }}>Đăng nhập</a>
@@ -73,7 +71,7 @@ function Home() {
               style={{ width: '100%' }}
             >
               {
-                'Tát cả,TP Hồ Chí Minh, Hà Nội'.split(', ')
+                'Tát cả, TP Hồ Chí Minh, Hà Nội'.split(', ')
                   .map(item => (
                     <Select.Option key={item} value={item}>{item}</Select.Option>
                   ))
@@ -93,56 +91,6 @@ function Home() {
         <Row >
           <Col span={3} />
           <Col span={14} >
-            <div className="jobs">
-              <Row className="card">
-                {/* <Col span={3} /> */}
-                <Col span={24} className="content">
-                  <Card className="involveJob" >
-                    <Title level={3}>1,173 IT jobs in Vietnam for you</Title>
-                    <Card className="moreJobs">
-                      <Row gutter={[16, 16]} className="oneRow">
-                        <Col span={6} >
-                          <img alt="example" src="https://cdn.itviec.com/employers/dxc-vietnam/logo/s65/U7GERVChzwPaBYXec1bQgPmP/DXC%20logo-icon.png" />
-                        </Col>
-                        <Col span={18} >
-                          <Row>
-                            <Col span={18} >
-                              <Title level={3}>Why You'll Love Working Here</Title>
-                              <div style={{ color: '#68ba50' }}><DollarOutlined /> You'll love it</div>
-                            </Col>
-                            <Col span={6} >
-                              <div style={{ float: 'right', background: '#ff9e34', color: 'white', fontSize: '8', padding: 3 }}>Ant Design</div><br />
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col span={18} >
-                              <div>Role: As a COBOL Software Engineer, you will collaborate proactively with functional analysts to transla
-                                            te business and integration requirements into...</div>
-                            </Col>
-                            <Col span={6} >
-                              <div style={{ float: 'right' }}>Hồ Chí Minh</div><br />
-                              <div style={{ float: 'right' }}>Tân Bình</div>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col span={18} >
-                              <Button style={{ marginRight: 5 }}>J2EE</Button>
-                              <Button style={{ marginRight: 5 }}>Java</Button>
-                              <Button>Spring</Button>
-                            </Col>
-                            <Col span={6} >
-                              <div style={{ float: 'right' }}>7 minutes ago</div><br />
-                            </Col>
-                          </Row>
-                        </Col>
-                      </Row>
-                    </Card>
-                  </Card>
-                </Col>
-                {/* <Col span={3} /> */}
-              </Row>
-            </div>
-
             <div className="news">
               <Row gutter={[8, 8]}>
                 {/* <Col span={3} /> */}

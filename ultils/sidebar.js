@@ -31,6 +31,14 @@ export const adminSideBar = [
     name: 'Danh sách công việc',
     url: '/superadmin/job-list'
   },
+  {
+    name: 'Danh sách ứng viên',
+    url: '/superadmin/candidates_list/all'
+  },
+  {
+    name: 'Công việc accepted',
+    url: '/superadmin/job-accepted/all'
+  },
 ];
 
 export const referrerSideBar = [

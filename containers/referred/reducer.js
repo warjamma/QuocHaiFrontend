@@ -2,6 +2,7 @@
 export const exampleInitialState = {
   list_job: null,
   list_referred: null,
+  list_candidates:null,
   candidate_detail: null,
   job_detail: null,
   is_loading: false,
@@ -66,6 +67,16 @@ export default (state = exampleInitialState, action) => {
       return {
         ...state,
         ...{ list_referred: [], is_loading: false },
+      };
+    case 'GET_LIST_CANDIDATES_SUCCESS':
+      return {
+        ...state,
+        ...{ list_candidates: action.data, is_loading: false },
+      };
+    case 'GET_LIST_CANDIDATES_FAILURE':
+      return {
+        ...state,
+        ...{ list_candidates: [], is_loading: false },
       };
     case 'GET_CANDIDATE_BY_ID_SUCCESS':
       return {
