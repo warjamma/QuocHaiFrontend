@@ -1,0 +1,49 @@
+.my-referred-container {
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    div {
+      font-weight: bold;
+      font-size: 16px;
+    }
+  }
+  .ant-advanced-search-form {
+    background: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0px;
+    .fiter-item {
+      .title {
+        font-weight: 500;
+      }
+    }
+    .filter-button {
+      margin-top: 15px;
+      text-align: right;
+      button {
+        &:first-child {
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+  .tag-refer {
+    margin: 3;
+    cursor: pointer;
+  }
+  .custom-role{
+    b.name-role {
+      color: #3273dc;
+      display: block;
+      text-align: center;
+    }
+    b.name-role:hover {
+      color: hotpink;
+      cursor: pointer;
+    }
+  }
+}

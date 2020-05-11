@@ -2,35 +2,88 @@
 /* eslint-disable jsx-a11y/anchor-has-content */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/no-array-index-key */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { connect } from 'react-redux';
 import Router, { useRouter } from 'next/router';
-import { Button, Row, Col, Typography, Card } from 'antd';
-import {
-    DollarOutlined,
-    RightOutlined,
-    CalendarOutlined,
-    CaretRightOutlined,
-    FacebookOutlined,
-    IeOutlined,
-    MailOutlined,
-    PhoneOutlined
-} from '@ant-design/icons';
-import { get } from 'lodash';
+import { Button, Modal, Row, Col, Typography, Card, Table, Input, Form, Select } from 'antd';
+import { DollarOutlined, RightOutlined, RedoOutlined, SearchOutlined, CalendarOutlined, CaretRightOutlined, FacebookOutlined, IeOutlined, MailOutlined, PhoneOutlined } from '@ant-design/icons';
+import { get, debounce } from 'lodash';
 import moment from 'moment';
+import { getListCandidates, getJobById } from '../../containers/referred/actions';
+
 import './styles.scss';
 
-import { getJobById } from '../../containers/referred/actions';
-
+const initQuery = {
+    company_name: '',
+    key_word: '',
+    // status: null,
+    offset: 0,
+    limit: 10,
+};
 const { Title } = Typography;
 
 function jobDetail(props) {
+    const { referred, dispatch, profile } = props;
     const router = useRouter();
     const { id } = router.query;
+    const [visible, setVisible] = useState(false);
+    const showModal = () => {
+        setVisible(true);
+    };
+    const handleOk = () => {
+        setVisible(false);
+    };
+    const handleCancel = () => {
+        setVisible(false);
+    };
+    const [query, setQuery] = useState(initQuery);
+    const columns = [
+        {
+            title: 'Tên',
+            dataIndex: 'name',
+        },
+        {
+            title: 'Tên hồ sơ hiển thị',
+            dataIndex: 'profile_title'
+        },
+        {
+            title: 'Email',
+            dataIndex: 'email'
+        },
+        {
+            title: 'Điện thoại',
+            dataIndex: 'phone_number'
+        },
 
-    const { referred, dispatch, profile } = props;
+    ];
+    const onChangeQuery = async (key, value) => {
+        const clone = { ...query };
+        clone[key] = value;
+        setQuery(clone);
+    };
+
+    const handleFilter = async () => {
+        const clone = { ...query };
+        clone.offset = 0;
+        setQuery(clone);
+        await dispatch(getListCandidates(clone));
+    };
+    const handleTableChange = async (pagination) => {
+        const clone = { ...query };
+        clone.offset = (pagination.current - 1) * 10;
+        clone.limit = pagination.pageSize;
+        setQuery(clone);
+        await dispatch(getListCandidates(clone));
+    };
+
+    const resetSearch = async () => {
+        setQuery(initQuery);
+        await dispatch(getListCandidates(initQuery));
+    };
+
     useEffect(() => {
         dispatch(getJobById({ id }));
+        dispatch(getListCandidates(query));
     }, []);
 
     const toDataURL = (url) => {
@@ -50,11 +103,42 @@ function jobDetail(props) {
         a.click();
         document.body.removeChild(a);
     };
+    const datafake = [
+        {
+            id:1,
+            profile_title: 'ABV',
+            email:'ABC@gmial.com',
+            phone_number:'03336999999',
+            name: 'Nguyên van tei'
+        },
+        {
+            id:2,
+            profile_title: 'ABV',
+            email:'ABC@gmial.com',
+            phone_number:'03336999999',
+            name: 'Nguyên van tei'
+        },
+        {
+            id:3,
+            profile_title: 'ABV',
+            email:'ABC@gmial.com',
+            phone_number:'03336999999',
+            name: 'Nguyên van tei'
+        },
+        {
+            id:4,
+            profile_title: 'ABV',
+            email:'ABC@gmial.com',
+            phone_number:'03336999999',
+            name: 'Nguyên van tei'
+        },
+
+    ];
     return (
         <div className="job-detail" style={{ padding: 30 }}>
             <div className="header" style={{ backgroud: '#fff', fontWeight: 'bold' }}>Job detail</div>
-            <Row gutter={[16, 16]}>
-                <Col span={8} >
+            <Row gutter={[16, 16]} className="job-content">
+                <Col span={8} className="company-info">
                     <div style={{ background: 'white' }}>
                         {
                             get(referred, 'job_detail.data.job.company.avatar') ?
@@ -63,18 +147,18 @@ function jobDetail(props) {
                         <div style={{ background: 'white', padding: 20 }} >
                             <Title level={3}>{get(referred, 'job_detail.data.job.company.name')}</Title>
                             <div>{get(referred, 'job_detail.data.job.company.address')}</div>
-                            <div ><FacebookOutlined />&nbsp;<a href={get(referred, 'job_detail.data.job.company.facebook')} rel="noopener noreferrer" to target="_blank" >{get(referred, 'job_detail.data.job.company.facebook')}</a></div>
+                            <div ><FacebookOutlined />&nbsp;<a href={get(referred, 'job_detail.data.job.company.facebook')} rel="noopener noreferrer" target="_blank" >{get(referred, 'job_detail.data.job.company.facebook')}</a></div>
                             <div ><MailOutlined />&nbsp;<a>{get(referred, 'job_detail.data.job.company.email_cc')}</a></div>
-                            <div ><IeOutlined />&nbsp;<a href={get(referred, 'job_detail.data.job.company.career_site')} rel="noopener noreferrer" to target="_blank">{get(referred, 'job_detail.data.job.company.career_site')}</a></div>
+                            <div ><IeOutlined />&nbsp;<a href={get(referred, 'job_detail.data.job.company.career_site')} rel="noopener noreferrer" target="_blank">{get(referred, 'job_detail.data.job.company.career_site')}</a></div>
                             <div ><PhoneOutlined />&nbsp;<a>{get(referred, 'job_detail.data.job.company.phone_number')}</a></div>
                             <br />
                             <span style={{ color: '#68ba50', fontSize: '16px', textAlign: 'center', display: 'block' }}>
-                                <a href= '/' onClick={() => Router.push(`/company-profile/${get(referred, 'job_detail.data.job.company.id', [])}`)} >View our company page<CaretRightOutlined /></a>
+                                <a href='/' onClick={() => Router.push(`/company-profile/${get(referred, 'job_detail.data.job.company.id', [])}`)} >View our company page<CaretRightOutlined /></a>
                             </span>
                         </div>
                     </div>
                 </Col>
-                <Col span={16} >
+                <Col span={16} className="job-description">
                     <Card className="titileJob">
                         <Title level={3}><div style={{ float: 'left' }} >[Tuyển]</div>{get(referred, 'job_detail.data.job.job_role', []).map((value, key) => {
                             return <div key={key} style={{ float: 'left' }} level={4}>  &nbsp;{value}&nbsp;</div>;
@@ -96,11 +180,65 @@ function jobDetail(props) {
                             return <div style={{ marginBottom: 6 }} key={key}><RightOutlined /> {value} <a style={{ color: '#68ba50', fontSize: '13px' }} /></div>;
                         })}
 
-                    <div style={{ marginBottom: 10 }}><CalendarOutlined /> {moment(get(referred, 'job_detail.data.job.updated_at', [])).fromNow()}</div>
-                        <Button style={((get(profile, 'data.recruiter.role') === 'superadmin') || get(profile, 'data.employer.role') === 'admin') ? ({ visibility: "hidden" }) : ({ float: 'left', marginRight: 5, width: '40%', display: 'block' })} type="primary" onClick={() => Router.push(`/referrer/upload-cv/${id}`)} block>Giới thiệu ứng viên</Button>
+                        <div style={{ marginBottom: 10 }}><CalendarOutlined /> {moment(get(referred, 'job_detail.data.job.updated_at', [])).fromNow()}</div>
+                        <Button style={(get(profile, 'data.employer.role') === 'admin') ? ({ visibility: "hidden" }) : ({ float: 'left', marginRight: 5, width: '40%', display: 'block' })} type="primary" onClick={() => Router.push(`/referrer/upload-cv/${id}`)} block>Giới thiệu ứng viên</Button>
                         <Button onClick={download} style={{ float: 'left', width: '40%' }} disabled={!!(get(referred, 'job_detail.data.job.jd_files') === '' || get(referred, 'job_detail.data.job.jd_files') == null)} type="primary" block>Dowload JD</Button>
+                        <div className="model-button" style={((get(profile, 'data.recruiter.role') !== 'superadmin')) ? ({ visibility: "hidden" }) : ({ float: 'left', marginRight: 5, width: '40%', display: 'block', marginTop: 10 })}>
+                            <Button onClick={showModal} type="primary" block>Giới thiệu ứng viên từ danh sách có sẵn</Button>
+                            <Modal
+                                style={{ left: 20 }}
+                                title="Basic Modal"
+                                visible={visible}
+                                onOk={handleOk}
+                                onCancel={handleCancel}
+                            >
+                                <div className="my-referred-container">
+                                    <div className="header">
+                                        <div>{`Hồ sơ của bạn (${get(referred, 'list_candidates.extra_data.total', 0)})`}</div>
+                                    </div>
+                                    <Form
+                                        name="advanced_search"
+                                        className="ant-advanced-search-form"
+                                        labelCol={{ span: 4 }}
+                                        layout="horizontal"
+                                    >
+                                        <Row gutter={[16, 0]}>
+                                            <Col className="fiter-item" span={24}>
+                                                <div className="title">Tên ứng viên: </div>
+                                                <Input value={query.key_word} onChange={(e) => onChangeQuery('key_word', e.target.value)} placeholder="Tìm theo tên ứng viên..." />
+                                            </Col>
+                                            <Col span={24}>
+                                                <div className="filter-button">
+                                                    <Button onClick={() => handleFilter()} icon={<SearchOutlined />} type="primary">Tìm kiếm</Button>
+                                                    <Button icon={<RedoOutlined />} onClick={() => resetSearch()} type="primary">Làm mới</Button>
+                                                </div>
+                                            </Col>
+                                        </Row>
+                                    </Form>
+                                    {/* end form */}
+                                    <Table
+                                        loading={get(referred, 'is_loading', false)}
+                                        bordered
+                                        rowKey="id"
+                                        columns={columns}
+                                        dataSource={datafake}
+                                        // dataSource={get(referred, 'list_candidates.items.candidate', [])}
+                                        pagination={{
+                                            pageSize: query.limit,
+                                            total: get(referred, 'list_candidates.extra_data.total', 0),
+                                            showSizeChanger: true,
+                                            pageSizeOptions: ['10', '20', '30', '50'],
+                                            size: 'small',
+                                            current: (query.offset / 10) + 1
+                                        }}
+                                        onChange={handleTableChange}
+                                    />
+                                </div>
+                            </Modal>
+                        </div>
                     </Card>
                     <Card className="contentJob" >
+
                         <Title level={3}>About company</Title>
                         <div>{get(referred, 'job_detail.data.job.company.about')}</div>
                         <Title level={3}>Job detail</Title>
@@ -166,6 +304,7 @@ function jobDetail(props) {
     );
 }
 function mapStateToProps(state) {
+    console.log(state);
     const { referred, profile } = state;
     return { referred, profile };
 }

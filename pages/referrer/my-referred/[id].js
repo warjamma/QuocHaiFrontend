@@ -122,7 +122,7 @@ function MyReferred(props) {
       dataIndex: 'candidate_id',
       align: 'center',
       width: 150,
-      render: (text, record, index) => <div className="Action"><Button    style={{ marginRight: 5 }} onClick={() => Router.push(`/referrer/edit-cv/${get(record, 'candidate_id', '')}`)} icon={<EditOutlined />} size="small" />
+      render: (text, record, index) => <div className="Action"><Button    style={{ marginRight: 5 }} onClick={() => Router.push(`/referrer/edit-cv/${get(record, 'candidate_id', '')}/on`)} icon={<EditOutlined />} size="small" />
         <Popconfirm
           disabled={get(record, 'status', '') === 'on_board' ? disabledBtn() : false} 
           title="Are you sure delete title?"
