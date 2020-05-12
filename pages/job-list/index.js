@@ -7,9 +7,9 @@ import { connect } from 'react-redux';
 import { RedoOutlined, SearchOutlined, FileDoneOutlined } from '@ant-design/icons';
 import { Table, Row, Col, Button, Tag, Input, Select, Spin } from 'antd';
 import { get, debounce } from 'lodash';
-import { getListJob, getCountMyRefer } from '../../../containers/referred/actions';
-import { getAllCompany } from '../../../containers/company/action';
-import { getAllJobType } from '../../../containers/job/actions';
+import { getListJob, getCountMyRefer } from '../../containers/referred/actions';
+import { getAllCompany } from '../../containers/company/action';
+import { getAllJobType } from '../../containers/job/actions';
 
 
 import './styles.scss';
@@ -31,7 +31,12 @@ const initQuery = {
   offset: 0,
   limit: 10,
 };
-
+const pushRouter = (name) => {
+  Router.push({
+    pathname: `/referrer/my-referred`,
+    query: { name },
+  });
+};
 const columns = [
   {
     title: 'Công ty',
@@ -103,7 +108,8 @@ const columns = [
     dataIndex: 'count_my_refer',
     align: 'center',
     // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-    render: (text, record, index) => <b onClick={() => Router.push(`/referrer/my-referred/${get(record, 'company.name')}`)} className="bold-number">{record.count_my_refer} CV </b>
+    render: (text, record, index) => <b onClick={() => pushRouter(get(record, 'company.name',''))} className="bold-number">{record.count_my_refer} CV </b>
+   // render: (text, record, index) => <b onClick={() => Router.push(`/referrer/my-referred/${get(record, 'company.name')}`)} className="bold-number">{record.count_my_refer} CV </b>
   },
 ];
 
@@ -115,9 +121,9 @@ function JobList(props) {
   const [fetching, setFetching] = useState(false);
   const [listJobType, setListJobType] = useState([]);
   const router = useRouter();
-  const { id } = router.query;
-  if(id!=='all'){
-    initQuery.company=id;
+  const { name } = router.query;
+  if(name){
+    initQuery.company=name;
   }
   const changeQuery = (key, value) => {
     const clone = { ...query };

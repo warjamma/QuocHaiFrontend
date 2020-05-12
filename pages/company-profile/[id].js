@@ -2,7 +2,7 @@
 /* eslint-disable react/no-unescaped-entities */
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import Router,{ useRouter } from 'next/router';
+import Router, { useRouter } from 'next/router';
 import { Button, Row, Col, Typography } from 'antd';
 import { get } from 'lodash';
 import {
@@ -21,12 +21,17 @@ function jobDetail(props) {
     const router = useRouter();
     const { id } = router.query;
 
-    const { dispatch, referred,profile } = props;
+    const { dispatch, referred, profile } = props;
     useEffect(() => {
         dispatch(getCompanyById({ id }));
     }, []);
 
-
+    const pushRouter = (name) => {
+        Router.push({
+            pathname: `/job-list`,
+            query: { name },
+        });
+    };
     return (
         <div className="company-profile" >
             <div className="header" style={{ backgroud: '#fff', fontWeight: 'bold' }}>Company profile</div>
@@ -37,18 +42,18 @@ function jobDetail(props) {
                         <div style={{ background: 'white', padding: 20 }} >
                             <Title level={3}>{get(referred, 'company_detail.data.company.name', [])}</Title>
                             <div>{get(referred, 'company_detail.data.company.address', [])}</div>
-                            <div ><FacebookOutlined />&nbsp;<a href={get(referred, 'company_detail.data.company.facebook')}rel="noopener noreferrer"  target="_blank">{get(referred, 'company_detail.data.company.facebook')}</a></div>
+                            <div ><FacebookOutlined />&nbsp;<a href={get(referred, 'company_detail.data.company.facebook')} rel="noopener noreferrer" target="_blank">{get(referred, 'company_detail.data.company.facebook')}</a></div>
                             <div ><MailOutlined />&nbsp;<a>{get(referred, 'company_detail.data.company.email_cc')}</a></div>
-                            <div ><IeOutlined />&nbsp;<a href={get(referred, 'company_detail.data.company.career_site')} rel="noopener noreferrer"   target="_blank">{get(referred, 'company_detail.data.company.career_site')}</a></div>
+                            <div ><IeOutlined />&nbsp;<a href={get(referred, 'company_detail.data.company.career_site')} rel="noopener noreferrer" target="_blank">{get(referred, 'company_detail.data.company.career_site')}</a></div>
                             <div ><PhoneOutlined />&nbsp;<a>{get(referred, 'company_detail.data.company.phone_number')}</a></div>
                         </div>
                     </Col>
                     <Col span={5} >
                         {
-                            get(profile, 'data.employer.role', [])==="admin"?
-                            (<Button onClick={() => Router.push(`/company/job-list`)} style={{ marginBottom: 5, marginTop: 100 }} type="primary" danger block>View jobs</Button>):
-                            (<Button onClick={() => Router.push(`/referrer/job-list/${get(referred, 'company_detail.data.company.name', [])}`)} style={{ marginBottom: 5, marginTop: 100 }} type="primary" danger block>View jobs</Button>)
-                        }  
+                            get(profile, 'data.employer.role', []) === "admin" ?
+                                (<Button onClick={() => Router.push(`/company/job-list`)} style={{ marginBottom: 5, marginTop: 100 }} type="primary" danger block>View jobs</Button>) :
+                                (<Button onClick={() =>pushRouter(get(referred, 'company_detail.data.company.name', []))} style={{ marginBottom: 5, marginTop: 100 }} type="primary" danger block>View jobs</Button>)
+                        }
                     </Col>
                 </Row>
             </div>

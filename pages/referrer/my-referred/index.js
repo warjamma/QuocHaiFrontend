@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 /* eslint-disable no-unused-vars */
 import React, { Component, useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
@@ -29,11 +30,11 @@ function MyReferred(props) {
   const [listCompany, setListCompany] = useState([]);
   const [fetching, setFetching] = useState(false);
   const router = useRouter();
-  const { id } = router.query;
-  if(id!=='all'){
-    initQuery.company_name=id;
+  const { name } = router.query;
+  if (name) {
+    initQuery.company_name = name;
   }
-  
+
 
   function cancel(e) {
     message.error('Cance');
@@ -42,7 +43,7 @@ function MyReferred(props) {
   const handleDelete = async (candidateId) => {
     await dispatch(deleteCandidate(candidateId)).then(res => {
       if (res.status) {
-        Router.push('/referrer/my-referred/all');
+        Router.push('/referrer/my-referred');
         return message.success('Delete candidate successfully');
       }
       return message.error(res.error);
@@ -51,7 +52,12 @@ function MyReferred(props) {
   const disabledBtn = () => {
     return true;
   };
-
+  const pushRouter = (id,status) => {
+    Router.push({
+      pathname: `/referrer/edit-cv`,
+      query: { status,id },
+    });
+  };
   const columns = [
     {
       title: 'Vị trí',
@@ -122,16 +128,16 @@ function MyReferred(props) {
       dataIndex: 'candidate_id',
       align: 'center',
       width: 150,
-      render: (text, record, index) => <div className="Action"><Button    style={{ marginRight: 5 }} onClick={() => Router.push(`/referrer/edit-cv/${get(record, 'candidate_id', '')}/on`)} icon={<EditOutlined />} size="small" />
+      render: (text, record, index) => <div className="Action"><Button style={{ marginRight: 5 }} onClick={() => pushRouter(get(record, 'candidate_id', ''),get(record, 'status', ''))} icon={<EditOutlined />} size="small" />
         <Popconfirm
-          disabled={get(record, 'status', '') === 'on_board' ? disabledBtn() : false} 
+          disabled={get(record, 'status', '') === 'on_board' ? disabledBtn() : false}
           title="Are you sure delete title?"
           onConfirm={() => handleDelete(get(record, 'candidate_id', ''))}
           onCancel={cancel}
           okText="Yes"
           cancelText="No"
         >
-          <Button disabled={get(record, 'status', '') === 'on_board' ? disabledBtn() : false}   icon={<DeleteOutlined />} size="small" />
+          <Button disabled={get(record, 'status', '') === 'on_board' ? disabledBtn() : false} icon={<DeleteOutlined />} size="small" />
         </Popconfirm></div>
     },
 
