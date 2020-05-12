@@ -24,10 +24,6 @@ export const companySideBar = [
 
 export const adminSideBar = [
   {
-    name: 'Bảng điều khiển',
-    url: '/superadmin/overview'
-  },
-  {
     name: 'Danh sách công việc',
     url: '/superadmin/job-list'
   },
@@ -37,22 +33,18 @@ export const adminSideBar = [
   },
   {
     name: 'Công việc accepted',
-    url: '/superadmin/job-accepted/all'
+    url: '/job-list'
   },
 ];
 
 export const referrerSideBar = [
-  // {
-  //   name: 'Bảng điều khiển',
-  //   url: '/referrer'
-  // },
   {
     name: 'Công việc',
-    url: '/referrer/job-list/all'
+    url: '/job-list'
   },
   {
     name: 'Đã giới thiệu',
-    url: '/referrer/my-referred/all'
+    url: '/referrer/my-referred'
   },
   {
     name: 'Thông tin cá nhân',

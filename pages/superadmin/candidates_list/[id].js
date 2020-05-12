@@ -42,7 +42,7 @@ function MyReferred(props) {
   const handleDelete = async (candidateId) => {
     await dispatch(deleteCandidate(candidateId)).then(res => {
       if (res.status) {
-        Router.push('/referrer/my-referred/all');
+        Router.push('/referrer/my-referred');
         return message.success('Delete candidate successfully');
       }
       return message.error(res.error);

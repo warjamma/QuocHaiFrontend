@@ -17,7 +17,7 @@ function Verify (props) {
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
-      Router.push(query.role === 'employers' ? '/company/job-list' : '/referrer/job-list');
+      Router.push(query.role === 'employers' ? '/company/job-list' : '/job-list');
     }
   });
 
@@ -25,7 +25,7 @@ function Verify (props) {
     await dispatch(verifyRequest(query.role, query.id, values));
     if(localStorage.getItem('token')) {
       success('Login successfully!');
-      Router.push(query.role === 'employers' ? '/company' : '/referrer');
+      Router.push(query.role === 'employers' ? '/company/job-list' : '/job-list');
     }
   };
 

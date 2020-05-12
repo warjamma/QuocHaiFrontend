@@ -28,11 +28,16 @@ function EditCV(props) {
   const [form] = Form.useForm();
   const { dispatch, referred } = props;
   const router = useRouter();
-  const { id } = router.query;
+  const { id,status } = router.query;
   const initForm = get(referred, `candidate_detail.data.candidate`, []);
   const [fileLink, setFileLink] = useState('');
   const [fileData, setFileData] = useState([]);
-
+  const disabledBtn = () => {
+    if(status==='on_board'){
+      return true;
+    }
+      return false;
+  };
   const onFinish = async (value) => {
     const data = cloneDeep(value);
     if(fileLink) {
@@ -40,7 +45,7 @@ function EditCV(props) {
     }
     await dispatch(updateCandidate({ ...initForm, ...data }, id)).then(res => {
       if (res.status) {
-        Router.push('/referrer/my-referred/all');
+        Router.push('/referrer/my-referred');
         return message.success('Update candidate successfully');
       }
       return message.error(res.error);
@@ -110,7 +115,7 @@ function EditCV(props) {
             {...setting}
             fileList={fileData}
           >
-            <Button>
+            <Button disabled={disabledBtn()}>
               <UploadOutlined /> Click to upload
             </Button>
           </Upload>
@@ -160,7 +165,7 @@ function EditCV(props) {
             </Form.Item>
 
             <Form.Item {...tailLayout}>
-              <Button type="primary" htmlType="submit">
+              <Button type="primary" htmlType="submit" disabled={disabledBtn()}>
                 Cập nhật
               </Button>
 
