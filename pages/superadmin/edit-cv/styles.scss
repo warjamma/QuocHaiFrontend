@@ -1,0 +1,24 @@
+.Edit-CV {
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    div {
+      font-weight: bold;
+      font-size: 16px;
+    }
+  }
+  .form-body {
+    font-size: 16px;
+    .view-pdf {
+      width: 100%;
+      height: 100vh;
+    }
+    .btn-cance {
+      margin: 0 8px;
+    }
+  }
+}
