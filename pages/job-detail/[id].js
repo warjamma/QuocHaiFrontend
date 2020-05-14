@@ -6,7 +6,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { connect } from 'react-redux';
 import Router, { useRouter } from 'next/router';
 import { Button, Modal, Row, Col, Typography, Card, Table, Input, Form, Select } from 'antd';
-import { DollarOutlined, RightOutlined, RedoOutlined, SearchOutlined, CalendarOutlined, CaretRightOutlined, FacebookOutlined, IeOutlined, MailOutlined, PhoneOutlined } from '@ant-design/icons';
+import { DollarOutlined, RightOutlined, RedoOutlined, SearchOutlined, CalendarOutlined, CaretRightOutlined, FacebookOutlined, IeOutlined, MailOutlined, PhoneOutlined, BoldOutlined } from '@ant-design/icons';
 import { get, debounce } from 'lodash';
 import moment from 'moment';
 import { getListCandidates, getJobById } from '../../containers/referred/actions';
@@ -36,11 +36,20 @@ function jobDetail(props) {
     const handleCancel = () => {
         setVisible(false);
     };
+    const pushRouter = (name) => {
+        Router.push({
+            pathname: `/superadmin/edit-cv`,
+            query: { name },
+        });
+    };
     const [query, setQuery] = useState(initQuery);
     const columns = [
         {
             title: 'Tên',
             dataIndex: 'name',
+            reder: (name) => (
+                <div onClick={pushRouter(name)}><div style={{fontWeight:BoldOutlined,color:'blue'}} >sssssssss{name}</div></div> 
+            ),
         },
         {
             title: 'Tên hồ sơ hiển thị',
@@ -105,31 +114,31 @@ function jobDetail(props) {
     };
     const datafake = [
         {
-            id:1,
+            id: 1,
             profile_title: 'ABV',
-            email:'ABC@gmial.com',
-            phone_number:'03336999999',
+            email: 'ABC@gmial.com',
+            phone_number: '03336999999',
             name: 'Nguyên van tei'
         },
         {
-            id:2,
+            id: 2,
             profile_title: 'ABV',
-            email:'ABC@gmial.com',
-            phone_number:'03336999999',
+            email: 'ABC@gmial.com',
+            phone_number: '03336999999',
             name: 'Nguyên van tei'
         },
         {
-            id:3,
+            id: 3,
             profile_title: 'ABV',
-            email:'ABC@gmial.com',
-            phone_number:'03336999999',
+            email: 'ABC@gmial.com',
+            phone_number: '03336999999',
             name: 'Nguyên van tei'
         },
         {
-            id:4,
+            id: 4,
             profile_title: 'ABV',
-            email:'ABC@gmial.com',
-            phone_number:'03336999999',
+            email: 'ABC@gmial.com',
+            phone_number: '03336999999',
             name: 'Nguyên van tei'
         },
 

@@ -18,6 +18,10 @@ export const companySideBar = [
         name: 'Nhân viên',
         url: '/company/employers'
       },
+      {
+        name: 'Thông tin post job',
+        url: '/company/post-job'
+      },
     ]
   }
 ];
@@ -34,6 +38,10 @@ export const adminSideBar = [
   {
     name: 'Công việc accepted',
     url: '/job-list'
+  },
+  {
+    name: 'Danh sách công ty',
+    url: '/superadmin/company-list'
   },
 ];
 

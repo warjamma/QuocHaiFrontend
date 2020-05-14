@@ -40,6 +40,20 @@ export function getCountMyRefer() {
     }
   };
 }
+
+export function getListCompany(params) {
+  return async dispatch => {
+    try {
+      dispatch({ type: "GET_LIST_REQUEST" });
+      const { data } = await api.sendRequestWithToken('get', `/companies?${qs.stringify(params)}`);
+      return dispatch({ type: "GET_LIST_COMPANY_SUCCESS", data });
+    } catch (error) {
+      const { data } = error.response;
+      return dispatch({ type: "GET_LIST_COMPANY_FAILURE", error: data.message });
+    }
+  };
+}
+
 export function getCompanyById(params) {
   // console.log('params', params);
   return async dispatch => {
