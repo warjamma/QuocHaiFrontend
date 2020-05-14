@@ -90,6 +90,7 @@ function Home() {
 
 
       <div className="content-page">
+
         <Row >
           <Col span={3} />
           <Col span={14} >
@@ -142,24 +143,33 @@ function Home() {
                 {/* <Col span={3} /> */}
               </Row>
             </div>
-
+            
             <div className="news">
               <Row gutter={[8, 8]}>
                 {/* <Col span={3} /> */}
                 <Col span={9} >
                   <img className="img-news" alt="#" src="https://img.vn/uploads/thuvien/viber-image-2019-08-06-10-40-38-jpg-20190807145944LO3qbinQdG.jpg" />
                 </Col>
-                <Col span={15} >
+                <Col span={15}  >
                   <Title level={3}>Why You'll Love Working Here</Title>
                   <div className="content-news">Ever wanted an image to fit exactly into a certain given dimension, but while keeping its aspect ratio and avoid having a squished image? This wasn’t something that could easily be done using CSS for the longest time. One trick was to resort to using a background image instead to go around the issue. Well the problem is no more with the object-fit property!</div>
                 </Col>
                 {/* <Col span={3} /> */}
               </Row>
             </div>
+
           </Col>
           <Col span={4}  >
             <div className="news-right">
-              <Title level={3} className="title-right">Company Spotlight</Title>
+              <Row gutter={[8, 8]}style={{padding:10  }}>
+                <Col span={24} >
+                  <Title level={3}>TÌM VIỆC KHÓ - CÓ  ROCKSEARCH</Title>
+                  <div className="content-news" style={{marginTop:50, textAlign:'center', marginBottom:20 }}><Button type="danger"  >Upload CV của bạn tại đây</Button></div>
+                  <Title level={4}>SỞ HỮU NGAY CV XỊN CÙNG VIỆC LÀM MƠ ƯỚC</Title>
+                  <Title level={4}>30.000+ cơ hội việc làm được kết nối thành công qua TopCV mỗi ngày</Title></Col>
+                  
+              </Row>
+              {/* <Title level={3} className="title-right">Company Spotlight</Title> */}
               <img className="img-news" alt="#" src="https://img.vn/uploads/thuvien/viber-image-2019-08-06-10-40-38-jpg-20190807145944LO3qbinQdG.jpg" />
               <div className="title-right-child">POPS WorldWide</div>
               <div className="location">Hồ chí minh</div>
@@ -171,6 +181,7 @@ function Home() {
       </div>
       <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
     </div>
+    
   );
 };
 
