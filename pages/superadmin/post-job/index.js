@@ -40,33 +40,58 @@ function jobDetail(props) {
     return (
         <div className="company-profile" >
             <div className="header" style={{ backgroud: '#fff', fontWeight: 'bold' }}>Quản lý post jobs</div>
-            <div className="content">
-                <Row gutter={[16, 16]}>
-                    <Col span={4} ><img style={{ padding: 'auto', margin: 'auto', display: 'block', height: 250, width: 250, objectFit: 'scale-down' }} alt="example" src={get(referred, 'company_detail.data.company.avatar', [])} /></Col>
-                    <Col span={15} >
-                        <div style={{ background: 'white', padding: 20 }} >
-                            <Title level={3}>{get(referred, 'company_detail.data.company.name', [])}</Title>
-                            <div>{get(referred, 'company_detail.data.company.address', [])}</div>
-                            <div ><FacebookOutlined />&nbsp;<a href={get(referred, 'company_detail.data.company.facebook')} rel="noopener noreferrer" target="_blank">{get(referred, 'company_detail.data.company.facebook')}</a></div>
-                            <div ><MailOutlined />&nbsp;<a>{get(referred, 'company_detail.data.company.email_cc')}</a></div>
-                            <div ><IeOutlined />&nbsp;<a href={get(referred, 'company_detail.data.company.career_site')} rel="noopener noreferrer" target="_blank">{get(referred, 'company_detail.data.company.career_site')}</a></div>
-                            <div ><PhoneOutlined />&nbsp;<a>{get(referred, 'company_detail.data.company.phone_number')}</a></div>
-                        </div>
-                    </Col>
-                    <Col span={5} />
-                </Row>
-            </div>
+            <Row gutter={[16, 16]}>
+                <Col span={8}  >
+                    <div className="content" style={{ padding: 18, height: 300 }} >
+                        <Row className='row-detail' style={{ paddingTop: 24 }} >
+                            <Col span={10}><span className='bold-span' style={{ fontWeight: 'bold' }}>Số jobs: </span></Col>
+                            <Col span={14}>10 JOBS</Col>
+                        </Row>
+                        <Row className='row-detail' style={{ paddingTop: 24 }}>
+                            <Col span={10}><span className='bold-span' style={{ fontWeight: 'bold' }}>Post job hot đã mua: </span></Col>
+                            <Col span={14}>3 JOBS HOT</Col>
+                        </Row>
+                        <Row className='row-detail' style={{ paddingTop: 24 }} >
+                            <Col span={10}><span className='bold-span' style={{ fontWeight: 'bold' }}>Post job hot còn lại: </span></Col>
+                            <Col span={14}>0 JOBS HOT</Col>
+                        </Row>
+                        <Row className='row-detail' style={{ paddingTop: 24 }}>
+                            <Col span={10}><span className='bold-span' style={{ fontWeight: 'bold' }}>Post job thường: </span></Col>
+                            <Col span={14}>3 JOBS THƯỜNG</Col>
+                        </Row>
+                        <Row className='row-detail' style={{ paddingTop: 24 }}>
+                            <Col span={10}><span className='bold-span' style={{ fontWeight: 'bold' }}>Post job thường còn lại: </span></Col>
+                            <Col span={14}>1 JOBS THƯỜNG</Col>
+                        </Row>
+                    </div>
+                </Col>
+                <Col span={16}>
+                    <div className="content" style={{ height:300 }}>
+                        <Row gutter={[16, 16]}>
+                            <Col span={6} ><img style={{ padding: 'auto', margin: 'auto', display: 'block', height: 250, width: 250, objectFit: 'scale-down' }} alt="example" src={get(referred, 'company_detail.data.company.avatar', [])} /></Col>
+                            <Col span={13} >
+                                <div style={{ background: 'white', padding: 20 }} >
+                                    <Title level={3}>{get(referred, 'company_detail.data.company.name', [])}</Title>
+                                    <div>{get(referred, 'company_detail.data.company.address', [])}</div>
+                                    <div ><FacebookOutlined />&nbsp;<a href={get(referred, 'company_detail.data.company.facebook')} rel="noopener noreferrer" target="_blank">{get(referred, 'company_detail.data.company.facebook')}</a></div>
+                                    <div ><MailOutlined />&nbsp;<a>{get(referred, 'company_detail.data.company.email_cc')}</a></div>
+                                    <div ><IeOutlined />&nbsp;<a href={get(referred, 'company_detail.data.company.career_site')} rel="noopener noreferrer" target="_blank">{get(referred, 'company_detail.data.company.career_site')}</a></div>
+                                    <div ><PhoneOutlined />&nbsp;<a>{get(referred, 'company_detail.data.company.phone_number')}</a></div>
+                                </div>
+                            </Col>
+                            <Col span={5} />
+                        </Row>
+                    </div>
+
+                </Col>
+            </Row>
 
             <Row gutter={[16, 16]}>
                 <Col span={24}   >
-                    <div style={{ background: 'white'}}>
+                    <div style={{ background: 'white' }}>
                         <div style={{ background: 'white', padding: 20 }} >
-                            <Title level={3} style={{ textAlign: 'center' }}><LikeOutlined /> Post Job</Title>
-                            <Title level={4}> Số lượng Post đã mua:  5  - còn lại:  5 </Title>
-                            <Title level={4}> Số lượng Jobs:  10</Title>
-                            <Title level={4}> Số lượng Job đang post:  10</Title>
-                            <Title level={4}> Chọn số lượng post jobs</Title>
-                            <Select defaultValue="lucy" style={{ width: 300 }} onChange={handleChange}>
+                            <Title level={3} ><LikeOutlined /> Post Job</Title>
+                            <Select defaultValue="lucy" style={{ width: 300, marginTop: 20 }} onChange={handleChange}>
                                 <Option value="jack">5 JOBS</Option>
                                 <Option value="jack">5 JOBS HOT</Option>
                                 <Option value="lucy">10 JOBS</Option>
@@ -75,7 +100,7 @@ function jobDetail(props) {
                                 <Option value="Yiminghe">20 JOBS HOT</Option>
                             </Select>
                             <Button type="danger" style={{ width: 100, marginLeft: 20 }}>Cập nhật</Button>
-                            <Button type="default" onClick={()=>Router.push('/superadmin/company-list')} style={{ width: 100, marginLeft: 20 }}>Hủy</Button>
+                            <Button type="default" onClick={() => Router.push('/superadmin/company-list')} style={{ width: 100, marginLeft: 20 }}>Hủy</Button>
                         </div>
                     </div>
 

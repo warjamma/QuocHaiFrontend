@@ -2,7 +2,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable no-nested-ternary */
 import React, { useState, useEffect } from 'react';
-import { Button, InputNumber, Form, Row, Col, Input, Select, Upload, message } from 'antd';
+import { Button, InputNumber, Form, Row, Col, Input, Select, Upload, message,Modal, Space } from 'antd';
 import Router, { useRouter } from 'next/router';
 import { UploadOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
@@ -33,11 +33,20 @@ function EditJob(props) {
   const initForm = get(referred, `job_detail.data.job`, []);
   const [fileLink, setFileLink] = useState('');
   const [fileData, setFileData] = useState([]);
+  // const  warning=()=> {
+  //   Modal.warning({
+  //     title: 'Bạn đã hết số lần post jobs',
+  //     content: 'Vui lòng mua thêm gói post jobs để tiếp tục gia hạn',
+  //   });
+  // };
   const onFinish = async (value) => {
     const data = cloneDeep(value);
     if(fileLink){
       data.jd_files = fileLink;
     }
+    // if(data.post_job){
+    //   warning();
+    // }
     await dispatch(updateJob({ ...initForm, ...data }, id)).then(res => {
       if (res.status) {
         return message.success('Update Job successfully').then(() => Router.push('/company/job-list'));
@@ -136,7 +145,6 @@ function EditJob(props) {
             >
               <Input />
             </Form.Item> */}
-
             <Form.Item
               label="Vị trí"
               hasFeedback
@@ -281,6 +289,17 @@ function EditJob(props) {
             </Form.Item>
             <Form.Item name="candidate_benefit" label="Phúc lợi">
               <Input.TextArea />
+            </Form.Item>
+            <div style={{color:'red',fontWeight:'bold'}}>THỜI GIAN KẾT THÚC CÔNG VIỆC CÒN 30 NGÀY</div>
+            <Form.Item
+              label="Gia hạn công việc"
+              hasFeedback
+              // name="post_job"
+            >
+              <Select style={{ width: '100%' }} placeholder="Chọn kiểu gia hạn">
+                <Select.Option value="post-hot">1 tháng POST HOT -Còn 03</Select.Option>
+                <Select.Option value="post">1 tháng POST THƯỜNG - Còn 02</Select.Option>
+              </Select>
             </Form.Item>
             <Form.Item style={{ marginTop: 20 }}>
               <Button  style={{ margin: '0 8px' }} type="primary" htmlType="submit">

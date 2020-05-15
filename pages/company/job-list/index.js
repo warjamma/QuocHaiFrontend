@@ -90,6 +90,12 @@ function JobList(props) {
       render: (text, record, index) => <span color="green">{moment(record.created_at).format('DD-MM-YYYY')}</span>,
     },
     {
+      title: 'Ngày hiển thị còn lại',
+      dataIndex: 'created',
+      align: 'center',
+      render: (text, record, index) => <span color="green">30</span>,
+    },
+    {
       title: 'Cấp độ yêu cầu',
       dataIndex: 'job_levels',
       render: (text, record, index) => (

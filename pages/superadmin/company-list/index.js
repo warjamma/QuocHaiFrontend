@@ -108,33 +108,9 @@ function JobList(props) {
   //   }
   // }
 
-
-  const save = async (data) => {
-    try {
-      const row = await form.validateFields();
-      const body = {};
-      // if(row.status === 'interview_failed' || row.status === 'probation_failed') {
-      //   body.failing_reason = row.failing_reason;
-      // } else {
-      //   row.status === 'on_board' ? body.on_boarding_at = `${moment(row.on_boarding_at).format('YYYY-MM-DDTHH:mm:ss')}Z`
-      //   : body.pass_probation_at = `${moment(row.pass_probation_at).format('YYYY-MM-DDTHH:mm:ss')}Z`; 
-      // }
-      // dispatch(updateStatusRef(data.id, row.status, body)).then(res => {
-      //   if(res.status) {
-      //     message.success('Update status successfully');
-      //   } else {
-      //     message.warning(res.error);
-      //   }
-      //   dispatch(getListCandidate(query, get(profile, 'data.employer.company_id', '')));
-      // });
-      return setEditingKey('');
-    } catch (errInfo) {
-      return errInfo;
-    }
-  };
-
   const columns = [
     {
+      width:650,
       title: 'Công ty',
       dataIndex: 'id',
       render: (text, record, index) => (
@@ -162,34 +138,40 @@ function JobList(props) {
       ),
     },
     {
-      title: 'Số lượng jobs',
+      width:'15%',
+      title: 'Jobs Post đang dùng',
       dataIndex: 'id',
       render: (text, record, index) => (
         <div role="presentation" className="custom-role">
           <div className="job-role">
-            <b className="name-role" color="blue" >20 JOBS HOT - 0 JOBS THƯỜNG</b>
+            <b className="name-role" color="blue" >20 JOBS HOT</b>
+            <b className="name-role" color="blue" >0 JOBS THƯỜNG</b>
           </div>
         </div>
       ),
     },
     {
-      title: 'Post đã mua',
+      width:'15%',
+      title: 'Jobs Post đã mua',
       dataIndex: 'id',
       render: (text, record, index) => (
         <div role="presentation" className="custom-role">
           <div className="job-role">
-            <b className="name-role" color="blue" >5 JOBS-0 JOBS THƯỜNG</b>
+            <b className="name-role" color="blue" >30 JOBS</b>
+            <b className="name-role" color="blue" >0 JOBS THƯỜNG</b>
           </div>
         </div>
       ),
     },
     {
-      title: 'Post còn lại',
+      width:'15%',
+      title: 'Jobs Post còn lại',
       dataIndex: 'id',
       render: (text, record, index) => (
         <div role="presentation" className="custom-role">
           <div className="job-role">
-            <b className="name-role" color="blue" >4 JOBS -0 JOBS THƯỜNG</b>
+            <b className="name-role" color="blue" >10 JOBS</b>
+            <b className="name-role" color="blue" >0 JOBS THƯỜNG</b>
           </div>
         </div>
       ),
