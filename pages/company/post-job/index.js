@@ -9,7 +9,8 @@ import {
   FacebookOutlined,
   IeOutlined,
   MailOutlined,
-  PhoneOutlined
+  PhoneOutlined,
+  EllipsisOutlined
 } from '@ant-design/icons';
 import { getCompanyById } from '../../../containers/referred/actions';
 import './styles.scss';
@@ -37,8 +38,8 @@ function jobDetail(props) {
       <div className="header" style={{ backgroud: '#fff', fontWeight: 'bold' }}>Thông tin post job</div>
 
       <Row gutter={[16, 16]}>
-        <Col span={8} >
-          <div className="content" style={{ padding: 18 }}>
+        <Col span={8}  >
+          <div className="content" style={{ padding: 18,height:300 }} >
             <Row className='row-detail' style={{ paddingTop: 24 }} >
               <Col span={10}><span className='bold-span' style={{ fontWeight: 'bold' }}>Số jobs: </span></Col>
               <Col span={14}>10 JOBS</Col>
@@ -61,8 +62,8 @@ function jobDetail(props) {
             </Row>
           </div>
         </Col>
-        <Col span={16} >
-          <div className="content">
+        <Col span={16}  >
+          <div className="content" style={{ height:300 }} >
             <Row gutter={[16, 16]}>
               <Col span={6} ><img style={{ padding: 'auto', margin: 'auto', display: 'block', height: 250, width: 250, objectFit: 'scale-down' }} alt="example" src='https://d3t1myknaqth5d.cloudfront.net/files/1589253980.jpeg' /></Col>
               {/* <Col span={4} ><img style={{ padding: 'auto', margin: 'auto', display: 'block', height: 250, width: 250, objectFit: 'scale-down' }} alt="example" src={'get(referred, 'company_detail.data.company.avatar', [])'} /></Col> */}
@@ -90,24 +91,8 @@ function jobDetail(props) {
             <div style={{ background: 'white', padding: 20 }} >
               <Title level={3}>History</Title>
               <Row className='row-detail' style={{ paddingTop: 24 }} >
-                <Col style={{ marginRight: 10 }} span={1}>23/01/2020</Col>
-                <Col style={{ marginRight: 10 }} span={1}>POST JOBS</Col>
-                <Col span={12}><span className='bold-span' style={{ fontWeight: 'bold' }}>30 JOBS HOT </span></Col>
-              </Row>
-              <Row className='row-detail' style={{ paddingTop: 24 }} >
-                <Col style={{ marginRight: 10 }} span={1}>23/01/2020</Col>
-                <Col style={{ marginRight: 10 }} span={1}>POST JOBS</Col>
-                <Col span={12}><span className='bold-span' style={{ fontWeight: 'bold' }}>30 JOBS HOT </span></Col>
-              </Row>
-              <Row className='row-detail' style={{ paddingTop: 24 }} >
-                <Col style={{ marginRight: 10 }} span={1}>23/01/2020</Col>
-                <Col style={{ marginRight: 10 }} span={1}>POST JOBS</Col>
-                <Col span={12}><span className='bold-span' style={{ fontWeight: 'bold' }}>30 JOBS HOT </span></Col>
-              </Row>
-              <Row className='row-detail' style={{ paddingTop: 24 }} >
-                <Col style={{ marginRight: 10 }} span={1}>23/01/2020</Col>
-                <Col style={{ marginRight: 10 }} span={1}>POST JOBS</Col>
-                <Col span={12}><span className='bold-span' style={{ fontWeight: 'bold' }}>30 JOBS HOT </span></Col>
+                <Col  span={2}>11:33 12-11-2019</Col>
+                <Col  span={22}><span className='bold-span' style={{ fontWeight: 'bold' }}>30 JOBS HOT </span> ON 12.11.2019 <span style={{ fontWeight: 'bold',cursor:'pointer' }}>< EllipsisOutlined /></span> </Col>
               </Row>
             </div>
           </div>

@@ -164,13 +164,13 @@ function Home() {
               <Row gutter={[8, 8]}style={{padding:10  }}>
                 <Col span={24} >
                   <Title level={3}>TÌM VIỆC KHÓ - CÓ  ROCKSEARCH</Title>
-                  <div className="content-news" style={{marginTop:50, textAlign:'center', marginBottom:20 }}><Button type="danger"  >Upload CV của bạn tại đây</Button></div>
+                  <div className="content-news" style={{marginTop:20, textAlign:'center', marginBottom:20 }}><Button type="danger"  >Upload CV của bạn tại đây</Button></div>
                   <Title level={4}>SỞ HỮU NGAY CV XỊN CÙNG VIỆC LÀM MƠ ƯỚC</Title>
-                  <Title level={4}>30.000+ cơ hội việc làm được kết nối thành công qua TopCV mỗi ngày</Title></Col>
+                  <p>30.000+ cơ hội việc làm được kết nối thành công qua Rocksearch mỗi ngày</p></Col>
                   
               </Row>
               {/* <Title level={3} className="title-right">Company Spotlight</Title> */}
-              <img className="img-news" alt="#" src="https://img.vn/uploads/thuvien/viber-image-2019-08-06-10-40-38-jpg-20190807145944LO3qbinQdG.jpg" />
+              <img className="img-news" alt="#" src="https://aimacademy.vn/wp-content/uploads/2019/10/AIM-CV-Digital-02.png" />
               <div className="title-right-child">POPS WorldWide</div>
               <div className="location">Hồ chí minh</div>
               <div className="description">POPS Worldwide is a leading digital entertainment company & based in VN</div>
