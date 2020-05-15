@@ -95,7 +95,7 @@ function CreateJob(props) {
     const fileList = [...e.fileList];
     const last = fileList.slice(-1);
     setFileData(last);
-    if(e.file.status === 'done') {
+    if (e.file.status === 'done') {
       onRequest(e.file, e.file.name);
     }
   };
@@ -151,8 +151,8 @@ function CreateJob(props) {
               <Select style={{ width: '100%' }}>
                 {
                   role.map(item => (
-                      <Select.Option key={item} value={item}>{item}</Select.Option>
-                    ))
+                    <Select.Option key={item} value={item}>{item}</Select.Option>
+                  ))
                 }
               </Select>
             </Form.Item>
@@ -289,6 +289,17 @@ function CreateJob(props) {
             </Form.Item>
             <Form.Item name="candidate_benefit" label="Phúc lợi">
               <Input.TextArea />
+            </Form.Item>
+            <div style={{ color: 'red', fontWeight: 'bold' }}>THỜI GIAN POST CÔNG VIỆC TRONG 30 NGÀY</div>
+            <Form.Item
+              label="Chọn kiểu post"
+              hasFeedback
+            // name="post_job"
+            >
+              <Select style={{ width: '100%' }}>
+                <Select.Option value="post-hot">1 tháng POST HOT - Còn 03</Select.Option>
+                <Select.Option value="post">1 tháng POST THƯỜNG -Còn 02</Select.Option>
+              </Select>
             </Form.Item>
             <Form.Item style={{ marginTop: 20 }}>
               <Button type="primary" htmlType="submit">
