@@ -11,73 +11,58 @@ import './styles.scss';
 
 const initForm = {
 
-  availability: "none",
-  certificate: [
-    "Trash",
-    "Trash"
-  ],
-  created_at: "2020-04-08T15:56:09.412901",
-  current_salary: 4,
-  cv: "",
-  education: [
-    {
-      degree: "Trash",
-      major: "Trash"
-    }
-  ],
-  email: "",
-  expectation: "sadsad",
-  experience: [
-    {
-      duration: 3,
-      industry: "Trash collecting",
-      job_title: "Trash collector",
-      role: "Trash collector"
-    }
-  ],
-  industry_insight: [
-    {
-      field: "Trash collecting",
-      rating: "Trash",
-      years: "whole life"
-    }
-  ],
-  job_level: [
-    "trash",
-    "junior"
-  ],
-  job_role: [
-    "backend",
-    "frontend"
-  ],
-  language: [
-    {
-      field: "Trash",
-      rating: "Trash",
-      years: "whole life"
-    }
-  ],
-  locations: [
-    "Ho Chi Minh",
-    "Trash"
-  ],
-  max_salary: 12,
-  min_salary: 23,
-  name: "",
-  phone_number: "",
-  profile_title: "",
-  recommendation: "none",
-  recruiter_id: "",
-  skill: [
-    {
-      field: "Trash",
-      rating: "Trash",
-      years: "3 years"
-    }
-  ],
-  status: "pending",
-  updated_at: "2020-04-08T15:56:09.412907",
-  verify_token: ""
+  bank_name: "",
+	bank_number: "",
+	bank_user: "",
+	cv: "",
+	name: "",
+	profile_title: "",
+	email: "",
+	phone_number: "",
+	recommendation: "",
+	availability: "none",
+	job_role: ["backend", "frontend"],
+	job_level: ["trash", "junior"],
+	min_salary: 1,
+	max_salary: 2,
+	current_salary: 3,
+	locations: ["Ho Chi Minh", "Trash"],
+	skill: [
+		{
+			"field": "Trash",
+			"years": "3 years",
+			"rating": "Trash"
+		}
+	],
+	industry_insight: [
+		{
+			"field": "Trash collecting",
+			"years": "whole life",
+			"rating": "Trash"
+		}
+	],
+	language: [
+		{
+			"field": "Trash",
+			"years": "whole life",
+			"rating": "Trash"
+		}
+	],
+	experience: [
+		{
+			"industry": "Trash collecting",
+			"role": "Trash collector",
+			"job_title": "Trash collector",
+			"duration": 3
+		}
+	],
+	education: [
+		{
+			"major": "Trash",
+			"degree": "Trash"
+		}
+	],
+	certificate: ["Trash", "Trash"]
 };
 const layout = {
   labelCol: { span: 18 },
@@ -103,7 +88,7 @@ function UploadCV(props) {
   const onFinish = async (value) => {
     const data = cloneDeep(value);
     data.cv = fileLink;
-    data.phone_number = initForm.phone_number;
+    // data.phone_number = initForm.phone_number;
     dispatch(createCandidate({ ...initForm, ...data }, id)).then(res => {
       if (res.status) {
         return message.success('Create candidate successfully').then(() => Router.push(`/job-detail/${id}`));

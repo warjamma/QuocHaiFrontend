@@ -2,14 +2,15 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable no-nested-ternary */
 import React, { useState, useEffect } from 'react';
-import { Col, Row, Popconfirm, Form, Input, Button, Upload, message } from 'antd';
+import { Col, Row, Popconfirm, Form, Input, Button, Upload, message, Select } from 'antd';
 import Router, { useRouter } from 'next/router';
 import { UploadOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import { get, cloneDeep } from 'lodash';
-import { getCandidateById, updateCandidate, deleteCandidate,uploadRequest } from '../../../containers/referred/actions';
+import { getCandidateById, updateCandidate, deleteCandidate, uploadRequest ,referCandidateForCompany} from '../../../containers/referred/actions';
 import './styles.scss';
 
+const { Option } = Select;
 const layout = {
   labelCol: { span: 18 },
   wrapperCol: { span: 22 },
@@ -28,28 +29,40 @@ function EditCV(props) {
   const [form] = Form.useForm();
   const { dispatch, referred } = props;
   const router = useRouter();
-  const { id,status } = router.query;
+  const { id, status, job_id } = router.query;
   const initForm = get(referred, `candidate_detail.data.candidate`, []);
   const [fileLink, setFileLink] = useState('');
   const [fileData, setFileData] = useState([]);
   const disabledBtn = () => {
-    if(status==='on_board'){
+    if (status === 'on_board') {
       return true;
     }
-      return false;
+    return false;
   };
   const onFinish = async (value) => {
     const data = cloneDeep(value);
-    if(fileLink) {
+    if (fileLink) {
       data.cv = fileLink;
+      data.availability = "none";
     }
     await dispatch(updateCandidate({ ...initForm, ...data }, id)).then(res => {
       if (res.status) {
-        Router.push('/referrer/my-referred');
-        return message.success('Update candidate successfully');
+        return message.success('Update candidate successfully');//.then(() => Router.push('/superadmin/candidates_list/all'));
+        if(!job_id)
+        {
+          Router.push('/superadmin/candidates_list/all');
+        }
       }
       return message.error(res.error);
     });
+    if(job_id){
+      await dispatch(referCandidateForCompany( {job_id,id})).then(res => {
+        if (res.status) {
+          return message.success('Refer candidate for company succsessfully').then(() => Router.push('/superadmin/candidates_list/all'));
+        }
+        return message.error(res.error);
+      });
+    }
   };
   const onRequest = async (value) => {
     await dispatch(uploadRequest({ value })).then(res => {
@@ -68,7 +81,7 @@ function EditCV(props) {
     const fileList = [...e.fileList];
     const last = fileList.slice(-1);
     setFileData(last);
-    if(e.file.status === 'done') {
+    if (e.file.status === 'done') {
       onRequest(e.file, e.file.name);
     }
   };
@@ -99,94 +112,131 @@ function EditCV(props) {
     accept: ".pdf",
     customRequest: dummyRequest
   };
-
+  const bankName = ['TMCP NGOAI THUONG VIET NAM(VIETCOMBANK)', 'BUSAN', 'BANK OF INDIA', 'E.SUN', 'KY THUONG VN(TECHCOMBANK)', 'VIET NAM THUONG TIN(VIETBANK)', 'SHINHAN VN', 'HONGKONG AND SHANGHAI BANK (HSBC)', 'SAI GON THUONG TIN(SACOMBANK)', 'DBS BANK LTD CN HCM', 'UOB VIETNAM(UOB VN)', 'NNO&PT NONG THON VN(AGRIBANK', 'SAI GON(SCB)', 'DONG A(DONG A BANK', 'BAN VIET(CIET CAPITAL BANK', 'BUU DIEN LIEN VIET(LIEN VIET POST BANK)', 'SIAM COMMERCIAL BANK PUBLIC COMBANK', 'MAY BANK(HN)', 'BANK OF CHINA', 'JD MORGAN CHASE BANK', 'SUMITIMO MITSUI BANKING CORPORA..', 'BNP PARIBAS CHI NHANH HN', 'CONG THUONG VN(VIETTINBANK)', 'XUATNHAPKHAU(EXIMBANK)', 'SAI GON CONG THUONG(SAIGONBANK)', 'VIET NAM THINH VUONG(VP BANK)', 'QUAN DOI(MB)', 'DAI DUONG(OCEANBANK)', 'DAU KHI TOAN CAU(GPBANK)', 'DONG NAM A(SEABANK)', 'XANG DAU PETROLIMEX(PGBANK)', 'SAI GON- HA NOI(SHB)', 'TIEN PHONG(TIEN PHONG BANK)', 'CITI BANK HN', 'HANG HAI HN(MARITIME BANK)', 'QUOC DAN(NCB)', 'OVERSEA-CHINESE BANKING CORP LTD', 'CHINA CONSTRUCTION BANK CORPOR..', 'CIMB BANK', 'CHINH SACH XA HOI(VBSP)', 'XAY DUNG VN(CB BANK)', 'AN BINH(ABBANK)', 'A CHAY(ACB)', 'PHUONG DONG(OCB)', 'BAO VIET(BAO VIET BANK)', 'NAM A(NAM A BANK)', 'WOORI RANK VIET NAM', 'BANGKOK BANK HANOI', 'BANGKOK BANK HCM', 'CTI BANK', 'PUBLIC BANK VN', 'BPCE IOM', 'FIRST COMMERCIAL BANK HANOI', 'MIZUHO CORPORATE BANK LTD.,HN', 'BANK OF COMMUNICATIONS', 'DEUTSCHE BANK', 'CTBC (NHTM CHINATRUST)', 'NH SINOPAC', 'TAIPEI FUBONC.B', 'KIENLONG (KIEN LING BANK)', 'PHAT TRIEN TP HCM(HD BANK)', 'DAI CHUNG(PVCOMBANK)', 'BAC A(BAC A BANK)', 'VIET A (VIET A BANK)', 'PHAT TRIEN VIET NAM(VDB)', 'STANDARD CHARTERED BANK', 'HONG LEONG VN', 'BNP-PARIBAS CN HCM', 'HONG LEONG VN', 'BNP-PARIBAS CN HCM', 'MIZUHO CORPORATE BANK,LTD', 'INDUSTRIAL 7 COMMERCIAL BANK OF..', 'QUOC TE(VIB)', 'DAU TU VA PHAT TRIEN VN(BIDV)'];
   return (
     <div className="Edit-CV" style={{ backgroundColor: 'white' }}>
       <div className="header">
         <div>Hồ sơ ứng viên</div>
       </div>
       <div className="form-body">
-      <Row gutter={[16, 16]}>
-        {/* {get(referred, 'candidate_detail', [])} */}
-        <Col span={18}>
-          <iframe  className="view-pdf" id="input" value={fileLink} src={fileLink === '' ? (get(referred, 'candidate_detail.data.candidate.cv', []) === ''?(fileLink):(get(referred, 'candidate_detail.data.candidate.cv', []))) : (fileLink)} /></Col>
-        <Col span={6}>
-          <Upload
-            {...setting}
-            fileList={fileData}
-          >
-            <Button disabled={disabledBtn()}>
-              <UploadOutlined /> Click to upload
+        <Row gutter={[16, 16]}>
+          {/* {get(referred, 'candidate_detail', [])} */}
+          <Col span={18}>
+            <iframe className="view-pdf" id="input" value={fileLink} src={fileLink === '' ? (get(referred, 'candidate_detail.data.candidate.cv', []) === '' ? (fileLink) : (get(referred, 'candidate_detail.data.candidate.cv', []))) : (fileLink)} /></Col>
+          <Col span={6}>
+            <Upload
+              {...setting}
+              fileList={fileData}
+            >
+              <Button disabled={disabledBtn()}>
+                <UploadOutlined /> Click to upload
             </Button>
-          </Upload>
-          <Form
-            form={form}
-            initialValues={{
-              name: get(referred, 'candidate_detail.data.candidate.name', []),
-              email: get(referred, 'candidate_detail.data.candidate.email', []),
-              profile_title: get(referred, 'candidate_detail.data.candidate.profile_title', []),
-              phone_number: get(referred, 'candidate_detail.data.candidate.phone_number', []),
-            }}
-            {...layout}
-            name="basic"
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            layout="vertical"
-          >
-            <Form.Item
-              label="Tên ứng viên"
-              name="name"
-              rules={[{ required: true, message: 'Please input your username!' }]}
+            </Upload>
+            <Form
+              form={form}
+              initialValues={{
+                name: get(referred, 'candidate_detail.data.candidate.name', []),
+                email: get(referred, 'candidate_detail.data.candidate.email', []),
+                profile_title: get(referred, 'candidate_detail.data.candidate.profile_title', []),
+                phone_number: get(referred, 'candidate_detail.data.candidate.phone_number', []),
+                bank_name: get(referred, 'candidate_detail.data.candidate.bank_name', []),
+                bank_number: get(referred, 'candidate_detail.data.candidate.bank_number', []),
+                bank_user: get(referred, 'candidate_detail.data.candidate.bank_user', []),
+              }}
+              {...layout}
+              name="basic"
+              onFinish={onFinish}
+              onFinishFailed={onFinishFailed}
+              layout="vertical"
             >
-              <Input placeholder="ex: username" />
-            </Form.Item>
+              <Form.Item
+                label="Tên ứng viên"
+                name="name"
+                rules={[{ required: true, message: 'Please input your username!' }]}
+              >
+                <Input placeholder="ex: username" />
+              </Form.Item>
 
-            <Form.Item
-              label="Tên hồ sơ hiển thị"
-              name="profile_title"
-              rules={[{ required: true, message: 'Please input your Job Title!' }]}
-            >
-              <Input placeholder="ex: Job Title" />
-            </Form.Item>
+              <Form.Item
+                label="Tên hồ sơ hiển thị"
+                name="profile_title"
+                rules={[{ required: true, message: 'Please input your Job Title!' }]}
+              >
+                <Input placeholder="ex: Job Title" />
+              </Form.Item>
 
-            <Form.Item
-              label="Email"
-              name="email"
-              rules={[{ required: true, message: 'Please input your email!' }]}
-            >
-              <Input placeholder="ex: Email" />
-            </Form.Item>
+              <Form.Item
+                label="Email"
+                name="email"
+                rules={[{ required: true, message: 'Please input your email!' }]}
+              >
+                <Input placeholder="ex: Email" />
+              </Form.Item>
 
-            <Form.Item
-              label="Điện thoại ứng viên"
-              name="phone_number"
-            >
-              <Input placeholder="ex: Phone Number" />
-            </Form.Item>
+              <Form.Item
+                label="Điện thoại ứng viên"
+                name="phone_number"
+              >
+                <Input placeholder="ex: Phone Number" />
+              </Form.Item>
+              <Form.Item
+                name='bank_name'
+                label="Tên ngân hàng"
+                rules={[{ required: true, message: 'Please input your bank name!' }]}
+              >
+                <Select
+                  allowClear
+                  showSearch
+                  style={{ width: '100%' }}
+                  placeholder="Bank name"
+                  optionFilterProp="children"
+                  filterOption={(input, option) =>
+                    option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                  }
+                >
+                  {bankName.map((d) => (
+                    <Option value={d} key={d}>{d}</Option>
+                  ))}
+                </Select>
+              </Form.Item>
+              <Form.Item
+                label="Số tài khoản"
+                name="bank_number"
+                rules={[{ required: true, message: 'Please input your bank number!' }]}
+              >
+                <Input placeholder="ex: Bank Number" />
+              </Form.Item>
+              <Form.Item
+                label="Chủ tài khoản"
+                name="bank_user"
+                rules={[{ required: true, message: 'Please input your bank user!' }]}
+              >
+                <Input placeholder="ex: Bank User" />
+              </Form.Item>
 
-            <Form.Item {...tailLayout}>
-              <Button type="primary" htmlType="submit" disabled={disabledBtn()}>
-                Cập nhật
+              <Form.Item {...tailLayout}>
+                <Button type="primary" htmlType="submit" disabled={disabledBtn()}>
+                  Cập nhật
               </Button>
 
-              <Popconfirm
-                title="Are you sure delete title?"
-                onConfirm={() => handleDelete(id)}
-                onCancel={cancel}
-                okText="Yes"
-                cancelText="No"
-              >
-                {/* <Button style={{ margin: '0 8px' }} type="primary" htmlType="submit">
+                <Popconfirm
+                  title="Are you sure delete title?"
+                  onConfirm={() => handleDelete(id)}
+                  onCancel={cancel}
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  {/* <Button style={{ margin: '0 8px' }} type="primary" htmlType="submit">
                   Xóa
                 </Button> */}
-              </Popconfirm>
-              <Button className="btn-cance"  onClick={() => Router.push('/referrer/my-referred')} htmlType="button"  >
-                Hủy
+                </Popconfirm>
+                <Button className="btn-cance" onClick={() => Router.push('/referrer/my-referred')} htmlType="button"  >
+                  Hủy
               </Button>
-            </Form.Item>
-          </Form>
-        </Col>
-      </Row>
+              </Form.Item>
+            </Form>
+          </Col>
+        </Row>
       </div>
     </div>
   );

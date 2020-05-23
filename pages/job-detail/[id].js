@@ -25,7 +25,9 @@ const { Title } = Typography;
 function jobDetail(props) {
     const { referred, dispatch, profile } = props;
     const router = useRouter();
+    console.log(router);
     const { id } = router.query;
+    const job_id=id;
     const [visible, setVisible] = useState(false);
     const showModal = () => {
         setVisible(true);
@@ -36,21 +38,25 @@ function jobDetail(props) {
     const handleCancel = () => {
         setVisible(false);
     };
-    const pushRouter = (name) => {
+    const pushRouter = (id) => {
         Router.push({
             pathname: `/superadmin/edit-cv`,
-            query: { name },
+            query: { id ,job_id},
         });
     };
     const [query, setQuery] = useState(initQuery);
     const columns = [
         {
-            title: 'Tên',
-            dataIndex: 'name',
-            reder: (name) => (
-                <div onClick={pushRouter(name)}><div style={{fontWeight:BoldOutlined,color:'blue'}} >sssssssss{name}</div></div> 
+            title: 'Ten ung vien',
+            dataIndex: 'admin_id',
+            render: (text, record, index) => (
+              <div className="custom-role" onClick={() => pushRouter(record.id)}>
+                <div className="job-role" style={{fontWeight:'Bold',color:'blue',cursor: 'pointer'}}>
+                  {record.name}
+                </div>
+              </div>
             ),
-        },
+          },
         {
             title: 'Tên hồ sơ hiển thị',
             dataIndex: 'profile_title'
@@ -112,37 +118,6 @@ function jobDetail(props) {
         a.click();
         document.body.removeChild(a);
     };
-    const datafake = [
-        {
-            id: 1,
-            profile_title: 'ABV',
-            email: 'ABC@gmial.com',
-            phone_number: '03336999999',
-            name: 'Nguyên van tei'
-        },
-        {
-            id: 2,
-            profile_title: 'ABV',
-            email: 'ABC@gmial.com',
-            phone_number: '03336999999',
-            name: 'Nguyên van tei'
-        },
-        {
-            id: 3,
-            profile_title: 'ABV',
-            email: 'ABC@gmial.com',
-            phone_number: '03336999999',
-            name: 'Nguyên van tei'
-        },
-        {
-            id: 4,
-            profile_title: 'ABV',
-            email: 'ABC@gmial.com',
-            phone_number: '03336999999',
-            name: 'Nguyên van tei'
-        },
-
-    ];
     return (
         <div className="job-detail" style={{ padding: 30 }}>
             <div className="header" style={{ backgroud: '#fff', fontWeight: 'bold' }}>Job detail</div>
@@ -230,8 +205,8 @@ function jobDetail(props) {
                                         bordered
                                         rowKey="id"
                                         columns={columns}
-                                        dataSource={datafake}
-                                        // dataSource={get(referred, 'list_candidates.items.candidate', [])}
+                                        // dataSource={datafake}
+                                        dataSource={get(referred, 'list_candidates.items.candidate', [])}
                                         pagination={{
                                             pageSize: query.limit,
                                             total: get(referred, 'list_candidates.extra_data.total', 0),

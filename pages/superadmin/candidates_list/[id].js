@@ -30,10 +30,10 @@ function MyReferred(props) {
   const [fetching, setFetching] = useState(false);
   const router = useRouter();
   const { id } = router.query;
-  if(id!=='all'){
-    initQuery.company_name=id;
+  if (id !== 'all') {
+    initQuery.company_name = id;
   }
-  
+
 
   function cancel(e) {
     message.error('Cance');
@@ -48,15 +48,38 @@ function MyReferred(props) {
       return message.error(res.error);
     });
   };
-
+  const pushRouter = (id) => {
+    Router.push({
+      pathname: `/superadmin/edit-cv`,
+      query: { id },
+    });
+  };
   const columns = [
     {
-      title: 'Tên',
-      dataIndex: 'name'
+      title: 'Tên ứng viên',
+      dataIndex: 'admin_id',
+      render: (text, record, index) => (
+        <div className="custom-role" onClick={() => pushRouter(record.admin_id)}>
+          <div className="job-role" style={{ fontWeight: 'Bold', color: 'blue', cursor: 'pointer' }}>
+            {record.name}
+          </div>
+        </div>
+      ),
     },
     {
       title: 'Tên hồ sơ hiển thị',
       dataIndex: 'profile_title'
+    },
+    {
+      title: 'Vị trí',
+      dataIndex: 'company_id',
+      render: (text, record, index) => (
+        <div className="custom-role" onClick={() => Router.push(`/job-detail/${record.id}`)}>
+          <div className="job-role">
+            {record.name}
+          </div>
+        </div>
+      ),
     },
     {
       title: 'Email',
@@ -67,11 +90,23 @@ function MyReferred(props) {
       dataIndex: 'phone_number'
     },
     {
+      title: 'Tên ngân hàng',
+      dataIndex: 'bank_name'
+    },
+    {
+      title: 'Số tài khoản',
+      dataIndex: 'bank_number'
+    },
+    {
+      title: 'Chủ tài khoản',
+      dataIndex: 'bank_user'
+    },
+    {
       title: 'Cập nhật',
       dataIndex: 'id',
       align: 'center',
       width: 150,
-      render: (text, record, index) => <div className="Action"><Button    style={{ marginRight: 5 }} onClick={() => Router.push(`/referrer/edit-cv/${get(record, 'candidate_id', '')}/on`)} icon={<EditOutlined />} size="small" />
+      render: (text, record, index) => <div className="Action"><Button style={{ marginRight: 5 }} onClick={() => pushRouter(get(record, 'id', ''))} icon={<EditOutlined />} size="small" />
         <Popconfirm
           title="Are you sure delete title?"
           onConfirm={() => handleDelete(get(record, 'id', ''))}
@@ -79,7 +114,7 @@ function MyReferred(props) {
           okText="Yes"
           cancelText="No"
         >
-          <Button   icon={<DeleteOutlined />} size="small" />
+          <Button icon={<DeleteOutlined />} size="small" />
         </Popconfirm></div>
     },
 

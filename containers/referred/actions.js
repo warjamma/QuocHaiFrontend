@@ -132,10 +132,21 @@ export function createCandidate(payload, idJob) {
     }
   };
 }
+export function referCandidateForCompany(payload) {
+  return async () => {
+    try {
+      api.sendRequestWithToken('post', '/refers', null, { 'Content-Type': 'application/json' }, { "job_id": payload.job_id, "candidate_id": payload.id },);
+      return { status: true };
+    } catch (error) {
+      const { data } = error.response;
+      return { status: false, error: data.message };
+    }
+  };
+}
 export function createCandidateNoAddJob(payload) {
   return async () => {
     try {
-      api.sendRequestWithToken('post', '/candidates', null, null, payload);
+      api.sendRequestWithToken('post', '/admin/candidates', null, {"accept": "application/json"}, payload,);
       return { status: true };
     } catch (error) {
       const { data } = error.response;
