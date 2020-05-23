@@ -12,74 +12,58 @@ import './styles.scss';
 const { Option } = Select;
 
 const initForm = {
-
-  availability: "none",
-  certificate: [
-    "Trash",
-    "Trash"
-  ],
-  created_at: "2020-04-08T15:56:09.412901",
-  current_salary: 4,
+  bank_name: "",
+  bank_number: "",
+  bank_user: "",
   cv: "",
-  education: [
-    {
-      degree: "Trash",
-      major: "Trash"
-    }
-  ],
+  name: "",
+  profile_title: "",
   email: "",
-  expectation: "sadsad",
-  experience: [
+  phone_number: "",
+  recommendation: "",
+  availability: "none",
+  job_role: ["backend", "frontend"],
+  job_level: ["trash", "junior"],
+  min_salary: 1,
+  max_salary: 2,
+  current_salary: 3,
+  locations: ["Ho Chi Minh", "Trash"],
+  skill: [
     {
-      duration: 3,
-      industry: "Trash collecting",
-      job_title: "Trash collector",
-      role: "Trash collector"
+      "field": "Trash",
+      "years": "3 years",
+      "rating": "Trash"
     }
   ],
   industry_insight: [
     {
-      field: "Trash collecting",
-      rating: "Trash",
-      years: "whole life"
+      "field": "Trash collecting",
+      "years": "whole life",
+      "rating": "Trash"
     }
-  ],
-  job_level: [
-    "trash",
-    "junior"
-  ],
-  job_role: [
-    "backend",
-    "frontend"
   ],
   language: [
     {
-      field: "Trash",
-      rating: "Trash",
-      years: "whole life"
+      "field": "Trash",
+      "years": "whole life",
+      "rating": "Trash"
     }
   ],
-  locations: [
-    "Ho Chi Minh",
-    "Trash"
-  ],
-  max_salary: 12,
-  min_salary: 23,
-  name: "",
-  phone_number: "",
-  profile_title: "",
-  recommendation: "none",
-  recruiter_id: "",
-  skill: [
+  experience: [
     {
-      field: "Trash",
-      rating: "Trash",
-      years: "3 years"
+      "industry": "Trash collecting",
+      "role": "Trash collector",
+      "job_title": "Trash collector",
+      "duration": 3
     }
   ],
-  status: "pending",
-  updated_at: "2020-04-08T15:56:09.412907",
-  verify_token: ""
+  education: [
+    {
+      "major": "Trash",
+      "degree": "Trash"
+    }
+  ],
+  certificate: ["Trash", "Trash"]
 };
 const layout = {
   labelCol: { span: 18 },
@@ -105,10 +89,11 @@ function UploadCV(props) {
   const onFinish = async (value) => {
     const data = cloneDeep(value);
     data.cv = fileLink;
-    data.phone_number = initForm.phone_number;
+    // data.phone_number = initForm.phone_number;
     dispatch(createCandidateNoAddJob({ ...initForm, ...data })).then(res => {
       if (res.status) {
-        return message.success('Create candidate successfully').then(() => Router.push(`/`));
+        return message.success('Create candidate successfully');
+        // .then(() => Router.push(`/`));
       }
       return message.error(res.error);
     });
@@ -147,7 +132,7 @@ function UploadCV(props) {
   const bankName = ['TMCP NGOAI THUONG VIET NAM(VIETCOMBANK)', 'BUSAN', 'BANK OF INDIA', 'E.SUN', 'KY THUONG VN(TECHCOMBANK)', 'VIET NAM THUONG TIN(VIETBANK)', 'SHINHAN VN', 'HONGKONG AND SHANGHAI BANK (HSBC)', 'SAI GON THUONG TIN(SACOMBANK)', 'DBS BANK LTD CN HCM', 'UOB VIETNAM(UOB VN)', 'NNO&PT NONG THON VN(AGRIBANK', 'SAI GON(SCB)', 'DONG A(DONG A BANK', 'BAN VIET(CIET CAPITAL BANK', 'BUU DIEN LIEN VIET(LIEN VIET POST BANK)', 'SIAM COMMERCIAL BANK PUBLIC COMBANK', 'MAY BANK(HN)', 'BANK OF CHINA', 'JD MORGAN CHASE BANK', 'SUMITIMO MITSUI BANKING CORPORA..', 'BNP PARIBAS CHI NHANH HN', 'CONG THUONG VN(VIETTINBANK)', 'XUATNHAPKHAU(EXIMBANK)', 'SAI GON CONG THUONG(SAIGONBANK)', 'VIET NAM THINH VUONG(VP BANK)', 'QUAN DOI(MB)', 'DAI DUONG(OCEANBANK)', 'DAU KHI TOAN CAU(GPBANK)', 'DONG NAM A(SEABANK)', 'XANG DAU PETROLIMEX(PGBANK)', 'SAI GON- HA NOI(SHB)', 'TIEN PHONG(TIEN PHONG BANK)', 'CITI BANK HN', 'HANG HAI HN(MARITIME BANK)', 'QUOC DAN(NCB)', 'OVERSEA-CHINESE BANKING CORP LTD', 'CHINA CONSTRUCTION BANK CORPOR..', 'CIMB BANK', 'CHINH SACH XA HOI(VBSP)', 'XAY DUNG VN(CB BANK)', 'AN BINH(ABBANK)', 'A CHAY(ACB)', 'PHUONG DONG(OCB)', 'BAO VIET(BAO VIET BANK)', 'NAM A(NAM A BANK)', 'WOORI RANK VIET NAM', 'BANGKOK BANK HANOI', 'BANGKOK BANK HCM', 'CTI BANK', 'PUBLIC BANK VN', 'BPCE IOM', 'FIRST COMMERCIAL BANK HANOI', 'MIZUHO CORPORATE BANK LTD.,HN', 'BANK OF COMMUNICATIONS', 'DEUTSCHE BANK', 'CTBC (NHTM CHINATRUST)', 'NH SINOPAC', 'TAIPEI FUBONC.B', 'KIENLONG (KIEN LING BANK)', 'PHAT TRIEN TP HCM(HD BANK)', 'DAI CHUNG(PVCOMBANK)', 'BAC A(BAC A BANK)', 'VIET A (VIET A BANK)', 'PHAT TRIEN VIET NAM(VDB)', 'STANDARD CHARTERED BANK', 'HONG LEONG VN', 'BNP-PARIBAS CN HCM', 'HONG LEONG VN', 'BNP-PARIBAS CN HCM', 'MIZUHO CORPORATE BANK,LTD', 'INDUSTRIAL 7 COMMERCIAL BANK OF..', 'QUOC TE(VIB)', 'DAU TU VA PHAT TRIEN VN(BIDV)'];
   return (
     <div className="uploadcv">
-   
+
       <Row className="menu">
         <Col span={2} />
         <Col span={20} className="task-bar">
@@ -206,9 +191,10 @@ function UploadCV(props) {
                   </Form.Item>
 
                   <Form.Item
-                    // style={hiddenInput()}
                     name='bank_name'
-                    label="Tên ngân hàng"  >
+                    label="Tên ngân hàng"
+                    rules={[{ required: true, message: 'Please input your bank name!' }]}
+                  >
                     <Select
                       allowClear
                       showSearch
@@ -227,12 +213,14 @@ function UploadCV(props) {
                   <Form.Item
                     label="Số tài khoản"
                     name="bank_number"
+                    rules={[{ required: true, message: 'Please input your bank number!' }]}
                   >
                     <Input placeholder="ex: Bank Number" />
                   </Form.Item>
                   <Form.Item
                     label="Chủ tài khoản"
                     name="bank_user"
+                    rules={[{ required: true, message: 'Please input your bank user!' }]}
                   >
                     <Input placeholder="ex: Bank User" />
                   </Form.Item>
