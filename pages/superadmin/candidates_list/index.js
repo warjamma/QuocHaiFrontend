@@ -30,10 +30,6 @@ function MyReferred(props) {
   const [fetching, setFetching] = useState(false);
   const router = useRouter();
   const { id } = router.query;
-  if (id !== 'all') {
-    initQuery.company_name = id;
-  }
-
 
   function cancel(e) {
     message.error('Cance');
@@ -42,8 +38,7 @@ function MyReferred(props) {
   const handleDelete = async (candidateId) => {
     await dispatch(deleteCandidate(candidateId)).then(res => {
       if (res.status) {
-        Router.push('/referrer/my-referred');
-        return message.success('Delete candidate successfully');
+        return message.success('Delete candidate successfully').then(()=> Router.push('/superadmin/candidates_list/all'));
       }
       return message.error(res.error);
     });
@@ -59,7 +54,7 @@ function MyReferred(props) {
       title: 'Tên ứng viên',
       dataIndex: 'admin_id',
       render: (text, record, index) => (
-        <div className="custom-role" onClick={() => pushRouter(record.admin_id)}>
+        <div className="custom-role">
           <div className="job-role" style={{ fontWeight: 'Bold', color: 'blue', cursor: 'pointer' }}>
             {record.name}
           </div>
@@ -72,14 +67,39 @@ function MyReferred(props) {
     },
     {
       title: 'Vị trí',
-      dataIndex: 'company_id',
-      render: (text, record, index) => (
-        <div className="custom-role" onClick={() => Router.push(`/job-detail/${record.id}`)}>
-          <div className="job-role">
-            {record.name}
-          </div>
-        </div>
-      ),
+      dataIndex: 'id',
+      render: (text, record, index)=>(
+        record.job_role.map(item => (
+          <Tag className="tag-level" color="blue" key={item}>{item}</Tag>
+        ))
+      )
+    },
+    {
+      title: 'Cấp độ',
+      dataIndex: 'id',
+      render: (text, record, index)=>(
+        record.job_level.map(item => (
+          <Tag className="tag-level" color="blue" key={item}>{item}</Tag>
+        ))
+      )
+    },
+    // {
+    //   title: 'Ngôn ngữ',
+    //   dataIndex: 'id',
+    //   render: (text, record, index)=>(
+    //     record.language.map(item => (
+    //       <Tag className="tag-level" color="blue" key={item}>{item}</Tag>
+    //     ))
+    //   )
+    // },
+    {
+      title: 'Địa điểm',
+      dataIndex: 'id',
+      render: (text, record, index)=>(
+        record.locations.map(item => (
+          <Tag className="tag-level" color="blue" key={item}>{item}</Tag>
+        ))
+      )
     },
     {
       title: 'Email',

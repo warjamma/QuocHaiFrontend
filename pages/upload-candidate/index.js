@@ -78,7 +78,6 @@ const dummyRequest = ({ onSuccess }) => {
     onSuccess("ok");
   }, 0);
 };
-
 function UploadCV(props) {
   const { dispatch } = props;
   const router = useRouter();
@@ -92,8 +91,7 @@ function UploadCV(props) {
     // data.phone_number = initForm.phone_number;
     dispatch(createCandidateNoAddJob({ ...initForm, ...data })).then(res => {
       if (res.status) {
-        return message.success('Create candidate successfully');
-        // .then(() => Router.push(`/`));
+        return message.success('Create candidate successfully').then(() => Router.push(`/`));
       }
       return message.error(res.error);
     });
@@ -130,6 +128,9 @@ function UploadCV(props) {
     customRequest: dummyRequest
   };
   const bankName = ['TMCP NGOAI THUONG VIET NAM(VIETCOMBANK)', 'BUSAN', 'BANK OF INDIA', 'E.SUN', 'KY THUONG VN(TECHCOMBANK)', 'VIET NAM THUONG TIN(VIETBANK)', 'SHINHAN VN', 'HONGKONG AND SHANGHAI BANK (HSBC)', 'SAI GON THUONG TIN(SACOMBANK)', 'DBS BANK LTD CN HCM', 'UOB VIETNAM(UOB VN)', 'NNO&PT NONG THON VN(AGRIBANK', 'SAI GON(SCB)', 'DONG A(DONG A BANK', 'BAN VIET(CIET CAPITAL BANK', 'BUU DIEN LIEN VIET(LIEN VIET POST BANK)', 'SIAM COMMERCIAL BANK PUBLIC COMBANK', 'MAY BANK(HN)', 'BANK OF CHINA', 'JD MORGAN CHASE BANK', 'SUMITIMO MITSUI BANKING CORPORA..', 'BNP PARIBAS CHI NHANH HN', 'CONG THUONG VN(VIETTINBANK)', 'XUATNHAPKHAU(EXIMBANK)', 'SAI GON CONG THUONG(SAIGONBANK)', 'VIET NAM THINH VUONG(VP BANK)', 'QUAN DOI(MB)', 'DAI DUONG(OCEANBANK)', 'DAU KHI TOAN CAU(GPBANK)', 'DONG NAM A(SEABANK)', 'XANG DAU PETROLIMEX(PGBANK)', 'SAI GON- HA NOI(SHB)', 'TIEN PHONG(TIEN PHONG BANK)', 'CITI BANK HN', 'HANG HAI HN(MARITIME BANK)', 'QUOC DAN(NCB)', 'OVERSEA-CHINESE BANKING CORP LTD', 'CHINA CONSTRUCTION BANK CORPOR..', 'CIMB BANK', 'CHINH SACH XA HOI(VBSP)', 'XAY DUNG VN(CB BANK)', 'AN BINH(ABBANK)', 'A CHAY(ACB)', 'PHUONG DONG(OCB)', 'BAO VIET(BAO VIET BANK)', 'NAM A(NAM A BANK)', 'WOORI RANK VIET NAM', 'BANGKOK BANK HANOI', 'BANGKOK BANK HCM', 'CTI BANK', 'PUBLIC BANK VN', 'BPCE IOM', 'FIRST COMMERCIAL BANK HANOI', 'MIZUHO CORPORATE BANK LTD.,HN', 'BANK OF COMMUNICATIONS', 'DEUTSCHE BANK', 'CTBC (NHTM CHINATRUST)', 'NH SINOPAC', 'TAIPEI FUBONC.B', 'KIENLONG (KIEN LING BANK)', 'PHAT TRIEN TP HCM(HD BANK)', 'DAI CHUNG(PVCOMBANK)', 'BAC A(BAC A BANK)', 'VIET A (VIET A BANK)', 'PHAT TRIEN VIET NAM(VDB)', 'STANDARD CHARTERED BANK', 'HONG LEONG VN', 'BNP-PARIBAS CN HCM', 'HONG LEONG VN', 'BNP-PARIBAS CN HCM', 'MIZUHO CORPORATE BANK,LTD', 'INDUSTRIAL 7 COMMERCIAL BANK OF..', 'QUOC TE(VIB)', 'DAU TU VA PHAT TRIEN VN(BIDV)'];
+  const language = 'Java, JavaScript, Reactjs, Vuejs, Angular, .Net, Nodejs, ObjectC, Swift, Kotlin, Python, PHP, MySQL, HTML/ CSS, SQL, C#, C++, Spring, AWS, Linux, Cocos2dx, Unity, ASP.NET, Docker, Ruby';
+  const role = [['Account Management'], ['Administration'], ['Backend'], ['Branding'], ['Business Analyst'], ['Business Development'], ['CEO'], ['CFO'], ['CMO'], ['Consultant'], ['Content Creator'], ['COO'], ['CTO'], ['Customer Service'], ['Data Analyst'], ['Designer'], ['Developer'], ['DevOps'], ['Digital Marketing'], ['Engineering'], ['Finace/Accounting'], ['Frontend'], ['Fullstack'], ['Game'], ['General management'], ['HR'], ['HSE'], ['Import - Export'], ['Logistic'], ['maintenance'], ['Management'], ['Market Research'], ['marketing'], ['Merchandising'], ['Mobile'], ['Office Management'], ['Operation Management'], ['Operations'], ['Planning'], ['Product Management'], ['Production'], ['Project Management'], ['Public Relation'], ['QA/QC'], ['Quality Control'], ['Recruitment'], ['Research & Development'], ['Researcher'], ['Sales'], ['Scrum Master'], ['Software Architect'], ['Software Development'], ['Supply Chain'], ['Teacher'], ['Techical Sales'], ['Tester'], ['Traditional Marketing'], ['Trainer']];
+
   return (
     <div className="uploadcv">
 
@@ -182,7 +183,70 @@ function UploadCV(props) {
                   >
                     <Input placeholder="ex: Email" />
                   </Form.Item>
-
+                  <Form.Item
+                    label="Vị trí"
+                    hasFeedback
+                    name="job_role"
+                    rules={[{ required: true, message: 'This field is required !' }]}
+                  >
+                    <Select style={{ width: '100%' }} placeholder="ex: job role">
+                      {
+                        role.map(item => (
+                          <Select.Option key={item} value={item}>{item}</Select.Option>
+                        ))
+                      }
+                    </Select>
+                  </Form.Item>
+                  <Form.Item
+                    label="Ngôn ngữ"
+                    hasFeedback
+                    // name="language"
+                    // rules={[{ required: true, message: 'This field is required !' }]}
+                  >
+                    <Select mode="tags" style={{ width: '100%' }} placeholder="ex: language">
+                      {
+                        language.split(', ')
+                          .map(item => (
+                            <Select.Option key={item} value={item}>{item}</Select.Option>
+                          ))
+                      }
+                    </Select>
+                  </Form.Item>
+                  <Form.Item
+                    label="Cấp độ"
+                    hasFeedback
+                    name="job_level"
+                    rules={[{ required: true, message: 'This field is required !' }]}
+                  >
+                    <Select
+                      placeholder="ex: job level"
+                      mode="tags"
+                      style={{ width: '100%' }}
+                    >
+                      {
+                        'C-level, Department head, Director, Junior, Manager, Middle, Senior, Specialist, Team Leader'.split(', ')
+                          .map(item => (
+                            <Select.Option key={item} value={item}>{item}</Select.Option>
+                          ))
+                      }
+                    </Select>
+                  </Form.Item>
+                  <Form.Item
+                    style={{ width: '100%', marginRight: 16 }}
+                    label="Địa điểm"
+                    hasFeedback
+                    name="locations"
+                    rules={[{ required: true, message: 'This field is required !' }]}
+                  >
+                    <Select mode="tags" style={{ width: '100%' }} placeholder="ex: locations">
+                      {
+                        ['Hồ Chí Minh', 'Hà Nội', 'Đà Nẵng']
+                          .map(item => (
+                            <Select.Option key={item} value={item}>{item}</Select.Option>
+                          ))
+                      }
+                    </Select>
+                  </Form.Item>
                   <Form.Item
                     label="Điện thoại ứng viên"
                     name="phone_number"

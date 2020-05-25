@@ -175,7 +175,7 @@ function JobList(props) {
 
   useEffect(() => {
     dispatch(getListJob(query));
-    dispatch(getCountMyRefer());
+    // dispatch(getCountMyRefer());
     fetchCompany('');
     fetchJobType('');
   }, []);

@@ -159,7 +159,8 @@ export function getCandidateById(params) {
   return async dispatch => {
     try {
       const { data } = await api.sendRequestWithToken('get', `/candidates/${params.id}`);
-      return dispatch({ type: "GET_CANDIDATE_BY_ID_SUCCESS", data });
+      dispatch({ type: "GET_CANDIDATE_BY_ID_SUCCESS", data });
+      return { status: true, data };
     } catch (error) {
       const { data } = error.response;
       return dispatch({ type: "GET_CANDIDATE_BY_ID_FAILURE", error: data.message });
