@@ -43,6 +43,9 @@ function EditCV(props) {
     if(fileLink) {
       data.cv = fileLink;
     }
+    data.bank_name="";
+    data.bank_number="";
+    data.bank_user="";
     await dispatch(updateCandidate({ ...initForm, ...data }, id)).then(res => {
       if (res.status) {
         Router.push('/referrer/my-referred');
@@ -74,7 +77,13 @@ function EditCV(props) {
   };
 
   useEffect(() => {
-    dispatch(getCandidateById({ id })).then(() => form.resetFields());
+    dispatch(getCandidateById({ id })).then(res => {
+      const { data, status } = res;
+      console.log(data);
+      if (status) {
+        form.setFieldsValue(data.data.candidate);
+      }
+    });
   }, []);
 
   const handleDelete = async (candidateId) => {
@@ -121,12 +130,6 @@ function EditCV(props) {
           </Upload>
           <Form
             form={form}
-            initialValues={{
-              name: get(referred, 'candidate_detail.data.candidate.name', []),
-              email: get(referred, 'candidate_detail.data.candidate.email', []),
-              profile_title: get(referred, 'candidate_detail.data.candidate.profile_title', []),
-              phone_number: get(referred, 'candidate_detail.data.candidate.phone_number', []),
-            }}
             {...layout}
             name="basic"
             onFinish={onFinish}

@@ -33,10 +33,10 @@ export const adminSideBar = [
   },
   {
     name: 'Danh sách ứng viên',
-    url: '/superadmin/candidates_list/all'
+    url: '/superadmin/candidates_list'
   },
   {
-    name: 'Công việc accepted',
+    name: 'CV được chấp nhận',
     url: '/job-list'
   },
   {
