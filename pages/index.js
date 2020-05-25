@@ -2,53 +2,19 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Row, Col, Button, Select, Menu, Typography, Card, Layout } from 'antd';
 import { MailOutlined, DollarOutlined } from '@ant-design/icons';
-import Router from 'next/router';
-import Link from 'next/link';
+import HeaderHome from '../components/HeaderHome'
 import './styles.scss';
+import { Router } from 'next/router';
 
 const { Title } = Typography;
 const { Footer } = Layout;
 function Home() {
-  const [current, setCurrent] = useState('');
-  const handleClick = (e) => {
-    setCurrent(e.key);
-  };
+  
   return (
 
     <div className='home-page'>
       <div className="boude-menu">
-        <Row className="menu">
-          <Col span={3} />
-          {/* <Col span={3} >
-            <img src="https://www.rockship.co/images/rs-logo-img.png" alt="#" />
-          </Col> */}
-          <Col span={9} >
-            <a href="/"><img className="name-logo" src="https://www.rockship.co/images/rs-logo-text.png" alt="#" /></a>
-          </Col>
-          <Col span={9} className="task-bar">
-            <Menu onClick={handleClick} selectedKeys={[current]} mode="horizontal">
-              <Menu.Item key="home" icon={<MailOutlined />}>
-                <Link href="/">
-                  <a href="/" style={{ color: 'white' }}>All jobs</a>
-                </Link>
-              </Menu.Item>
-              <Menu.Item key="it-companies" icon={<MailOutlined />}>
-                IT Companies
-        </Menu.Item>
-              <Menu.Item key="blog" icon={<MailOutlined />}>
-                <a href="/blog" style={{ color: 'white' }}>Blog</a>
-              </Menu.Item>
-              <Menu.Item key="upload-cv" icon={<MailOutlined />}>
-                <a href="/upload-candidate" style={{ color: 'white' }}>Upload cv</a>
-              </Menu.Item>
-              <Menu.Item key="login" icon={<MailOutlined />}>
-                <a href="/login" style={{ color: 'white' }}>Đăng nhập</a>
-              </Menu.Item>
-            </Menu>
-          </Col>
-          {/* <Col span={3} /> */}
-          <Col span={3} />
-        </Row>
+        <HeaderHome/>
         <Row className="search">
           <Col span={3} />
           <Col span={12} className="search1">
@@ -164,7 +130,7 @@ function Home() {
               <Row gutter={[8, 8]}style={{padding:10  }}>
                 <Col span={24} >
                   <Title level={3}>TÌM VIỆC KHÓ - CÓ  ROCKSEARCH</Title>
-                  <div className="content-news" style={{marginTop:20, textAlign:'center', marginBottom:20 }}><Button type="danger"  >Upload CV của bạn tại đây</Button></div>
+                  <div className="content-news" style={{marginTop:20, textAlign:'center', marginBottom:20 }}><Button type="danger" href="/upload-home"  >Upload CV của bạn tại đây</Button></div>
                   <Title level={4}>SỞ HỮU NGAY CV XỊN CÙNG VIỆC LÀM MƠ ƯỚC</Title>
                   <p>30.000+ cơ hội việc làm được kết nối thành công qua Rocksearch mỗi ngày</p></Col>
                   
