@@ -121,3 +121,27 @@ export function getAllCompany(params) {
     }
   };
 }
+
+export function getListEmployers(id) {
+  return async dispatch => {
+    try {
+      dispatch({ type: "GET_LIST_REQUEST" });
+      const { data } = await api.sendRequestWithToken('get', `/companies/${id}/employers`);
+      return dispatch({ type: "GET_LIST_EMPLOYERS_SUCCESS", data });
+    } catch (error) {
+      const { data } = error.response;
+      return dispatch({ type: "GET_LIST_EMPLOYERS_FAILURE", error: data.message });
+    }
+  };
+}
+export function createEmployer(payload,company_id) {
+  return async () => {
+    try {
+      await api.sendRequestWithToken('post', `/companies/${company_id}/employers`, null, null,payload);
+      return { status: true };
+    } catch (error) {
+      const { data } = error.response;
+      return { status: false, error: data.message };
+    }
+  };
+}
