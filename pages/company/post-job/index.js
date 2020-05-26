@@ -35,38 +35,38 @@ function jobDetail(props) {
   // };
   return (
     <div className="company-profile" >
-      <div className="header" style={{ backgroud: '#fff', fontWeight: 'bold' }}>Thông tin post job</div>
+      <div className="header" style={{ backgroud: '#fff', fontWeight: 'bold' }}>Số lượt đăng tuyển</div>
       <Row gutter={[16, 16]}>
         <Col span={10} >
           <Row gutter={[16, 8]}>
             <Col span={24}>
               <div className="content" style={{ padding: 18, height: 300 }} >
                 <Row className='row-detail' style={{ paddingTop: 24 }} >
-                  <Col span={8}><span className='bold-span' style={{ fontWeight: 'bold' }}>Số jobs đã post : </span></Col>
-                  <Col span={14}>10 JOBS HOT - 3 THƯỜNG</Col>
+                  <Col span={9}><span className='bold-span' style={{ fontWeight: 'bold' }}>Số lượt đã đăng tuyển : </span></Col>
+                  <Col span={13}>10 lượt ưu tiên - 3 lượt thường</Col>
                 </Row>
                 <Row className='row-detail' style={{ paddingTop: 24 }}>
-                  <Col span={8}><span className='bold-span' style={{ fontWeight: 'bold' }}>Post job hot đã mua: </span></Col>
-                  <Col span={14}>3 JOBS HOT</Col>
+                  <Col span={9}><span className='bold-span' style={{ fontWeight: 'bold' }}>Lượt đăng tuyển ưu tiên đã mua: </span></Col>
+                  <Col span={13}>3 lượt</Col>
                 </Row>
                 <Row className='row-detail' style={{ paddingTop: 24 }} >
-                  <Col span={8}><span className='bold-span' style={{ fontWeight: 'bold' }}>Post job hot còn lại: </span></Col>
-                  <Col span={14}>0 JOBS HOT</Col>
+                  <Col span={9}><span className='bold-span' style={{ fontWeight: 'bold' }}>Lượt đăng tuyển ưu tiên còn lại: </span></Col>
+                  <Col span={13} style={{ fontWeight: 'bold', color: 'blue' }}>0 lượt</Col>
                 </Row>
                 <Row className='row-detail' style={{ paddingTop: 24 }}>
-                  <Col span={8}><span className='bold-span' style={{ fontWeight: 'bold' }}>Post job thường: </span></Col>
-                  <Col span={14}>3 JOBS THƯỜNG</Col>
+                  <Col span={9}><span className='bold-span' style={{ fontWeight: 'bold' }}>Lượt đăng tuyển thường đã mua: </span></Col>
+                  <Col span={13} >3 lượt</Col>
                 </Row>
                 <Row className='row-detail' style={{ paddingTop: 24 }}>
-                  <Col span={8}><span className='bold-span' style={{ fontWeight: 'bold' }}>Post job thường còn lại: </span></Col>
-                  <Col span={14}>1 JOBS THƯỜNG</Col>
+                  <Col span={9}><span className='bold-span' style={{ fontWeight: 'bold' }}>Lượt đăng tuyển thường còn lại: </span></Col>
+                  <Col span={13} style={{ fontWeight: 'bold', color: 'blue' }}>1 lượt</Col>
                 </Row>
               </div>
             </Col>
             <Col span={24}>
-              <div style={{ background: 'white',height:'50vh' }}>
+              <div style={{ background: 'white', height: '50vh' }}>
                 <div style={{ background: 'white', padding: 20 }} >
-                  <Title level={3}>History</Title>
+                  <Title level={3}>Lịch sử hoạt động</Title>
                   <Row className='row-detail' style={{ paddingTop: 24 }} >
                     <Col span={5}>11:33 12-11-2019</Col>
                     <Col span={17}><span className='bold-span' style={{ fontWeight: 'bold' }}>30 JOBS HOT </span> ON 12.11.2019 <span style={{ fontWeight: 'bold', cursor: 'pointer' }}>< EllipsisOutlined /></span> </Col>
@@ -87,12 +87,12 @@ function jobDetail(props) {
               {/* <Col span={4} ><img style={{ padding: 'auto', margin: 'auto', display: 'block', height: 250, width: 250, objectFit: 'scale-down' }} alt="example" src={'get(referred, 'company_detail.data.company.avatar', [])'} /></Col> */}
               <Col span={18} >
                 <div style={{ background: 'white', padding: 20 }} >
-                  <Title level={3}>{get(referred, 'company_detail.data.company.name', [])}[Liên hệ ] với chúng tôi </Title>
-                  <div>{get(referred, 'company_detail.data.company.address', [])}</div>
-                  <div ><FacebookOutlined />&nbsp;<a href={get(referred, 'company_detail.data.company.facebook')} rel="noopener noreferrer" target="_blank">{get(referred, 'company_detail.data.company.facebook')}facebook.com</a></div>
-                  <div ><MailOutlined />&nbsp;<a>{get(referred, 'company_detail.data.company.email_cc')} abc@gmail.com</a></div>
-                  <div ><IeOutlined />&nbsp;<a href={get(referred, 'company_detail.data.company.career_site')} rel="noopener noreferrer" target="_blank">{get(referred, 'company_detail.data.company.career_site')}abc.com</a></div>
-                  <div ><PhoneOutlined />&nbsp;<a>{get(referred, 'company_detail.data.company.phone_number')}03395764324</a></div>
+                  <Title level={3}> [Liên hệ ] {get(profile, 'data.employer.company.name', [])} </Title>
+                  <div>{get(profile, 'data.employer.company.address', [])}</div>
+                  <div ><FacebookOutlined />&nbsp;<a href={get(profile, 'data.employer.company.facebook')} rel="noopener noreferrer" target="_blank">{get(profile, 'data.employer.company.facebook')}</a></div>
+                  <div ><MailOutlined />&nbsp;<a>{get(profile, 'data.employer.company.email_cc')} </a></div>
+                  <div ><IeOutlined />&nbsp;<a href={get(profile, 'data.employer.company.career_site')} rel="noopener noreferrer" target="_blank">{get(profile, 'data.employer.company.career_site')}</a></div>
+                  <div ><PhoneOutlined />&nbsp;<a>{get(profile, 'data.employer.company.phone_number')}</a></div>
                 </div>
               </Col>
               {/* <Col span={5} >
@@ -101,18 +101,22 @@ function jobDetail(props) {
             </Row>
             <Col span={24}>
               <div style={{ background: 'white', padding: 20 }} >
-                <Title level={3}>Bảng giá các gói post jobs: </Title>
+                <Title level={3}>Bảng giá các gói đăng tuyển: </Title>
                 <Row className='row-detail' style={{ paddingTop: 24 }} >
-                  <Col span={3}>JOB HOT</Col>
-                  <Col span={19}><span className='bold-span' style={{ fontWeight: 'bold' }}>1 NĂM </span> GIÁ 2.000.000 VNĐ / POST JOBS </Col>
+                  <Col span={5}>ĐĂNG TUYỂN ƯU TIÊN</Col>
+                  <Col span={17}><span className='bold-span' style={{ fontWeight: 'bold' }}>1 NĂM </span> Gói 3 lượt: 3.250.000 x 3 = 9.750.000 đ giảm giá 16% khi mua 2 gói = 16.380.000 đ </Col>
                 </Row>
                 <Row className='row-detail' style={{ paddingTop: 24 }} >
-                  <Col span={3}>JOB THƯỜNG</Col>
-                  <Col span={19}><span className='bold-span' style={{ fontWeight: 'bold' }}>1 NĂM </span> GIÁ 1.000.000 VNĐ / POST JOBS  </Col>
+                  <Col span={5} >ĐĂNG TUYỂN THƯỜNG</Col>
+                  <Col span={17}>
+                    <Row className='row-detail' >
+                      <Col span={24}><span className='bold-span' style={{ fontWeight: 'bold' }}>1 NĂM </span> Gói 3 lượt: 1.450.000 x 3 = 4.350.000 đ  </Col>
+                      <Col span={24}><span className='bold-span' style={{ fontWeight: 'bold' }}>1 NĂM </span> Gói 5 lượt: 1.450.000 x 5 = 7.250.000 đ giảm giá 16% = 6.090.000 đ  </Col>
+                    </Row>
+                  </Col>
                 </Row>
                 <Row className='row-detail' style={{ paddingTop: 24 }} >
-                  <Col span={3}>5 JOB THƯỜNG</Col>
-                  <Col span={19}><span className='bold-span' style={{ fontWeight: 'bold' }}>1 NĂM </span> GIÁ 5.000.000 VNĐ / 5 POST JOBS  </Col>
+                  <Col span={24}>Nếu hết thời hạn đăng tuyển mà công ty chưa tuyển được nhân viên ở vị trí đó thì chúng tôi sẽ tặng thêm 10 ngày hiển thị.</Col>
                 </Row>
               </div>
             </Col>
@@ -120,12 +124,12 @@ function jobDetail(props) {
               <div style={{ background: 'white', padding: 20 }} >
                 <Title level={3}>Giới thiệu về các gói: </Title>
                 <Row className='row-detail' style={{ paddingTop: 24 }} >
-                  <Col span={3}><span className='bold-span' style={{ fontWeight: 'bold' }}>POST JOB HOT</span></Col>
-                  <Col span={19}> Với mỗi lần post job sẽ trừ trực tiếp vào số lần post đã mua. Mỗi lần dùng bài post sẽ hiển thị trong  vòng 30 ngày và sẽ luôn đứng top trong những công việc hàng đầu niếu bạn không gia hạn công việc sẽ tự động cancel . Niếu bạn gia hạn công việc sẽ tiếp tục tuyển cho đến kỳ post job đã chọn cho công việc. </Col>
+                  <Col span={5}><span className='bold-span' style={{ fontWeight: 'bold' }}>LƯỢT ĐĂNG TUYỂN ƯU TIÊN</span></Col>
+                  <Col span={17}> Với mỗi lần post job sẽ trừ trực tiếp vào số lượt đăng tuyển ưu tiên đã mua. Mỗi lần bài đăng tuyển ưu tiên sẽ hiển thị trong vòng 30 ngày và sẽ luôn đứng top trong những công việc hàng đầu niếu bạn không gia hạn công việc sẽ tự động cancel . Niếu bạn gia hạn công việc sẽ tiếp tục tuyển cho đến kỳ post job đã chọn cho công việc. </Col>
                 </Row>
                 <Row className='row-detail' style={{ paddingTop: 24 }} >
-                  <Col span={3}><span className='bold-span' style={{ fontWeight: 'bold' }}>POST JOB THƯỜNG</span></Col>
-                  <Col span={19}> Với mỗi lần post job sẽ trừ trực tiếp vào số lần post đã mua. Mỗi lần dùng bài post sẽ hiển thị trong  vòng 10 ngày niếu bạn không gia hạn công việc sẽ tự động cancel . Niếu bạn gia hạn công việc sẽ tiếp tục tuyển cho đến kỳ post job đã chọn cho công việc. </Col>
+                  <Col span={5}><span className='bold-span' style={{ fontWeight: 'bold' }}>LƯỢT ĐĂNG TUYỂN THƯỜNG</span></Col>
+                  <Col span={17}> Với mỗi lần post job sẽ trừ trực tiếp vào số lượt đăng tuyển thường đã mua. Mỗi lần dùng bài đăng tuyển thường sẽ hiển thị trong  vòng 30  ngày niếu bạn không gia hạn công việc sẽ tự động cancel . Niếu bạn gia hạn công việc sẽ tiếp tục tuyển cho đến kỳ post job đã chọn cho công việc. </Col>
                 </Row>
               </div>
             </Col>
@@ -136,7 +140,7 @@ function jobDetail(props) {
   );
 }
 function mapStateToProps(state) {
-  // console.log(state);
+  console.log(state);
   const { referred, profile } = state;
   return { referred, profile };
 }
