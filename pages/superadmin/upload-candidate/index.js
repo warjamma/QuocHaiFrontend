@@ -1,22 +1,76 @@
-/* eslint-disable jsx-a11y/iframe-has-title */
 /* eslint-disable react/jsx-props-no-spreading */
-/* eslint-disable no-nested-ternary */
-import React, { useState, useEffect } from 'react';
-import { Col, Row, Popconfirm, Form, Input, Button, Upload, message, Select } from 'antd';
+/* eslint-disable jsx-a11y/iframe-has-title */
+import React, { useState } from 'react';
+import { Input, Menu, Form, Row, Col, Select, Button, Upload, message } from 'antd';
 import Router, { useRouter } from 'next/router';
-import { UploadOutlined } from '@ant-design/icons';
+import { UploadOutlined, MailOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
-import { get, cloneDeep } from 'lodash';
-import { getCandidateById, updateCandidate, deleteCandidate, uploadRequest ,referCandidateForCompany} from '../../../containers/referred/actions';
+import { cloneDeep } from 'lodash';
+import { createCandidateNoAddJob, uploadRequest,referCandidateForCompany,createCandidateAddJob } from '../../../containers/referred/actions';
 import './styles.scss';
 
 const { Option } = Select;
+
+const initForm = {
+  bank_name: "",
+  bank_number: "",
+  bank_user: "",
+  cv: "",
+  name: "",
+  profile_title: "",
+  email: "",
+  phone_number: "",
+  recommendation: "",
+  availability: "none",
+  job_role: ["backend", "frontend"],
+  job_level: ["trash", "junior"],
+  min_salary: 1,
+  max_salary: 2,
+  current_salary: 3,
+  locations: ["Ho Chi Minh", "Trash"],
+  skill: [
+    {
+      "field": "Trash",
+      "years": "3 years",
+      "rating": "Trash"
+    }
+  ],
+  industry_insight: [
+    {
+      "field": "Trash collecting",
+      "years": "whole life",
+      "rating": "Trash"
+    }
+  ],
+  language: [
+    {
+      "field": "Trash",
+      "years": "whole life",
+      "rating": "Trash"
+    }
+  ],
+  experience: [
+    {
+      "industry": "Trash collecting",
+      "role": "Trash collector",
+      "job_title": "Trash collector",
+      "duration": 3
+    }
+  ],
+  education: [
+    {
+      "major": "Trash",
+      "degree": "Trash"
+    }
+  ],
+  certificate: ["Trash", "Trash"]
+};
 const layout = {
   labelCol: { span: 18 },
   wrapperCol: { span: 22 },
 };
 const tailLayout = {
-  wrapperCol: { offset: 0, span: 24 },
+  wrapperCol: { offset: 0, span: 18 },
 };
 
 const dummyRequest = ({ onSuccess }) => {
@@ -24,58 +78,26 @@ const dummyRequest = ({ onSuccess }) => {
     onSuccess("ok");
   }, 0);
 };
-
-function EditCV(props) {
-  const [form] = Form.useForm();
-  const { dispatch, referred } = props;
+function UploadCandidate(props) {
+  const { dispatch } = props;
   const router = useRouter();
-  const { id, status, job_id } = router.query;
-  const initForm = get(referred, `candidate_detail.data.candidate`, []);
+  const { job_id } = router.query;
+
   const [fileLink, setFileLink] = useState('');
   const [fileData, setFileData] = useState([]);
-  const disabledBtn = () => {
-    if (status === 'on_board') {
-      return true;
-    }
-    return false;
-  };
-  const changeName =()=>{
-    if(job_id && id ){
-      return "Giới thiệu";
-    }
-    else if ( id) {
-      return "Cập nhật";
-    }
-  }
   const onFinish = async (value) => {
     const data = cloneDeep(value);
-    if (fileLink) {
-      data.cv = fileLink;
-      data.availability = "none";
-    }
-    await dispatch(updateCandidate({ ...initForm, ...data }, id)).then(res => {
+    data.cv = fileLink;
+    // data.phone_number = initForm.phone_number;
+    dispatch(createCandidateAddJob({ ...initForm, ...data },job_id)).then(res => {
       if (res.status) {
-        return message.success('Update candidate successfully').then(() =>
-         {
-          if(!job_id){
-            Router.push('/superadmin/candidates_list');
-           }
-         }
-         );
+        return message.success('Create candidate successfully').then(() => Router.push(`/superadmin/candidates_list`));
       }
       return message.error(res.error);
     });
-    if(job_id){
-      await dispatch(referCandidateForCompany( {job_id,id})).then(res => {
-        if (res.status) {
-          return message.success('Refer candidate for company succsessfully').then(() => Router.push('/superadmin/candidates_list'));
-        }
-        return message.error(res.error);
-      });
-    }
   };
   const onRequest = async (value) => {
-    await dispatch(uploadRequest({ value })).then(res => {
+    dispatch(uploadRequest({ value })).then(res => {
       setFileLink(res.data);
       if (res.status) {
         return message.success('Upload request');
@@ -87,6 +109,7 @@ function EditCV(props) {
   const onFinishFailed = errorInfo => {
     console.log('Failed:', errorInfo);
   };
+
   const onChange = e => {
     const fileList = [...e.fileList];
     const last = fileList.slice(-1);
@@ -95,29 +118,6 @@ function EditCV(props) {
       onRequest(e.file, e.file.name);
     }
   };
-
-  useEffect(() => {
-    dispatch(getCandidateById({ id })).then(res => {
-      const { data, status } = res;
-      if (status) {
-        form.setFieldsValue(data.data.candidate);
-      }
-    });
-  }, []);
-
-  const handleDelete = async (candidateId) => {
-    await dispatch(deleteCandidate(candidateId)).then(res => {
-      if (res.status) {
-        Router.push('/referrer/my-referred');
-        return message.success('Delete candidate successfully');
-      }
-      return message.error(res.error);
-    });
-  };
-
-  function cancel() {
-    message.error('Cancel');
-  }
 
   const setting = {
     onChange,
@@ -132,28 +132,26 @@ function EditCV(props) {
   const role = [['Account Management'], ['Administration'], ['Backend'], ['Branding'], ['Business Analyst'], ['Business Development'], ['CEO'], ['CFO'], ['CMO'], ['Consultant'], ['Content Creator'], ['COO'], ['CTO'], ['Customer Service'], ['Data Analyst'], ['Designer'], ['Developer'], ['DevOps'], ['Digital Marketing'], ['Engineering'], ['Finace/Accounting'], ['Frontend'], ['Fullstack'], ['Game'], ['General management'], ['HR'], ['HSE'], ['Import - Export'], ['Logistic'], ['maintenance'], ['Management'], ['Market Research'], ['marketing'], ['Merchandising'], ['Mobile'], ['Office Management'], ['Operation Management'], ['Operations'], ['Planning'], ['Product Management'], ['Production'], ['Project Management'], ['Public Relation'], ['QA/QC'], ['Quality Control'], ['Recruitment'], ['Research & Development'], ['Researcher'], ['Sales'], ['Scrum Master'], ['Software Architect'], ['Software Development'], ['Supply Chain'], ['Teacher'], ['Techical Sales'], ['Tester'], ['Traditional Marketing'], ['Trainer']];
 
   return (
-    <div className="Edit-CV" style={{ backgroundColor: 'white' }}>
+    <div className="UploadCandidate" style={{ backgroundColor: 'white' }}>
       <div className="header">
         <div>Hồ sơ ứng viên</div>
       </div>
       <div className="form-body">
         <Row gutter={[16, 16]}>
-          {/* {get(referred, 'candidate_detail', [])} */}
-          <Col span={18}>
-            <iframe className="view-pdf" id="input" value={fileLink} src={fileLink === '' ? (get(referred, 'candidate_detail.data.candidate.cv', []) === '' ? (fileLink) : (get(referred, 'candidate_detail.data.candidate.cv', []))) : (fileLink)} /></Col>
+          <Col span={18} ><iframe className="view-pdf" id="input" value={fileLink} src={fileLink} /></Col>
           <Col span={6}>
             <Upload
               {...setting}
               fileList={fileData}
             >
-              <Button disabled={disabledBtn()}>
+              <Button>
                 <UploadOutlined /> Click to upload
             </Button>
             </Upload>
             <Form
-              form={form}
               {...layout}
               name="basic"
+              // initialValues={{ remember: true }}
               onFinish={onFinish}
               onFinishFailed={onFinishFailed}
               layout="vertical"
@@ -182,75 +180,76 @@ function EditCV(props) {
                 <Input placeholder="ex: Email" />
               </Form.Item>
               <Form.Item
-                    label="Vị trí"
-                    hasFeedback
-                    name="job_role"
-                    rules={[{ required: true, message: 'This field is required !' }]}
-                  >
-                    <Select style={{ width: '100%' }} >
-                      {
-                        role.map(item => (
-                          <Select.Option key={item} value={item}>{item}</Select.Option>
-                        ))
-                      }
-                    </Select>
-                  </Form.Item>
-                  {/* <Form.Item
-                    label="Ngôn ngữ"
-                    hasFeedback
-                    // name="language"
-                    rules={[{ required: true, message: 'This field is required !' }]}
-                  >
-                    <Select mode="tags" style={{ width: '100%' }} >
-                      {
-                        language.split(', ')
-                          .map(item => (
-                            <Select.Option key={item} value={item}>{item}</Select.Option>
-                          ))
-                      }
-                    </Select>
-                  </Form.Item> */}
-                  <Form.Item
-                    label="Cấp độ"
-                    hasFeedback
-                    name="job_level"
-                    rules={[{ required: true, message: 'This field is required !' }]}
-                  >
-                    <Select
-                      mode="tags"
-                      style={{ width: '100%' }}
-                    >
-                      {
-                        'C-level, Department head, Director, Junior, Manager, Middle, Senior, Specialist, Team Leader'.split(', ')
-                          .map(item => (
-                            <Select.Option key={item} value={item}>{item}</Select.Option>
-                          ))
-                      }
-                    </Select>
-                  </Form.Item>
-                  <Form.Item
-                    style={{ width: '100%', marginRight: 16 }}
-                    label="Địa điểm"
-                    hasFeedback
-                    name="locations"
-                    rules={[{ required: true, message: 'This field is required !' }]}
-                  >
-                    <Select mode="tags" style={{ width: '100%' }} >
-                      {
-                        ['Hồ Chí Minh', 'Hà Nội', 'Đà Nẵng']
-                          .map(item => (
-                            <Select.Option key={item} value={item}>{item}</Select.Option>
-                          ))
-                      }
-                    </Select>
-                  </Form.Item>
-
+                label="Vị trí"
+                hasFeedback
+                name="job_role"
+                rules={[{ required: true, message: 'This field is required !' }]}
+              >
+                <Select style={{ width: '100%' }} placeholder="ex: job role">
+                  {
+                    role.map(item => (
+                      <Select.Option key={item} value={item}>{item}</Select.Option>
+                    ))
+                  }
+                </Select>
+              </Form.Item>
+              <Form.Item
+                label="Ngôn ngữ"
+                hasFeedback
+              // name="language"
+              // rules={[{ required: true, message: 'This field is required !' }]}
+              >
+                <Select mode="tags" style={{ width: '100%' }} placeholder="ex: language">
+                  {
+                    language.split(', ')
+                      .map(item => (
+                        <Select.Option key={item} value={item}>{item}</Select.Option>
+                      ))
+                  }
+                </Select>
+              </Form.Item>
+              <Form.Item
+                label="Cấp độ"
+                hasFeedback
+                name="job_level"
+                rules={[{ required: true, message: 'This field is required !' }]}
+              >
+                <Select
+                  placeholder="ex: job level"
+                  mode="tags"
+                  style={{ width: '100%' }}
+                >
+                  {
+                    'C-level, Department head, Director, Junior, Manager, Middle, Senior, Specialist, Team Leader'.split(', ')
+                      .map(item => (
+                        <Select.Option key={item} value={item}>{item}</Select.Option>
+                      ))
+                  }
+                </Select>
+              </Form.Item>
+              <Form.Item
+                style={{ width: '100%', marginRight: 16 }}
+                label="Địa điểm"
+                hasFeedback
+                name="locations"
+                rules={[{ required: true, message: 'This field is required !' }]}
+              >
+                <Select mode="tags" style={{ width: '100%' }} placeholder="ex: locations">
+                  {
+                    ['Hồ Chí Minh', 'Hà Nội', 'Đà Nẵng']
+                      .map(item => (
+                        <Select.Option key={item} value={item}>{item}</Select.Option>
+                      ))
+                  }
+                </Select>
+              </Form.Item>
               <Form.Item
                 label="Điện thoại ứng viên"
                 name="phone_number"
               >
                 <Input placeholder="ex: Phone Number" />
               </Form.Item>
+
               <Form.Item
                 name='bank_name'
                 label="Tên ngân hàng"
@@ -287,22 +286,10 @@ function EditCV(props) {
               </Form.Item>
 
               <Form.Item {...tailLayout}>
-                <Button type="primary"  htmlType="submit" disabled={disabledBtn()}>
-                  {changeName()}
+                <Button type="primary" htmlType="submit">
+                  Gửi ứng viên
               </Button>
-
-                <Popconfirm
-                  title="Are you sure delete title?"
-                  onConfirm={() => handleDelete(id)}
-                  onCancel={cancel}
-                  okText="Yes"
-                  cancelText="No"
-                >
-                  {/* <Button style={{ margin: '0 8px' }} type="primary" htmlType="submit">
-                  Xóa
-                </Button> */}
-                </Popconfirm>
-                <Button className="btn-cance" onClick={() => Router.push('/superadmin/candidates_list')} htmlType="button"  >
+                <Button className="btn-cance" onClick={() => Router.push(`/superadmin/candidates_list`)} htmlType="button"   >
                   Hủy
               </Button>
               </Form.Item>
@@ -310,13 +297,8 @@ function EditCV(props) {
           </Col>
         </Row>
       </div>
-    </div>
+    </div >
   );
 }
 
-function mapStateToProps(state) {
-  const { referred } = state;
-  return { referred };
-}
-
-export default connect(mapStateToProps, null)(EditCV);
+export default connect()(UploadCandidate);

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Row, Col, Button, Select, Menu, Typography, Card, Layout } from 'antd';
 import { MailOutlined, DollarOutlined } from '@ant-design/icons';
 import HeaderHome from '../components/HeaderHome'
+import FooterHome from '../components/FooterHome';
 import './styles.scss';
 import { Router } from 'next/router';
 
@@ -109,21 +110,6 @@ function Home() {
                 {/* <Col span={3} /> */}
               </Row>
             </div>
-            
-            <div className="news">
-              <Row gutter={[8, 8]}>
-                {/* <Col span={3} /> */}
-                <Col span={9} >
-                  <img className="img-news" alt="#" src="https://img.vn/uploads/thuvien/viber-image-2019-08-06-10-40-38-jpg-20190807145944LO3qbinQdG.jpg" />
-                </Col>
-                <Col span={15}  >
-                  <Title level={3}>Why You'll Love Working Here</Title>
-                  <div className="content-news">Ever wanted an image to fit exactly into a certain given dimension, but while keeping its aspect ratio and avoid having a squished image? This wasn’t something that could easily be done using CSS for the longest time. One trick was to resort to using a background image instead to go around the issue. Well the problem is no more with the object-fit property!</div>
-                </Col>
-                {/* <Col span={3} /> */}
-              </Row>
-            </div>
-
           </Col>
           <Col span={4}  >
             <div className="news-right">
@@ -145,7 +131,7 @@ function Home() {
           <Col span={3} />
         </Row>
       </div>
-      <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
+      <FooterHome/>
     </div>
     
   );

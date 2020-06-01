@@ -27,7 +27,7 @@ function jobDetail(props) {
     const router = useRouter();
     console.log(router);
     const { id } = router.query;
-    const job_id=id;
+    const job_id = id;
     const [visible, setVisible] = useState(false);
     const showModal = () => {
         setVisible(true);
@@ -41,22 +41,28 @@ function jobDetail(props) {
     const pushRouter = (id) => {
         Router.push({
             pathname: `/superadmin/edit-cv`,
-            query: { id ,job_id},
+            query: { id, job_id },
+        });
+    };
+    const pushUploadCandidate = () => {
+        Router.push({
+            pathname: `/superadmin/upload-candidate`,
+            query: { job_id },
         });
     };
     const [query, setQuery] = useState(initQuery);
     const columns = [
         {
-            title: 'Ten ung vien',
+            title: 'Tên ứng viên',
             dataIndex: 'admin_id',
             render: (text, record, index) => (
-              <div className="custom-role" onClick={() => pushRouter(record.id)}>
-                <div className="job-role" style={{fontWeight:'Bold',color:'blue',cursor: 'pointer'}}>
-                  {record.name}
+                <div className="custom-role" onClick={() => pushRouter(record.id)}>
+                    <div className="job-role" style={{ fontWeight: 'Bold', color: 'blue', cursor: 'pointer' }}>
+                        {record.name}
+                    </div>
                 </div>
-              </div>
             ),
-          },
+        },
         {
             title: 'Tên hồ sơ hiển thị',
             dataIndex: 'profile_title'
@@ -165,7 +171,8 @@ function jobDetail(props) {
                         })}
 
                         <div style={{ marginBottom: 10 }}><CalendarOutlined /> {moment(get(referred, 'job_detail.data.job.updated_at', [])).fromNow()}</div>
-                        <Button style={(get(profile, 'data.employer.role') === 'admin') ? ({ visibility: "hidden" }) : ({ float: 'left', marginRight: 5, width: '40%', display: 'block' })} type="primary" onClick={() => Router.push(`/referrer/upload-cv/${id}`)} block>Giới thiệu ứng viên</Button>
+                        <Button style={(get(profile, 'data.employer.role') === 'admin' || (get(profile, 'data.recruiter.role') === 'superadmin')) ? ({ visibility: "hidden" }) : ({ float: 'left', marginRight: 5, width: '40%', display: 'block' })} type="primary" onClick={() => Router.push(`/referrer/upload-cv/${id}`)} block>Giới thiệu ứng viên</Button>
+                        <Button style={(get(profile, 'data.recruiter.role') !== 'superadmin') ? ({ visibility: "hidden", height: 0, width: 0 }) : ({ float: 'left', marginRight: 5, width: '40%', display: 'block' })} type="primary" onClick={() => pushUploadCandidate()} block>Giới thiệu ứng viên</Button>
                         <Button onClick={download} style={{ float: 'left', width: '40%' }} disabled={!!(get(referred, 'job_detail.data.job.jd_files') === '' || get(referred, 'job_detail.data.job.jd_files') == null)} type="primary" block>Dowload JD</Button>
                         <div className="model-button" style={((get(profile, 'data.recruiter.role') !== 'superadmin')) ? ({ visibility: "hidden" }) : ({ float: 'left', marginRight: 5, width: '40%', display: 'block', marginTop: 10 })}>
                             <Button onClick={showModal} type="primary" block>Giới thiệu ứng viên từ danh sách có sẵn</Button>
