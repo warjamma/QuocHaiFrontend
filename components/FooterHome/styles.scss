@@ -1,0 +1,41 @@
+.footer {
+  background: #222222;
+  color: white;
+  padding-bottom: 94px;
+  .pt5 {
+    padding-top: 50px;
+  }
+  .titleft {
+    padding-bottom: 40px;
+    font-family: montserrat;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 25.6px;
+    line-height: 31px;
+    line-height: 100%;
+    // align: Left;
+    vertical-align: Top;
+    color: #ffffff;
+    // margin: 0px 40px;
+  }
+  .txt {
+    font-family: montserrat;
+    font-style: medium;
+    font-size: 12px;
+    line-height: 23px;
+    // line-height: 137%;
+    vertical-align: top;
+    // paragraph-spacing:32px;
+    fill: Solid #ffffff;
+  }
+  .iconft {
+    font-weight: bold;
+    font-size: 33px;
+  }
+  .col-sm-1.iconftleft {
+    font-size: 20px;
+  }
+  .row.lineft {
+    line-height: 28px;
+}
+}

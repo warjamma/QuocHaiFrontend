@@ -154,7 +154,19 @@ export function createCandidateNoAddJob(payload) {
     }
   };
 }
-
+export function createCandidateAddJob(payload, idJob) {
+  return async () => {
+    try {
+      api.sendRequestWithToken('post', '/admin/candidates', null,  {"accept": "application/json"}, payload).then(response => {
+        api.sendRequestWithToken('post', '/refers', null, { 'Content-Type': 'application/json' }, { "job_id": idJob, "candidate_id": response.data.data.candidate.id });
+      });
+      return { status: true };
+    } catch (error) {
+      const { data } = error.response;
+      return { status: false, error: data.message };
+    }
+  };
+}
 export function getCandidateById(params) {
   return async dispatch => {
     try {
