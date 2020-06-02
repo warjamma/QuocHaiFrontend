@@ -50,7 +50,7 @@ const columns = [
           />
         </div>
         <div className="info-required">
-          <b role="presentation" className="name-company" onClick={() => Router.push(`/company-profile/${get(record, 'company_id')}`)}>{get(record, 'company.name', '')}</b>
+          <b role="presentation" className="name-company" onClick={() => Router.push(`/job-detail/${record.id}`)}>{get(record, 'company.name', '')}</b>
           <div className="job-level">
             <span>Cấp độ:&nbsp;</span>
             {

@@ -192,7 +192,8 @@ function MyReferred(props) {
           <Col span={24}>
             <div className="filter-button">
               <Button onClick={() => handleFilter()} icon={<SearchOutlined />} type="primary">Tìm kiếm</Button>
-              <Button icon={<RedoOutlined />} onClick={() => resetSearch()} type="primary">Làm mới</Button>
+              <Button icon={<RedoOutlined />} style={{marginRight:10}} onClick={() => resetSearch()} type="primary">Làm mới</Button>
+              <Button icon={<RedoOutlined />} onClick={() => Router.push('/job-list')} type="primary">Giới thiệu ứng viên</Button>
             </div>
           </Col>
         </Row>

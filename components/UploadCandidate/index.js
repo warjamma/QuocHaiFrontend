@@ -91,7 +91,7 @@ function UploadCandidate(props) {
     // data.phone_number = initForm.phone_number;
     dispatch(createCandidateNoAddJob({ ...initForm, ...data })).then(res => {
       if (res.status) {
-        return message.success('Create candidate successfully').then(() => Router.push(`/blog`));
+        return message.success('Create candidate successfully').then(() => Router.push(`/upload-home`));
       }
       return message.error(res.error);
     });
@@ -286,7 +286,7 @@ function UploadCandidate(props) {
                 <Button type="primary" htmlType="submit">
                   Gửi ứng viên
               </Button>
-                <Button className="btn-cance" onClick={() => Router.push(`/blog`)} htmlType="button"   >
+                <Button className="btn-cance" onClick={() => Router.push(`/upload-home`)} htmlType="button"   >
                   Hủy
               </Button>
               </Form.Item>

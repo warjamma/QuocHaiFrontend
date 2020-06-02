@@ -4,12 +4,7 @@ import Router from 'next/router';
 import Link from 'next/link';
 import { FacebookOutlined, LinkedinOutlined, TwitterOutlined, MediumOutlined, MailOutlined, PhoneOutlined, ToTopOutlined } from '@ant-design/icons';
 import './styles.scss';
-
 function HeaderHome() {
-  const [current, setCurrent] = useState('');
-  const handleClick = (e) => {
-    setCurrent(e.key);
-  };
   return (
     <div className="footer">
       <div className="container pt5">
