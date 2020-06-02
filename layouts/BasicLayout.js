@@ -64,6 +64,20 @@ function BasicLayout(props) {
     }
     return referrerSideBar;
   };
+  const imgLogo = () => {
+    if (get(profile, 'data.employer', '')) {
+      return get(profile,"data.employer.company.avatar");
+    }
+    if(get(profile, 'data.recruiter.role', '')==="superadmin"){
+      const img="https://www.rockship.co/images/rs-logo-img.png";
+      return img;
+    }
+    if (get(profile, 'data.recruiter', '') ){
+      return get(profile,"data.recruiter.avatar");
+    }
+    return "https://www.rockship.co/images/rs-logo-img.png";
+    
+  };
 
   const content = (
     <Menu className="notificationList">
@@ -105,7 +119,9 @@ function BasicLayout(props) {
             zIndex: 3
           }}
           trigger={null} collapsible collapsed={collapsed}>
-          <div className="logo" />
+          <div className="logo" >
+            <img className="logo" src={imgLogo()} alt="avatar"/>
+          </div>
           <Menu theme="dark" mode="inline">
             {
               sidebarMenu().map((item, key) => (

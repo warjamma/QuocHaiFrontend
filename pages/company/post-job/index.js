@@ -82,6 +82,7 @@ function jobDetail(props) {
         </Col>
         <Col span={14}>
           <div className="content"   >
+            <Title level={3} >Vui lòng liên hệ với chúng tôi để được tư vấn và mua gói đăng tuyển phù hợp nhất!</Title>
             <Row gutter={[16, 16]}>
               <Col span={6} ><img style={{ padding: 'auto', margin: 'auto', display: 'block', height: 250, width: 250, objectFit: 'scale-down' }} alt="example" src='https://d3t1myknaqth5d.cloudfront.net/files/1589253980.jpeg' /></Col>
               {/* <Col span={4} ><img style={{ padding: 'auto', margin: 'auto', display: 'block', height: 250, width: 250, objectFit: 'scale-down' }} alt="example" src={'get(referred, 'company_detail.data.company.avatar', [])'} /></Col> */}
