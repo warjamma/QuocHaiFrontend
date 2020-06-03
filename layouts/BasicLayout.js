@@ -34,15 +34,25 @@ const error = (mess) => {
 function BasicLayout(props) {
   const { dispatch, profile, children } = props;
   const [collapsed, setcollapsed] = useState(false);
+  const [time,setTime]= useState(1000*3600);
+  // document.onclick=()=>{
+  //   setTime(1000*3600);
+  // };
+  // document.onkeypress=()=>{
+  //   setTime(1000*3600);
+  // };
+  // document.onmousemove=()=>{
+  //   setTime(1000*3600);
+  // };
   const logOut = async () => {
     
     await dispatch(logOutRequest());
     Router.push('/login');
   };
   useEffect(() => {
-    const timer = setTimeout(()=>logOut(), 3600 * 1000);
+    const timer = setTimeout(()=>logOut(), time);
      return () => clearTimeout(timer);
-  }, []);
+  }, [time]);
   useEffect(() => {
     if (get(profile, 'error', false) && (get(profile, 'message', ''))) {
       error(get(profile, 'message', ''));

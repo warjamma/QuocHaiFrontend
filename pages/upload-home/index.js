@@ -79,7 +79,7 @@ function Home() {
         <Title level={3}>TÌM VIỆC KHÓ - CÓ  ROCKSEARCH</Title>
         <UploadCandidate />
       </div>
-      <div style={{ marginTop: 200 }}> <FooterHome /></div>
+      <div> <FooterHome /></div>
     </div>
 
   );
