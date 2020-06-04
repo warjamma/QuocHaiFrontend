@@ -34,16 +34,7 @@ const error = (mess) => {
 function BasicLayout(props) {
   const { dispatch, profile, children } = props;
   const [collapsed, setcollapsed] = useState(false);
-  const [time,setTime]= useState(1000*3600);
-  // document.onclick=()=>{
-  //   setTime(1000*3600);
-  // };
-  // document.onkeypress=()=>{
-  //   setTime(1000*3600);
-  // };
-  // document.onmousemove=()=>{
-  //   setTime(1000*3600);
-  // };
+  const [time,setTime]= useState(3600*1000 );
   const logOut = async () => {
     
     await dispatch(logOutRequest());
@@ -51,6 +42,15 @@ function BasicLayout(props) {
   };
   useEffect(() => {
     const timer = setTimeout(()=>logOut(), time);
+    document.onclick=()=>{
+      setTime(1000*3600);
+    };
+    document.onkeypress=()=>{
+      setTime(1000*3600);
+    };
+    document.onload=()=>{
+      setTime(1000*3600);
+    };
      return () => clearTimeout(timer);
   }, [time]);
   useEffect(() => {
