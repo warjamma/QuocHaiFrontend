@@ -126,11 +126,11 @@ function jobDetail(props) {
                 <Title level={3}>Giới thiệu về các gói: </Title>
                 <Row className='row-detail' style={{ paddingTop: 24 }} >
                   <Col span={5}><span className='bold-span' style={{ fontWeight: 'bold' }}>LƯỢT ĐĂNG TUYỂN ƯU TIÊN</span></Col>
-                  <Col span={17}> Với mỗi lần post job sẽ trừ trực tiếp vào số lượt đăng tuyển ưu tiên đã mua. Mỗi lần bài đăng tuyển ưu tiên sẽ hiển thị trong vòng 30 ngày và sẽ luôn đứng top trong những công việc hàng đầu niếu bạn không gia hạn công việc sẽ tự động cancel . Niếu bạn gia hạn công việc sẽ tiếp tục tuyển cho đến kỳ post job đã chọn cho công việc. </Col>
+                  <Col span={17}> Với mỗi lần post job sẽ trừ trực tiếp vào số lượt đăng tuyển ưu tiên đã mua. Mỗi lần bài đăng tuyển ưu tiên sẽ hiển thị trong vòng 20 ngày và sẽ Được hiển thị đầu trang Danh sách Job với kích thước baner lớn và được gắn thẻ nổi HOT. Niếu bạn không gia hạn công việc sẽ tự động cancel . Niếu bạn gia hạn công việc sẽ tiếp tục tuyển cho đến kỳ post job đã chọn cho công việc. </Col>
                 </Row>
                 <Row className='row-detail' style={{ paddingTop: 24 }} >
                   <Col span={5}><span className='bold-span' style={{ fontWeight: 'bold' }}>LƯỢT ĐĂNG TUYỂN THƯỜNG</span></Col>
-                  <Col span={17}> Với mỗi lần post job sẽ trừ trực tiếp vào số lượt đăng tuyển thường đã mua. Mỗi lần dùng bài đăng tuyển thường sẽ hiển thị trong  vòng 30  ngày niếu bạn không gia hạn công việc sẽ tự động cancel . Niếu bạn gia hạn công việc sẽ tiếp tục tuyển cho đến kỳ post job đã chọn cho công việc. </Col>
+                  <Col span={17}> Với mỗi lần post job sẽ trừ trực tiếp vào số lượt đăng tuyển thường đã mua. Mỗi lần dùng bài đăng tuyển thường sẽ hiển thị trong  vòng 30  ngày Hiển Thị sau hot job với kích thước hiển thị bình thường niếu bạn không gia hạn công việc sẽ tự động cancel . Niếu bạn gia hạn công việc sẽ tiếp tục tuyển cho đến kỳ post job đã chọn cho công việc. </Col>
                 </Row>
               </div>
             </Col>
