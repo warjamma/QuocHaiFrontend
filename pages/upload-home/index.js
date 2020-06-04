@@ -4,6 +4,7 @@ import { Button, Typography } from 'antd';
 import HeaderHome from '../../components/HeaderHome';
 import UploadCandidate from '../../components/UploadCandidate';
 import FooterHome from '../../components/FooterHome';
+import MenuHome from '../../components/MenuHome';
 import JobInfo from '../../components/JobInfo';
 import './styles.scss';
 
@@ -22,7 +23,8 @@ function Home() {
 
     <div className='home-page'>
       <div className="boude-menu">
-        <HeaderHome />
+        {/* <HeaderHome /> */}
+        <MenuHome/>
       </div>
       {/* <div className="content-page">
 

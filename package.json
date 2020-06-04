@@ -19,6 +19,7 @@
     "axios": "^0.19.2",
     "babel-eslint": "^10.1.0",
     "cacheable-response": "^1.10.0",
+    "classnames": "^2.2.6",
     "dotenv": "^8.2.0",
     "es6-promise": "^4.2.8",
     "express": "^4.17.1",
