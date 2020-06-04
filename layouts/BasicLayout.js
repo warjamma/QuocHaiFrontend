@@ -40,6 +40,10 @@ function BasicLayout(props) {
     await dispatch(logOutRequest());
     Router.push('/login');
   };
+  window.onunload  = async() => {
+    await dispatch(logOutRequest());
+    Router.push('/login');
+  };
   useEffect(() => {
     const timer = setTimeout(()=>logOut(), time);
     document.onclick=()=>{
