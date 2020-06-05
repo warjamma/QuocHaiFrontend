@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import Router, { withRouter } from 'next/router';
 import { get } from 'lodash';
 import { Layout, Menu, Dropdown, message, Badge } from 'antd';
+
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
@@ -15,6 +16,8 @@ import {
   BellFilled,
   InboxOutlined,
 } from '@ant-design/icons';
+// import {getProfileById} from '../containers/company/action';
+import {getProfileByIdRef} from '../containers/referred/actions';
 
 import { requireAuthentication } from "../lib/auth";
 import { companySideBar, adminSideBar, referrerSideBar } from "../ultils/sidebar";
@@ -32,7 +35,7 @@ const error = (mess) => {
 };
 
 function BasicLayout(props) {
-  const { dispatch, profile, children } = props;
+  const { dispatch, profile, children,company,referred } = props;
   const [collapsed, setcollapsed] = useState(false);
   const [time,setTime]= useState(3600*1000 );
   const logOut = async () => {
@@ -40,7 +43,7 @@ function BasicLayout(props) {
     await dispatch(logOutRequest());
     Router.push('/login');
   };
-  // window.onbeforeunload   = async() => {
+  // window.onunload   = async() => {
   //   await dispatch(logOutRequest());
   //   Router.push('/login');
   // };
@@ -64,7 +67,11 @@ function BasicLayout(props) {
     }
     // setToken(localStorage.getItem('token'))
   });
-
+  // const id = get(profile, 'data.employer.company.id', []);
+  useEffect(() => {
+    // dispatch(getProfileById({ id }));
+    // dispatch(getProfileByIdRef({ id }));
+  }, []);
   const toggle = () => {
     setcollapsed(!collapsed);
   };
@@ -80,6 +87,7 @@ function BasicLayout(props) {
   };
   const imgLogo = () => {
     if (get(profile, 'data.employer', '')) {
+      // return get(company,"company_detail.data.company.avatar");
       return get(profile,"data.employer.company.avatar");
     }
     if(get(profile, 'data.recruiter.role', '')==="superadmin"){
@@ -88,6 +96,7 @@ function BasicLayout(props) {
     }
     if (get(profile, 'data.recruiter', '') ){
       return get(profile,"data.recruiter.avatar");
+      // return get(referred,"recruiter_detail.data.recruiter.avatar");
     }
     return "https://www.rockship.co/images/rs-logo-img.png";
     
@@ -211,9 +220,11 @@ function BasicLayout(props) {
 }
 
 function mapStateToProps(state) {
-  const { profile } = state;
+  const { profile,company,referred } = state;
   return {
-    profile
+    profile,
+    company,
+    referred
   };
 }
 

@@ -8,7 +8,7 @@ import {
 import { connect } from 'react-redux';
 import { Card, Input, Form, Row, Col, notification, Select, Tabs, Button, Upload, message } from 'antd';
 import { get, cloneDeep } from 'lodash';
-import { uploadRequestImg, updateProfile, getProfileById } from '../../../containers/referred/actions';
+import { uploadRequestImg, updateProfile, getProfileByIdRef } from '../../../containers/referred/actions';
 import './styles.scss';
 
 const layout = {
@@ -317,7 +317,7 @@ function CompanyProfile(props) {
   };
   const id = get(profile, 'data.recruiter.id', []);
   useEffect(() => {
-    dispatch(getProfileById({ id }))
+    dispatch(getProfileByIdRef({ id }))
       .then(res => {
         const { data, status } = res;
         if (status) {
