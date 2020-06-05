@@ -15,7 +15,7 @@ export function updateProfile(payload, id) {
     }
   };
 }
-export function getProfileById(params) {
+export function getProfileByIdRef(params) {
   
   return async dispatch => {
     try {
