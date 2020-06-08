@@ -44,24 +44,26 @@ function jobDetail(props) {
                 <Col span={8}  >
                     <div className="content" style={{ padding: 18, height: 300 }} >
                         <Row className='row-detail' style={{ paddingTop: 24 }} >
-                            <Col span={10}><span className='bold-span' style={{ fontWeight: 'bold' }}>Số jobs: </span></Col>
-                            <Col span={14}>10 JOBS</Col>
+                            <Col span={12}><span className='bold-span' style={{ fontWeight: 'bold' }}>Số lượt đã đăng tuyển : </span></Col>
+                            <Col span={12}>10 LƯỢT ƯU TIÊN - 3 LƯỢT THƯỜNG</Col>
                         </Row>
                         <Row className='row-detail' style={{ paddingTop: 24 }}>
-                            <Col span={10}><span className='bold-span' style={{ fontWeight: 'bold' }}>Post job hot đã mua: </span></Col>
-                            <Col span={14}>3 JOBS HOT</Col>
+                            <Col span={12}><span className='bold-span' style={{ fontWeight: 'bold' }}>Lượt đăng tuyển ưu tiên đã mua:
+ </span></Col>
+                            <Col span={12}>{get(referred, 'company_detail.data.company.purchas_job_proritize_available_to_post')?get(referred, 'company_detail.data.company.purchas_job_proritize_available_to_post'):0} LƯỢT</Col>
                         </Row>
                         <Row className='row-detail' style={{ paddingTop: 24 }} >
-                            <Col span={10}><span className='bold-span' style={{ fontWeight: 'bold' }}>Post job hot còn lại: </span></Col>
-                            <Col span={14}>0 JOBS HOT</Col>
+                            <Col span={12}><span className='bold-span' style={{ fontWeight: 'bold' }}>Lượt đăng tuyển ưu tiên còn lại: </span></Col>
+                            <Col span={12}>{get(referred, 'company_detail.data.company.purchas_job_available_to_post')?get(referred, 'company_detail.data.company.purchas_job_available_to_post'):0} LƯỢT</Col>
                         </Row>
                         <Row className='row-detail' style={{ paddingTop: 24 }}>
-                            <Col span={10}><span className='bold-span' style={{ fontWeight: 'bold' }}>Post job thường: </span></Col>
-                            <Col span={14}>3 JOBS THƯỜNG</Col>
+                            <Col span={12}><span className='bold-span' style={{ fontWeight: 'bold' }}>Lượt đăng tuyển thường đã mua:
+ </span></Col>
+                            <Col span={12}>{get(referred, 'company_detail.data.company.job_proritize_available_to_post')?get(referred, 'company_detail.data.company.job_proritize_available_to_post'):0} LƯỢT</Col>
                         </Row>
                         <Row className='row-detail' style={{ paddingTop: 24 }}>
-                            <Col span={10}><span className='bold-span' style={{ fontWeight: 'bold' }}>Post job thường còn lại: </span></Col>
-                            <Col span={14}>1 JOBS THƯỜNG</Col>
+                            <Col span={12}><span className='bold-span' style={{ fontWeight: 'bold' }}>Lượt đăng tuyển thường còn lại: </span></Col>
+                            <Col span={12}>{get(referred, 'company_detail.data.company.job_available_to_post')?get(referred, 'company_detail.data.company.job_available_to_post'):0} LƯỢT</Col>
                         </Row>
                     </div>
                 </Col>

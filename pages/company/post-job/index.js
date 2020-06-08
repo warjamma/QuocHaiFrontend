@@ -13,6 +13,7 @@ import {
   EllipsisOutlined
 } from '@ant-design/icons';
 import { getCompanyById } from '../../../containers/referred/actions';
+import { getHistory } from  '../../../containers/company/action';
 import './styles.scss';
 
 
@@ -21,7 +22,7 @@ function jobDetail(props) {
   const router = useRouter();
   const { id } = router.query;
 
-  const { dispatch, referred, profile } = props;
+  const { dispatch, referred, profile, company } = props;
   // get(profile,)
   // useEffect(() => {
   //   dispatch(getCompanyById({ id }));
@@ -33,6 +34,9 @@ function jobDetail(props) {
   //     query: { name },
   //   });
   // };
+  useEffect(()=>{
+    dispatch(getHistory());
+  },[]);
   return (
     <div className="company-profile" >
       <div className="header" style={{ backgroud: '#fff', fontWeight: 'bold' }}>Số lượt đăng tuyển</div>
@@ -43,23 +47,23 @@ function jobDetail(props) {
               <div className="content" style={{ padding: 18, height: 300 }} >
                 <Row className='row-detail' style={{ paddingTop: 24 }} >
                   <Col span={9}><span className='bold-span' style={{ fontWeight: 'bold' }}>Số lượt đã đăng tuyển : </span></Col>
-                  <Col span={13}>10 lượt ưu tiên - 3 lượt thường</Col>
+                  <Col span={13}>10 LƯỢT ƯU TIÊN - 3 LƯỢT THƯỜNG</Col>
                 </Row>
                 <Row className='row-detail' style={{ paddingTop: 24 }}>
                   <Col span={9}><span className='bold-span' style={{ fontWeight: 'bold' }}>Lượt đăng tuyển ưu tiên đã mua: </span></Col>
-                  <Col span={13}>3 lượt</Col>
+                  <Col span={13}>{get(profile, 'data.employer.company.purchas_job_proritize_available_to_post')?get(profile, 'data.employer.company.purchas_job_proritize_available_to_post'):0} LƯỢT</Col>
                 </Row>
                 <Row className='row-detail' style={{ paddingTop: 24 }} >
                   <Col span={9}><span className='bold-span' style={{ fontWeight: 'bold' }}>Lượt đăng tuyển ưu tiên còn lại: </span></Col>
-                  <Col span={13} style={{ fontWeight: 'bold', color: 'blue' }}>0 lượt</Col>
+                  <Col span={13} style={{ fontWeight: 'bold', color: 'blue' }}>{get(profile, 'data.employer.company.purchas_job_available_to_post')?get(profile, 'data.employer.company.purchas_job_available_to_post'):0} LƯỢT</Col>
                 </Row>
                 <Row className='row-detail' style={{ paddingTop: 24 }}>
                   <Col span={9}><span className='bold-span' style={{ fontWeight: 'bold' }}>Lượt đăng tuyển thường đã mua: </span></Col>
-                  <Col span={13} >3 lượt</Col>
+                  <Col span={13} >{get(profile, 'data.employer.company.job_proritize_available_to_post')?get(profile, 'data.employer.company.job_proritize_available_to_post'):0} LƯỢT</Col>
                 </Row>
                 <Row className='row-detail' style={{ paddingTop: 24 }}>
                   <Col span={9}><span className='bold-span' style={{ fontWeight: 'bold' }}>Lượt đăng tuyển thường còn lại: </span></Col>
-                  <Col span={13} style={{ fontWeight: 'bold', color: 'blue' }}>1 lượt</Col>
+                  <Col span={13} style={{ fontWeight: 'bold', color: 'blue' }}>{get(profile, 'data.employer.company.job_available_to_post')?get(profile, 'data.employer.company.job_available_to_post'):0} LƯỢT</Col>
                 </Row>
               </div>
             </Col>
@@ -68,12 +72,20 @@ function jobDetail(props) {
                 <div style={{ background: 'white', padding: 20 }} >
                   <Title level={3}>Lịch sử hoạt động</Title>
                   <Row className='row-detail' style={{ paddingTop: 24 }} >
-                    <Col span={5}>11:33 12-11-2019</Col>
-                    <Col span={17}><span className='bold-span' style={{ fontWeight: 'bold' }}>30 JOBS HOT </span> ON 12.11.2019 <span style={{ fontWeight: 'bold', cursor: 'pointer' }}>< EllipsisOutlined /></span> </Col>
-                    <Col span={5}>11:33 12-11-2019</Col>
-                    <Col span={17}><span className='bold-span' style={{ fontWeight: 'bold' }}>30 JOBS HOT </span> ON 12.11.2019 <span style={{ fontWeight: 'bold', cursor: 'pointer' }}>< EllipsisOutlined /></span> </Col>
-                    <Col span={5}>11:33 12-11-2019</Col>
-                    <Col span={17}><span className='bold-span' style={{ fontWeight: 'bold' }}>30 JOBS HOT </span> ON 12.11.2019 <span style={{ fontWeight: 'bold', cursor: 'pointer' }}>< EllipsisOutlined /></span> </Col>
+                  {get(company, 'list_historys.items.history', []).map(items=>{
+                    return (<Col key={items} span={5}>{items.created_at}</Col>
+                      )
+                    ;
+                  })}
+                  {get(company, 'list_historys.items.history', []).map(items=>{
+                    return ( <Col key={items} span={17}><span className='bold-span' style={{ fontWeight: 'bold' }}>{items.history_type} </span> ON {items.meta_data.data.job.job_role} <span style={{ fontWeight: 'bold', cursor: 'pointer' }}>< EllipsisOutlined /></span> </Col>
+                      )
+                    ;
+                  })};
+                  
+                  
+                    {/* <Col span={5}>11:33 12-11-2019</Col>
+                    <Col span={17}><span className='bold-span' style={{ fontWeight: 'bold' }}>30 JOBS HOT </span> ON 12.11.2019 <span style={{ fontWeight: 'bold', cursor: 'pointer' }}>< EllipsisOutlined /></span> </Col>                     */}
                   </Row>
                 </div>
               </div>
@@ -142,7 +154,7 @@ function jobDetail(props) {
 }
 function mapStateToProps(state) {
   console.log(state);
-  const { referred, profile } = state;
-  return { referred, profile };
+  const { referred, profile, company } = state;
+  return { referred, profile ,company};
 }
 export default connect(mapStateToProps, null)(jobDetail);

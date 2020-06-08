@@ -30,8 +30,8 @@ export function getProfileById(params) {
 export function createJob(payload) {
   return async () => {
     try {
-      await api.sendRequestWithToken('post', '/jobs', null, null, payload);
-      return { status: true };
+      const {data} = await api.sendRequestWithToken('post', '/jobs', null, null, payload);
+      return { status: true ,data};
     } catch (error) {
       const { data } = error.response;
       return { status: false, error: data.message };
@@ -145,3 +145,17 @@ export function createEmployer(payload,company_id) {
     }
   };
 }
+
+export function getHistory() {
+  return async dispatch => {
+    try {
+      dispatch({ type: "GET_LIST_REQUEST" });
+      const { data } = await api.sendRequestWithToken('get', `/histories`);
+      return dispatch({ type: "GET_LIST_HISTORYS_SUCCESS", data });
+    } catch (error) {
+      const { data } = error.response;
+      return dispatch({ type: "GET_LIST_HISTORYS_FAILURE", error: data.message });
+    }
+  };
+}
+

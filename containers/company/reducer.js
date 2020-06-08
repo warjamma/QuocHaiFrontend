@@ -3,6 +3,7 @@ export const exampleInitialState = {
   list_job: [],
   list_candidate: [],
   list_employers: [],
+  list_historys: [],
   is_loading: false,
   job_detail: null,
   comapny_detail:null,
@@ -74,6 +75,16 @@ export default (state = exampleInitialState, action) => {
       return {
         ...state,
         ...{ list_employers: [], is_loading: false },
+      };
+      case 'GET_LIST_HISTORYS_SUCCESS':
+      return {
+        ...state,
+        ...{ list_historys: action.data, is_loading: false },
+      };
+    case 'GET_LIST_HISTORYS_FAILURE':
+      return {
+        ...state,
+        ...{ list_historys: [], is_loading: false },
       };
     default:
       return state;
