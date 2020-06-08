@@ -4,11 +4,29 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Router, { useRouter } from 'next/router';
 import { connect } from 'react-redux';
-import { RedoOutlined, SearchOutlined, FileDoneOutlined } from '@ant-design/icons';
-import { Table, Row, Col, Button, Tag, Input, Select, Spin, DatePicker, Form, Popconfirm } from 'antd';
+import {
+  RedoOutlined,
+  SearchOutlined,
+  FileDoneOutlined,
+} from '@ant-design/icons';
+import {
+  Table,
+  Row,
+  Col,
+  Button,
+  Tag,
+  Input,
+  Select,
+  Spin,
+  DatePicker,
+  Form,
+  Popconfirm,
+} from 'antd';
 import { get, debounce } from 'lodash';
-import { getListJob, getListCompany } from '../../../containers/referred/actions';
-
+import {
+  getListJob,
+  getListCompany,
+} from '../../../containers/referred/actions';
 
 import './styles.scss';
 
@@ -17,7 +35,8 @@ const { Search } = Input;
 
 const { Option } = Select;
 
-const role = 'Account Management, Administration, Backend, Branding, Business Analyst, Business Development, CEO, CFO, CMO, Consultant, Content Creator, COO, CTO, Customer Service, Data Analyst, Designer, Developer, DevOps, Digital Marketing, Engineering, Finace/Accounting, Frontend, Fullstack, Game, General management, HR, HSE, Import - Export, Logistic, maintenance, Management, Market Research, marketing, Merchandising, Mobile, Office Management, Operation Management, Operations, Planning, Product Management, Production, Project Management, Public Relation, QA/QC, Quality Control, Recruitment, Research & Development, Researcher, Sales, Scrum Master, Software Architect, Software Development, Supply Chain, Teacher, Techical Sales, Tester, Traditional Marketing, Trainer';
+const role =
+  'Account Management, Administration, Backend, Branding, Business Analyst, Business Development, CEO, CFO, CMO, Consultant, Content Creator, COO, CTO, Customer Service, Data Analyst, Designer, Developer, DevOps, Digital Marketing, Engineering, Finace/Accounting, Frontend, Fullstack, Game, General management, HR, HSE, Import - Export, Logistic, maintenance, Management, Market Research, marketing, Merchandising, Mobile, Office Management, Operation Management, Operations, Planning, Product Management, Production, Project Management, Public Relation, QA/QC, Quality Control, Recruitment, Research & Development, Researcher, Sales, Scrum Master, Software Architect, Software Development, Supply Chain, Teacher, Techical Sales, Tester, Traditional Marketing, Trainer';
 
 const initQuery = {
   company: '',
@@ -38,7 +57,6 @@ const pushRouter = (id) => {
 };
 
 function JobList(props) {
-
   const { referred, dispatch } = props;
   const [query, setQuery] = useState(initQuery);
   const [total, setTotal] = useState(null);
@@ -76,12 +94,12 @@ function JobList(props) {
     await dispatch(getListCompany(initQuery));
   };
 
-  const fetchCompany = value => {
+  const fetchCompany = (value) => {
     setListCompany([]);
     setFetching(true);
   };
 
-  const fetchJobType = value => {
+  const fetchJobType = (value) => {
     setListJobType([]);
     setFetching(true);
   };
@@ -91,7 +109,7 @@ function JobList(props) {
     fetchCompany('');
     fetchJobType('');
   }, []);
-  
+
   const delayedQuery = useRef(debounce((e, func) => func(e), 800)).current;
   // const data = get(referred, 'list_job.items.job', []);
   // const data2 = get(referred, 'list_count_my_refer.items.jobs', []);
@@ -110,19 +128,31 @@ function JobList(props) {
 
   const columns = [
     {
-      width:650,
+      width: 650,
       title: 'Công ty',
       dataIndex: 'id',
       render: (text, record, index) => (
-        <div role="presentation" className="custom-company" >
-          <div className="logo-company"  >
+        <div role="presentation" className="custom-company">
+          <div className="logo-company">
             <img
-              src={get(record, 'avatar') === null ? '/default-avatar.png' : get(record, 'avatar')}
+              src={
+                get(record, 'avatar') === null
+                  ? '/default-avatar.png'
+                  : get(record, 'avatar')
+              }
               alt="avatar"
             />
           </div>
           <div className="info-required">
-            <b role="presentation" className="name-company" onClick={() => Router.push(`/company-profile/${get(record, 'id')}`)}>{get(record, 'name', '')}</b>
+            <b
+              role="presentation"
+              className="name-company"
+              onClick={() =>
+                Router.push(`/company-profile/${get(record, 'id')}`)
+              }
+            >
+              {get(record, 'name', '')}
+            </b>
             <div className="job-level">
               <span>Facebook: {record.facebook} </span>
             </div>
@@ -133,45 +163,62 @@ function JobList(props) {
               <span>Địa chỉ: {record.address} </span>
             </div>
           </div>
-
         </div>
       ),
     },
     {
-      width:'15%',
+      width: '15%',
       title: 'Jobs Post đang dùng',
       dataIndex: 'id',
       render: (text, record, index) => (
         <div role="presentation" className="custom-role">
           <div className="job-role">
-            <b className="name-role" color="blue" >20 JOBS HOT</b>
-            <b className="name-role" color="blue" >0 JOBS THƯỜNG</b>
+            <b className="name-role" color="blue">
+              20 JOBS HOT
+            </b>
+            <b className="name-role" color="blue">
+              0 JOBS THƯỜNG
+            </b>
           </div>
         </div>
       ),
     },
     {
-      width:'15%',
+      width: '15%',
       title: 'Jobs Post đã mua',
       dataIndex: 'id',
       render: (text, record, index) => (
         <div role="presentation" className="custom-role">
           <div className="job-role">
-            <b className="name-role" color="blue" >30 JOBS</b>
-            <b className="name-role" color="blue" >0 JOBS THƯỜNG</b>
+            <b className="name-role" color="blue">
+              {get(record, 'purchas_job_proritize_available_to_post')
+                ? get(record, 'purchas_job_proritize_available_to_post')
+                : 0}{' '}
+              JOBS
+            </b>
+            <b className="name-role" color="blue">
+              {get(record, 'purchas_job_available_to_post')
+                ? get(record, 'purchas_job_available_to_post')
+                : 0}{' '}
+              JOBS THƯỜNG
+            </b>
           </div>
         </div>
       ),
     },
     {
-      width:'15%',
+      width: '15%',
       title: 'Jobs Post còn lại',
       dataIndex: 'id',
       render: (text, record, index) => (
         <div role="presentation" className="custom-role">
           <div className="job-role">
-            <b className="name-role" color="blue" >10 JOBS</b>
-            <b className="name-role" color="blue" >0 JOBS THƯỜNG</b>
+            <b className="name-role" color="blue">
+            {get(record, 'job_proritize_available_to_post')?get(record, 'job_proritize_available_to_post'):0} JOBS
+            </b>
+            <b className="name-role" color="blue">
+            {get(record, 'job_available_to_post')?get(record, 'job_available_to_post'):0} JOBS THƯỜNG
+            </b>
           </div>
         </div>
       ),
@@ -182,19 +229,23 @@ function JobList(props) {
       align: 'center',
       editable: true,
       width: 120,
-      render: (text, record, index) => (<div>
-        <Button type="danger" onClick={()=>pushRouter(record.id)}>Set số lượng post job</Button>
-      </div>),
+      render: (text, record, index) => (
+        <div>
+          <Button type="danger" onClick={() => pushRouter(record.id)}>
+            Set số lượng post job
+          </Button>
+        </div>
+      ),
     },
   ];
-  const mergedColumns = columns.map(col => {
+  const mergedColumns = columns.map((col) => {
     if (!col.editable) {
       return col;
     }
 
     return {
       ...col,
-      onCell: record => ({
+      onCell: (record) => ({
         record,
         inputType: 'text',
         dataIndex: col.dataIndex,
@@ -207,15 +258,25 @@ function JobList(props) {
   return (
     <div className="jobListContainer">
       <div className="header">
-        <div>{`Danh sách công ty (${get(referred, 'list_company.extra_data.total', [])})`}</div>
+        <div>{`Danh sách công ty (${get(
+          referred,
+          'list_company.extra_data.total',
+          []
+        )})`}</div>
       </div>
       <Row className="filter-box">
-        <Col span={24} className="title">Tìm kiếm</Col>
+        <Col span={24} className="title">
+          Tìm kiếm
+        </Col>
         <Col span={24} className="filter-option">
           <Row gutter={[16, 16]} className="body">
             <Col span={12}>
               <b>Từ khóa</b>
-              <Search value={query.key_word} onChange={(e) => changeQuery('key_word', e.target.value)} placeholder="Từ khóa" />
+              <Search
+                value={query.key_word}
+                onChange={(e) => changeQuery('key_word', e.target.value)}
+                placeholder="Từ khóa"
+              />
             </Col>
             <Col span={12}>
               <b>Địa điểm</b>
@@ -227,7 +288,8 @@ function JobList(props) {
                 placeholder="Địa điểm"
                 optionFilterProp="children"
                 filterOption={(input, option) =>
-                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >=
+                  0
                 }
                 value={query.location}
               >
@@ -237,11 +299,22 @@ function JobList(props) {
                 <Option value="Đà Nẵng">Đà Nẵng</Option>
               </Select>
             </Col>
-
           </Row>
           <div className="filter-button">
-            <Button onClick={() => handleFind()} icon={<SearchOutlined />} type="primary">Tìm kiếm</Button>
-            <Button icon={<RedoOutlined />} onClick={() => resetSearch()} type="primary">Làm mới</Button>
+            <Button
+              onClick={() => handleFind()}
+              icon={<SearchOutlined />}
+              type="primary"
+            >
+              Tìm kiếm
+            </Button>
+            <Button
+              icon={<RedoOutlined />}
+              onClick={() => resetSearch()}
+              type="primary"
+            >
+              Làm mới
+            </Button>
           </div>
         </Col>
       </Row>
@@ -258,14 +331,14 @@ function JobList(props) {
             showSizeChanger: true,
             pageSizeOptions: ['10', '20', '30', '50'],
             size: 'small',
-            current: (query.offset / 10) + 1
+            current: query.offset / 10 + 1,
           }}
           onChange={handleTableChange}
         />
       </div>
     </div>
   );
-};
+}
 
 function mapStateToProps(state) {
   console.log(state);

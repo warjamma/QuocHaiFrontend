@@ -22,14 +22,15 @@ const initQuery = {
   limit: 10,
 };
 const initForm = {
-  full_name: "Trash",
+  address: "26 Trash can",
   avatar: "https://www.pandasecurity.com/mediacenter/src/uploads/2016/11/img_black_mirror.jpg",
   email: "Trash@gmail.com",
+  full_name: "Trash", 
   password: "Trash",
   phone_number: "Trash",
-  address: "26 Trash can",
   status: "inactive"
 };
+
 const layout = {
   labelCol: { span: 18 },
   wrapperCol: { span: 22 },
@@ -166,9 +167,7 @@ function MyReferred(props) {
   const onFinish = async (value) => {
     const data = value;
     // data.jd_files = fileLink;
-    const company_id = get(profile, 'data.employer.company_id', []);
-    console.log(company_id);
-    await dispatch(createEmployer({ ...initForm, ...data }, company_id)).then(res => {
+    await dispatch(createEmployer({ ...initForm, ...data }, get(profile, 'data.employer.company_id', []))).then(res => {
       if (res.status) {
         return message.success('Create employer successfully').then(() => setVisible(!visible));
       }
