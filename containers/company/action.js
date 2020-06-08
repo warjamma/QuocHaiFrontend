@@ -150,7 +150,7 @@ export function getHistory() {
   return async dispatch => {
     try {
       dispatch({ type: "GET_LIST_REQUEST" });
-      const { data } = await api.sendRequestWithToken('get', `/histories`);
+      const { data } = await api.sendRequestWithToken('get', `/histories`,null,{ 'Content-type': 'application/json' ,'accept': 'application/json'});
       return dispatch({ type: "GET_LIST_HISTORYS_SUCCESS", data });
     } catch (error) {
       const { data } = error.response;

@@ -158,7 +158,7 @@ function MyReferred(props) {
   // };
 
   useEffect(() => {
-    const id = get(profile, 'data.employer.id', [])
+    const id = get(profile, 'data.employer.company_id', []);
     dispatch(getListEmployers(id));
     // fetchCompany('');
   }, []);
