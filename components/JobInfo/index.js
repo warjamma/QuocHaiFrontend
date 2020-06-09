@@ -1,21 +1,21 @@
 import React from 'react';
 import { Button, Typography} from 'antd';
 import { DollarOutlined } from '@ant-design/icons';
-import Router from 'next/router';
-import Link from 'next/link';
+import { get, debounce } from 'lodash';
 import './styles.scss';
 
 const { Title } = Typography;
-function HeaderHome() {
+function HeaderHome(props) {
+  const {value}=props;
   return (
     <div className="row border">
       <div className="col-sm-3">
-        <img alt="example" src="https://cdn.itviec.com/employers/dxc-vietnam/logo/s65/U7GERVChzwPaBYXec1bQgPmP/DXC%20logo-icon.png" />
+        <img alt="example" style={{objectFit: "contain", width:'100%'}} src={get(value,'company.avatar',[])} />
       </div>
       <div className="col-sm-9">
         <div className="row">
         <div className="col-sm-9">
-            <Title level={3}>Why You'll Love Working Here</Title>
+  <Title level={3}>{get(value,'job_role',[])}</Title>
             <div style={{ color: '#68ba50' }}><DollarOutlined /> You'll love it</div>
           </div>
           <div className="col-sm-3">
