@@ -33,11 +33,15 @@ body {
   align-items: center;
 }
 
+
+.container-box.authenticate-page {
+  padding: 0px;
+}
 //css col container row follow bootstrap 4
 .container {
   width: 100%;
-  padding-right: 1rem;
-  padding-left: 1rem;
+  // padding-right: 1rem;
+  // padding-left: 1rem;
   margin-right: auto;
   margin-left: auto;
 }

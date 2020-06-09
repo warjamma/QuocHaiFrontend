@@ -21,7 +21,11 @@ function HeaderHome() {
           )}
           id="myTopnav"
         >
-          <li className="logo" role="presentation"   onClick={() => Router.push(`/`)}>
+          <li
+            className="logo"
+            role="presentation"
+            onClick={() => Router.push(`/`)}
+          >
             <img
               className="name-logo"
               src="https://www.rockship.co/images/rs-logo-text.png"
@@ -30,19 +34,41 @@ function HeaderHome() {
           </li>
           <div className="child">
             <div className="down">
-              <li role="presentation" onClick={() => Router.push(`/login`)} className="active tag">Đăng nhập</li>
-              <li className="  tag" role="presentation"   onClick={() => Router.push(`/upload-cv-home`)}>Ứng tuyển</li>
-              <li className="  tag" role="presentation"   onClick={() => Router.push(`/upload-home`)}>It companies </li>
-              <li className="  tag" role="presentation"   onClick={() => Router.push(`/upload-home`)}>All Jobs </li>
+              <li
+                role="presentation"
+                onClick={() => Router.push(`/login`)}
+                className="active tag"
+              >
+                Đăng nhập
+              </li>
+              <li
+                className="  tag"
+                role="presentation"
+                onClick={() => Router.push(`/upload-cv-home`)}
+              >
+                Ứng tuyển
+              </li>
+              <li
+                className="  tag"
+                role="presentation"
+                onClick={() => Router.push(`/upload-home`)}
+              >
+                It companies{' '}
+              </li>
+              <li
+                className="  tag"
+                role="presentation"
+                onClick={() => Router.push(`/upload-home`)}
+              >
+                All Jobs{' '}
+              </li>
             </div>
           </div>
           <li className="icon">
             {' '}
-            <a href="avascript:void(0);" onClick={() => myFunction()}>
-              <div>
-                <MenuOutlined />
-              </div>
-            </a>
+            <div role="presentation" onClick={() => myFunction()}>
+              <MenuOutlined />
+            </div>
           </li>
         </div>
       </div>
