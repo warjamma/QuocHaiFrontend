@@ -106,6 +106,19 @@ export function getListReferred(params) {
     }
   };
 }
+
+export function getListReferredOfSuper(params) {
+  return async dispatch => {
+    try {
+      dispatch({ type: "GET_LIST_REQUEST" });
+      const { data } = await api.sendRequestWithToken('get', `/refers?${qs.stringify(params)} `);
+      return dispatch({ type: "GET_LIST_REFERRED_SUPER_SUCCESS", data });
+    } catch (error) {
+      const { data } = error.response;
+      return dispatch({ type: "GET_LIST_REFERRED_SUPER_FAILURE", error: data.message });
+    }
+  };
+}
 export function getListCandidates(params) {
   return async dispatch => {
     try {
@@ -193,6 +206,17 @@ export function updateCandidate(payload,id) {
 }
 
 export function deleteCandidate(payload) {
+  return async () => {
+    try {
+      await api.sendRequestWithToken('delete', `/candidates/${payload}`, null, null, null);
+      return { status: true };
+    } catch (error) {
+      const { data } = error.response;
+      return { status: false, error: data.message };
+    }
+  };
+}
+export function deleteCandidateOfSuper(payload) {
   return async () => {
     try {
       await api.sendRequestWithToken('delete', `/candidates/${payload}`, null, null, null);

@@ -134,10 +134,10 @@ export function getListEmployers(id) {
     }
   };
 }
-export function createEmployer(payload,company_id) {
+export function createEmployer(payload,id) {
   return async () => {
     try {
-      await api.sendRequestWithToken('post', `/companies/${company_id}/employers`, null, null,payload);
+      await api.sendRequestWithToken('post', `/companies/${id}/employers`, null, null,payload);
       return { status: true };
     } catch (error) {
       const { data } = error.response;
@@ -159,3 +159,14 @@ export function getHistory() {
   };
 }
 
+export function purchasePostJob(params, companyId) {
+  return async () => {
+    try {
+      await api.sendRequestWithToken('put', `/companies/${companyId}/slots?${qs.stringify(params)}`,null,{ 'accept': 'application/json'},null);
+      return { status: true };
+    } catch (error) {
+      const { data } = error.response;
+      return { status: false, error: data.message };
+    }
+  };
+}

@@ -5,6 +5,7 @@ import { Col, Row, Form, Select, Input, Button, Upload, message, InputNumber } f
 import Router, { useRouter } from 'next/router';
 import { UploadOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
+import {get} from 'lodash';
 import { createJob } from '../../../containers/company/action';
 import { uploadRequest } from '../../../containers/referred/actions';
 import './styles.scss';
@@ -20,7 +21,7 @@ const initForm = {
   responsibility: "none",
   expectation: "none",
   candidate_benefit: "",
-  priority: "none",
+  priority: "",
   note: "none",
   education: "University",
   language: [],
@@ -60,7 +61,7 @@ const dummyRequest = ({ onSuccess }) => {
 };
 
 function CreateJob(props) {
-  const { dispatch } = props;
+  const { dispatch,profile } = props;
   const router = useRouter();
   const { id } = router.query;
 
@@ -68,6 +69,7 @@ function CreateJob(props) {
   const [fileData, setFileData] = useState([]);
   const onFinish = async (value) => {
     const data = value;
+    console.log(data);
     data.jd_files = fileLink;
     await dispatch(createJob({ ...initForm, ...data }, id)).then(res => {
       if (res.status) {
@@ -294,11 +296,11 @@ function CreateJob(props) {
             <Form.Item
               label="Chọn kiểu post"
               hasFeedback
-            // name="post_job"
+              name="priority"
             >
               <Select style={{ width: '100%' }}>
-                <Select.Option value="post-hot">1 tháng POST HOT - Còn 03</Select.Option>
-                <Select.Option value="post">1 tháng POST THƯỜNG -Còn 02</Select.Option>
+                <Select.Option value="true">Đăng tuyển thường - Còn {get(profile, 'data.employer.company.job_proritize_available_to_post')?get(profile, 'data.employer.company.job_proritize_available_to_post'):0}</Select.Option>
+                <Select.Option value="false">Đăng tuyển ưu tiên -Còn {get(profile, 'data.employer.company.purchas_job_available_to_post')?get(profile, 'data.employer.company.purchas_job_available_to_post'):0}</Select.Option>
               </Select>
             </Form.Item>
             <Form.Item style={{ marginTop: 20 }}>
@@ -315,5 +317,9 @@ function CreateJob(props) {
     </div>
   );
 }
-
-export default connect()(CreateJob);
+function mapStateToProps(state) {
+  const { profile } = state;
+  return { profile};
+}
+export default connect(mapStateToProps, null)(CreateJob);
+ 

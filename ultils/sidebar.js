@@ -40,6 +40,10 @@ export const adminSideBar = [
     url: '/job-list'
   },
   {
+    name: 'Đã giới thiệu',
+    url: '/superadmin/my-referred'
+  },
+  {
     name: 'Quản lý đăng tuyển',
     url: '/superadmin/company-list'
   },

@@ -2,8 +2,8 @@
 export const exampleInitialState = {
   list_job: null,
   list_company:null,
-  list_referred: null,
   list_candidates:null,
+  list_referred_super: null,
   candidate_detail: null,
   job_detail: null,
   is_loading: false,
@@ -78,6 +78,16 @@ export default (state = exampleInitialState, action) => {
       return {
         ...state,
         ...{ list_referred: [], is_loading: false },
+      };
+    case 'GET_LIST_REFERRED_SUPER_SUCCESS':
+      return {
+        ...state,
+        ...{ list_referred_super: action.data, is_loading: false },
+      };
+    case 'GET_LIST_REFERRED_SUPER_FAILURE':
+      return {
+        ...state,
+        ...{ list_referred_super: [], is_loading: false },
       };
     case 'GET_LIST_CANDIDATES_SUCCESS':
       return {

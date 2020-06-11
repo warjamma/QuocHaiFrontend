@@ -31,90 +31,14 @@ const initQuery = {
   offset: 0,
   limit: 10,
 };
-const pushRouter = (name) => {
-  Router.push({
-    pathname: `/referrer/my-referred`,
-    query: { name },
-  });
-};
-const columns = [
-  {
-    title: 'Công ty',
-    dataIndex: 'company_id',
-    render: (text, record, index) => (
-      <div role="presentation" className="custom-company" >
-        <div className="logo-company"  >
-          <img
-            src={get(record, 'company.avatar') === null ? '/default-avatar.png' : get(record, 'company.avatar')}
-            alt="avatar"
-          />
-        </div>
-        <div className="info-required">
-          <b role="presentation" className="name-company" onClick={() => Router.push(`/job-detail/${record.id}`)}>{get(record, 'company.name', '')}</b>
-          <div className="job-level">
-            <span>Cấp độ:&nbsp;</span>
-            {
-              record.job_levels.map(item => (
-                <Tag onClick={() => Router.push(`/job-detail/${record.id}`)} className="tag-level" color="blue" key={item}>{item}</Tag>
-              ))
-            }
-          </div>
-          <div className="job-role">
-            <span>Số lượng yêu cầu: {record.vacancy_number} </span>
-          </div>
-          <div className="job-level">
-            <span>Địa điểm: <Tag onClick={() => Router.push(`/job-detail/${record.id}`)} color="blue">{record.locations}</Tag> </span>
-          </div>
 
-        </div>
-      </div>
-    ),
-  },
-  {
-    title: 'Vị trí',
-    dataIndex: 'company_id',
-    render: (text, record, index) => (
-      <div role="presentation" className="custom-role" onClick={() => Router.push(`/job-detail/${record.id}`)}>
-        <div className="job-role">
-          {
-            record.job_role.map(item => (
-              <b className="name-role" color="blue" key={item}>{item}</b>
-            ))
-          }
-        </div>
-      </div>
-    ),
-  },
-  {
-    title: 'Mức thưởng',
-    dataIndex: 'reward',
-    align: 'center',
-    render: (text, record, index) => <Tag color="green">{record.reward}$</Tag>,
-  },
-  {
-    title: 'Mức lương',
-    dataIndex: '',
-    align: 'center',
-    render: (text, record, index) => <Tag color="blue">{record.min_salary}$ - {record.max_salary}$</Tag>,
-  },
-  {
-    title: 'Đã ứng tuyển',
-    dataIndex: 'current_applied',
-    align: 'center',
-    render: (record) => <div>{record}</div>
-  },
-  {
-    title: 'Giới thiệu của tôi',
-    dataIndex: 'count_my_refer',
-    align: 'center',
-    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-    render: (text, record, index) => <b onClick={() => pushRouter(get(record, 'company.name',''))} className="bold-number">{record.count_my_refer} CV </b>
-   // render: (text, record, index) => <b onClick={() => Router.push(`/referrer/my-referred/${get(record, 'company.name')}`)} className="bold-number">{record.count_my_refer} CV </b>
-  },
-];
+const pushRouterSuper = (name2) => {
+  
+};
+
 
 function JobList(props) {
-  const { referred, dispatch } = props;
+  const { referred, dispatch ,profile} = props;
   const [query, setQuery] = useState(initQuery);
   const [total, setTotal] = useState(null);
   const [listCompany, setListCompany] = useState([]);
@@ -130,7 +54,7 @@ function JobList(props) {
     clone[key] = typeof value === 'object' ? value.join(', ') : value;
     setQuery(clone);
   };
-
+ 
   const handleFind = async () => {
     const clone = { ...query };
     clone.offset = 0;
@@ -195,7 +119,96 @@ function JobList(props) {
   //     data[i].count_my_refer='0';
   //   }
   // }
-
+  const pushRouter = (name2) => {
+    if(get(profile,'data.recruiter.role')==="superadmin")
+    {
+      Router.push({
+        pathname: `/superadmin/my-referred`,
+        query: { name2 },
+      });
+    }
+    else{
+      Router.push({
+        pathname: `/referrer/my-referred`,
+        query: { name2 },
+      });
+    }
+  };
+  const columns = [
+    {
+      title: 'Công ty',
+      dataIndex: 'company_id',
+      render: (text, record, index) => (
+        <div role="presentation" className="custom-company" >
+          <div className="logo-company"  >
+            <img
+              src={get(record, 'company.avatar') === null ? '/default-avatar.png' : get(record, 'company.avatar')}
+              alt="avatar"
+            />
+          </div>
+          <div className="info-required">
+            <b role="presentation" className="name-company" onClick={() => Router.push(`/job-detail/${record.id}`)}>{get(record, 'company.name', '')}</b>
+            <div className="job-level">
+              <span>Cấp độ:&nbsp;</span>
+              {
+                record.job_levels.map(item => (
+                  <Tag onClick={() => Router.push(`/job-detail/${record.id}`)} className="tag-level" color="blue" key={item}>{item}</Tag>
+                ))
+              }
+            </div>
+            <div className="job-role">
+              <span>Số lượng yêu cầu: {record.vacancy_number} </span>
+            </div>
+            <div className="job-level">
+              <span>Địa điểm: <Tag onClick={() => Router.push(`/job-detail/${record.id}`)} color="blue">{record.locations}</Tag> </span>
+            </div>
+  
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: 'Vị trí',
+      dataIndex: 'company_id',
+      render: (text, record, index) => (
+        <div role="presentation" className="custom-role" onClick={() => Router.push(`/job-detail/${record.id}`)}>
+          <div className="job-role">
+            {
+              record.job_role.map(item => (
+                <b className="name-role" color="blue" key={item}>{item}</b>
+              ))
+            }
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: 'Mức thưởng',
+      dataIndex: 'reward',
+      align: 'center',
+      render: (text, record, index) => <Tag color="green">{record.reward}$</Tag>,
+    },
+    {
+      title: 'Mức lương',
+      dataIndex: '',
+      align: 'center',
+      render: (text, record, index) => <Tag color="blue">{record.min_salary}$ - {record.max_salary}$</Tag>,
+    },
+    {
+      title: 'Đã ứng tuyển',
+      dataIndex: 'current_applied',
+      align: 'center',
+      render: (record) => <div>{record}</div>
+    },
+    {
+      title: 'Giới thiệu của tôi',
+      dataIndex: 'count_my_refer',
+      align: 'center',
+      // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+      render: (text, record, index) => <b onClick={() => pushRouter(get(record, 'company.name',''))} className="bold-number">{record.count_my_refer} CV </b>
+     // render: (text, record, index) => <b onClick={() => Router.push(`/referrer/my-referred/${get(record, 'company.name')}`)} className="bold-number">{record.count_my_refer} CV </b>
+    },
+  ];
   return (
     <div className="jobListContainer">
       <div className="header">
@@ -325,9 +338,9 @@ function JobList(props) {
 };
 
 function mapStateToProps(state) {
-  // console.log(state);
-  const { referred } = state;
-  return { referred };
+   console.log(state);
+  const { referred,profile } = state;
+  return { referred,profile };
 }
 
 export default connect(mapStateToProps, null)(JobList);
