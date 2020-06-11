@@ -8,7 +8,7 @@ import { Table, Tag, Button, Popconfirm, Form, Row, Col, message, Input, Select,
 import { get, debounce } from 'lodash';
 import moment from 'moment';
 import Router, { useRouter } from 'next/router';
-import { getListReferred, deleteCandidate } from '../../../containers/referred/actions';
+import { getListReferredOfSuper, deleteCandidateOfSuper } from '../../../containers/referred/actions';
 import { getAllCompany } from '../../../containers/company/action';
 import renderColorTag from '../../../ultils/renderColorStatus';
 import './styles.scss';
@@ -41,7 +41,7 @@ function MyReferred(props) {
   }
 
   const handleDelete = async (candidateId) => {
-    await dispatch(deleteCandidate(candidateId)).then(res => {
+    await dispatch(deleteCandidateOfSuper(candidateId)).then(res => {
       if (res.status) {
         Router.push('/referrer/my-referred');
         return message.success('Delete candidate successfully');
@@ -176,7 +176,7 @@ function MyReferred(props) {
     const clone = { ...query };
     clone.offset = 0;
     setQuery(clone);
-    await dispatch(getListReferred(clone));
+    await dispatch(getListReferredOfSuper(clone));
   };
 
   const handleTableChange = async (pagination) => {
@@ -184,12 +184,12 @@ function MyReferred(props) {
     clone.offset = (pagination.current - 1) * 10;
     clone.limit = pagination.pageSize;
     setQuery(clone);
-    await dispatch(getListReferred(clone));
+    await dispatch(getListReferredOfSuper(clone));
   };
 
   const resetSearch = async () => {
     setQuery(initQuery);
-    await dispatch(getListReferred(initQuery));
+    await dispatch(getListReferredOfSuper(initQuery));
   };
 
   const fetchCompany = async value => {
@@ -204,7 +204,7 @@ function MyReferred(props) {
   };
 
   useEffect(() => {
-    dispatch(getListReferred(query));
+    dispatch(getListReferredOfSuper(query));
     fetchCompany('');
   }, []);
 
@@ -213,7 +213,7 @@ function MyReferred(props) {
   return (
     <div className="my-referred-container">
       <div className="header">
-        <div>{`Hồ sơ của bạn (${get(referred, 'list_referred.extra_data.total', 0)})`}</div>
+        <div>{`Hồ sơ của bạn (${get(referred, 'list_referred_super.extra_data.total', 0)})`}</div>
       </div>
       <Form
         name="advanced_search"
@@ -276,10 +276,10 @@ function MyReferred(props) {
         bordered
         rowKey="id"
         columns={columns}
-        dataSource={get(referred, 'list_referred.items.refer', [])}
+        dataSource={get(referred, 'list_referred_super.items.refer', [])}
         pagination={{
           pageSize: query.limit,
-          total: get(referred, 'list_referred.extra_data.total', 0),
+          total: get(referred, 'list_referred_super.extra_data.total', 0),
           showSizeChanger: true,
           pageSizeOptions: ['10', '20', '30', '50'],
           size: 'small',

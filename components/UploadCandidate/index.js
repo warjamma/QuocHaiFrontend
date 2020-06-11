@@ -1,9 +1,9 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable jsx-a11y/iframe-has-title */
 import React, { useState } from 'react';
-import { Input, Menu, Form, Row, Col, Select, Button, Upload, message } from 'antd';
+import { Input, Form, Row, Col, Select, Button, Upload, message } from 'antd';
 import Router, { useRouter } from 'next/router';
-import { UploadOutlined, MailOutlined } from '@ant-design/icons';
+import { UploadOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import { cloneDeep } from 'lodash';
 import { createCandidateNoAddJob, uploadRequest } from '../../containers/referred/actions';
