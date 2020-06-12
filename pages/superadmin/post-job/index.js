@@ -39,18 +39,20 @@ function jobDetail(props) {
     dispatch(getCompanyById({ id }));
   }, []);
 
-//   const pushRouter = (name) => {
-//     Router.push({
-//       pathname: `/job-list`,
-//       query: { name },
-//     });
-//   };
+  //   const pushRouter = (name) => {
+  //     Router.push({
+  //       pathname: `/job-list`,
+  //       query: { name },
+  //     });
+  //   };
   const onFinish = async (value) => {
     const data = cloneDeep(value);
     console.log(data);
-    dispatch(purchasePostJob(data,id)).then(res => {
+    dispatch(purchasePostJob(data, id)).then((res) => {
       if (res.status) {
-        return message.success('Set post job successfully').then(() => Router.push(`/superadmin/company-list`));
+        return message
+          .success('Set post job successfully')
+          .then(() => Router.push(`/superadmin/company-list`));
       }
       return message.error(res.error);
     });
@@ -72,7 +74,44 @@ function jobDetail(props) {
                   Số lượt đã đăng tuyển :{' '}
                 </span>
               </Col>
-              <Col span={12}>10 LƯỢT ƯU TIÊN - 3 LƯỢT THƯỜNG</Col>
+              <Col span={12}>
+                {get(
+                  referred,
+                  'company_detail.data.company.purchas_job_proritize_available_to_post'
+                ) -
+                get(
+                  referred,
+                  'company_detail.data.company.purchas_job_available_to_post'
+                )
+                  ? get(
+                      referred,
+                      'company_detail.data.company.purchas_job_proritize_available_to_post'
+                    ) -
+                    get(
+                      referred,
+                      'company_detail.data.company.purchas_job_available_to_post'
+                    )
+                  : 0}{' '}
+                LƯỢT ƯU TIÊN -{' '}
+                {get(
+                  referred,
+                  'company_detail.data.company.job_proritize_available_to_post'
+                ) -
+                get(
+                  referred,
+                  'company_detail.data.company.job_available_to_post'
+                )
+                  ? get(
+                      referred,
+                      'company_detail.data.company.job_proritize_available_to_post'
+                    ) -
+                    get(
+                      referred,
+                      'company_detail.data.company.job_available_to_post'
+                    )
+                  : 0}{' '}
+                LƯỢT THƯỜNG
+              </Col>
             </Row>
             <Row className="row-detail" style={{ paddingTop: 24 }}>
               <Col span={12}>
@@ -252,9 +291,14 @@ function jobDetail(props) {
                     { required: true, message: 'This field is required !' },
                   ]}
                 >
-                  <Select style={{ width: '100%' }} placeholder="ex: Chọn kiểu đăng tuyển">
+                  <Select
+                    style={{ width: '100%' }}
+                    placeholder="ex: Chọn kiểu đăng tuyển"
+                  >
                     <Select.Option value="false">Thường</Select.Option>
-                    <Select.Option value="true">Đăng tuyển ưu tiên</Select.Option>
+                    <Select.Option value="true">
+                      Đăng tuyển ưu tiên
+                    </Select.Option>
                   </Select>
                 </Form.Item>
                 <Form.Item
