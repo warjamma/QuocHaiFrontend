@@ -22,12 +22,12 @@ const initQuery = {
   limit: 10,
 };
 const initForm = {
-  address: "26 Trash can",
+  address: "",
   avatar: "https://www.pandasecurity.com/mediacenter/src/uploads/2016/11/img_black_mirror.jpg",
-  email: "Trash@gmail.com",
-  full_name: "Trash", 
-  password: "Trash",
-  phone_number: "Trash",
+  email: "",
+  full_name: "", 
+  password: "1",
+  phone_number: "",
   status: "inactive"
 };
 
@@ -166,13 +166,14 @@ function MyReferred(props) {
   const delayedQuery = useRef(debounce((e, func) => func(e), 800)).current;
   const onFinish = async (value) => {
     const data = value;
+    console.log(data);
     // data.jd_files = fileLink;
-    await dispatch(createEmployer({ ...initForm, ...data }, get(profile, 'data.employer.company_id', []))).then(res => {
-      if (res.status) {
-        return message.success('Create employer successfully').then(() => setVisible(!visible));
-      }
-      return message.error(res.error);
-    });
+    // await dispatch(createEmployer({ ...initForm, ...data }, get(profile, 'data.employer.company_id', []))).then(res => {
+    //   if (res.status) {
+    //     return message.success('Create employer successfully').then(() => setVisible(!visible));
+    //   }
+    //   return message.error(res.error);
+    // });
   };
   const onFinishFailed = errorInfo => {
     console.log('Failed:', errorInfo);
@@ -240,7 +241,7 @@ function MyReferred(props) {
                         name="full_name"
                         rules={[{ required: true, message: 'This field is required !' }]}
                       >
-                        <Input></Input>
+                        <Input/>
                       </Form.Item>
                     </Col>
                     <Col span={8} >
@@ -250,20 +251,20 @@ function MyReferred(props) {
                         name="phone_number"
                         rules={[{ required: true, message: 'This field is required !' }]}
                       >
-                        <Input></Input>
+                        <Input/>
                       </Form.Item>
                     </Col>
                     <Col span={8} >
                       <Form.Item
                         label="Quyền truy cập"
                         hasFeedback
-                        // name="role"
+                        name="role"
                         rules={[{ required: true, message: 'This field is required !' }]}
                       >
                         <Select style={{ width: '100%' }}>
-                          <Select.Option value="staff">CEO (company owner)</Select.Option>
-                          <Select.Option value="admin">HR</Select.Option>
-                          <Select.Option value="admin">Accountant</Select.Option>
+                          <Select.Option value="admin">CEO (company owner)</Select.Option>
+                          <Select.Option value="staff">HR</Select.Option>
+                          {/* <Select.Option value="admin">Accountant</Select.Option> */}
                         </Select>
                       </Form.Item>
                     </Col>
