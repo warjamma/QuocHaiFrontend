@@ -16,7 +16,7 @@ import {
   BellFilled,
   InboxOutlined,
 } from '@ant-design/icons';
-// import {getProfileById} from '../containers/company/action';
+ import {getProfileById} from '../containers/company/action';
 import { getProfileByIdRef } from '../containers/referred/actions';
 
 import { requireAuthentication } from '../lib/auth';
@@ -43,7 +43,7 @@ function BasicLayout(props) {
   const [collapsed, setcollapsed] = useState(false);
   const [time, setTime] = useState(3600 * 1000);
   const router = useRouter();
-  if(router.pathname==="/"){
+  if (router.pathname === '/') {
     if (get(profile, 'data.employer', '')) {
       Router.push('/company/job-list');
     }
@@ -83,11 +83,14 @@ function BasicLayout(props) {
     }
     // setToken(localStorage.getItem('token'))
   });
-  // const id = get(profile, 'data.employer.company.id', []);
+    const id = get(profile, 'data.employer.company.id', []);
   useEffect(() => {
-    // dispatch(getProfileById({ id }));
-    // dispatch(getProfileByIdRef({ id }));
-    
+    if (get(profile, 'data.employer', '')) {
+      dispatch(getProfileById({ id }));
+    }
+    if (get(profile, 'data.recruiter', '')) {
+      dispatch(getProfileByIdRef({ id }));
+    }
   }, []);
   const toggle = () => {
     setcollapsed(!collapsed);
@@ -107,16 +110,16 @@ function BasicLayout(props) {
   };
   const imgLogo = () => {
     if (get(profile, 'data.employer', '')) {
-      // return get(company,"company_detail.data.company.avatar");
-      return get(profile, 'data.employer.company.avatar');
+      return get(company, 'company_detail.data.company.avatar');
+      // return get(profile, 'data.employer.company.avatar');
     }
     if (get(profile, 'data.recruiter.role', '') === 'superadmin') {
       const img = 'https://www.rockship.co/images/rs-logo-img.png';
       return img;
     }
     if (get(profile, 'data.recruiter', '')) {
-      return get(profile, 'data.recruiter.avatar');
-      // return get(referred,"recruiter_detail.data.recruiter.avatar");
+      // return get(profile, 'data.recruiter.avatar');
+      return get(referred, 'recruiter_detail.data.recruiter.avatar');
     }
     return 'https://www.rockship.co/images/rs-logo-img.png';
   };
