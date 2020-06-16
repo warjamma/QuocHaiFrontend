@@ -154,7 +154,7 @@ function jobDetail(props) {
   );
 }
 function mapStateToProps(state) {
-  console.log(state);
+  // console.log(state);
   const { referred, profile, company } = state;
   return { referred, profile ,company};
 }

@@ -338,7 +338,7 @@ function JobList(props) {
 };
 
 function mapStateToProps(state) {
-   console.log(state);
+   // console.log(state);
   const { referred,profile } = state;
   return { referred,profile };
 }

@@ -408,7 +408,6 @@ function CompanyProfile(props) {
   );
 }
 function mapStateToProps(state) {
-  console.log('State profile refer', state);
   const { referred, profile } = state;
   return { referred, profile };
 }

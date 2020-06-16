@@ -53,7 +53,6 @@ function BasicLayout(props) {
     if (get(profile, 'data.recruiter', '')) {
       Router.push('/job-list');
     }
-    // Router.push('/job-list');
   }
   const logOut = async () => {
     await dispatch(logOutRequest());
