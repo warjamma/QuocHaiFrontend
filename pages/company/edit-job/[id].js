@@ -8,7 +8,7 @@ import { UploadOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import { get, cloneDeep } from 'lodash';
 import  moment from 'moment';
-import { updateJob, getJobById } from '../../../containers/company/action';
+import { updateJob, getJobById, extendJob } from '../../../containers/company/action';
 import { uploadRequest } from '../../../containers/referred/actions';
 import './styles.scss';
 
@@ -40,6 +40,7 @@ function EditJob(props) {
   //     content: 'Vui lòng mua thêm gói post jobs để tiếp tục gia hạn',
   //   });
   // };
+ 
   const onFinish = async (value) => {
     const data = cloneDeep(value);
     if(fileLink){
@@ -54,6 +55,17 @@ function EditJob(props) {
       }
       return message.error(res.error);
     });
+    // if (value) {
+    //   const date2 = moment().format('YYYY-MM-DD[T]HH:mm:ss.SSSz');
+    //   const payload = { expire_at: date2};
+    //   // console.log(date);
+    //   dispatch(extendJob(id, payload)).then((res2) => {
+    //     if (res2.status) {
+    //       return message.success('Extend succes');
+    //     }
+    //     return message.error(res2.error);
+    //   });
+    // }
   };
   const onRequest = async (value) => {
     await dispatch(uploadRequest({ value })).then(res => {
@@ -109,7 +121,7 @@ function EditJob(props) {
     accept: ".pdf",
     customRequest: dummyRequest
   };
-  const day_create =get(referred, 'job_detail.data.job.created_at', []);
+  const dayCreate =get(referred, 'job_detail.data.job.created_at', []);
   // console.log('day neeeeeeeeee',moment(day_create).format('YYYY-MM-DD'));
   // const ab = moment().format('YYYY-MM-DD[T]HH:mm:ss.SSSz');
   const ab = moment().format('YYYY-MM-DD');
@@ -118,7 +130,7 @@ function EditJob(props) {
   // console.log(now ) ;// 31
   // const end = moment('2020-05-01');
   // console.log(end ) ;// 31
-  const dayend=now.diff(day_create, 'days');
+  const dayend=now.diff(dayCreate, 'days');
   console.log(dayend) ;
   return (
     <div className="uploadcv" style={{ backgroundColor: 'white' }}>
