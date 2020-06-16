@@ -46,9 +46,13 @@ function jobDetail(props) {
   //     });
   //   };
   const onFinish = async (value) => {
-    const data = cloneDeep(value);
-    console.log(data);
-    dispatch(purchasePostJob(data, id)).then((res) => {
+    const values= {
+      prioritize_slot: value.data.split(", ")[0],
+      slot: value.data.split(", ")[1]
+    };
+
+    const data2 = cloneDeep(values);
+    dispatch(purchasePostJob(data2, id)).then((res) => {
       if (res.status) {
         return message
           .success('Set post job successfully')
@@ -286,7 +290,7 @@ function jobDetail(props) {
                 <Form.Item
                   label="Loại đăng tuyển"
                   hasFeedback
-                  name="prioritize_slot"
+                  name="data"
                   rules={[
                     { required: true, message: 'This field is required !' },
                   ]}
@@ -295,13 +299,13 @@ function jobDetail(props) {
                     style={{ width: '100%' }}
                     placeholder="ex: Chọn kiểu đăng tuyển"
                   >
-                    <Select.Option value="false">Thường</Select.Option>
-                    <Select.Option value="true">
-                      Đăng tuyển ưu tiên
-                    </Select.Option>
+                    <Select.Option value="false, 3">3 Đăng tuyển thường</Select.Option>
+                    <Select.Option value="true, 3">3 Đăng tuyển ưu tiên</Select.Option>
+                    <Select.Option value="false, 5">5 Đăng tuyển thường</Select.Option>
+                    <Select.Option value="true, 6">6 Đăng tuyển ưu tiên (Combo 2 gói 3 đăng tuyển thường)</Select.Option>
                   </Select>
                 </Form.Item>
-                <Form.Item
+                {/* <Form.Item
                   label="Số lượng lượt đăng tuyển"
                   name="slot"
                   rules={[
@@ -309,7 +313,7 @@ function jobDetail(props) {
                   ]}
                 >
                   <Input placeholder="ex: Số lượng" />
-                </Form.Item>
+                </Form.Item> */}
                 <Form.Item>
                   <Button
                     type="danger"

@@ -313,7 +313,7 @@ function MyReferred(props) {
 
 function mapStateToProps(state) {
   const { referred, profile, company } = state;
-  console.log(state);
+  // console.log(state);
   return { referred, profile, company };
 }
 

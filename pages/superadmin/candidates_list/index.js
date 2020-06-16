@@ -220,7 +220,7 @@ function MyReferred(props) {
 };
 
 function mapStateToProps(state) {
-  console.log(state);
+  // console.log(state);
   const { referred } = state;
   return { referred };
 }

@@ -102,7 +102,8 @@ function Home(props) {
 
       <div className="container job">
         <div className="row">
-          <div className="col-sm-9 job-list">
+          <div className="col-sm-9">
+            <div className="job-list">
             {get(company, 'list_job.items.job', []).map((item) => {
               return (
                 <div key={item.id}>
@@ -113,6 +114,7 @@ function Home(props) {
                 </div>
               );
             })}
+            </div>
           </div>
           <div className="col-sm-3">
             <div
