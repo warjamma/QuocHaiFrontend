@@ -170,3 +170,16 @@ export function purchasePostJob(params, companyId) {
     }
   };
 }
+export function extendJob(idJobs, payload) {
+  console.log(payload);
+  const daaa22= payload;
+  return async () => {
+    try {
+      const { data } = await api.sendRequestWithToken('put', `/jobs/${idJobs}/extend_date`,null,{ accept: 'application/json','Content-Type': 'application/json'},null,{ "expire_at": daaa22});
+      return { status: true,data };
+    } catch (error) {
+      const { data } = error.response;
+      return { status: false, error: data.message };
+    }
+  };
+}
