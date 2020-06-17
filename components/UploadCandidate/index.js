@@ -89,12 +89,17 @@ function UploadCandidate(props) {
     const data = cloneDeep(value);
     data.cv = fileLink;
     // data.phone_number = initForm.phone_number;
-    dispatch(createCandidateNoAddJob({ ...initForm, ...data })).then(res => {
-      if (res.status) {
-        return message.success('Create candidate successfully').then(() => Router.push(`/upload-home`));
-      }
-      return message.error(res.error);
-    });
+    if(data.cv){
+      dispatch(createCandidateNoAddJob({ ...initForm, ...data })).then(res => {
+        if (res.status) {
+          return message.success('Create candidate successfully').then(() => Router.push(`/upload-home`));
+        }
+        return message.error(res.error);
+      });
+    }
+    else {
+      return message.error("Please upload your cv !");
+    }
   };
   const onRequest = async (value) => {
     dispatch(uploadRequest({ value })).then(res => {

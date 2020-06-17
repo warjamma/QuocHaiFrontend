@@ -174,7 +174,7 @@ function JobList (props) {
       render: (text, record, index) => <Tag color="blue">{record.min_salary}$ - {record.max_salary}$</Tag>,
     },
     {
-      title: '',
+      title: 'Thao tác',
       dataIndex: '',
       align: 'center',
       width: 'max-content',

@@ -39,7 +39,7 @@ function jobDetail(props) {
   },[]);
   return (
     <div className="company-profile" >
-      <div className="header" style={{ backgroud: '#fff', fontWeight: 'bold' }}>Số lượt đăng tuyển</div>
+      <div className="header" style={{ backgroud: '#fff', fontWeight: 'bold' }}>Quản lý đăng tuyển</div>
       <Row gutter={[16, 16]}>
         <Col span={10} >
           <Row gutter={[16, 8]}>
@@ -101,7 +101,7 @@ function jobDetail(props) {
               {/* <Col span={4} ><img style={{ padding: 'auto', margin: 'auto', display: 'block', height: 250, width: 250, objectFit: 'scale-down' }} alt="example" src={'get(referred, 'company_detail.data.company.avatar', [])'} /></Col> */}
               <Col span={18} >
                 <div style={{ background: 'white', padding: 20 }} >
-                  <Title level={3}> [Liên hệ ] {get(profile, 'data.employer.company.name', [])} </Title>
+                  <Title level={3}> {get(profile, 'data.employer.company.name', [])} </Title>
                   <div>{get(profile, 'data.employer.company.address', [])}</div>
                   <div ><FacebookOutlined />&nbsp;<a href={get(profile, 'data.employer.company.facebook')} rel="noopener noreferrer" target="_blank">{get(profile, 'data.employer.company.facebook')}</a></div>
                   <div ><MailOutlined />&nbsp;<a>{get(profile, 'data.employer.company.email_cc')} </a></div>
@@ -138,13 +138,14 @@ function jobDetail(props) {
               <div style={{ background: 'white', padding: 20 }} >
                 <Title level={3}>Giới thiệu về các gói: </Title>
                 <Row className='row-detail' style={{ paddingTop: 24 }} >
-                  <Col span={5}><span className='bold-span' style={{ fontWeight: 'bold' }}>LƯỢT ĐĂNG TUYỂN ƯU TIÊN</span></Col>
-                  <Col span={17}> Với mỗi lần post job sẽ trừ trực tiếp vào số lượt đăng tuyển ưu tiên đã mua. Mỗi lần bài đăng tuyển ưu tiên sẽ hiển thị trong vòng 20 ngày và sẽ Được hiển thị đầu trang Danh sách Job với kích thước baner lớn và được gắn thẻ nổi HOT. Niếu bạn không gia hạn công việc sẽ tự động cancel . Niếu bạn gia hạn công việc sẽ tiếp tục tuyển cho đến kỳ post job đã chọn cho công việc. </Col>
+                  <Col span={24}><span className='bold-span' style={{ fontWeight: 'bold' }}>LƯỢT ĐĂNG TUYỂN ƯU TIÊN</span></Col>
+                  <Col span={24}> Luôn dược hiển thị đầu trang Danh sách công việc với kích thước banner lớn và được gắn thẻ nổi HOT.</Col>
                 </Row>
                 <Row className='row-detail' style={{ paddingTop: 24 }} >
-                  <Col span={5}><span className='bold-span' style={{ fontWeight: 'bold' }}>LƯỢT ĐĂNG TUYỂN THƯỜNG</span></Col>
-                  <Col span={17}> Với mỗi lần post job sẽ trừ trực tiếp vào số lượt đăng tuyển thường đã mua. Mỗi lần dùng bài đăng tuyển thường sẽ hiển thị trong  vòng 30  ngày Hiển Thị sau hot job với kích thước hiển thị bình thường niếu bạn không gia hạn công việc sẽ tự động cancel . Niếu bạn gia hạn công việc sẽ tiếp tục tuyển cho đến kỳ post job đã chọn cho công việc. </Col>
+                  <Col span={24}><span className='bold-span' style={{ fontWeight: 'bold' }}>LƯỢT ĐĂNG TUYỂN THƯỜNG</span></Col>
+                  <Col span={24}> Hiển thị sau đăng tuyển ưu tiên với kích thước hiển thị bình thường. </Col>
                 </Row>
+                <div style={{  marginTop:10 }}>Thứ tự hiển thị công việc tính theo gói công việc và thời gian đăng tuyển. Công việc đăng tuyển mới nhất sẽ nằm trên cùng (sau danh sách đăng tuyển ưu tiên)</div>
               </div>
             </Col>
           </div>

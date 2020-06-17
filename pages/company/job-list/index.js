@@ -51,7 +51,7 @@ function JobList(props) {
     await dispatch(deleteJob(jobId)).then(res => {
       if (res.status) {
         Router.push('/company/job-list');
-        return message.success('Delete candidate successfully');
+        return message.success('Delete Job successfully');
       }
       return message.error(res.error);
     });
@@ -131,7 +131,7 @@ function JobList(props) {
       render: (text, record, index) => <Tag color={renderColorTag(record.status)}>{record.status}</Tag>,
     },
     {
-      title: '',
+      title: 'Thao tác',
       dataIndex: 'candidate',
       align: 'center',
       width: 150,

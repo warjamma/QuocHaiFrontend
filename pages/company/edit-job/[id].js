@@ -135,7 +135,7 @@ function EditJob(props) {
   return (
     <div className="uploadcv" style={{ backgroundColor: 'white' }}>
       <div className="header">
-        <div>Chỉnh sửa công việc</div>
+        <div>Chi tiết công việc</div>
       </div>
       <Row gutter={[16, 16]}>
         {/* {get(referred, 'candidate_detail', [])} */}
@@ -159,15 +159,6 @@ function EditJob(props) {
                 </Button>
               </Upload>
             </Form.Item>
-
-            {/* <Form.Item
-              label="Tiêu đề"
-              name="job_title"
-              // rules={[{ required: true, message: 'This field is required !' }]}
-              hasFeedback
-            >
-              <Input />
-            </Form.Item> */}
             <Form.Item
               label="Vị trí"
               hasFeedback
@@ -239,7 +230,7 @@ function EditJob(props) {
               // defaultValue={1}
               />
             </Form.Item>
-            <Form.Item
+            {/* <Form.Item
               label="Kích cỡ team"
               hasFeedback
               name="team_size"
@@ -250,7 +241,7 @@ function EditJob(props) {
                 <Select.Option value="medium">Vừa</Select.Option>
                 <Select.Option value="small">Nhỏ</Select.Option>
               </Select>
-            </Form.Item>
+            </Form.Item> */}
             <Form.Item
               label="Tiền tệ"
               hasFeedback
@@ -310,16 +301,16 @@ function EditJob(props) {
                 parser={value => value.replace(/\$\s?|(,*)/g, '')}
               />
             </Form.Item>
-            <Form.Item name="candidate_benefit" label="Phúc lợi">
+            {/* <Form.Item name="candidate_benefit" label="Phúc lợi">
               <Input.TextArea />
-            </Form.Item>
-            <div style={{color:'red',fontWeight:'bold'}}>THỜI GIAN KẾT THÚC CÔNG VIỆC CÒN {20-dayend} NGÀY</div>
+            </Form.Item> */}
+            <div style={{color:'red',fontWeight:'bold'}}>NGÀY HIỂN THỊ CÒN {20-dayend} NGÀY</div>
             <Form.Item
               label="Gia hạn công việc"
               hasFeedback
               // name="post_job"
             >
-              <Select style={{ width: '100%' }} placeholder="Chọn kiểu gia hạn">
+              <Select style={{ width: '100%' }} >
                 <Select.Option value="post-hot">1 tháng POST HOT -Còn 03</Select.Option>
                 <Select.Option value="post">1 tháng POST THƯỜNG - Còn 02</Select.Option>
               </Select>

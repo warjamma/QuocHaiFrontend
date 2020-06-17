@@ -19,7 +19,7 @@ import {
   IeOutlined,
   MailOutlined,
   PhoneOutlined,
-  LikeOutlined,
+  SettingOutlined,
 } from '@ant-design/icons';
 import { getCompanyById } from '../../../containers/referred/actions';
 import { purchasePostJob } from '../../../containers/company/action';
@@ -67,7 +67,7 @@ function jobDetail(props) {
   return (
     <div className="company-profile">
       <div className="header" style={{ backgroud: '#fff', fontWeight: 'bold' }}>
-        Quản lý post jobs
+        Quản lý đăng tuyển
       </div>
       <Row gutter={[16, 16]}>
         <Col span={8}>
@@ -278,7 +278,7 @@ function jobDetail(props) {
           <div style={{ background: 'white' }}>
             <div style={{ background: 'white', padding: 20 }}>
               <Title level={3}>
-                <LikeOutlined /> Post Job
+              <SettingOutlined /> Cấp lượt đăng tuyển
               </Title>
               <Form
                 {...layout}
@@ -288,7 +288,6 @@ function jobDetail(props) {
                 layout="vertical"
               >
                 <Form.Item
-                  label="Loại đăng tuyển"
                   hasFeedback
                   name="data"
                   rules={[
@@ -299,10 +298,10 @@ function jobDetail(props) {
                     style={{ width: '100%' }}
                     placeholder="ex: Chọn kiểu đăng tuyển"
                   >
-                    <Select.Option value="false, 3">3 Đăng tuyển thường</Select.Option>
-                    <Select.Option value="true, 3">3 Đăng tuyển ưu tiên</Select.Option>
-                    <Select.Option value="false, 5">5 Đăng tuyển thường</Select.Option>
-                    <Select.Option value="true, 6">6 Đăng tuyển ưu tiên (Combo 2 gói 3 đăng tuyển thường)</Select.Option>
+                    <Select.Option value="true, 3">Gói 1:  3 lượt đăng tuyển ưu tiên</Select.Option>
+                    <Select.Option value="true, 6">Gói 2:  6 lượt đăng tuyển ưu tiên</Select.Option>
+                    <Select.Option value="false, 3">Gói 3:  3 lượt đăng tuyển thường</Select.Option>
+                    <Select.Option value="false, 5">Gói 4:  5 lượt đăng tuyển thường</Select.Option>
                   </Select>
                 </Form.Item>
                 {/* <Form.Item

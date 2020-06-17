@@ -28,7 +28,7 @@ export const companySideBar = [
 
 export const adminSideBar = [
   {
-    name: 'Danh sách công việc',
+    name: 'Quản lý công việc',
     url: '/superadmin/job-list'
   },
   {
@@ -36,7 +36,7 @@ export const adminSideBar = [
     url: '/superadmin/candidates_list'
   },
   {
-    name: 'Giới thiệu ứng viên',
+    name: 'Danh sách công việc',
     url: '/job-list'
   },
   {
