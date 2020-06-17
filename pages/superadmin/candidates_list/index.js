@@ -52,6 +52,7 @@ function MyReferred(props) {
   const columns = [
     {
       title: 'Tên ứng viên',
+      width: '20%',
       dataIndex: 'admin_id',
       render: (text, record, index) => (
         <div className="custom-role">
@@ -62,10 +63,7 @@ function MyReferred(props) {
       ),
     },
     {
-      title: 'Tên hồ sơ hiển thị',
-      dataIndex: 'profile_title'
-    },
-    {
+      width: '10%',
       title: 'Vị trí',
       dataIndex: 'id',
       render: (text, record, index)=>(
@@ -75,6 +73,7 @@ function MyReferred(props) {
       )
     },
     {
+      width: '10%',
       title: 'Cấp độ',
       dataIndex: 'id',
       render: (text, record, index)=>(
@@ -93,6 +92,7 @@ function MyReferred(props) {
     //   )
     // },
     {
+      width: '10%',
       title: 'Địa điểm',
       dataIndex: 'id',
       render: (text, record, index)=>(
@@ -102,30 +102,15 @@ function MyReferred(props) {
       )
     },
     {
+      width: '40%',
       title: 'Email',
       dataIndex: 'email'
     },
     {
-      title: 'Điện thoại',
-      dataIndex: 'phone_number'
-    },
-    {
-      title: 'Tên ngân hàng',
-      dataIndex: 'bank_name'
-    },
-    {
-      title: 'Số tài khoản',
-      dataIndex: 'bank_number'
-    },
-    {
-      title: 'Chủ tài khoản',
-      dataIndex: 'bank_user'
-    },
-    {
+      width: '10%',
       title: 'Cập nhật',
       dataIndex: 'id',
       align: 'center',
-      width: 150,
       render: (text, record, index) => <div className="Action"><Button style={{ marginRight: 5 }} onClick={() => pushRouter(get(record, 'id', ''))} icon={<EditOutlined />} size="small" />
         <Popconfirm
           title="Are you sure delete title?"

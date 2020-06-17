@@ -168,16 +168,20 @@ function JobList(props) {
     },
     {
       width: '15%',
-      title: 'Jobs Post đang dùng',
+      title: 'Lượt đăng tuyển đã dùng',
       dataIndex: 'id',
       render: (text, record, index) => (
         <div role="presentation" className="custom-role">
           <div className="job-role">
             <b className="name-role" color="blue">
-              20 JOBS HOT
+            {get(record, 'purchas_job_proritize_available_to_post')-get(record, 'purchas_job_available_to_post')
+                ? get(record, 'purchas_job_proritize_available_to_post')-get(record, 'purchas_job_available_to_post')
+                : 0}{' '} ƯU TIÊN
             </b>
             <b className="name-role" color="blue">
-              0 JOBS THƯỜNG
+            {get(record, 'purchas_job_available_to_post')-get(record, 'job_available_to_post')
+                ? get(record, 'purchas_job_available_to_post')-get(record, 'job_available_to_post')
+                : 0}{' '} THƯỜNG
             </b>
           </div>
         </div>
@@ -185,7 +189,7 @@ function JobList(props) {
     },
     {
       width: '15%',
-      title: 'Jobs Post đã mua',
+      title: 'Lượt đăng tuyển đã mua',
       dataIndex: 'id',
       render: (text, record, index) => (
         <div role="presentation" className="custom-role">
@@ -194,13 +198,13 @@ function JobList(props) {
               {get(record, 'purchas_job_proritize_available_to_post')
                 ? get(record, 'purchas_job_proritize_available_to_post')
                 : 0}{' '}
-              JOBS
+              ƯU TIÊN
             </b>
             <b className="name-role" color="blue">
               {get(record, 'purchas_job_available_to_post')
                 ? get(record, 'purchas_job_available_to_post')
                 : 0}{' '}
-              JOBS THƯỜNG
+              THƯỜNG
             </b>
           </div>
         </div>
@@ -208,23 +212,23 @@ function JobList(props) {
     },
     {
       width: '15%',
-      title: 'Jobs Post còn lại',
+      title: 'Lượt đăng tuyển còn lại',
       dataIndex: 'id',
       render: (text, record, index) => (
         <div role="presentation" className="custom-role">
           <div className="job-role">
             <b className="name-role" color="blue">
-            {get(record, 'job_proritize_available_to_post')?get(record, 'job_proritize_available_to_post'):0} JOBS
+            {get(record, 'job_proritize_available_to_post')?get(record, 'job_proritize_available_to_post'):0} ƯU TIÊN
             </b>
             <b className="name-role" color="blue">
-            {get(record, 'job_available_to_post')?get(record, 'job_available_to_post'):0} JOBS THƯỜNG
+            {get(record, 'job_available_to_post')?get(record, 'job_available_to_post'):0} THƯỜNG
             </b>
           </div>
         </div>
       ),
     },
     {
-      title: 'Sét số lượng',
+      title: 'Thao tác',
       dataIndex: 'status',
       align: 'center',
       editable: true,
@@ -232,7 +236,7 @@ function JobList(props) {
       render: (text, record, index) => (
         <div>
           <Button type="danger" onClick={() => pushRouter(record.id)}>
-            Set số lượng post job
+            Cấp lượt đăng tuyển
           </Button>
         </div>
       ),

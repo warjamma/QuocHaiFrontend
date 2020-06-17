@@ -126,7 +126,7 @@ function jobDetail(props) {
     };
     return (
         <div className="job-detail" style={{ padding: 30 }}>
-            <div className="header" style={{ backgroud: '#fff', fontWeight: 'bold' }}>Job detail</div>
+            <div className="header" style={{ backgroud: '#fff', fontWeight: 'bold' }}>Chi tiết công việc</div>
             <Row gutter={[16, 16]} className="job-content">
                 <Col span={8} className="company-info">
                     <div style={{ background: 'white' }}>

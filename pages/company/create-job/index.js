@@ -38,7 +38,7 @@ const initForm = {
     }
   ],
   report_to: "",
-  team_size: null,
+  team_size: "",
   interview_process: "",
   email_cc: "",
   use_test: true,
@@ -218,7 +218,7 @@ function CreateJob(props) {
               // defaultValue={1}
               />
             </Form.Item>
-            <Form.Item
+            {/* <Form.Item
               label="Kích cỡ team"
               hasFeedback
               name="team_size"
@@ -229,7 +229,7 @@ function CreateJob(props) {
                 <Select.Option value="medium">Vừa</Select.Option>
                 <Select.Option value="small">Nhỏ</Select.Option>
               </Select>
-            </Form.Item>
+            </Form.Item> */}
             <Form.Item
               label="Tiền tệ"
               hasFeedback
@@ -289,9 +289,9 @@ function CreateJob(props) {
                 parser={value => value.replace(/\$\s?|(,*)/g, '')}
               />
             </Form.Item>
-            <Form.Item name="candidate_benefit" label="Phúc lợi">
+            {/* <Form.Item name="candidate_benefit" label="Phúc lợi">
               <Input.TextArea />
-            </Form.Item>
+            </Form.Item> */}
             <div style={{ color: 'red', fontWeight: 'bold' }}>THỜI GIAN POST CÔNG VIỆC TRONG 30 NGÀY</div>
             <Form.Item
               label="Chọn kiểu post"

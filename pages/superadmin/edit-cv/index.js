@@ -43,10 +43,10 @@ function EditCV(props) {
     if(job_id && id ){
       return "Giới thiệu";
     }
-    else if ( id) {
+    if ( id) {
       return "Cập nhật";
     }
-  }
+  };
   const onFinish = async (value) => {
     const data = cloneDeep(value);
     if (fileLink) {
@@ -166,13 +166,13 @@ function EditCV(props) {
                 <Input placeholder="ex: username" />
               </Form.Item>
 
-              <Form.Item
+              {/* <Form.Item
                 label="Tên hồ sơ hiển thị"
                 name="profile_title"
                 rules={[{ required: true, message: 'Please input your Job Title!' }]}
               >
                 <Input placeholder="ex: Job Title" />
-              </Form.Item>
+              </Form.Item> */}
 
               <Form.Item
                 label="Email"
