@@ -57,7 +57,7 @@ function BasicLayout(props) {
   }
   const logOut = async () => {
     await dispatch(logOutRequest());
-    Router.push('/login');
+    Router.push('/');
   };
   // window.onunload   = async() => {
   //   await dispatch(logOutRequest());
