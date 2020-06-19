@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-unused-expressions */
 import React, { useState, useEffect } from 'react';
-import { Table, Row, Col, Button, Input, Select, Tag, Popconfirm, DatePicker, Form, message } from 'antd';
+import { Table, Row, Col, Button, Input, Select, Tag, Popconfirm, DatePicker, Form, message ,Popover} from 'antd';
 import Router from 'next/router';
 import { connect } from 'react-redux';
 import { RedoOutlined, SearchOutlined, DownloadOutlined } from '@ant-design/icons';
@@ -188,9 +188,26 @@ function CandidateList (props) {
       align: 'center',
       editable: true,
       width: 120,
-      render: (text, record, index) => <Tag color={renderColorStatus(get(record, 'status', ''))}>
-        {get(record, 'status', '') === 'on_board' ? 'onboarding' : get(record, 'status', '').replace('_', ' ')}
-      </Tag>,
+      render: (text, record, index) => <div>
+      {get(record, 'status', '') === 'interview_failed' || get(record, 'status', '') === 'probation_failed'
+          ? <Popover content={<div>
+            <p>{get(record,'status')}</p>
+          </div>} title="Lý do">
+            <Tag color={renderColorStatus(record.status)}>
+              {get(record, 'status', '') === 'interview_failed'
+                ? 'Interview failed'
+                : 'Probation failed'}
+              
+            </Tag>
+          </Popover>
+          : <Tag color={renderColorStatus(record.status)}>
+          {get(record, 'status', '') === 'on_board'
+            ? 'Onboarding'
+            : 'Pending'}
+          
+        </Tag>}
+      
+    </div>,
     },
     {
       title: 'Hồ sơ',

@@ -28,7 +28,7 @@ function HeaderHome() {
           >
             <img
               className="name-logo"
-              src="https://www.rockship.co/images/rs-logo-text.png"
+              src="https://d3t1myknaqth5d.cloudfront.net/files/1592390878.jpeg"
               alt="#"
             />
           </li>
@@ -41,7 +41,7 @@ function HeaderHome() {
               >
                 Đăng nhập
               </li>
-              <li
+              {/* <li
                 className="  tag"
                 role="presentation"
                 onClick={() => Router.push(`/upload-home`)}
@@ -54,11 +54,11 @@ function HeaderHome() {
                 onClick={() => Router.push(`/upload-home`)}
               >
                 All Jobs{' '}
-              </li>
+              </li> */}
               <li
                 className="  tag upload"
                 role="presentation"
-                onClick={() => Router.push(`/upload-cv-home`)}
+                // onClick={() => Router.push(`/upload-cv-home`)}
               >
                 Upload cv
               </li>

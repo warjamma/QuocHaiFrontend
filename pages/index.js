@@ -1,140 +1,207 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Row, Col, Button, Select, Menu, Typography, Card, Layout } from 'antd';
-import { MailOutlined, DollarOutlined } from '@ant-design/icons';
-import HeaderHome from '../components/HeaderHome'
+import { Button, Typography, Select } from 'antd';
+import { get } from 'lodash';
+import Router from 'next/router';
+import Particles from 'react-particles-js';
 import FooterHome from '../components/FooterHome';
+import MenuHome from '../components/MenuHome';
+import JobInfo from '../components/JobInfo';
+import { getListJob } from '../containers/job/actions';
 import './styles.scss';
-import { Router } from 'next/router';
 
 const { Title } = Typography;
-const { Footer } = Layout;
-function Home() {
-  
-  return (
+// const { Search } = Input;
+const initQuery = {
+  company: '',
+  key_word: '',
+  location: '',
+  status: 'accepted',
+  job_role: null,
+  min_salary: null,
+  max_salary: null,
+  offset: 0,
+  limit: 10,
+};
+function Home(props) {
+  const { dispatch, company } = props;
 
-    <div className='home-page'>
+  const [query, setQuery] = useState(initQuery);
+  const changeQuery = (key, value) => {
+    const clone = { ...query };
+    clone[key] = typeof value === 'object' ? value.join(', ') : value;
+    setQuery(clone);
+  };
+  const handleFind = async () => {
+    const clone = { ...query };
+    clone.offset = 0;
+    setQuery(clone);
+    await dispatch(getListJob(clone));
+  };
+
+  useEffect(() => {
+    dispatch(getListJob(query));
+  }, [query]);
+  return (
+    <div className="home-page">
+       <Particles
+          params={{
+            particles: {
+              // line_linked: {
+              //   shadow: {
+              //     enable: true,
+              //     color: '#3CA9D1',
+              //     blur: 5,
+              //   },
+              // },
+              number: {
+                value: 100,
+              },
+              size: {
+                value: 3,
+              },
+            },
+          }}
+          style={{
+            width: '100%',
+            backGroud: '#051633',
+          }}
+        />
       <div className="boude-menu">
-        <HeaderHome/>
-        <Row className="search">
-          <Col span={3} />
-          <Col span={12} className="search1">
-            <Select
-              placeholder="Keyword skill (Java, iOS...), Job Title, Company..."
-              mode="tags"
-              style={{ width: '100%' }}
-            >
-              {
-                'C-level, Department head, Director, Junior, Manager, Middle, Senior, Specialist, Team Leader'.split(', ')
-                  .map(item => (
-                    <Select.Option key={item} value={item}>{item}</Select.Option>
-                  ))
-              }
-            </Select>
-          </Col>
-          {/* <Col span={1}/> */}
-          <Col span={3} className="search2">
-            <Select
-              placeholder="All location"
-              // mode="tags"
-              style={{ width: '100%' }}
-            >
-              {
-                'Tát cả,TP Hồ Chí Minh, Hà Nội'.split(', ')
-                  .map(item => (
-                    <Select.Option key={item} value={item}>{item}</Select.Option>
-                  ))
-              }
-            </Select>
-          </Col>
-          {/* <Col span={1}/> */}
-          <Col span={3} className="search-btn">
-            <Button type="primary" className=" search-btn" danger>  Tìm kiếm </Button>
-          </Col>
-          <Col span={3} />
-        </Row>
+        <MenuHome />
+        <div className="searchh container">
+          <div className="row">
+            <div className="search1 col-sm-6">
+              {/* <Search value={query.key_word} onChange={(e) => changeQuery('key_word', e.target.value)} placeholder="Từ khóa" /> */}
+              <Select
+                placeholder="Keyword skill (Java, iOS...), Job Title, Company..."
+                mode="tags"
+                style={{ width: '100%' }}
+                allowClear
+                showSearch
+                onChange={(e) => changeQuery('job_role', e)}
+                optionFilterProp="children"
+                filterOption={(input, option) =>
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >=
+                  0
+                }
+                value={query.job_type}
+              >
+                {'C-level, Department head, Director, Junior, Manager, Middle, Senior, Specialist, Team Leader'
+                  .split(', ')
+                  .map((item) => (
+                    <Select.Option key={item} value={item}>
+                      {item}
+                    </Select.Option>
+                  ))}
+              </Select>
+            </div>
+            <div className="search2 col-sm-3">
+              <Select
+                placeholder="All location"
+                // mode="tags"
+                style={{ width: '100%' }}
+              >
+                {'Tát cả, TP Hồ Chí Minh, Hà Nội'.split(', ').map((item) => (
+                  <Select.Option key={item} value={item}>
+                    {item}
+                  </Select.Option>
+                ))}
+              </Select>
+            </div>
+            <div className="search-btn col-sm-3">
+              <Button
+                type="primary"
+                className=" search-btn"
+                danger
+                onClick={() => handleFind()}
+              >
+                {' '}
+                Tìm kiếm{' '}
+              </Button>
+            </div>
+          </div>
+        </div>
       </div>
 
-
-      <div className="content-page">
-
-        <Row >
-          <Col span={3} />
-          <Col span={14} >
-            <div className="jobs">
-              <Row className="card">
-                {/* <Col span={3} /> */}
-                <Col span={24} className="content">
-                  <Card className="involveJob" >
-                    <Title level={3}>1,173 IT jobs in Vietnam for you</Title>
-                    <Card className="moreJobs">
-                      <Row gutter={[16, 16]} className="oneRow">
-                        <Col span={6} >
-                          <img alt="example" src="https://cdn.itviec.com/employers/dxc-vietnam/logo/s65/U7GERVChzwPaBYXec1bQgPmP/DXC%20logo-icon.png" />
-                        </Col>
-                        <Col span={18} >
-                          <Row>
-                            <Col span={18} >
-                              <Title level={3}>Why You'll Love Working Here</Title>
-                              <div style={{ color: '#68ba50' }}><DollarOutlined /> You'll love it</div>
-                            </Col>
-                            <Col span={6} >
-                              <div style={{ float: 'right', background: '#ff9e34', color: 'white', fontSize: '8', padding: 3 }}>Ant Design</div><br />
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col span={18} >
-                              <div>Role: As a COBOL Software Engineer, you will collaborate proactively with functional analysts to transla
-                                            te business and integration requirements into...</div>
-                            </Col>
-                            <Col span={6} >
-                              <div style={{ float: 'right' }}>Hồ Chí Minh</div><br />
-                              <div style={{ float: 'right' }}>Tân Bình</div>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col span={18} >
-                              <Button style={{ marginRight: 5 }}>J2EE</Button>
-                              <Button style={{ marginRight: 5 }}>Java</Button>
-                              <Button>Spring</Button>
-                            </Col>
-                            <Col span={6} >
-                              <div style={{ float: 'right' }}>7 minutes ago</div><br />
-                            </Col>
-                          </Row>
-                        </Col>
-                      </Row>
-                    </Card>
-                  </Card>
-                </Col>
-                {/* <Col span={3} /> */}
-              </Row>
+      <div className="container job">
+        <div className="row">
+          <div className="col-sm-9">
+            <div className="job-list">
+            {get(company, 'list_job.items.job', []).map((item) => {
+              return (
+                <div key={item.id}>
+                  <JobInfo
+                    value={item}
+                    loading={get(company, 'is_loading', false)}
+                  />
+                </div>
+              );
+            })}
             </div>
-          </Col>
-          <Col span={4}  >
-            <div className="news-right">
-              <Row gutter={[8, 8]}style={{padding:10  }}>
-                <Col span={24} >
-                  <Title level={3}>TÌM VIỆC KHÓ - CÓ  ROCKSEARCH</Title>
-                  <div className="content-news" style={{marginTop:20, textAlign:'center', marginBottom:20 }}><Button type="danger" href="/upload-home"  >Upload CV của bạn tại đây</Button></div>
-                  <Title level={4}>SỞ HỮU NGAY CV XỊN CÙNG VIỆC LÀM MƠ ƯỚC</Title>
-                  <p>30.000+ cơ hội việc làm được kết nối thành công qua Rocksearch mỗi ngày</p></Col>
-                  
-              </Row>
-              {/* <Title level={3} className="title-right">Company Spotlight</Title> */}
-              <img className="img-news" alt="#" src="https://aimacademy.vn/wp-content/uploads/2019/10/AIM-CV-Digital-02.png" />
+          </div>
+          <div className="col-sm-3">
+            <div
+              className="row news-right"
+              style={{
+                padding: 10,
+                background: '#f4f4f4',
+                borderRadius: 8,
+                margin: '30px 0px 0px 20px',
+              }}
+            >
+              <div style={{ padding: 10 }}>
+                <Title level={3}>TÌM VIỆC KHÓ - CÓ ROCKSEARCH</Title>
+                <div
+                  className="content-news"
+                  style={{
+                    marginTop: 20,
+                    textAlign: 'center',
+                    marginBottom: 20,
+                  }}
+                >
+                  <Button
+                    role="presentation"
+                    // onClick={() => Router.push(`/upload-cv-home`)}
+                    style={{    background: '#f67f32',
+                      borderColor: '#f67f32',
+                      color: 'white',
+                      }}
+                  >
+                    Upload CV của bạn tại đây
+                  </Button>
+                </div>
+                <Title level={4}>SỞ HỮU NGAY CV XỊN CÙNG VIỆC LÀM MƠ ƯỚC</Title>
+                <p>
+                  30.000+ cơ hội việc làm được kết nối thành công qua Rocksearch
+                  mỗi ngày
+                </p>
+              </div>
+              <img
+                className="img-news"
+                alt="#"
+                src="https://aimacademy.vn/wp-content/uploads/2019/10/AIM-CV-Digital-02.png"
+              />
               <div className="title-right-child">POPS WorldWide</div>
               <div className="location">Hồ chí minh</div>
-              <div className="description">POPS Worldwide is a leading digital entertainment company & based in VN</div>
+              <div className="description">
+                POPS Worldwide is a leading digital entertainment company &
+                based in VN
+              </div>
             </div>
-          </Col>
-          <Col span={3} />
-        </Row>
+          </div>
+        </div>
       </div>
-      <FooterHome/>
+      <div style={{marginTop: '60px'}}>
+        {' '}
+        <FooterHome />
+      </div>
     </div>
-    
   );
-};
+}
+function mapStateToProps(state) {
+  const { company } = state;
+  return { company };
+}
 
-export default connect(null, null)(Home);
+export default connect(mapStateToProps, null)(Home);

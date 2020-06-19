@@ -128,7 +128,7 @@ function JobList(props) {
       title: 'Trạng thái',
       dataIndex: 'status',
       align: 'center',
-      render: (text, record, index) => <Tag color={renderColorTag(record.status)}>{record.status}</Tag>,
+      render: (text, record, index) => <Tag color={renderColorTag(record.status)}>{record.status==='accepted' ? 'Accepted': record.status==='reject' ? 'Rejected': "Pending"} </Tag>,
     },
     {
       title: 'Thao tác',

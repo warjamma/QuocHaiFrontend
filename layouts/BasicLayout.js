@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import Router, { withRouter, useRouter } from 'next/router';
 import { get } from 'lodash';
 import { Layout, Menu, Dropdown, message, Badge } from 'antd';
+import Particles from 'react-particles-js';
 
 import {
   MenuUnfoldOutlined,
@@ -16,7 +17,7 @@ import {
   BellFilled,
   InboxOutlined,
 } from '@ant-design/icons';
- import {getProfileById} from '../containers/company/action';
+import { getProfileById } from '../containers/company/action';
 import { getProfileByIdRef } from '../containers/referred/actions';
 
 import { requireAuthentication } from '../lib/auth';
@@ -82,7 +83,7 @@ function BasicLayout(props) {
     }
     // setToken(localStorage.getItem('token'))
   });
-    const id = get(profile, 'data.employer.company.id', []);
+  const id = get(profile, 'data.employer.company.id', []);
   useEffect(() => {
     if (get(profile, 'data.employer', '')) {
       dispatch(getProfileById({ id }));
@@ -242,7 +243,32 @@ function BasicLayout(props) {
   }
   return (
     <>
-      <div className="container-box authenticate-page">{children}</div>
+      <div className="container-box authenticate-page">
+        {/* <Particles
+          params={{
+            particles: {
+              line_linked: {
+                shadow: {
+                  enable: true,
+                  color: '#3CA9D1',
+                  blur: 5,
+                },
+              },
+              number: {
+                value: 100,
+              },
+              size: {
+                value: 3,
+              },
+            },
+          }}
+          style={{
+            width: '100%',
+            backGroud: '#051633',
+          }}
+        /> */}
+        {children}
+      </div>
     </>
   );
 }
