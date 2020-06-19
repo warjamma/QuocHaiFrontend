@@ -28,7 +28,7 @@ function HeaderHome() {
           >
             <img
               className="name-logo"
-              src="https://d3t1myknaqth5d.cloudfront.net/files/1592390878.jpeg"
+              src="https://d3t1myknaqth5d.cloudfront.net/files/1592564409.jpeg"
               alt="#"
             />
           </li>

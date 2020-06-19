@@ -55,10 +55,10 @@ function Home(props) {
               //   },
               // },
               number: {
-                value: 100,
+                value: 0,
               },
               size: {
-                value: 3,
+                value: 0,
               },
             },
           }}
@@ -116,8 +116,7 @@ function Home(props) {
                 danger
                 onClick={() => handleFind()}
               >
-                {' '}
-                Tìm kiếm{' '}
+                ROCKSEARCH
               </Button>
             </div>
           </div>
