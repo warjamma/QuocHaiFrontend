@@ -19,7 +19,7 @@ function HeaderHome(props) {
             <div style={{ color: '#68ba50' }}><DollarOutlined /> You'll love it</div>
           </div>
           <div className="col-sm-3">
-            <div style={{ float: 'right', background: '#ff9e34', color: 'white', fontSize: '8', padding: 3 }}>  Ant Design  </div>
+            <div style={{ float: 'right', background: '#ff4d4f', color: 'white', fontSize: '8', padding: 6 ,borderRadius:'2px'}}>  Hot Job  </div>
           </div>
           <div className="col-sm-9">
             <div > Role: As a COBOL Software Engineer, you will collaborate proactively with functional analysts to translate business and integration requirements into...</div>
