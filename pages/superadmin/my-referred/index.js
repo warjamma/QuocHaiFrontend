@@ -43,7 +43,7 @@ function MyReferred(props) {
   const handleDelete = async (candidateId) => {
     await dispatch(deleteCandidateOfSuper(candidateId)).then(res => {
       if (res.status) {
-        Router.push('/referrer/my-referred');
+        Router.push('/superadmin/my-referred');
         return message.success('Delete candidate successfully');
       }
       return message.error(res.error);
@@ -54,7 +54,7 @@ function MyReferred(props) {
   };
   const pushRouter = (id,status) => {
     Router.push({
-      pathname: `/referrer/edit-cv`,
+      pathname: `/superadmin/edit-cv`,
       query: { status,id },
     });
   };

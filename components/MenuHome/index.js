@@ -58,7 +58,7 @@ function HeaderHome() {
               <li
                 className="  tag upload"
                 role="presentation"
-                // onClick={() => Router.push(`/upload-cv-home`)}
+                onClick={() => Router.push(`/upload-cv-home`)}
               >
                 Upload cv
               </li>
