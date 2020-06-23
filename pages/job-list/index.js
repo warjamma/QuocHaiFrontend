@@ -49,6 +49,9 @@ function JobList(props) {
   if(name){
     initQuery.company=name;
   }
+  else {
+    initQuery.company='';
+  }
   const changeQuery = (key, value) => {
     const clone = { ...query };
     clone[key] = typeof value === 'object' ? value.join(', ') : value;

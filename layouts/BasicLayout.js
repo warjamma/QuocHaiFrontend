@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import Router, { withRouter, useRouter } from 'next/router';
 import { get } from 'lodash';
 import { Layout, Menu, Dropdown, message, Badge } from 'antd';
-import Particles from 'react-particles-js';
 
 import {
   MenuUnfoldOutlined,
@@ -244,29 +243,6 @@ function BasicLayout(props) {
   return (
     <>
       <div className="container-box authenticate-page">
-        {/* <Particles
-          params={{
-            particles: {
-              line_linked: {
-                shadow: {
-                  enable: true,
-                  color: '#3CA9D1',
-                  blur: 5,
-                },
-              },
-              number: {
-                value: 100,
-              },
-              size: {
-                value: 3,
-              },
-            },
-          }}
-          style={{
-            width: '100%',
-            backGroud: '#051633',
-          }}
-        /> */}
         {children}
       </div>
     </>
