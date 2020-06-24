@@ -1,10 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 .menu-top {
+  font-family: 'Noto Sans';
   position: fixed;
   top: 0px;
   left: 0;
   right: 0;
   z-index: 200;
-  background: #070c25;
+  background: #212224;
   // box-shadow: 0 3px 6px -2px #00000030;
 }
 
@@ -39,19 +41,25 @@
     cursor: pointer;
     float: left;
     display: block;
-    color: #ffffff;
+    color: #FAFAFA;
     text-align: center;
-    padding: 20px 16px;
+    padding: 22.5px 32px;
     text-decoration: none;
-    font-size: 17px;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 19px;
 
     &:hover {
-      color: black;
+      color: #00CDFB;
     }
   }
   li.tag.upload {
     // background: #f67f32;
     color: #00CDFB;
+    font-weight: bold;
+    font-size: 16px;
   }
   .icon {
     display: none;
