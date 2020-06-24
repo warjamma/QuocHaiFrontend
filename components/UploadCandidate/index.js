@@ -92,7 +92,7 @@ function UploadCandidate(props) {
     if(data.cv){
       dispatch(createCandidateNoAddJob({ ...initForm, ...data })).then(res => {
         if (res.status) {
-          return message.success('Create candidate successfully').then(() => Router.push(`/upload-home`));
+          return message.success('Create candidate successfully').then(() => Router.push(`/`));
         }
         return message.error(res.error);
       });
@@ -138,6 +138,7 @@ function UploadCandidate(props) {
 
   return (
     <div className="UploadCandidate">
+      <div className="header" style={{ backgroud: '#fff', fontWeight: 'bold' }}>Thông tin chi tiết</div>
       <div className="form-body">
         <Row gutter={[16, 16]}>
           <Col span={15} ><iframe className="view-pdf" id="input" value={fileLink} src={fileLink} /></Col>
@@ -291,7 +292,7 @@ function UploadCandidate(props) {
                 <Button type="primary" htmlType="submit">
                   Gửi ứng viên
               </Button>
-                <Button className="btn-cance" onClick={() => Router.push(`/upload-home`)} htmlType="button"   >
+                <Button className="btn-cance" onClick={() => Router.push(`/`)} htmlType="button"   >
                   Hủy
               </Button>
               </Form.Item>

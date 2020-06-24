@@ -18,7 +18,7 @@ function Home() {
   };
 
   return (
-    <div className="home-page">
+    <div className="upload-cv-home">
       <div className="boude-menu">
         <MenuHome />
         <div className="searchh container" >

@@ -1,24 +1,10 @@
 import React, { useState } from 'react';
 import { Button, Typography } from 'antd';
-import UploadCandidate from '../UploadCandidate';
+import Router from 'next/router'
 import './styles.scss';
 
 const { Title } = Typography;
 function HeaderHome() {
-  const [status, setStatus] = useState(false);
-  const changeStatus = () => {
-    setStatus(!status);
-  };
-  const hiddenForm = () => {
-    if (!status) {
-      return { visibility: 'hidden', height: 0 };
-    }
-  };
-  const notHiddenForm = () => {
-    if (status) {
-      return { visibility: 'hidden', height: 0 };
-    }
-  };
   return (
     <div className="content-page">
       <div className="container">
@@ -29,7 +15,7 @@ function HeaderHome() {
               className="content-news"
               style={{ marginTop: 20, marginBottom: 20 }}
             >
-              <Button type="danger" onClick={() => changeStatus()}>
+              <Button type="danger" onClick={()=>Router.push('/upload-cv-home')}  >
                 Upload CV của bạn tại đây
               </Button>
             </div>
@@ -39,11 +25,9 @@ function HeaderHome() {
               ngày
             </p>
           </div>
-          <div className="col-sm-12" style={hiddenForm()}>
-            <UploadCandidate />
-          </div>
+        
 
-          <div className="col-sm-12" style={notHiddenForm()}>
+          <div className="col-sm-12">
             <p>Tìm việc phù hợp, nhận thêm tiền thưởng. KHÁM PHÁ NGAY!!!</p>
           </div>
         </div>

@@ -1,7 +1,8 @@
 import React from 'react';
+import Router from 'next/router';
 import { Button, Typography} from 'antd';
 import { DollarOutlined } from '@ant-design/icons';
-import { get, debounce } from 'lodash';
+import { get} from 'lodash';
 import './styles.scss';
 
 const { Title } = Typography;
@@ -9,13 +10,13 @@ function HeaderHome(props) {
   const {value}=props;
   return (
     <div className="row border">
-      <div className="col-sm-3">
+      <div className="col-sm-3" style={{cursor: 'pointer'}} role="presentation" onClick={()=>Router.push('/company-detail-home')}>
         <img alt="example" style={{objectFit: "contain", width:'100%'}} src={get(value,'company.avatar',[])} />
       </div>
       <div className="col-sm-9">
         <div className="row">
         <div className="col-sm-9">
-  <Title level={3}>{get(value,'job_role',[])}</Title>
+  <Title level={3} ><div role="presentation"style={{cursor: 'pointer'}} onClick={()=>Router.push('/job-detail-home')}>{get(value,'job_role',[])}</div></Title>
             <div style={{ color: '#68ba50' }}><DollarOutlined /> You'll love it</div>
           </div>
           <div className="col-sm-3">
