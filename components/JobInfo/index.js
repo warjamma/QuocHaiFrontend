@@ -19,11 +19,6 @@ function HeaderHome(props) {
     <div className="row border">
       <div
         className="col-sm-3"
-        style={{ cursor: 'pointer' }}
-        role="presentation"
-        onClick={() =>
-          Router.push(`/company-detail-home`)
-        }
       >
         <img
           alt="example"
