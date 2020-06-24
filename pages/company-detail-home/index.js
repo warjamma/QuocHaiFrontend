@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Button, Typography } from 'antd';
-import UploadCandidate from '../../components/UploadCandidate';
-import DescriptionUpload from '../../components/DescriptionUpload';
+import CompanyDetail from '../../components/CompanyDetail';
 import FooterHome from '../../components/FooterHome';
 import MenuHome from '../../components/MenuHome';
-import JobDetail from '../../components/JobDetail';
 import './styles.scss';
 
 const { Title } = Typography;
@@ -18,21 +16,12 @@ function Home() {
   const changeStatus = () => {
     setStatus(!status);
   };
-  const hiddenForm = () => {
-    if (!status) {
-      return { visibility: 'hidden', height: 0 };
-    }
-  };
-  const notHiddenForm = () => {
-    if (status) {
-      return { visibility: 'hidden', height: 0 };
-    }
-  };
+
   return (
-    <div className="job-detail-home">
+    <div className="upload-cv-home">
       <div className="boude-menu">
         <MenuHome />
-        <div className="searchh container" style={notHiddenForm()}>
+        <div className="searchh container" >
           {/* <Title level={4}>Upload CV của bạn</Title> */}
         </div>
       </div>
@@ -40,13 +29,7 @@ function Home() {
       <div className="container job">
         <div className="row">
           <div className="col-sm-9 job-list">
-            <div style={hiddenForm()}>
-              <UploadCandidate />
-            </div>
-            <div style={notHiddenForm()}>
-              {/* <DescriptionUpload /> */}
-              <JobDetail/>
-            </div>
+              <CompanyDetail />
           </div>
           <div className="col-sm-3">
             <div

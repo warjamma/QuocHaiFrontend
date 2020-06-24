@@ -143,7 +143,8 @@ function jobDetail(props) {
                             <div ><PhoneOutlined />&nbsp;<a>{get(referred, 'job_detail.data.job.company.phone_number')}</a></div>
                             <br />
                             <span style={{ color: '#68ba50', fontSize: '16px', textAlign: 'center', display: 'block' }}>
-                                <a href='/' onClick={() => Router.push(`/company-profile/${get(referred, 'job_detail.data.job.company.id', [])}`)} >View our company page<CaretRightOutlined /></a>
+                                <a role="presentation" onClick={() => Router.push(`/company-detail-home`)} >View our company page<CaretRightOutlined /></a>
+                                {/* <a href='/' onClick={() => Router.push(`/company-profile/${get(referred, 'job_detail.data.job.company.id', [])}`)} >View our company page<CaretRightOutlined /></a> */}
                             </span>
                         </div>
                     </div>
@@ -171,62 +172,9 @@ function jobDetail(props) {
                         })}
 
                         <div style={{ marginBottom: 10 }}><CalendarOutlined /> {moment(get(referred, 'job_detail.data.job.updated_at', [])).fromNow()}</div>
-                        <Button style={(get(profile, 'data.employer.role') === 'admin' || get(profile, 'data.employer.role') === 'employer' || get(profile, 'data.employer.role') === 'Trash' || (get(profile, 'data.recruiter.role') === 'superadmin')) ? ({ visibility: "hidden" }) : ({ float: 'left', marginRight: 5, width: '40%', display: 'block' })} type="primary" onClick={() => Router.push(`/referrer/upload-cv/${id}`)} block>Giới thiệu ứng viên</Button>
-                        <Button style={(get(profile, 'data.recruiter.role') !== 'superadmin') ? ({ visibility: "hidden", height: 0, width: 0 }) : ({ float: 'left', marginRight: 5, width: '40%', display: 'block' })} type="primary" onClick={() => pushUploadCandidate()} block>Giới thiệu ứng viên</Button>
+                        <Button style={{ float: 'left', marginRight: 5, width: '40%', display: 'block' }} type="primary" onClick={() => Router.push(`/upload-cv-home`)} block>Giới thiệu ứng viên</Button>
+                        {/* <Button style={(get(profile, 'data.employer.role') === 'admin' || get(profile, 'data.employer.role') === 'employer' || get(profile, 'data.employer.role') === 'Trash' || (get(profile, 'data.recruiter.role') === 'superadmin')) ? ({ visibility: "hidden" }) : ({ float: 'left', marginRight: 5, width: '40%', display: 'block' })} type="primary" onClick={() => Router.push(`/referrer/upload-cv/${id}`)} block>Giới thiệu ứng viên</Button> */}
                         <Button onClick={download} style={{ float: 'left', width: '40%' }} disabled={!!(get(referred, 'job_detail.data.job.jd_files') === '' || get(referred, 'job_detail.data.job.jd_files') == null)} type="primary" block>Dowload JD</Button>
-                        <div className="model-button" style={((get(profile, 'data.recruiter.role') !== 'superadmin')) ? ({ visibility: "hidden" }) : ({ float: 'left', marginRight: 5, width: '40%', display: 'block', marginTop: 10 })}>
-                            <Button onClick={showModal} type="primary" block>Giới thiệu ứng viên từ danh sách có sẵn</Button>
-                            <Modal
-                                style={{ left: 20 }}
-                                title="Basic Modal"
-                                visible={visible}
-                                onOk={handleOk}
-                                onCancel={handleCancel}
-                            >
-                                <div className="my-referred-container">
-                                    <div className="header">
-                                        <div>{`Hồ sơ của bạn (${get(referred, 'list_candidates.extra_data.total', 0)})`}</div>
-                                    </div>
-                                    <Form
-                                        name="advanced_search"
-                                        className="ant-advanced-search-form"
-                                        labelCol={{ span: 4 }}
-                                        layout="horizontal"
-                                    >
-                                        <Row gutter={[16, 0]}>
-                                            <Col className="fiter-item" span={24}>
-                                                <div className="title">Tên ứng viên: </div>
-                                                <Input value={query.key_word} onChange={(e) => onChangeQuery('key_word', e.target.value)} placeholder="Tìm theo tên ứng viên..." />
-                                            </Col>
-                                            <Col span={24}>
-                                                <div className="filter-button">
-                                                    <Button onClick={() => handleFilter()} icon={<SearchOutlined />} type="primary">Tìm kiếm</Button>
-                                                    <Button icon={<RedoOutlined />} onClick={() => resetSearch()} type="primary">Làm mới</Button>
-                                                </div>
-                                            </Col>
-                                        </Row>
-                                    </Form>
-                                    {/* end form */}
-                                    <Table
-                                        loading={get(referred, 'is_loading', false)}
-                                        bordered
-                                        rowKey="id"
-                                        columns={columns}
-                                        // dataSource={datafake}
-                                        dataSource={get(referred, 'list_candidates.items.candidate', [])}
-                                        pagination={{
-                                            pageSize: query.limit,
-                                            total: get(referred, 'list_candidates.extra_data.total', 0),
-                                            showSizeChanger: true,
-                                            pageSizeOptions: ['10', '20', '30', '50'],
-                                            size: 'small',
-                                            current: (query.offset / 10) + 1
-                                        }}
-                                        onChange={handleTableChange}
-                                    />
-                                </div>
-                            </Modal>
-                        </div>
                     </Card>
                     <Card className="contentJob" >
 

@@ -161,7 +161,7 @@ function Home(props) {
                 >
                   <Button
                     role="presentation"
-                    // onClick={() => Router.push(`/upload-cv-home`)}
+                    onClick={() => Router.push(`/recuiterment`)}
                     style={{    background: '#f67f32',
                       borderColor: '#f67f32',
                       color: 'white',
