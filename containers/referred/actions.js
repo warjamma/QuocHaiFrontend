@@ -53,6 +53,18 @@ export function getListCompany(params) {
     }
   };
 }
+export function getListCompany2(params) {
+  return async dispatch => {
+    try {
+      dispatch({ type: "GET_LIST_REQUEST" });
+      const { data } = await api.sendRequest('get', `/companies?${qs.stringify(params)}`,null,{"Authorization":"JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjQ5ODIwZGMwLTIwOWMtNDUyMC05MWExLWY0NGRiOTBhNjNiYyIsImlhdCI6MTU5Mjk4Mzg4Miwicm9sZSI6ImFkbWluIn0.Oe0b3uNn3imBarJRR2nazOWTsWJOwLN23GmITnmGDp4"});
+      return dispatch({ type: "GET_LIST_COMPANY_SUCCESS", data });
+    } catch (error) {
+      const { data } = error.response;
+      return dispatch({ type: "GET_LIST_COMPANY_FAILURE", error: data.message });
+    }
+  };
+}
 
 export function getCompanyById(params) {
   // console.log('params', params);

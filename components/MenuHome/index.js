@@ -44,7 +44,7 @@ function HeaderHome() {
               <li
                 className="  tag"
                 role="presentation"
-                onClick={() => Router.push(`/company-list`)}
+                onClick={() => Router.push(`/company-list-home`)}
               >
                 It companies{' '}
               </li>
