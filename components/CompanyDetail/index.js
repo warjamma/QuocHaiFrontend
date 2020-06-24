@@ -11,7 +11,7 @@ import {
     MailOutlined,
     PhoneOutlined
 } from '@ant-design/icons';
-import { getCompanyById } from '../../containers/referred/actions';
+import { getCompanyById2 } from '../../containers/referred/actions';
 import './styles.scss';
 
 
@@ -23,15 +23,15 @@ function jobDetail(props) {
 
     const { dispatch, referred, profile } = props;
     useEffect(() => {
-        dispatch(getCompanyById({ id }));
+        dispatch(getCompanyById2({ id }));
     }, []);
 
-    const pushRouter = (name) => {
-        Router.push({
-            pathname: `/job-list`,
-            query: { name },
-        });
-    };
+    // const pushRouter = (name) => {
+    //     Router.push({
+    //         pathname: `/`,
+    //         query: { name },
+    //     });
+    // };
     return (
         <div className="company-profile" >
             <div className="header" style={{ backgroud: '#fff', fontWeight: 'bold' }}>Company profile</div>

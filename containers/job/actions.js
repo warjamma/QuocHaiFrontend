@@ -49,3 +49,16 @@ export function getListJob(params) {
     }
   };
 }
+export function getJobById(params) {
+  // console.log('params', params);
+  return async dispatch => {
+    try {
+      const { data } = await api.sendRequest('get', `/jobs/${params.id}`,null,{"Authorization":"JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjgyNDhjNWM0LTUwNzgtNDI2ZS05NmQ3LWY0Y2UwMGRhMmY5MyIsImlhdCI6MTU5MTYxMDY4Mywicm9sZSI6ImVtcGxveWVyIn0.fTpZvcvQgFFfsEdfXBe_qTSjvP1eqnyXBdNl_GBwl9g"});
+      dispatch({ type: "GET_JOB_BY_ID_SUCCESS", data });
+      return { status: true, data };
+    } catch (error) {
+      const { data } = error.response;
+      return dispatch({ type: "GET_JOB_BY_ID_FAILURE", error: data.message });
+    }
+  };
+}

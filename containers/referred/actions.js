@@ -67,6 +67,19 @@ export function getCompanyById(params) {
     }
   };
 }
+export function getCompanyById2(params) {
+  // console.log('params', params);
+  return async dispatch => {
+    try {
+      const { data } = await api.sendRequest('get', `/companies/${params.id}`,null,{"Authorization":"JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjQ5ODIwZGMwLTIwOWMtNDUyMC05MWExLWY0NGRiOTBhNjNiYyIsImlhdCI6MTU5Mjk4Mzg4Miwicm9sZSI6ImFkbWluIn0.Oe0b3uNn3imBarJRR2nazOWTsWJOwLN23GmITnmGDp4"});
+      dispatch({ type: "GET_COMPANY_BY_ID_SUCCESS", data });
+      return { status: true, data };
+    } catch (error) {
+      const { data } = error.response;
+      return dispatch({ type: "GET_COMPANY_BY_ID_FAILURE", error: data.message });
+    }
+  };
+}
 export function getListJob(params) {
   return async dispatch => {
     try {

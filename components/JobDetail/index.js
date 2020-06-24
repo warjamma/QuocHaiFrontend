@@ -2,24 +2,17 @@
 /* eslint-disable jsx-a11y/anchor-has-content */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/no-array-index-key */
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import Router, { useRouter } from 'next/router';
-import { Button, Modal, Row, Col, Typography, Card, Table, Input, Form, Select } from 'antd';
-import { DollarOutlined, RightOutlined, RedoOutlined, SearchOutlined, CalendarOutlined, CaretRightOutlined, FacebookOutlined, IeOutlined, MailOutlined, PhoneOutlined, BoldOutlined } from '@ant-design/icons';
-import { get, debounce } from 'lodash';
+import { Button, Row, Col, Typography, Card } from 'antd';
+import { DollarOutlined, RightOutlined,CalendarOutlined, CaretRightOutlined, FacebookOutlined, IeOutlined, MailOutlined, PhoneOutlined } from '@ant-design/icons';
+import { get} from 'lodash';
 import moment from 'moment';
-import { getListCandidates, getJobById } from '../../containers/referred/actions';
+import {getJobById} from '../../containers/job/actions';
 
 import './styles.scss';
 
-const initQuery = {
-    company_name: '',
-    key_word: '',
-    // status: null,
-    offset: 0,
-    limit: 10,
-};
 const { Title } = Typography;
 
 function jobDetail(props) {
@@ -27,84 +20,22 @@ function jobDetail(props) {
     const router = useRouter();
     console.log(router);
     const { id } = router.query;
-    const job_id = id;
-    const [visible, setVisible] = useState(false);
-    const showModal = () => {
-        setVisible(true);
-    };
-    const handleOk = () => {
-        setVisible(false);
-    };
-    const handleCancel = () => {
-        setVisible(false);
-    };
-    const pushRouter = (id) => {
+    // const job_id = id;
+    // const pushRouter = (id) => {
+    //     Router.push({
+    //         pathname: `/superadmin/edit-cv`,
+    //         query: { id, job_id },
+    //     });
+    // };
+    const pushRouterCompanyDetail = (id) => {
         Router.push({
-            pathname: `/superadmin/edit-cv`,
-            query: { id, job_id },
+            pathname: `/company-detail-home`,
+            query: { id },
         });
-    };
-    const pushUploadCandidate = () => {
-        Router.push({
-            pathname: `/superadmin/upload-candidate`,
-            query: { job_id },
-        });
-    };
-    const [query, setQuery] = useState(initQuery);
-    const columns = [
-        {
-            title: 'Tên ứng viên',
-            dataIndex: 'admin_id',
-            render: (text, record, index) => (
-                <div className="custom-role" onClick={() => pushRouter(record.id)}>
-                    <div className="job-role" style={{ fontWeight: 'Bold', color: 'blue', cursor: 'pointer' }}>
-                        {record.name}
-                    </div>
-                </div>
-            ),
-        },
-        {
-            title: 'Tên hồ sơ hiển thị',
-            dataIndex: 'profile_title'
-        },
-        {
-            title: 'Email',
-            dataIndex: 'email'
-        },
-        {
-            title: 'Điện thoại',
-            dataIndex: 'phone_number'
-        },
-
-    ];
-    const onChangeQuery = async (key, value) => {
-        const clone = { ...query };
-        clone[key] = value;
-        setQuery(clone);
-    };
-
-    const handleFilter = async () => {
-        const clone = { ...query };
-        clone.offset = 0;
-        setQuery(clone);
-        await dispatch(getListCandidates(clone));
-    };
-    const handleTableChange = async (pagination) => {
-        const clone = { ...query };
-        clone.offset = (pagination.current - 1) * 10;
-        clone.limit = pagination.pageSize;
-        setQuery(clone);
-        await dispatch(getListCandidates(clone));
-    };
-
-    const resetSearch = async () => {
-        setQuery(initQuery);
-        await dispatch(getListCandidates(initQuery));
     };
 
     useEffect(() => {
         dispatch(getJobById({ id }));
-        dispatch(getListCandidates(query));
     }, []);
 
     const toDataURL = (url) => {
@@ -143,7 +74,7 @@ function jobDetail(props) {
                             <div ><PhoneOutlined />&nbsp;<a>{get(referred, 'job_detail.data.job.company.phone_number')}</a></div>
                             <br />
                             <span style={{ color: '#68ba50', fontSize: '16px', textAlign: 'center', display: 'block' }}>
-                                <a role="presentation" onClick={() => Router.push(`/company-detail-home`)} >View our company page<CaretRightOutlined /></a>
+                                <a role="presentation" onClick={() => pushRouterCompanyDetail(get(referred, 'job_detail.data.job.company.id', []))} >View our company page<CaretRightOutlined /></a>
                                 {/* <a href='/' onClick={() => Router.push(`/company-profile/${get(referred, 'job_detail.data.job.company.id', [])}`)} >View our company page<CaretRightOutlined /></a> */}
                             </span>
                         </div>
@@ -243,7 +174,6 @@ function jobDetail(props) {
     );
 }
 function mapStateToProps(state) {
-    console.log(state);
     const { referred, profile } = state;
     return { referred, profile };
 }
