@@ -44,34 +44,34 @@ function Home(props) {
   }, [query]);
   return (
     <div className="home-page">
-       <Particles
-          params={{
-            particles: {
-              // line_linked: {
-              //   shadow: {
-              //     enable: true,
-              //     color: '#3CA9D1',
-              //     blur: 5,
-              //   },
-              // },
-              number: {
-                value: 0,
-              },
-              size: {
-                value: 0,
-              },
+      <Particles
+        params={{
+          particles: {
+            // line_linked: {
+            //   shadow: {
+            //     enable: true,
+            //     color: '#3CA9D1',
+            //     blur: 5,
+            //   },
+            // },
+            number: {
+              value: 0,
             },
-          }}
-          style={{
-            width: '100%',
-            backGroud: '#051633',
-          }}
-        />
+            size: {
+              value: 0,
+            },
+          },
+        }}
+        style={{
+          width: '100%',
+          backGroud: '#051633',
+        }}
+      />
       <div className="boude-menu">
         <MenuHome />
         <div className="searchh container">
           <div className="row">
-            <div className="search1 col-sm-6">
+            <div className="search1 col-sm-4">
               {/* <Search value={query.key_word} onChange={(e) => changeQuery('key_word', e.target.value)} placeholder="Từ khóa" /> */}
               <Select
                 placeholder="Keyword skill (Java, iOS...), Job Title, Company..."
@@ -95,30 +95,35 @@ function Home(props) {
                     </Select.Option>
                   ))}
               </Select>
+              <div>
+                <div className="search2 ">
+                  <Select
+                    placeholder="All location"
+                    // mode="tags"
+                    style={{ width: '100%' }}
+                  >
+                    {'Tát cả, TP Hồ Chí Minh, Hà Nội'
+                      .split(', ')
+                      .map((item) => (
+                        <Select.Option key={item} value={item}>
+                          {item}
+                        </Select.Option>
+                      ))}
+                  </Select>
+                </div>
+                <div className="search-btn ">
+                  <Button
+                    type="primary"
+                    className=" search-btn"
+                    danger
+                    onClick={() => handleFind()}
+                  >
+                    ROCKSEARCH
+                  </Button>
+                </div>
+              </div>
             </div>
-            <div className="search2 col-sm-3">
-              <Select
-                placeholder="All location"
-                // mode="tags"
-                style={{ width: '100%' }}
-              >
-                {'Tát cả, TP Hồ Chí Minh, Hà Nội'.split(', ').map((item) => (
-                  <Select.Option key={item} value={item}>
-                    {item}
-                  </Select.Option>
-                ))}
-              </Select>
-            </div>
-            <div className="search-btn col-sm-3">
-              <Button
-                type="primary"
-                className=" search-btn"
-                danger
-                onClick={() => handleFind()}
-              >
-                ROCKSEARCH
-              </Button>
-            </div>
+            <div className="col-sm-8"> </div>
           </div>
         </div>
       </div>
@@ -127,16 +132,16 @@ function Home(props) {
         <div className="row">
           <div className="col-sm-9">
             <div className="job-list">
-            {get(company, 'list_job.items.job', []).map((item) => {
-              return (
-                <div key={item.id}>
-                  <JobInfo
-                    value={item}
-                    loading={get(company, 'is_loading', false)}
-                  />
-                </div>
-              );
-            })}
+              {get(company, 'list_job.items.job', []).map((item) => {
+                return (
+                  <div key={item.id}>
+                    <JobInfo
+                      value={item}
+                      loading={get(company, 'is_loading', false)}
+                    />
+                  </div>
+                );
+              })}
             </div>
           </div>
           <div className="col-sm-3">
@@ -146,7 +151,7 @@ function Home(props) {
                 padding: 10,
                 background: '#f4f4f4',
                 borderRadius: 8,
-                margin: '30px 0px 0px 20px',
+                margin: '24px 0px 0px 20px',
               }}
             >
               <div style={{ padding: 10 }}>
@@ -162,10 +167,11 @@ function Home(props) {
                   <Button
                     role="presentation"
                     onClick={() => Router.push(`/recuiterment`)}
-                    style={{    background: '#f67f32',
+                    style={{
+                      background: '#f67f32',
                       borderColor: '#f67f32',
                       color: 'white',
-                      }}
+                    }}
                   >
                     Upload CV của bạn tại đây
                   </Button>
@@ -191,7 +197,7 @@ function Home(props) {
           </div>
         </div>
       </div>
-      <div style={{marginTop: '60px'}}>
+      <div style={{ marginTop: '60px' }}>
         {' '}
         <FooterHome />
       </div>

@@ -39,7 +39,7 @@ function HeaderHome() {
                 role="presentation"
                 onClick={() => Router.push(`/job-list-home`)}
               >
-                Công việc
+                it Jobs
               </li>
               <li
                 className="  tag"
