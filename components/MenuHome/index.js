@@ -39,7 +39,7 @@ function HeaderHome() {
                 role="presentation"
                 onClick={() => Router.push(`/job-list-home`)}
               >
-                it Jobs
+                Tìm việc IT
               </li>
               <li
                 className="  tag"
@@ -49,18 +49,18 @@ function HeaderHome() {
                 Nhà tuyển dụng
               </li>
               <li
-                role="presentation"
-                onClick={() => Router.push(`/recuiterment`)}
-                className="active tag"
-              >
-                  orther...
-              </li>
-              <li
-                className="  tag upload"
+                className="  tag "
                 role="presentation"
                 onClick={() => Router.push(`/login`)}
               >
                 Giới thiệu ứng viên
+              </li>
+              <li
+                role="presentation"
+                onClick={() => Router.push(`/upload-cv-home`)}
+                className="tag upload"
+              >
+                  Upload cv
               </li>
             </div>
           </div>

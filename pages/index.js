@@ -42,6 +42,12 @@ function Home(props) {
   useEffect(() => {
     dispatch(getListJob(query));
   }, [query]);
+  const handleScroll = async() => {
+    const clone = { ...query };
+    clone.limit +=10;
+    setQuery(clone);
+    await dispatch(getListJob(clone));
+  };
   return (
     <div className="home-page">
       <Particles
@@ -134,7 +140,7 @@ function Home(props) {
             <div className="job-list">
               {get(company, 'list_job.items.job', []).map((item) => {
                 return (
-                  <div key={item.id}>
+                  <div key={item.id} >
                     <JobInfo
                       value={item}
                       loading={get(company, 'is_loading', false)}
@@ -142,6 +148,17 @@ function Home(props) {
                   </div>
                 );
               })}
+              <div className="col-sm-12 mt-4" style={{ maginTop: '10px'}}>
+              <Button
+                    // type="primary"
+                    className=" search-btn"
+                    danger
+                    onClick={() => handleScroll()}
+                    style={{textAlign:'center', display:'block',margin: 'auto', borderColor: 'white', color: '#212224'}}
+                  >
+                    Load more
+                  </Button>
+              </div>
             </div>
           </div>
           <div className="col-sm-3">
