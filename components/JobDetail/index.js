@@ -103,7 +103,7 @@ function jobDetail(props) {
                         })}
 
                         <div style={{ marginBottom: 10 }}><CalendarOutlined /> {moment(get(referred, 'job_detail.data.job.updated_at', [])).fromNow()}</div>
-                        <Button style={{ float: 'left', marginRight: 5, width: '40%', display: 'block' }} type="primary" onClick={() => Router.push(`/upload-cv-home`)} block>Giới thiệu ứng viên</Button>
+                        <Button style={{ float: 'left', marginRight: 5, width: '40%', display: 'block' }} type="primary" onClick={() => Router.push(`/upload-cv-home`)} block>Apply now</Button>
                         {/* <Button style={(get(profile, 'data.employer.role') === 'admin' || get(profile, 'data.employer.role') === 'employer' || get(profile, 'data.employer.role') === 'Trash' || (get(profile, 'data.recruiter.role') === 'superadmin')) ? ({ visibility: "hidden" }) : ({ float: 'left', marginRight: 5, width: '40%', display: 'block' })} type="primary" onClick={() => Router.push(`/referrer/upload-cv/${id}`)} block>Giới thiệu ứng viên</Button> */}
                         <Button onClick={download} style={{ float: 'left', width: '40%' }} disabled={!!(get(referred, 'job_detail.data.job.jd_files') === '' || get(referred, 'job_detail.data.job.jd_files') == null)} type="primary" block>Dowload JD</Button>
                     </Card>
