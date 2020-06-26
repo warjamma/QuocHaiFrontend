@@ -9,7 +9,7 @@ const { Title } = Typography;
 function HeaderHome(props) {
   const pushRouter = (id) => {
     Router.push({
-      pathname: `/company-detail-home`,
+      pathname: `/home-page/company-detail-home`,
       query: { id },
     });
   };

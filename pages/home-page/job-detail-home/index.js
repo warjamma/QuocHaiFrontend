@@ -1,35 +1,28 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { Button, Typography } from 'antd';
-import DescriptionUpload from '../../components/DescriptionUpload';
-import FooterHome from '../../components/FooterHome';
-import MenuHome from '../../components/MenuHome';
+import FooterHome from '../../../components/FooterHome';
+import MenuHome from '../../../components/MenuHome';
+import JobDetail from '../../../components/JobDetail';
 import './styles.scss';
 
 const { Title } = Typography;
  
 function Home() {
  
-  const [status, setStatus] = useState(false);
-
-
-  const changeStatus = () => {
-    setStatus(!status);
-  };
-
   return (
-    <div className="upload-cv-home">
+    <div className="job-detail-home">
       <div className="boude-menu">
         <MenuHome />
-        <div className="searchh container" >
-          {/* <Title level={4}>Upload CV của bạn</Title> */}
-        </div>
+        <div className="searchh container">      </div>
       </div>
 
       <div className="container job">
         <div className="row">
           <div className="col-sm-9 job-list">
-              <DescriptionUpload />
+            <div>
+              <JobDetail/>
+            </div>
           </div>
           <div className="col-sm-3">
             <div
@@ -51,7 +44,7 @@ function Home() {
                     marginBottom: 20,
                   }}
                 >
-                  <Button onClick={() => changeStatus()} type="danger">
+                  <Button  type="danger">
                     Upload CV của bạn tại đây
                   </Button>
                 </div>

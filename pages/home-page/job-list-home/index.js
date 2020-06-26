@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { Button, Typography, Select } from 'antd';
 import Router from 'next/router';
 import Particles from 'react-particles-js';
-import FooterHome from '../../components/FooterHome';
-import MenuHome from '../../components/MenuHome';
+import FooterHome from '../../../components/FooterHome';
+import MenuHome from '../../../components/MenuHome';
 import './styles.scss';
 
 const { Title } = Typography;
@@ -66,7 +66,7 @@ function Home() {
                   type="primary"
                   className=" search-btn bb"
                   danger
-                  onClick={() =>Router.push('/upload-cv-home')}
+                  onClick={() =>Router.push('/home-page/upload-cv-home')}
                 >
                   Upload cv
                 </Button>
@@ -76,7 +76,7 @@ function Home() {
                   type="primary"
                   className=" search-btn cc"
                   danger
-                  onClick={() =>Router.push('/upload-cv-home')}
+                  onClick={() =>Router.push('/home-page/upload-cv-home')}
                 >
                   Tạo Cv
                 </Button>

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Button, Typography } from 'antd';
-import CompanyDetail from '../../components/CompanyDetail';
-import FooterHome from '../../components/FooterHome';
-import MenuHome from '../../components/MenuHome';
+import UploadCandidate from '../../../components/UploadCandidate';
+import FooterHome from '../../../components/FooterHome';
+import MenuHome from '../../../components/MenuHome';
 import './styles.scss';
 
 const { Title } = Typography;
@@ -29,7 +29,7 @@ function Home() {
       <div className="container job">
         <div className="row">
           <div className="col-sm-9 job-list">
-              <CompanyDetail />
+              <UploadCandidate />
           </div>
           <div className="col-sm-3">
             <div
