@@ -37,7 +37,7 @@ function HeaderHome() {
               <li
                 className="  tag"
                 role="presentation"
-                onClick={() => Router.push(`/job-list-home`)}
+                onClick={() => Router.push(`/home-page/job-list-home`)}
               >
                 Tìm việc IT
               </li>
@@ -57,7 +57,7 @@ function HeaderHome() {
               </li>
               <li
                 role="presentation"
-                onClick={() => Router.push(`/upload-cv-home`)}
+                onClick={() => Router.push(`/home-page/upload-cv-home`)}
                 className="tag upload"
               >
                   Upload cv

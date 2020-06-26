@@ -15,7 +15,7 @@ function HeaderHome() {
               className="content-news"
               style={{ marginTop: 20, marginBottom: 20 }}
             >
-              <Button type="danger" onClick={()=>Router.push('/upload-cv-home')}  >
+              <Button type="danger" onClick={()=>Router.push('/home-page/upload-cv-home')}  >
                 Upload CV của bạn tại đây
               </Button>
             </div>

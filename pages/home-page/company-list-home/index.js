@@ -4,10 +4,10 @@ import { Button, Typography, Select } from 'antd';
 import { get } from 'lodash';
 import Router from 'next/router';
 import Particles from 'react-particles-js';
-import FooterHome from '../../components/FooterHome';
-import MenuHome from '../../components/MenuHome';
-import CompanyInfo from '../../components/CompanyInfo';
-import { getListCompany2 } from '../../containers/referred/actions';
+import FooterHome from '../../../components/FooterHome';
+import MenuHome from '../../../components/MenuHome';
+import CompanyInfo from '../../../components/CompanyInfo';
+import { getListCompany2 } from '../../../containers/referred/actions';
 import './styles.scss';
 
 const { Title } = Typography;
