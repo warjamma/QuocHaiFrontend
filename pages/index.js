@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Button, Typography, Select } from 'antd';
+import { Button, Typography, Select, Input } from 'antd';
 import { get } from 'lodash';
 import Router from 'next/router';
 import Particles from 'react-particles-js';
@@ -11,7 +11,8 @@ import { getListJob } from '../containers/job/actions';
 import './styles.scss';
 
 const { Title } = Typography;
-// const { Search } = Input;
+const { Option } = Select;
+const { Search } = Input;
 const initQuery = {
   company: '',
   key_word: '',
@@ -21,11 +22,11 @@ const initQuery = {
   min_salary: null,
   max_salary: null,
   offset: 0,
-  limit: 10,
+  limit: 2,
 };
 function Home(props) {
-  const { dispatch, company } = props;
-
+  const { dispatch, referred } = props;
+  const [status, setStatus] = useState(false);
   const [query, setQuery] = useState(initQuery);
   const changeQuery = (key, value) => {
     const clone = { ...query };
@@ -36,18 +37,37 @@ function Home(props) {
     const clone = { ...query };
     clone.offset = 0;
     setQuery(clone);
-    await dispatch(getListJob(clone));
+    await dispatch(getListJob(clone)).then((res) => {
+      if (res.data.items.job.length === 0) {
+        const clone2 = { ...initQuery };
+        clone2.offset = 0;
+        setQuery(clone2);
+        dispatch(getListJob(clone2));
+        setStatus(true);
+      } 
+    });
   };
-
+  const hiddenNotFound = () => {
+    if (!status) {
+      return { visibility: 'hidden', height: 0 };
+    }
+    return {
+      paddingLeft: 32,
+      fontSize: 14,
+      color: '#212224',
+      fontWeight: 600,
+    };
+  };
   useEffect(() => {
     dispatch(getListJob(query));
-  }, [query]);
-  const handleScroll = async() => {
+  }, []);
+  const dandleLoadMore = async () => {
     const clone = { ...query };
-    clone.limit +=10;
+    clone.limit += 2;
     setQuery(clone);
     await dispatch(getListJob(clone));
   };
+
   return (
     <div className="home-page">
       <Particles
@@ -85,7 +105,7 @@ function Home(props) {
                 style={{ width: '100%' }}
                 allowClear
                 showSearch
-                onChange={(e) => changeQuery('job_role', e)}
+                onChange={(e) => changeQuery('key_word', e)}
                 optionFilterProp="children"
                 filterOption={(input, option) =>
                   option.children.toLowerCase().indexOf(input.toLowerCase()) >=
@@ -104,17 +124,23 @@ function Home(props) {
               <div>
                 <div className="search2 ">
                   <Select
-                    placeholder="All location"
-                    // mode="tags"
                     style={{ width: '100%' }}
+                    allowClear
+                    showSearch
+                    onChange={(e) => changeQuery('location', e)}
+                    placeholder="All location"
+                    optionFilterProp="children"
+                    filterOption={(input, option) =>
+                      option.children
+                        .toLowerCase()
+                        .indexOf(input.toLowerCase()) >= 0
+                    }
+                    value={query.location}
                   >
-                    {'Tát cả, TP Hồ Chí Minh, Hà Nội'
-                      .split(', ')
-                      .map((item) => (
-                        <Select.Option key={item} value={item}>
-                          {item}
-                        </Select.Option>
-                      ))}
+                    <Option value="">Tất cả</Option>
+                    <Option value="Hà Nội">Hà Nội</Option>
+                    <Option value="Hồ Chí Minh">Hồ Chí Minh</Option>
+                    <Option value="Đà Nẵng">Đà Nẵng</Option>
                   </Select>
                 </div>
                 <div className="search-btn ">
@@ -138,26 +164,36 @@ function Home(props) {
         <div className="row">
           <div className="col-sm-9">
             <div className="job-list">
-              {get(company, 'list_job.items.job', []).map((item) => {
+              <div className="col-sm-12" style={hiddenNotFound()}>
+                {' '}
+                The job you're looking for doesn't exist.
+              </div>
+              {get(referred, 'list_job.items.job', []).map((item) => {
                 return (
-                  <div key={item.id} >
+                  <div key={item.id}>
                     <JobInfo
                       value={item}
-                      loading={get(company, 'is_loading', false)}
+                      loading={get(referred, 'is_loading', false)}
                     />
                   </div>
                 );
               })}
-              <div className="col-sm-12 mt-4" style={{ maginTop: '10px'}}>
-              <Button
-                    // type="primary"
-                    className=" search-btn"
-                    danger
-                    onClick={() => handleScroll()}
-                    style={{textAlign:'center', display:'block',margin: 'auto', borderColor: 'white', color: '#212224'}}
-                  >
-                    Load more
-                  </Button>
+              <div className="col-sm-12 mt-4" style={{ maginTop: '10px' }}>
+                <Button
+                  // type="primary"
+                  className=" search-btn"
+                  danger
+                  onClick={() => dandleLoadMore()}
+                  style={{
+                    textAlign: 'center',
+                    display: 'block',
+                    margin: 'auto',
+                    borderColor: 'white',
+                    color: '#212224',
+                  }}
+                >
+                  Load more
+                </Button>
               </div>
             </div>
           </div>
@@ -222,8 +258,8 @@ function Home(props) {
   );
 }
 function mapStateToProps(state) {
-  const { company } = state;
-  return { company };
+  const { referred, profile } = state;
+  return { referred, profile };
 }
 
 export default connect(mapStateToProps, null)(Home);
