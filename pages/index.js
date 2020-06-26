@@ -45,6 +45,9 @@ function Home(props) {
         dispatch(getListJob(clone2));
         setStatus(true);
       } 
+      else {
+        setStatus(false);
+      }
     });
   };
   const hiddenNotFound = () => {
