@@ -22,7 +22,7 @@ const initQuery = {
   min_salary: null,
   max_salary: null,
   offset: 0,
-  limit: 2,
+  limit: 10,
 };
 function Home(props) {
   const { dispatch, referred } = props;
@@ -66,7 +66,7 @@ function Home(props) {
   }, []);
   const dandleLoadMore = async () => {
     const clone = { ...query };
-    clone.limit += 2;
+    clone.limit += 10;
     setQuery(clone);
     await dispatch(getListJob(clone));
   };
@@ -110,13 +110,13 @@ function Home(props) {
                 showSearch
                 onChange={(e) => changeQuery('key_word', e)}
                 optionFilterProp="children"
-                filterOption={(input, option) =>
-                  option.children.toLowerCase().indexOf(input.toLowerCase()) >=
-                  0
-                }
+                // filterOption={(input, option) =>
+                //   option.children.toLowerCase().indexOf(input.toLowerCase()) >=
+                //   0
+                // }
                 value={query.job_type}
               >
-                {'C-level, Department head, Director, Junior, Manager, Middle, Senior, Specialist, Team Leader'
+                {'Account Management, Administration, Backend, Branding, Business Analyst, Business Development, CEO, CFO, CMO, Consultant, Content Creator, COO, CTO, Customer Service, Data Analyst, Designer, Developer, DevOps, Digital Marketing, Engineering, Finace/Accounting, Frontend, Fullstack, Game, General management, HR, HSE, Import - Export, Logistic, maintenance, Management, Market Research, marketing, Merchandising, Mobile, Office Management, Operation Management, Operations, Planning, Product Management, Production, Project Management, Public Relation, QA/QC, Quality Control, Recruitment, Research & Development, Researcher, Sales, Scrum Master, Software Architect, Software Development, Supply Chain, Teacher, Techical Sales, Tester, Traditional Marketing, Trainer'
                   .split(', ')
                   .map((item) => (
                     <Select.Option key={item} value={item}>
