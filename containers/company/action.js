@@ -171,7 +171,6 @@ export function purchasePostJob(params, companyId) {
   };
 }
 export function extendJob(idJobs, payload) {
-  console.log(payload);
   const daaa22= payload;
   return async () => {
     try {
