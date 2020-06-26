@@ -138,7 +138,7 @@ function UploadCandidate(props) {
 
   return (
     <div className="UploadCandidate">
-      <div className="header" style={{ backgroud: '#fff', fontWeight: 'bold' }}>Thông tin chi tiết</div>
+      {/* <div className="header" style={{ backgroud: '#fff', fontWeight: 'bold' }}>Thông tin chi tiết</div> */}
       <div className="form-body">
         <Row gutter={[16, 16]}>
           <Col span={15} ><iframe className="view-pdf" id="input" value={fileLink} src={fileLink} /></Col>

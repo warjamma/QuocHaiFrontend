@@ -41,8 +41,9 @@ export function getListJob(params) {
   return async dispatch => {
     try {
       dispatch({ type: "GET_LIST_REQUEST" });
-      const { data } = await api.sendRequest('get', `/jobs?${qs.stringify(params)}`,null,{"Authorization":"JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjgyNDhjNWM0LTUwNzgtNDI2ZS05NmQ3LWY0Y2UwMGRhMmY5MyIsImlhdCI6MTU5MTYxMDY4Mywicm9sZSI6ImVtcGxveWVyIn0.fTpZvcvQgFFfsEdfXBe_qTSjvP1eqnyXBdNl_GBwl9g"});
-      return dispatch({ type: "GET_LIST_JOB_SUCCESS", data });
+      const { data } = await api.sendRequest('get', `/jobs?${qs.stringify(params)}`,null,{"Authorization":"JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjM2NWJiZjU4LWE3ZGEtNGNlNi05MzQ1LWQ2OTQyMTk5YWQxNiIsImlhdCI6MTU5MzEzOTk1NCwicm9sZSI6InJlY3J1aXRlciJ9.4j41aWyIah1LLK9rogUqgxcZImHE0fDsbqc4oYzGhbs"});
+      dispatch({ type: "GET_LIST_JOB_SUCCESS", data });
+      return { status: true, data };
     } catch (error) {
       const { data } = error.response;
       return dispatch({ type: "GET_LIST_JOB_FAILURE", error: data.message });
