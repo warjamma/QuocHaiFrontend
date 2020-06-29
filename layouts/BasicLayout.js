@@ -250,6 +250,7 @@ function BasicLayout(props) {
 }
 
 function mapStateToProps(state) {
+  console.log('sssssssssssssduaskudhakjshd',state);
   const { profile, company, referred } = state;
   return {
     profile,
