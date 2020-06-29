@@ -1,26 +1,51 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Button, Typography } from 'antd';
+import { Button, Typography, Select, Input } from 'antd';
+import { get } from 'lodash';
+import Router from 'next/router';
+import Particles from 'react-particles-js';
 import FooterHome from '../../../components/FooterHome';
 import MenuHome from '../../../components/MenuHome';
 import JobDetail from '../../../components/JobDetail';
+import { getListJob } from '../../../containers/job/actions';
 import './styles.scss';
 
 const { Title } = Typography;
- 
-function Home() {
- 
+function Home(props) {
   return (
     <div className="job-detail-home">
+      <Particles
+        params={{
+          particles: {
+            // line_linked: {
+            //   shadow: {
+            //     enable: true,
+            //     color: '#3CA9D1',
+            //     blur: 5,
+            //   },
+            // },
+            number: {
+              value: 0,
+            },
+            size: {
+              value: 0,
+            },
+          },
+        }}
+        style={{
+          width: '100%',
+          backGroud: '#051633',
+        }}
+      />
       <div className="boude-menu">
         <MenuHome />
-        <div className="searchh container">      </div>
-      </div>
+   </div>
 
       <div className="container job">
         <div className="row">
-          <div className="col-sm-9 job-list">
-            <div>
+          <div className="col-sm-9">
+            <div className="job-list">
+
               <JobDetail/>
             </div>
           </div>
@@ -29,9 +54,9 @@ function Home() {
               className="row news-right"
               style={{
                 padding: 10,
-                background: '#C4C4C4',
+                background: '#f4f4f4',
                 borderRadius: 8,
-                margin: '30px 0px 0px 20px',
+                margin: '24px 0px 0px 20px',
               }}
             >
               <div style={{ padding: 10 }}>
@@ -44,7 +69,15 @@ function Home() {
                     marginBottom: 20,
                   }}
                 >
-                  <Button  type="danger">
+                  <Button
+                    role="presentation"
+                    onClick={() => Router.push(`/recuiterment`)}
+                    style={{
+                      background: '#f67f32',
+                      borderColor: '#f67f32',
+                      color: 'white',
+                    }}
+                  >
                     Upload CV của bạn tại đây
                   </Button>
                 </div>
@@ -54,7 +87,6 @@ function Home() {
                   mỗi ngày
                 </p>
               </div>
-              {/* <Title level={3} className="title-right">Company Spotlight</Title> */}
               <img
                 className="img-news"
                 alt="#"
@@ -70,7 +102,7 @@ function Home() {
           </div>
         </div>
       </div>
-      <div>
+      <div style={{ marginTop: '60px' }}>
         {' '}
         <FooterHome />
       </div>
@@ -78,8 +110,8 @@ function Home() {
   );
 }
 function mapStateToProps(state) {
-  const { company  } = state;
-  return { company  };
+  const { referred, profile } = state;
+  return { referred, profile };
 }
 
 export default connect(mapStateToProps, null)(Home);
