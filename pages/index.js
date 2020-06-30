@@ -191,8 +191,9 @@ function Home(props) {
                     textAlign: 'center',
                     display: 'block',
                     margin: 'auto',
-                    borderColor: 'white',
-                    color: '#212224',
+                    borderColor: '#222222',
+                    color: '#222222',
+                    width:250
                   }}
                 >
                   Load more
