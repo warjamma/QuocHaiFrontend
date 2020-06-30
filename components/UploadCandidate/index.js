@@ -139,11 +139,12 @@ function UploadCandidate(props) {
   return (
     <div className="UploadCandidate">
       {/* <div className="header" style={{ backgroud: '#fff', fontWeight: 'bold' }}>Thông tin chi tiết</div> */}
-      <div className="form-body">
-        <Row gutter={[16, 16]}>
-          <Col span={15} ><iframe className="view-pdf" id="input" value={fileLink} src={fileLink} /></Col>
-          <Col span={9}>
-            <Upload
+      <div className="form-body row">
+        <div className="col-sm-8">
+        <iframe className="view-pdf" id="input" value={fileLink} src={fileLink} />
+        </div>
+        <div className="col-sm-4 form-input">
+        <Upload
               {...setting}
               fileList={fileData}
             >
@@ -183,6 +184,7 @@ function UploadCandidate(props) {
                 <Input placeholder="ex: Email" />
               </Form.Item>
               <Form.Item
+                className="positon"
                 label="Vị trí"
                 hasFeedback
                 name="job_role"
@@ -191,18 +193,19 @@ function UploadCandidate(props) {
                 <Select style={{ width: '100%' }} placeholder="ex: job role">
                   {
                     role.map(item => (
-                      <Select.Option key={item} value={item}>{item}</Select.Option>
+                      <Select.Option style={{ width: '100%' , height:'100%', padding: '6px'}} key={item} value={item}>{item}</Select.Option>
                     ))
                   }
                 </Select>
               </Form.Item>
               <Form.Item
+                className="laguage"
                 label="Ngôn ngữ"
                 hasFeedback
               // name="language"
               // rules={[{ required: true, message: 'This field is required !' }]}
               >
-                <Select mode="tags" style={{ width: '100%' }} placeholder="ex: language">
+                <Select mode="tags" style={{ width: '100%', height:'100%' }} placeholder="ex: language">
                   {
                     language.split(', ')
                       .map(item => (
@@ -212,6 +215,7 @@ function UploadCandidate(props) {
                 </Select>
               </Form.Item>
               <Form.Item
+                className="level"
                 label="Cấp độ"
                 hasFeedback
                 name="job_level"
@@ -231,6 +235,7 @@ function UploadCandidate(props) {
                 </Select>
               </Form.Item>
               <Form.Item
+                className="location"
                 style={{ width: '100%', marginRight: 16 }}
                 label="Địa điểm"
                 hasFeedback
@@ -254,6 +259,7 @@ function UploadCandidate(props) {
               </Form.Item>
 
               <Form.Item
+                className="bankuser"
                 name='bank_name'
                 label="Tên ngân hàng"
                 rules={[{ required: true, message: 'Please input your bank name!' }]}
@@ -288,7 +294,7 @@ function UploadCandidate(props) {
                 <Input placeholder="ex: Bank User" />
               </Form.Item>
 
-              <Form.Item {...tailLayout}>
+              <Form.Item {...tailLayout} className="btnSubmit">
                 <Button type="primary" htmlType="submit">
                   Gửi ứng viên
               </Button>
@@ -297,8 +303,7 @@ function UploadCandidate(props) {
               </Button>
               </Form.Item>
             </Form>
-          </Col>
-        </Row>
+        </div>
       </div>
     </div >
   );
