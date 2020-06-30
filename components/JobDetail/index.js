@@ -103,14 +103,14 @@ function jobDetail(props) {
             ''
           )}
         </div>
-        <div className="col-sm-8">
+        <div className="col-sm-8" style={{paddingLeft:'24px'}}>
           <div className="row">
             <Title level={3} className="col-sm-12">
               <div style={{ float: 'left' }}>[Tuyển]</div>
               {get(referred, 'job_detail.data.job.job_role', []).map(
                 (value, key) => {
                   return (
-                    <div key={key} style={{ float: 'left' }} level={4}>
+                    <div key={key} style={{ float: 'left' }}>
                       {' '}
                       &nbsp;{value}&nbsp;
                     </div>
@@ -118,11 +118,11 @@ function jobDetail(props) {
                 }
               )}
             </Title>
-            <div style={{ marginTop: 5, color: '#000000', lineHeight:'16px' }} className="col-sm-12">
+            <div style={{ marginTop: 14, color: '#000000', lineHeight:'16px' }} className="col-sm-12">
               {get(referred, 'job_detail.data.job.job_levels', []).map(
                 (value, key) => {
                   return (
-                    <Button key={key} style={{ marginRight: 5,color: '#000000' }}>
+                    <Button key={key} style={{ marginRight: 5,color: '#000000', fontSize:'12px' }}>
                       {value}
                     </Button>
                   );
@@ -131,7 +131,7 @@ function jobDetail(props) {
               {get(referred, 'job_detail.data.job.language', []).map(
                 (value, key) => {
                   return (
-                    <Button key={key} style={{ marginRight: 5,color: '#000000'  }}>
+                    <Button key={key} style={{ marginRight: 5,color: '#000000', fontSize:'12px'  }}>
                       {value}{' '}
                     </Button>
                   );
@@ -143,27 +143,27 @@ function jobDetail(props) {
                 (value, key) => {
                   return (
                     <div
-                      style={{ marginBottom: 6 }}
+                      style={{ marginBottom: 6, fontSize:'12px' }}
                       key={key}
                       className="col-sm-3"
                     >
-                      <RightOutlined /> {value}{' '}
+                      <img src="/Vector.png" alt="logo" /> {value}{' '}
                       <a style={{ color: '#68ba50', fontSize: '13px' }} />
                     </div>
                   );
                 }
               )}
-              <div style={{ marginBottom: 10 }} className="col-sm-3">
-                <CalendarOutlined />{' '}
+              <div style={{ marginBottom: 10, fontSize:'12px' }} className="col-sm-3">
+              <span><img src="/calendar.png" alt="logo" /> </span>
                 {moment(
                   get(referred, 'job_detail.data.job.updated_at', [])
                 ).fromNow()}
               </div>
-              <div style={{ marginBottom: 10 }} className="col-sm-3">
-                 <DollarCircleOutlined />   Sign in to view
+              <div style={{ marginBottom: 10, fontSize:'12px' }} className="col-sm-3">
+              <img src="/money.png" alt="logo" />   Sign in to view
               </div>
             </div>
-            <div className="col-sm-12" style={{ paddingTop: 20 }}>
+            <div className="col-sm-12" style={{ paddingTop: 24 }}>
               <Button
                 style={{
                   float: 'left',

@@ -43,11 +43,14 @@ function Home(props) {
 
       <div className="container job">
         <div className="row">
-          <div className="col-sm-9">
+          <div className="col-sm-9 job-detail-container">
             <div className="job-list">
-
               <JobDetail/>
             </div>
+            <div className="txt-more"> More job for you</div>
+            <div className="job-list job-more">  </div>
+            <div className="job-list job-more">  </div>
+            <div className="job-list job-more">  </div>
           </div>
           <div className="col-sm-3">
             <div
