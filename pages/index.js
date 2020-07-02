@@ -8,6 +8,7 @@ import FooterHome from '../components/FooterHome';
 import MenuHome from '../components/MenuHome';
 import JobInfo from '../components/JobInfo';
 import { getListJob } from '../containers/job/actions';
+import SliderHome from '../components/SliderHome';
 import './styles.scss';
 
 const { Title } = Typography;
@@ -44,8 +45,7 @@ function Home(props) {
         setQuery(clone2);
         dispatch(getListJob(clone2));
         setStatus(true);
-      } 
-      else {
+      } else {
         setStatus(false);
       }
     });
@@ -73,7 +73,8 @@ function Home(props) {
 
   return (
     <div className="home-page">
-      <Particles
+      <SliderHome/>
+      {/* <Particles
         params={{
           particles: {
             // line_linked: {
@@ -95,7 +96,7 @@ function Home(props) {
           width: '100%',
           backGroud: '#051633',
         }}
-      />
+      /> */}
       <div className="boude-menu">
         <MenuHome />
         <div className="searchh container">
@@ -193,7 +194,7 @@ function Home(props) {
                     margin: 'auto',
                     borderColor: '#222222',
                     color: '#222222',
-                    width:250
+                    width: 250,
                   }}
                 >
                   Load more

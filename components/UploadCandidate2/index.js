@@ -140,6 +140,9 @@ function UploadCandidate(props) {
     <div className="UploadCandidate">
       {/* <div className="header" style={{ backgroud: '#fff', fontWeight: 'bold' }}>Thông tin chi tiết</div> */}
       <div className="form-body row">
+        <div className="col-sm-8">
+        <iframe className="view-pdf" id="input" value={fileLink} src={fileLink} />
+        </div>
         <div className="col-sm-4 form-input">
         <Upload
               {...setting}
@@ -162,23 +165,23 @@ function UploadCandidate(props) {
                 name="name"
                 rules={[{ required: true, message: 'Please input your username!' }]}
               >
-                <Input style={{ width: '85%' }} placeholder="ex: username" />
+                <Input placeholder="ex: username" />
               </Form.Item>
 
-              {/* <Form.Item
+              <Form.Item
                 label="Tên hồ sơ hiển thị"
                 name="profile_title"
                 rules={[{ required: true, message: 'Please input your Job Title!' }]}
               >
-                <Input style={{ width: '85%' }} placeholder="ex: Job Title" />
-              </Form.Item> */}
+                <Input placeholder="ex: Job Title" />
+              </Form.Item>
 
               <Form.Item
                 label="Email"
                 name="email"
                 rules={[{ required: true, message: 'Please input your email!' }]}
               >
-                <Input style={{ width: '85%' }} placeholder="ex: Email" />
+                <Input placeholder="ex: Email" />
               </Form.Item>
               <Form.Item
                 className="positon"
@@ -187,7 +190,7 @@ function UploadCandidate(props) {
                 name="job_role"
                 rules={[{ required: true, message: 'This field is required !' }]}
               >
-                <Select style={{ width: '85%' }} placeholder="ex: job role">
+                <Select style={{ width: '100%' }} placeholder="ex: job role">
                   {
                     role.map(item => (
                       <Select.Option style={{ width: '100%' , height:'100%', padding: '6px'}} key={item} value={item}>{item}</Select.Option>
@@ -202,7 +205,7 @@ function UploadCandidate(props) {
               // name="language"
               // rules={[{ required: true, message: 'This field is required !' }]}
               >
-                <Select mode="tags" style={{ width: '85%' }} placeholder="ex: language">
+                <Select mode="tags" style={{ width: '100%', height:'100%' }} placeholder="ex: language">
                   {
                     language.split(', ')
                       .map(item => (
@@ -221,7 +224,7 @@ function UploadCandidate(props) {
                 <Select
                   placeholder="ex: job level"
                   mode="tags"
-                  style={{ width: '85%' }}
+                  style={{ width: '100%' }}
                 >
                   {
                     'C-level, Department head, Director, Junior, Manager, Middle, Senior, Specialist, Team Leader'.split(', ')
@@ -233,12 +236,13 @@ function UploadCandidate(props) {
               </Form.Item>
               <Form.Item
                 className="location"
+                style={{ width: '100%', marginRight: 16 }}
                 label="Địa điểm"
                 hasFeedback
                 name="locations"
                 rules={[{ required: true, message: 'This field is required !' }]}
               >
-                <Select mode="tags" style={{ width: '85%' }} placeholder="ex: locations">
+                <Select mode="tags" style={{ width: '100%' }} placeholder="ex: locations">
                   {
                     ['Hồ Chí Minh', 'Hà Nội', 'Đà Nẵng']
                       .map(item => (
@@ -251,7 +255,7 @@ function UploadCandidate(props) {
                 label="Điện thoại ứng viên"
                 name="phone_number"
               >
-                <Input style={{ width: '85%' }} placeholder="ex: Phone Number" />
+                <Input placeholder="ex: Phone Number" />
               </Form.Item>
 
               <Form.Item
@@ -263,7 +267,7 @@ function UploadCandidate(props) {
                 <Select
                   allowClear
                   showSearch
-                  style={{ width: '85%' }}
+                  style={{ width: '100%' }}
                   placeholder="Bank name"
                   optionFilterProp="children"
                   filterOption={(input, option) =>
@@ -280,14 +284,14 @@ function UploadCandidate(props) {
                 name="bank_number"
                 rules={[{ required: true, message: 'Please input your bank number!' }]}
               >
-                <Input style={{ width: '85%' }} placeholder="ex: Bank Number" />
+                <Input placeholder="ex: Bank Number" />
               </Form.Item>
               <Form.Item
                 label="Chủ tài khoản"
                 name="bank_user"
                 rules={[{ required: true, message: 'Please input your bank user!' }]}
               >
-                <Input style={{ width: '85%' }} placeholder="ex: Bank User" />
+                <Input placeholder="ex: Bank User" />
               </Form.Item>
 
               <Form.Item {...tailLayout} className="btnSubmit">
@@ -300,10 +304,6 @@ function UploadCandidate(props) {
               </Form.Item>
             </Form>
         </div>
-        <div className="col-sm-8">
-        {/* <iframe className="view-pdf" id="input" value={fileLink} src={fileLink} /> */}
-        <img src="/Up_CV.png" alt="logo"  style={{width:'100%'}}/>
-        </div> 
       </div>
     </div >
   );

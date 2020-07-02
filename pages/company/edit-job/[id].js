@@ -199,16 +199,16 @@ function EditJob(props) {
   const dayend = now.diff(dayCreate, 'days');
   console.log(dayend);
 
-  const handleRenewa = async () => {
-    const date2 = `${moment().format('YYYY-MM-DD[T]HH:mm:ss.SSSz')}z`;
-    const payload = { expire_at: date2 };
-    await dispatch(extendJob(id, payload)).then((res2) => {
-      if (res2.status) {
-        return message.success('Extend job successfuly');
-      }
-      return message.error(res2.error);
-    });
-  };
+  // const handleRenewa = async () => {
+  //   const date2 = `${moment().format('YYYY-MM-DD[T]HH:mm:ss.SSSz')}z`;
+  //   const payload = { expire_at: date2 };
+  //   await dispatch(extendJob(id, payload)).then((res2) => {
+  //     if (res2.status) {
+  //       return message.success('Extend job successfuly');
+  //     }
+  //     return message.error(res2.error);
+  //   });
+  // };
   return (
     <div className="uploadcv" style={{ backgroundColor: 'white' }}>
       <div className="header">
@@ -402,17 +402,17 @@ function EditJob(props) {
               NGÀY HIỂN THỊ CÒN {20 - dayend} NGÀY
             </div>
             <Form.Item>
-              <Button
+              {/* <Button
                 style={{ width: '100%' }}
                 type="danger"
                 onClick={() => handleRenewa()}
               >
                 Gia hạn công việc
-              </Button>
-              {/* <Select style={{ width: '100%' }} >
+              </Button> */}
+              <Select style={{ width: '100%' }} >
                 <Select.Option value="post-hot">1 tháng POST HOT -Còn 03</Select.Option>
                 <Select.Option value="post">1 tháng POST THƯỜNG - Còn 02</Select.Option>
-              </Select> */}
+              </Select>
             </Form.Item>
             <Form.Item style={{ marginTop: 20 }}>
               <Button

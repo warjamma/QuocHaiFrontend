@@ -110,7 +110,7 @@ function jobDetail(props) {
                     <Card className="contentJob" >
 
                         <Title level={3}>About company</Title>
-                        <div>{get(referred, 'job_detail.data.job.company.about')}</div>
+                        <div style={{whiteSpace: "pre-wrap"}}>{get(referred, 'job_detail.data.job.company.about')}</div>
                         <Title level={3}>Job detail</Title>
                         <ul>
                             <li level={4}> Ngày tạo: {moment(get(referred, 'job_detail.data.job.created_at', [])).format('l')}</li>

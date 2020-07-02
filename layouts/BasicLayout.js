@@ -41,7 +41,7 @@ const error = (mess) => {
 function BasicLayout(props) {
   const { dispatch, profile, children, company, referred } = props;
   const [collapsed, setcollapsed] = useState(false);
-  const [time, setTime] = useState(3600 * 1000);
+  // const [time, setTime] = useState(3600 * 1000);
   const router = useRouter();
   if (router.pathname === '/') {
     if (get(profile, 'data.employer', '')) {
@@ -54,27 +54,27 @@ function BasicLayout(props) {
       Router.push('/job-list');
     }
   }
-  const logOut = async () => {
-    await dispatch(logOutRequest());
-    Router.push('/');
-  };
+  // const logOut = async () => {
+  //   await dispatch(logOutRequest());
+  //   Router.push('/');
+  // };
   // window.onunload   = async() => {
   //   await dispatch(logOutRequest());
   //   Router.push('/login');
   // };
-  useEffect(() => {
-    const timer = setTimeout(() => logOut(), time);
-    document.onclick = () => {
-      setTime(1000 * 3600);
-    };
-    document.onkeypress = () => {
-      setTime(1000 * 3600);
-    };
-    document.onload = () => {
-      setTime(1000 * 3600);
-    };
-    return () => clearTimeout(timer);
-  }, [time]);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => logOut(), time);
+  //   document.onclick = () => {
+  //     setTime(1000 * 3600);
+  //   };
+  //   document.onkeypress = () => {
+  //     setTime(1000 * 3600);
+  //   };
+  //   document.onload = () => {
+  //     setTime(1000 * 3600);
+  //   };
+  //   return () => clearTimeout(timer);
+  // }, [time]);
   useEffect(() => {
     if (get(profile, 'error', false) && get(profile, 'message', '')) {
       error(get(profile, 'message', ''));

@@ -1,17 +1,25 @@
 .home-page {
   width: 100%;
   height: 100%;
-  div#tsparticles {
+  // div#tsparticles {
+  //   z-index: -1;
+  //   position: absolute;
+  //   width: 100%;
+  //   background: url('https://d3t1myknaqth5d.cloudfront.net/files/1592989184.jpeg'),
+  //     #c4c4c4;
+  //   background-repeat: round;
+  //   // background: radial-gradient(74.84% 74.84% at 50% 54.97%, #0B1446 0%, #04050A 100%);
+  //   top: 64px;
+  //   bottom: 0;
+  //   height: 296px;
+  // }
+  .slider {
     z-index: -1;
     position: absolute;
     width: 100%;
-    background: url('https://d3t1myknaqth5d.cloudfront.net/files/1592989184.jpeg'),
-      #c4c4c4;
-    background-repeat: round;
-    // background: radial-gradient(74.84% 74.84% at 50% 54.97%, #0B1446 0%, #04050A 100%);
     top: 64px;
     bottom: 0;
-    height: 296px;
+    
   }
   .boude-menu {
     height: 360px;
@@ -48,7 +56,7 @@
         }
       }
       .search2 {
-        width: 58%;
+        width: 57%;
         float: left;
         margin-right: 8px;
         .ant-select-selector {

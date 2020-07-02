@@ -84,7 +84,7 @@ function jobDetail(props) {
   return (
     <div className="job-detail" style={{ padding: 32 }}>
       <div className="row">
-        <div className="col-sm-4" style={{ padding: 0 , border: '1px solid #80808021', height:'300px', width:'300px'}}>
+        <div className="col-sm-4" style={{ padding: 0 , border: '1px solid #80808021', height:'300px'}}>
           {get(referred, 'job_detail.data.job.company.avatar') ? (
             <img
               style={{
@@ -205,7 +205,7 @@ function jobDetail(props) {
           </div>
           <div
             className="txtdescription"
-            style={{ paddingTop: 16, paddingBottom: 16 }}
+            style={{ paddingTop: 16, paddingBottom: 16, whiteSpace: "pre-wrap" }}
           >
             {get(referred, 'job_detail.data.job.company.about')}
           </div>
@@ -272,7 +272,7 @@ function jobDetail(props) {
           </div>
           <div
             className="txtdescription"
-            style={{ paddingTop: 16, paddingBottom: 16 }}
+            style={{ paddingTop: 16, paddingBottom: 16, whiteSpace: "pre-wrap"}}
           >
             {get(referred, 'job_detail.data.job.company.about')}
           </div>
