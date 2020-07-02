@@ -55,8 +55,8 @@ function jobDetail(props) {
     dispatch(purchasePostJob(data2, id)).then((res) => {
       if (res.status) {
         return message
-          .success('Set post job successfully')
-          .then(() => Router.push(`/superadmin/company-list`));
+          .success('Set post job successfully');
+          // .then(() => Router.push(`/superadmin/company-list`));
       }
       return message.error(res.error);
     });
@@ -85,7 +85,7 @@ function jobDetail(props) {
                 ) -
                 get(
                   referred,
-                  'company_detail.data.company.purchas_job_available_to_post'
+                  'company_detail.data.company.job_proritize_available_to_post'
                 )
                   ? get(
                       referred,
@@ -93,13 +93,13 @@ function jobDetail(props) {
                     ) -
                     get(
                       referred,
-                      'company_detail.data.company.purchas_job_available_to_post'
+                      'company_detail.data.company.job_proritize_available_to_post'
                     )
                   : 0}{' '}
                 LƯỢT ƯU TIÊN -{' '}
                 {get(
                   referred,
-                  'company_detail.data.company.job_proritize_available_to_post'
+                  'company_detail.data.company.purchas_job_available_to_post'
                 ) -
                 get(
                   referred,
@@ -107,7 +107,7 @@ function jobDetail(props) {
                 )
                   ? get(
                       referred,
-                      'company_detail.data.company.job_proritize_available_to_post'
+                      'company_detail.data.company.purchas_job_available_to_post'
                     ) -
                     get(
                       referred,
@@ -145,11 +145,11 @@ function jobDetail(props) {
               <Col span={12}>
                 {get(
                   referred,
-                  'company_detail.data.company.purchas_job_available_to_post'
+                  'company_detail.data.company.job_proritize_available_to_post'
                 )
                   ? get(
                       referred,
-                      'company_detail.data.company.purchas_job_available_to_post'
+                      'company_detail.data.company.job_proritize_available_to_post'
                     )
                   : 0}{' '}
                 LƯỢT
@@ -164,11 +164,11 @@ function jobDetail(props) {
               <Col span={12}>
                 {get(
                   referred,
-                  'company_detail.data.company.job_proritize_available_to_post'
+                  'company_detail.data.company.purchas_job_available_to_post'
                 )
                   ? get(
                       referred,
-                      'company_detail.data.company.job_proritize_available_to_post'
+                      'company_detail.data.company.purchas_job_available_to_post'
                     )
                   : 0}{' '}
                 LƯỢT

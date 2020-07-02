@@ -3,20 +3,36 @@
 import React, { useState, useEffect } from 'react';
 import Router from 'next/router';
 import {
-  EditTwoTone, UploadOutlined, EyeOutlined
+  EditTwoTone,
+  UploadOutlined,
+  EyeOutlined,
   // UploadOutlined
 } from '@ant-design/icons';
 import { connect } from 'react-redux';
-import { Card, Input, Form, Row, Col, notification, Tabs, Button, Upload, message } from 'antd';
+import {
+  Card,
+  Input,
+  Form,
+  Row,
+  Col,
+  notification,
+  Tabs,
+  Button,
+  Upload,
+  message,
+} from 'antd';
 import { get, cloneDeep } from 'lodash';
-import { updateProfile, getProfileById } from '../../../containers/company/action';
+import {
+  updateProfile,
+  getProfileById,
+} from '../../../containers/company/action';
 import { uploadRequestImg } from '../../../containers/referred/actions';
 import './styles.scss';
 
 const layout = {
   labelCol: { span: 0 },
   wrapperCol: { span: 16 },
-  layout: "vertical"
+  layout: 'vertical',
 };
 const tailLayout = {
   wrapperCol: { offset: 0, span: 0 },
@@ -27,12 +43,19 @@ function callback(key) {
 }
 const dummyRequest = ({ onSuccess }) => {
   setTimeout(() => {
-    onSuccess("ok");
+    onSuccess('ok');
   }, 0);
 };
 
-
-function TabChange({ status, profile, referred, initForm, dispatch, form, fileLink }) {
+function TabChange({
+  status,
+  profile,
+  referred,
+  initForm,
+  dispatch,
+  form,
+  fileLink,
+}) {
   return (
     <Tabs className="form-body" defaultActiveKey="1" onChange={callback}>
       <TabPane tab="Hồ sơ công ty" key="1">
@@ -57,29 +80,32 @@ function ChangePassword(props) {
   // const { dispatch, referred } = props;
   const [form] = Form.useForm();
   return (
-    <Form
-      form={form}
-      {...layout}
-      name="global_state"
-    >
-      <Form.Item name="currentPassword" label="Current Password"
+    <Form form={form} {...layout} name="global_state">
+      <Form.Item
+        name="currentPassword"
+        label="Current Password"
         rules={[
           {
             required: true,
             message: 'Please input your password!',
           },
         ]}
-        hasFeedback >
+        hasFeedback
+      >
         <Input.Password />
       </Form.Item>
 
-      <Form.Item name="newPassword" label="New Password" rules={[
-        {
-          required: true,
-          message: 'Please input your password!',
-        },
-      ]}
-        hasFeedback >
+      <Form.Item
+        name="newPassword"
+        label="New Password"
+        rules={[
+          {
+            required: true,
+            message: 'Please input your password!',
+          },
+        ]}
+        hasFeedback
+      >
         <Input.Password />
       </Form.Item>
       <Form.Item
@@ -97,23 +123,38 @@ function ChangePassword(props) {
               if (!value || getFieldValue('newPassword') === value) {
                 return Promise.resolve();
               }
-              return Promise.reject('The two passwords that you entered do not match!');
+              return Promise.reject(
+                'The two passwords that you entered do not match!'
+              );
             },
           }),
         ]}
       >
         <Input.Password />
       </Form.Item>
-      <Form.Item  {...tailLayout} style={{ marginTop: 10 }}>
-        <Button type="primary" htmlType="submit" >
-          Cập nhật</Button>
-        <Button style={{ marginLeft: 5 }} onClick={() => Router.push('/company/profile')} >
-          Hủy</Button>
+      <Form.Item {...tailLayout} style={{ marginTop: 10 }}>
+        <Button type="primary" htmlType="submit">
+          Cập nhật
+        </Button>
+        <Button
+          style={{ marginLeft: 5 }}
+          onClick={() => Router.push('/company/profile')}
+        >
+          Hủy
+        </Button>
       </Form.Item>
     </Form>
   );
 }
-function EditUser({ status, profile, referred, initForm, dispatch, fileLink, form }) {
+function EditUser({
+  status,
+  profile,
+  referred,
+  initForm,
+  dispatch,
+  fileLink,
+  form,
+}) {
   const hiddenInput = () => {
     if (status) {
       return { color: 'red' };
@@ -136,65 +177,91 @@ function EditUser({ status, profile, referred, initForm, dispatch, fileLink, for
     const data = cloneDeep(value);
     if (fileLink) {
       data.avatar = fileLink;
-    }
-    else if (!initForm.avatar) {
-      data.avatar = "";
-    }
-    else {
+    } else if (!initForm.avatar) {
+      data.avatar = '';
+    } else {
       data.avatar = initForm.avatar;
     }
     if (!value.about) {
-      data.about = "";
+      data.about = '';
     }
     if (!value.facebook) {
-      data.facebook = "";
+      data.facebook = '';
     }
     if (!value.career_site) {
-      data.career_site = "";
+      data.career_site = '';
     }
     if (!value.employee_benefit) {
-      data.employee_benefit = "";
+      data.employee_benefit = '';
     }
     if (!value.hotline) {
-      data.hotline = "";
+      data.hotline = '';
     }
-    data.in_charge_by = "ACV";
+    data.in_charge_by = 'ACV';
     data.last_year_revenue = 2;
-    data.role = "Trash";
-    data.linked_in = "https://Trash.co";
-    data.youtube = "https://Trash.co";
-    data.vission = "https://Trash.co";
-    data.product = "https://Trash.co";
-    data.company_size = "https://Trash.co";
-    data.expectation_knowledge = ["it suck", "suck"];
-    await dispatch(updateProfile({ ...initForm, ...data }, get(profile, 'data.employer.company.id', []))).then(res => {
+    data.role = 'Trash';
+    data.linked_in = 'https://Trash.co';
+    data.youtube = 'https://Trash.co';
+    data.vission = 'https://Trash.co';
+    data.product = 'https://Trash.co';
+    data.company_size = 'https://Trash.co';
+    data.expectation_knowledge = ['it suck', 'suck'];
+    await dispatch(
+      updateProfile(
+        { ...initForm, ...data },
+        get(profile, 'data.employer.company.id', [])
+      )
+    ).then((res) => {
       if (res.status) {
-        return message.success('Update Profile successfully').then(() => Router.push(`/company-profile/${get(referred, 'company_detail.data.company.id', [])}`));
+        return message
+          .success('Update Profile successfully')
+          .then(() =>
+            Router.push(
+              `/company-profile/${get(
+                referred,
+                'company_detail.data.company.id',
+                []
+              )}`
+            )
+          );
       }
       return message.error(res.error);
     });
   };
 
   return (
-    <Form
-      form={form}
-      {...layout}
-      name="global_state"
-      onFinish={onFinish}
-    >
-      <Form.Item style={hiddenInput()} name="name" label="Tên công ty" rules={[{ required: true, message: 'This field is required !' }]}>
+    <Form form={form} {...layout} name="global_state" onFinish={onFinish}>
+      <Form.Item
+        style={hiddenInput()}
+        name="name"
+        label="Tên công ty"
+        rules={[{ required: true, message: 'This field is required !' }]}
+      >
         <Input disabled={!status} />
       </Form.Item>
-      <Row className='row-detail' style={hiddenDiv()}>
-        <Col span={3}><span className='bold-span'>Tên: </span></Col>
-        <Col span={19}>{get(referred, 'company_detail.data.company.name', [])}</Col>
+      <Row className="row-detail" style={hiddenDiv()}>
+        <Col span={3}>
+          <span className="bold-span">Tên: </span>
+        </Col>
+        <Col span={19}>
+          {get(referred, 'company_detail.data.company.name', [])}
+        </Col>
       </Row>
-      <Form.Item style={hiddenInput()} name="phone_number" label="Điện thoại" rules={[{ required: true, message: 'This field is required !' }]} >
+      <Form.Item
+        style={hiddenInput()}
+        name="phone_number"
+        label="Điện thoại"
+        rules={[{ required: true, message: 'This field is required !' }]}
+      >
         <Input disabled={!status} />
       </Form.Item>
-      <Row className='row-detail' style={hiddenDiv()}>
-        <Col span={3}><span className='bold-span'>Số điện thoại: </span></Col>
-        <Col span={19}>{get(referred, 'company_detail.data.company.phone_number', [])}</Col>
+      <Row className="row-detail" style={hiddenDiv()}>
+        <Col span={3}>
+          <span className="bold-span">Số điện thoại: </span>
+        </Col>
+        <Col span={19}>
+          {get(referred, 'company_detail.data.company.phone_number', [])}
+        </Col>
       </Row>
       <Form.Item
         style={hiddenInput()}
@@ -213,74 +280,99 @@ function EditUser({ status, profile, referred, initForm, dispatch, fileLink, for
       >
         <Input disabled={!status} />
       </Form.Item>
-      <Row className='row-detail' style={hiddenDiv()} >
-        <Col span={3}><span className='bold-span'>Email: </span></Col>
-        <Col span={19}>{get(referred, 'company_detail.data.company.email_cc', [])}</Col>
+      <Row className="row-detail" style={hiddenDiv()}>
+        <Col span={3}>
+          <span className="bold-span">Email: </span>
+        </Col>
+        <Col span={19}>
+          {get(referred, 'company_detail.data.company.email_cc', [])}
+        </Col>
+      </Row>
+      <Form.Item style={hiddenInput()} name="hotline" label="Hotline">
+        <Input disabled={!status} />
+      </Form.Item>
+      <Row className="row-detail" style={hiddenDiv()}>
+        <Col span={3}>
+          <span className="bold-span">Hotline: </span>
+        </Col>
+        <Col span={19}>
+          {get(referred, 'company_detail.data.company.hotline', [])}
+        </Col>
       </Row>
       <Form.Item
+        name="address"
+        label="Địa chỉ"
         style={hiddenInput()}
-        name="hotline"
-        label="Hotline"
+        rules={[{ required: true, message: 'This field is required !' }]}
       >
         <Input disabled={!status} />
       </Form.Item>
-      <Row className='row-detail' style={hiddenDiv()}>
-        <Col span={3}><span className='bold-span'>Hotline: </span></Col>
-        <Col span={19}>{get(referred, 'company_detail.data.company.hotline', [])}</Col>
+      <Row className="row-detail" style={hiddenDiv()}>
+        <Col span={3}>
+          <span className="bold-span">Địa chỉ: </span>
+        </Col>
+        <Col span={19}>
+          {get(referred, 'company_detail.data.company.address', [])}
+        </Col>
       </Row>
-      <Form.Item name='address' label="Địa chỉ" style={hiddenInput()} rules={[{ required: true, message: 'This field is required !' }]}>
+      <Form.Item style={hiddenInput()} name="career_site" label="Website">
         <Input disabled={!status} />
       </Form.Item>
-      <Row className='row-detail' style={hiddenDiv()}>
-        <Col span={3}><span className='bold-span'>Địa chỉ: </span></Col>
-        <Col span={19}>{get(referred, 'company_detail.data.company.address', [])}</Col>
+      <Row className="row-detail" style={hiddenDiv()}>
+        <Col span={3}>
+          <span className="bold-span">Website: </span>
+        </Col>
+        <Col span={19}>
+          {get(referred, 'company_detail.data.company.career_site', [])}
+        </Col>
       </Row>
-      <Form.Item
-        style={hiddenInput()}
-        name='career_site'
-        label="Website"  >
+      <Form.Item style={hiddenInput()} name="facebook" label="Facebook">
         <Input disabled={!status} />
       </Form.Item>
-      <Row className='row-detail' style={hiddenDiv()}>
-        <Col span={3}><span className='bold-span'>Website: </span></Col>
-        <Col span={19}>{get(referred, 'company_detail.data.company.career_site', [])}</Col>
+      <Row className="row-detail" style={hiddenDiv()}>
+        <Col span={3}>
+          <span className="bold-span">Facebook: </span>
+        </Col>
+        <Col span={19}>
+          {get(referred, 'company_detail.data.company.facebook', [])}
+        </Col>
       </Row>
-      <Form.Item
-        style={hiddenInput()}
-        name='facebook'
-        label="Facebook"  >
-        <Input disabled={!status} />
-      </Form.Item>
-      <Row className='row-detail' style={hiddenDiv()}>
-        <Col span={3}><span className='bold-span'>Facebook: </span></Col>
-        <Col span={19}>{get(referred, 'company_detail.data.company.facebook', [])}</Col>
-      </Row>
-      <Form.Item
-        style={hiddenInput()}
-        name="employee_benefit"
-        label="Phúc lợi" >
+      <Form.Item style={hiddenInput()} name="employee_benefit" label="Phúc lợi">
         <Input.TextArea disabled={!status} />
       </Form.Item>
-      <Row className='row-detail' style={hiddenDiv()}>
-        <Col span={3}><span className='bold-span'>Phúc lợi: </span></Col>
-        <Col span={19}>{get(referred, 'company_detail.data.company.employee_benefit', [])}</Col>
+      <Row className="row-detail" style={hiddenDiv()}>
+        <Col span={3}>
+          <span className="bold-span">Phúc lợi: </span>
+        </Col>
+        <Col span={16} style={{whiteSpace: "pre-wrap"}}>
+          {get(referred, 'company_detail.data.company.employee_benefit','')}
+        </Col>
       </Row>
       <Form.Item name="about" label="Giới thiệu công ty" style={hiddenInput()}>
         <Input.TextArea disabled={!status} style={{ height: 200 }} />
       </Form.Item>
-      <Row className='row-detail' style={hiddenDiv()}>
-        <Col span={3}><span className='bold-span'>Giới thiệu công ty: </span></Col>
-        <Col span={18}>{get(referred, 'company_detail.data.company.about', [])}</Col>
+      <Row className="row-detail" style={hiddenDiv()}>
+        <Col span={3}>
+          <span className="bold-span">Giới thiệu công ty: </span>
+        </Col>
+        <Col span={16} style={{whiteSpace: "pre-wrap"}} >
+          {get(referred, 'company_detail.data.company.about', [])}
+        </Col>
       </Row>
-      <Form.Item  {...tailLayout} style={hiddenBtn()}>
-        <Button disabled={!status} type="primary" htmlType="submit" >
-          Cập nhật</Button>
-        <Button disabled={!status} style={{ marginLeft: 5 }} onClick={() => Router.push('/company/profile')} >
-          Hủy</Button>
+      <Form.Item {...tailLayout} style={hiddenBtn()}>
+        <Button disabled={!status} type="primary" htmlType="submit">
+          Cập nhật
+        </Button>
+        <Button
+          disabled={!status}
+          style={{ marginLeft: 5 }}
+          onClick={() => Router.push('/company/profile')}
+        >
+          Hủy
+        </Button>
       </Form.Item>
     </Form>
   );
-
 }
 
 function CompanyProfile(props) {
@@ -302,27 +394,23 @@ function CompanyProfile(props) {
   const updateUser = () => {
     notification.open({
       message: 'Confirm save',
-      description:
-        'Click me to save',
+      description: 'Click me to save',
       onClick: () => {
         setStatus(!status);
-
       },
       style: { cursor: 'pointer' },
-
     });
   };
   const onRequest = async (value) => {
-    await dispatch(uploadRequestImg({ value })).then(res => {
+    await dispatch(uploadRequestImg({ value })).then((res) => {
       setFileLink(res.data);
       if (res.status) {
         return message.success('Upload request');
       }
       return message.error(res.error);
     });
-
   };
-  const onChange = e => {
+  const onChange = (e) => {
     const fileList = [...e.fileList];
     const last = fileList.slice(-1);
     setFileData(last);
@@ -332,85 +420,138 @@ function CompanyProfile(props) {
   };
   const id = get(profile, 'data.employer.company.id', []);
   useEffect(() => {
-    dispatch(getProfileById({ id })).then(res => {
+    dispatch(getProfileById({ id })).then((res) => {
       const { data, status } = res;
       if (status) {
         form.setFieldsValue(data.data.company);
       }
-    });;
+    });
   }, []);
   const setting = {
     onChange,
     // onRemove: () => setFileLink(''),
     // multiple: true,
-    listType: "picture",
+    listType: 'picture',
     // accept: ".pdf",
-    customRequest: dummyRequest
+    customRequest: dummyRequest,
   };
   const changeCSSUpload = () => {
     if (!get(referred, 'recruiter_detail.data.recruiter.avatar', [])) {
       if (fileLink) {
         return {
-          width: 250, height: 250, objectFit: 'scale-down', margin: 'auto', display: 'block'
+          width: 250,
+          height: 250,
+          objectFit: 'scale-down',
+          margin: 'auto',
+          display: 'block',
         };
       }
-        return { height: 0 };  
+      return { height: 0 };
     }
 
     return {
-      width: 250, height: 250, objectFit: 'scale-down', margin: 'auto', display: 'block'
+      width: 250,
+      height: 250,
+      objectFit: 'scale-down',
+      margin: 'auto',
+      display: 'block',
     };
-
   };
 
   const initForm = get(referred, 'company_detail.data.company', []);
   return (
-    <div className="profile" >
+    <div className="profile">
       <div className="header">
-        <div>Hồ sơ công ty </div><EyeOutlined className="eye-view" style={{ float: 'right', marginRight: 20, fontSize: 20 }} onClick={() => Router.push(`/company-profile/${get(referred, 'company_detail.data.company.id', [])}`)} />
+        <div>Hồ sơ công ty </div>
+        <EyeOutlined
+          className="eye-view"
+          style={{ float: 'right', marginRight: 20, fontSize: 20 }}
+          onClick={() =>
+            Router.push(
+              `/company-profile/${get(
+                referred,
+                'company_detail.data.company.id',
+                []
+              )}`
+            )
+          }
+        />
       </div>
-      <div className=" filter-box"  >
+      <div className=" filter-box">
         <Row gutter={[16, 16]}>
-          <Col className="left-profile" span={16} >
+          <Col className="left-profile" span={16}>
             <Card
               title="Thông tin"
               bordered={false}
-              extra={status ? (
-                <div className="edit" role="presentation" onClick={updateUser}  >
-                  {/* <SaveTwoTone />&nbsp; */}
-                  {/* <input className="change-edit" value="save" type="submit" form="global_state" /> */}
-                  {/* <input className="change-edit" value="save" type="submit" /> */}
-                </div>
-              ) : (
+              extra={
+                status ? (
+                  <div
+                    className="edit"
+                    role="presentation"
+                    onClick={updateUser}
+                  >
+                    {/* <SaveTwoTone />&nbsp; */}
+                    {/* <input className="change-edit" value="save" type="submit" form="global_state" /> */}
+                    {/* <input className="change-edit" value="save" type="submit" /> */}
+                  </div>
+                ) : (
                   <div className="is-edit" role="presentation" onClick={isEdit}>
-                    <EditTwoTone />&nbsp;
+                    <EditTwoTone />
+                    &nbsp;
                     <span>Edit</span>
                   </div>
-                )} >
-              {status ? (<TabChange fileLink={fileLink} form={form} dispatch={dispatch} initForm={initForm} referred={referred} status={status} profile={profile} />) :
-                (<EditUser referred={referred} form={form} />)}
+                )
+              }
+            >
+              {status ? (
+                <TabChange
+                  fileLink={fileLink}
+                  form={form}
+                  dispatch={dispatch}
+                  initForm={initForm}
+                  referred={referred}
+                  status={status}
+                  profile={profile}
+                />
+              ) : (
+                <EditUser referred={referred} form={form} />
+              )}
             </Card>
           </Col>
-          <Col className="right-profile" span={8} >
+          <Col className="right-profile" span={8}>
             <div className="site-card-border-less-wrapper">
               <Card title="Logo" bordered={false} style={{ width: 300 }}>
                 <div className="bouder-img">
                   <img
                     style={changeCSSUpload()}
                     // eslint-disable-next-line no-nested-ternary
-                    src={fileLink === '' ? (get(referred, 'company_detail.data.company.avatar', []) === '' ? (fileLink) : (get(referred, 'company_detail.data.company.avatar', []))) : (fileLink)}
+                    src={
+                      fileLink === ''
+                        ? get(
+                            referred,
+                            'company_detail.data.company.avatar',
+                            []
+                          ) === ''
+                          ? fileLink
+                          : get(
+                              referred,
+                              'company_detail.data.company.avatar',
+                              []
+                            )
+                        : fileLink
+                    }
                     alt=""
                   />
                 </div>
-                <div className="upload-img" style={hiddenBtn()} >
+                <div className="upload-img" style={hiddenBtn()}>
                   <Upload
                     {...setting}
                     // fileList={fileData}
                     showUploadList={false}
                   >
-                    <Button className="btn-upload" disabled={!status} >
+                    <Button className="btn-upload" disabled={!status}>
                       <UploadOutlined /> Click to upload
-                </Button>
+                    </Button>
                   </Upload>
                 </div>
               </Card>
