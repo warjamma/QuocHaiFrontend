@@ -174,8 +174,8 @@ function JobList(props) {
         <div role="presentation" className="custom-role">
           <div className="job-role">
             <b className="name-role" color="blue">
-            {get(record, 'purchas_job_proritize_available_to_post')-get(record, 'purchas_job_available_to_post')
-                ? get(record, 'purchas_job_proritize_available_to_post')-get(record, 'purchas_job_available_to_post')
+            {get(record, 'purchas_job_proritize_available_to_post')-get(record, 'job_proritize_available_to_post')
+                ? get(record, 'purchas_job_proritize_available_to_post')-get(record, 'job_proritize_available_to_post')
                 : 0}{' '} ƯU TIÊN
             </b>
             <b className="name-role" color="blue">

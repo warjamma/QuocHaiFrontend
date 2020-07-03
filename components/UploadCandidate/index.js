@@ -292,7 +292,7 @@ function UploadCandidate(props) {
 
               <Form.Item {...tailLayout} className="btnSubmit">
                 <Button type="primary" htmlType="submit">
-                  Gửi ứng viên
+                  OK
               </Button>
                 <Button className="btn-cance" onClick={() => Router.push(`/`)} htmlType="button"   >
                   Hủy
