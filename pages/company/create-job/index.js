@@ -1,13 +1,13 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Col, Row, Form, Select, Input, Button, Upload, message, InputNumber } from 'antd';
 import Router, { useRouter } from 'next/router';
 import { UploadOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import {get} from 'lodash';
 import { createJob } from '../../../containers/company/action';
-import { uploadRequest } from '../../../containers/referred/actions';
+import { uploadRequest, getCompanyById } from '../../../containers/referred/actions';
 import './styles.scss';
 
 const initForm = {
@@ -61,7 +61,7 @@ const dummyRequest = ({ onSuccess }) => {
 };
 
 function CreateJob(props) {
-  const { dispatch,profile } = props;
+  const { dispatch,profile, company } = props;
   const router = useRouter();
   const { id } = router.query;
 
@@ -110,7 +110,10 @@ function CreateJob(props) {
     accept: ".pdf",
     customRequest: dummyRequest
   };
-
+  useEffect(() => {
+    const idd =get(profile, 'data.employer.company.id');
+    dispatch(getCompanyById( idd ));
+  }, []);
   return (
     <div className="CreateJob" style={{ backgroundColor: 'white' }}>
       <div className="header">
@@ -292,15 +295,17 @@ function CreateJob(props) {
             {/* <Form.Item name="candidate_benefit" label="Phúc lợi">
               <Input.TextArea />
             </Form.Item> */}
-            <div style={{ color: 'red', fontWeight: 'bold' }}>THỜI GIAN POST CÔNG VIỆC TRONG 30 NGÀY</div>
+            <div style={{ color: 'red', fontWeight: 'bold' }}>THỜI GIAN POST CÔNG VIỆC TRONG 20 NGÀY</div>
+            <div style={{fontSize:'12px', fontWeight: 'bold' }}>LƯỢT ƯU TIÊN CÒN {get(company, 'company_detail.data.company.job_proritize_available_to_post')?get(company, 'company_detail.data.company.job_proritize_available_to_post'):0}
+            - LƯỢT THƯỜNG CÒN {get(company, 'company_detail.data.company.job_available_to_post')?get(company, 'company_detail.data.company.job_available_to_post'):0}</div>
             <Form.Item
               label="Chọn kiểu post"
               hasFeedback
               name="priority"
             >
               <Select style={{ width: '100%' }}>
-                <Select.Option value="true">Đăng tuyển thường - Còn {get(profile, 'data.employer.company.job_proritize_available_to_post')?get(profile, 'data.employer.company.job_proritize_available_to_post'):0}</Select.Option>
-                <Select.Option value="false">Đăng tuyển ưu tiên -Còn {get(profile, 'data.employer.company.purchas_job_available_to_post')?get(profile, 'data.employer.company.purchas_job_available_to_post'):0}</Select.Option>
+              <Select.Option value="true">Đăng tuyển ưu tiên</Select.Option>
+              <Select.Option value="false">Đăng tuyển thường </Select.Option>    
               </Select>
             </Form.Item>
             <Form.Item style={{ marginTop: 20 }}>
@@ -318,8 +323,8 @@ function CreateJob(props) {
   );
 }
 function mapStateToProps(state) {
-  const { profile } = state;
-  return { profile};
+  const { profile, company } = state;
+  return { profile, company};
 }
 export default connect(mapStateToProps, null)(CreateJob);
  

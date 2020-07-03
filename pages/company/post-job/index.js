@@ -23,10 +23,9 @@ function jobDetail(props) {
   const { id } = router.query;
 
   const { dispatch, referred, profile, company } = props;
-  // get(profile,)
-  // useEffect(() => {
-  //   dispatch(getCompanyById({ id }));
-  // }, []);
+  useEffect(() => {
+    dispatch(getCompanyById( id ));
+  }, []);
 
   // const pushRouter = (name) => {
   //   Router.push({
@@ -47,24 +46,24 @@ function jobDetail(props) {
               <div className="content" style={{ padding: 18, height: 300 }} >
                 <Row className='row-detail' style={{ paddingTop: 24 }} >
                   <Col span={9}><span className='bold-span' style={{ fontWeight: 'bold' }}>Số lượt đã đăng tuyển : </span></Col>
-                  <Col span={13}>{get(profile, 'data.employer.company.purchas_job_proritize_available_to_post')-get(profile, 'data.employer.company.purchas_job_available_to_post')?get(profile, 'data.employer.company.purchas_job_proritize_available_to_post')-get(profile, 'data.employer.company.purchas_job_available_to_post'):0} LƯỢT ƯU TIÊN - 
-                  {get(profile, 'data.employer.company.job_proritize_available_to_post')-get(profile, 'data.employer.company.job_available_to_post')?get(profile, 'data.employer.company.job_proritize_available_to_post')-get(profile, 'data.employer.company.job_available_to_post'):0} LƯỢT THƯỜNG</Col>
+                  <Col span={13}>{get(company, 'company_detail.data.company.purchas_job_proritize_available_to_post')-get(company, 'company_detail.data.company.job_proritize_available_to_post')?get(company, 'company_detail.data.company.purchas_job_proritize_available_to_post')-get(company, 'company_detail.data.company.job_proritize_available_to_post'):0} LƯỢT ƯU TIÊN - 
+                  {get(company, 'company_detail.data.company.purchas_job_available_to_post')-get(company, 'company_detail.data.company.job_available_to_post')?get(company, 'company_detail.data.company.purchas_job_available_to_post')-get(company, 'company_detail.data.company.job_available_to_post'):0} LƯỢT THƯỜNG</Col>
                 </Row>
                 <Row className='row-detail' style={{ paddingTop: 24 }}>
                   <Col span={9}><span className='bold-span' style={{ fontWeight: 'bold' }}>Lượt đăng tuyển ưu tiên đã mua: </span></Col>
-                  <Col span={13}>{get(profile, 'data.employer.company.purchas_job_proritize_available_to_post')?get(profile, 'data.employer.company.purchas_job_proritize_available_to_post'):0} LƯỢT</Col>
+                  <Col span={13}>{get(company, 'company_detail.data.company.purchas_job_proritize_available_to_post')?get(company, 'company_detail.data.company.purchas_job_proritize_available_to_post'):0} LƯỢT</Col>
                 </Row>
                 <Row className='row-detail' style={{ paddingTop: 24 }} >
                   <Col span={9}><span className='bold-span' style={{ fontWeight: 'bold' }}>Lượt đăng tuyển ưu tiên còn lại: </span></Col>
-                  <Col span={13} style={{ fontWeight: 'bold', color: 'blue' }}>{get(profile, 'data.employer.company.purchas_job_available_to_post')?get(profile, 'data.employer.company.purchas_job_available_to_post'):0} LƯỢT</Col>
+                  <Col span={13} style={{ fontWeight: 'bold', color: 'blue' }}>{get(company, 'company_detail.data.company.job_proritize_available_to_post')?get(company, 'company_detail.data.company.job_proritize_available_to_post'):0} LƯỢT</Col>
                 </Row>
                 <Row className='row-detail' style={{ paddingTop: 24 }}>
                   <Col span={9}><span className='bold-span' style={{ fontWeight: 'bold' }}>Lượt đăng tuyển thường đã mua: </span></Col>
-                  <Col span={13} >{get(profile, 'data.employer.company.job_proritize_available_to_post')?get(profile, 'data.employer.company.job_proritize_available_to_post'):0} LƯỢT</Col>
+                  <Col span={13} >{get(company, 'company_detail.data.company.purchas_job_available_to_post')?get(company, 'company_detail.data.company.purchas_job_available_to_post'):0} LƯỢT</Col>
                 </Row>
                 <Row className='row-detail' style={{ paddingTop: 24 }}>
                   <Col span={9}><span className='bold-span' style={{ fontWeight: 'bold' }}>Lượt đăng tuyển thường còn lại: </span></Col>
-                  <Col span={13} style={{ fontWeight: 'bold', color: 'blue' }}>{get(profile, 'data.employer.company.job_available_to_post')?get(profile, 'data.employer.company.job_available_to_post'):0} LƯỢT</Col>
+                  <Col span={13} style={{ fontWeight: 'bold', color: 'blue' }}>{get(company, 'company_detail.data.company.job_available_to_post')?get(company, 'company_detail.data.company.job_available_to_post'):0} LƯỢT</Col>
                 </Row>
               </div>
             </Col>
@@ -155,7 +154,7 @@ function jobDetail(props) {
   );
 }
 function mapStateToProps(state) {
-  // console.log(state);
+  console.log(state);
   const { referred, profile, company } = state;
   return { referred, profile ,company};
 }

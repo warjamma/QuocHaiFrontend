@@ -70,7 +70,7 @@ export function getCompanyById(params) {
   // console.log('params', params);
   return async dispatch => {
     try {
-      const { data } = await api.sendRequestWithToken('get', `/companies/${params.id}`);
+      const { data } = await api.sendRequestWithToken('get', `/companies/${params}`);
       dispatch({ type: "GET_COMPANY_BY_ID_SUCCESS", data });
       return { status: true, data };
     } catch (error) {
