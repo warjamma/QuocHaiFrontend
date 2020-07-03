@@ -55,7 +55,7 @@ class MyApp extends App {
           persistor={this.persistor}
         >
           <Head>
-            <title>Rocksearch</title>
+            <title>rocksearch</title>
             <meta
               name="viewport"
               content="initial-scale=1.0, width=device-width"
@@ -64,16 +64,16 @@ class MyApp extends App {
             <meta property="og:type" content="article" />
             <meta
               property="og:url"
-              content="http://newsblog.org/news/136756249803614"
+              content="https://rocksearch.rockship.co/"
             />
-            <meta property="og:title" content="Introducing our New Site" />
+            <meta property="og:title" content="Hãy đến với rocksearch" />
             <meta
               property="og:image"
-              content="https://scontent-sea1-1.xx.fbcdn.net/hphotos-xap1/t39.2178-6/851565_496755187057665_544240989_n.jpg"
+              content="/logo-rocksip.png"
             />
             <meta
               property="og:description"
-              content="http://samples.ogp.me/390580850990722"
+              content="Tìm việc ngay"
             />
             <link rel="stylesheet" type="text/css" href="/nprogress.css" />
             <link
