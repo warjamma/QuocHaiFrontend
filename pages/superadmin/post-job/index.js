@@ -36,7 +36,7 @@ function jobDetail(props) {
 
   const { dispatch, referred, profile } = props;
   useEffect(() => {
-    dispatch(getCompanyById({ id }));
+    dispatch(getCompanyById( id ));
   }, []);
 
   //   const pushRouter = (name) => {

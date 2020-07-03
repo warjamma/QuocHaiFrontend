@@ -296,16 +296,14 @@ function CreateJob(props) {
               <Input.TextArea />
             </Form.Item> */}
             <div style={{ color: 'red', fontWeight: 'bold' }}>THỜI GIAN POST CÔNG VIỆC TRONG 20 NGÀY</div>
-            <div style={{fontSize:'12px', fontWeight: 'bold' }}>LƯỢT ƯU TIÊN CÒN {get(company, 'company_detail.data.company.job_proritize_available_to_post')?get(company, 'company_detail.data.company.job_proritize_available_to_post'):0}
-            - LƯỢT THƯỜNG CÒN {get(company, 'company_detail.data.company.job_available_to_post')?get(company, 'company_detail.data.company.job_available_to_post'):0}</div>
             <Form.Item
               label="Chọn kiểu post"
               hasFeedback
               name="priority"
             >
               <Select style={{ width: '100%' }}>
-              <Select.Option value="true">Đăng tuyển ưu tiên</Select.Option>
-              <Select.Option value="false">Đăng tuyển thường </Select.Option>    
+              <Select.Option value="true">Đăng tuyển ưu tiên {get(company, 'company_detail.data.company.job_proritize_available_to_post')?get(company, 'company_detail.data.company.job_proritize_available_to_post'):0}</Select.Option>
+              <Select.Option value="false">Đăng tuyển thường  {get(company, 'company_detail.data.company.job_available_to_post')?get(company, 'company_detail.data.company.job_available_to_post'):0}</Select.Option>    
               </Select>
             </Form.Item>
             <Form.Item style={{ marginTop: 20 }}>
