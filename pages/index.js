@@ -1,14 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { Button, Typography, Select, Input } from 'antd';
-import { get } from 'lodash';
-import Router from 'next/router';
 import FooterHome from '../components/FooterHome';
 import MenuHome from '../components/MenuHome';
 import Login from '../components/Login';
 import Register from '../components/Register';
-
-import { getListJob } from '../containers/job/actions';
 import './styles.scss';
 
 function Home() {
@@ -23,9 +18,9 @@ function Home() {
   };
   const showFrom = () => {
     if (!status) {
-      return { display: 'none',marginTop: 30 }
+      return { display: 'none',marginTop: 30 };
     }
-  }
+  };
   return (
     <div className="home-page">
       <div className="boude-menu">
@@ -48,7 +43,7 @@ function Home() {
             <div className="regiser-page" >
               <Register />
             </div>
-            <div className="btnlogin" style={{textAlign:"center", cursor:'pointer'}} onClick={()=>changeForm()}>Or Login now</div>
+            <div className="btnlogin" role="presentation" style={{textAlign:"center", cursor:'pointer'}} onClick={()=>changeForm()}>Or Login now</div>
 
           </div>
           <div className="col-sm-5" style={showFrom()}>
@@ -59,7 +54,7 @@ function Home() {
             <div className="login-page"  >
               <Login/>
             </div>
-            <div className="btnlogin" style={{textAlign:"center",cursor:'pointer'}} onClick={()=>changeForm()}>Or Register now</div>
+            <div className="btnlogin" role="presentation" style={{textAlign:"center",cursor:'pointer'}} onClick={()=>changeForm()}>Or Register now</div>
           </div>
         </div>
       </div>
