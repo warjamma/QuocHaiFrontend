@@ -28,13 +28,13 @@ function HeaderHome() {
           >
             <img
               className="name-logo"
-              src="https://d3t1myknaqth5d.cloudfront.net/files/1592564409.jpeg"
+              src="/eface.png"
               alt="#"
             />
           </li>
           <div className="child">
             <div className="down">
-              <li
+              {/* <li
                 className="  tag"
                 role="presentation"
                 onClick={() => Router.push(`/home-page/job-list-home`)}
@@ -42,26 +42,12 @@ function HeaderHome() {
                 Tìm việc IT
               </li>
               <li
-                className="  tag"
-                role="presentation"
-                onClick={() => Router.push(`/login`)}
-              >
-                Nhà tuyển dụng
-              </li>
-              <li
-                className="  tag "
-                role="presentation"
-                onClick={() => Router.push(`/login`)}
-              >
-                Giới thiệu ứng viên
-              </li>
-              <li
                 role="presentation"
                 onClick={() => Router.push(`/home-page/upload-cv-home`)}
                 className="tag upload"
               >
                   Upload cv
-              </li>
+              </li> */}
             </div>
           </div>
           <li className="icon">
