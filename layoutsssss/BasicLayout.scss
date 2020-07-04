@@ -1,10 +1,10 @@
 .dashboardPage {
   min-height: 100vh !important;
-
+  
   .trigger:hover {
     color: #1890ff;
   }
-
+  
   .logo {
     height: 120px;
     //background: rgba(255, 255, 255, 0.2);
@@ -17,12 +17,11 @@
       background: white;
     }
   }
-
+  
   .siteLayoutBackground {
-    background: #fff;
+    // background: #fff;
     height: 60px;
-    width: 100%;
-    // padding: 10px 15px;
+    padding: 10px 15px;
     display: flex;
     align-items: center;
     .headerLayout {
@@ -33,17 +32,15 @@
       width: 100%;
     }
     .rightHeader {
-      margin-top: 20px;
-      // display: flex;
-      // align-items: center;
-      // flex-direction: row;
+      display: flex;
+      align-items: center;
+      flex-direction: row;
       .notiIcon {
-        padding-top: 10px;;
         font-size: 20px;
         cursor: pointer;
       }
       .avatarUser {
-        margin-left: 0px;
+        margin-left: 30px;
         width: 30px;
         height: 30px;
         border-radius: 50%;
@@ -51,18 +48,6 @@
         cursor: pointer;
       }
     }
-  }
-  .site-layout {
-    .sider-contai {
-      ul.ant-menu.ant-menu-dark.ant-menu-root.ant-menu-inline {
-        background: transparent;
-        li.ant-menu-item {
-          color: black;
-        }
-      }
-    }
-  }
-  .sideLayoutBody {
   }
   .subItem {
     padding-left: 40px !important;

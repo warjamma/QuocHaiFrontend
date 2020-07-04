@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import Router, { withRouter, useRouter } from 'next/router';
 import { get } from 'lodash';
-import { Layout, Menu, Dropdown, message, Badge, Input, } from 'antd';
+import { Layout, Menu, Dropdown, message, Badge } from 'antd';
 
 import {
   MenuUnfoldOutlined,
@@ -51,7 +51,7 @@ function BasicLayout(props) {
       Router.push('/superadmin/job-list');
     }
     if (get(profile, 'data.recruiter', '')) {
-      Router.push('/customer/profile');
+      Router.push('/job-list');
     }
   }
   // const logOut = async () => {
@@ -107,21 +107,21 @@ function BasicLayout(props) {
     }
     return referrerSideBar;
   };
-  // const imgLogo = () => {
-  //   if (get(profile, 'data.employer', '')) {
-  //     return get(company, 'company_detail.data.company.avatar');
-  //     // return get(profile, 'data.employer.company.avatar');
-  //   }
-  //   if (get(profile, 'data.recruiter.role', '') === 'superadmin') {
-  //     const img = 'https://www.rockship.co/images/rs-logo-img.png';
-  //     return img;
-  //   }
-  //   if (get(profile, 'data.recruiter', '')) {
-  //     // return get(profile, 'data.recruiter.avatar');
-  //     return get(referred, 'recruiter_detail.data.recruiter.avatar');
-  //   }
-  //   return 'https://www.rockship.co/images/rs-logo-img.png';
-  // };
+  const imgLogo = () => {
+    if (get(profile, 'data.employer', '')) {
+      return get(company, 'company_detail.data.company.avatar');
+      // return get(profile, 'data.employer.company.avatar');
+    }
+    if (get(profile, 'data.recruiter.role', '') === 'superadmin') {
+      const img = 'https://www.rockship.co/images/rs-logo-img.png';
+      return img;
+    }
+    if (get(profile, 'data.recruiter', '')) {
+      // return get(profile, 'data.recruiter.avatar');
+      return get(referred, 'recruiter_detail.data.recruiter.avatar');
+    }
+    return 'https://www.rockship.co/images/rs-logo-img.png';
+  };
 
   const content = (
     <Menu className="notificationList">
@@ -145,8 +145,7 @@ function BasicLayout(props) {
         key="2"
         onClick={async () => {
           await dispatch(logOutRequest());
-          Router.push('/');
-          // Router.push('/login');
+          Router.push('/login');
         }}
       >
         <LogoutOutlined />
@@ -156,17 +155,16 @@ function BasicLayout(props) {
   );
   if (get(profile, 'data.token', '')) {
     return (
-      <Layout className="dashboardPage" >
+      <Layout className="dashboardPage">
         <Header className="siteLayoutBackground" >
           <div className="headerLayout " style={{
             position: 'fixed',
             top: 0,
-            left: 0,
             zIndex: 3,
-            background: '#333233',
-            height: 60,
+            background: 'white',
+            height:'60px'
           }}>
-            {/* {React.createElement(
+            {React.createElement(
               collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
               {
                 onClick: toggle,
@@ -181,24 +179,6 @@ function BasicLayout(props) {
               <Dropdown overlay={menu}>
                 <div className="avatarUser" />
               </Dropdown>
-            </div> */}
-            <div className="row " style={{width: '100%'}}>
-            <div className="menu col-sm-2" >
-              <img src="/eface.png" alt="logo" style={{ width: '80%', padding:20 }} />
-            </div>
-            <div className="col-sm-5" style={{ marginTop:10}}><Input placeholder="Basic usage" /></div>
-            <div className="col-sm-4">   </div>
-            <div className="col-sm-1 row rightHeader" >
-              
-              {/* <Dropdown overlay={content} className="col-sm-6">
-                <Badge dot>
-                  <BellFilled className="notiIcon" />
-                </Badge>
-              </Dropdown> */}
-              <Dropdown overlay={menu} className="col-sm-6" >
-                <div className="avatarUser" />
-              </Dropdown>
-            </div> 
             </div>
           </div>
         </Header>
@@ -208,22 +188,20 @@ function BasicLayout(props) {
           style={{ marginLeft: !collapsed ? 200 : 80 }}
         >
           <Sider
-            className="sider-contai"
             style={{
               overflow: 'auto',
               height: '100vh',
               position: 'fixed',
               left: 0,
               zIndex: 3,
-              background: 'transparent'
             }}
             trigger={null}
             collapsible
             collapsed={collapsed}
           >
-            {/* <div className="logo">
+            <div className="logo">
               <img className="logo" src={imgLogo()} alt="avatar" />
-            </div> */}
+            </div>
             <Menu theme="dark" mode="inline">
               {sidebarMenu().map((item, key) =>
                 !item.subMenu ? (

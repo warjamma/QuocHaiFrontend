@@ -50,16 +50,20 @@ export const adminSideBar = [
 ];
 
 export const referrerSideBar = [
+  // {
+  //   name: 'Công việc',
+  //   url: '/job-list'
+  // },
+  // {
+  //   name: 'Đã giới thiệu',
+  //   url: '/referrer/my-referred'
+  // },
+  // {
+  //   name: 'Thông tin cá nhân',
+  //   url: '/referrer/profile'
+  // },
   {
-    name: 'Công việc',
-    url: '/job-list'
-  },
-  {
-    name: 'Đã giới thiệu',
-    url: '/referrer/my-referred'
-  },
-  {
-    name: 'Thông tin cá nhân',
-    url: '/referrer/profile'
-  },
+    name: 'Thanh Quang',
+    url: '/customer/profile'
+  }
 ];
