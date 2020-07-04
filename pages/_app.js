@@ -55,7 +55,7 @@ class MyApp extends App {
           persistor={this.persistor}
         >
           <Head>
-            <title>rocksearch</title>
+            <title>Eface</title>
             <meta
               name="viewport"
               content="initial-scale=1.0, width=device-width"
@@ -69,7 +69,7 @@ class MyApp extends App {
             <meta property="og:title" content="Hãy đến với rocksearch" />
             <meta
               property="og:image"
-              content="/logo-rocksip.png"
+              content="/e.png"
             />
             <meta
               property="og:description"
@@ -79,7 +79,7 @@ class MyApp extends App {
             <link
               rel="shortcut icon"
               type="image/png"
-              href="/default-avatar.png"
+              href="/e.png"
             />
           </Head>
           <LayoutWrapper />
