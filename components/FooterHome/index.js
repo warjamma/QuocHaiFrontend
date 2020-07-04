@@ -13,11 +13,11 @@ function HeaderHome() {
             <div className="titleft"> Get in touch</div>
             <div className="row lineft">
               <div className="col-sm-1 iconftleft"><MailOutlined /></div>
-              <div className="col-sm-11">Social@rockship.co</div>
+              <div className="col-sm-11">eface@gmail.com</div>
               <div className="col-sm-1 iconftleft"><ToTopOutlined /></div>
-              <div className="col-sm-11">64/1K, Vo Oanh Street, Ward 25, Binh Thanh District, Ho Chi Minh, Viet Nam</div>
+              <div className="col-sm-11">Ho Chi Minh, Viet Nam</div>
               <div className="col-sm-1 iconftleft"><PhoneOutlined /></div>
-              <div className="col-sm-11">(+84) - 028 3620 5144 </div>
+              <div className="col-sm-11">(+84) - 0396490264 </div>
             </div>
           </div>
           <div className="col-sm-3">
