@@ -4,9 +4,9 @@ import api from '../../services/api';
 export function loginRequest(user, role) {
   return async dispatch => {
     try {
-      const { data } = await api.sendRequest('post', `/${role}/login`, null, null, user);
-      localStorage.setItem('token', data.data.token);
-      return dispatch({ type: "LOGIN_SUCCESS", data: data.data });
+      const { data } = await api.sendRequest('post', `/auth/signin`, null, {"Content-Type" : "application/json"}, user);
+      localStorage.setItem('accessToken', data.accessToken);
+      return dispatch({ type: "LOGIN_SUCCESS", data: data });
     } catch (error) {
       const { data } = error.response;
       return dispatch({ type: "LOGIN_FAILURE", error: data.message });

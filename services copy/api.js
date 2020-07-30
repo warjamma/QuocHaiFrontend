@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 axios.defaults.baseURL = 'http://localhost:8000';
+// axios.defaults.baseURL = 'https://rocksearch-api.rockship.co';
 
 const APIService = {
   sendRequest: (
@@ -58,9 +59,9 @@ const APIService = {
   ) => {
     const headers = headerParams || {};
     // eslint-disable-next-line camelcase
-    const token = localStorage.getItem('accessToken');
+    const token = localStorage.getItem('token');
     // eslint-disable-next-line camelcase
-    headers.authorization = `bearer ${token}`;
+    headers.authorization = `JWT ${token}`;
     return APIService.sendRequest(
       method,
       url,
