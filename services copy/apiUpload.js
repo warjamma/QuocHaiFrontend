@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-axios.defaults.baseURL = 'http://localhost:8000';
+// axios.defaults.baseURL = 'https://s3.ap-southeast-1.amazonaws.com/dev.crypto.co ';
 
-const APIService = {
+const APIService1 = {
   sendRequest: (
     method,
     url,
@@ -14,7 +14,7 @@ const APIService = {
   ) => {
     const headers = headerParams || {};
     const request = {
-      url,
+      url: `https://api-sub60.rockship.co${url}`,
       method,
       timeout,
       headers,
@@ -39,38 +39,12 @@ const APIService = {
         })
         .catch((err) => {
           if (headers.length && err.response.status === 401) {
-            this.logOutRequest();
             window.location.href = "/login";
           }
           reject(err);
         });
     });
   },
-
-  sendRequestWithToken: async (
-    method,
-    url,
-    params,
-    headerParams,
-    body,
-    { timeout = 60000 } = {},
-    responseType = 'json'
-  ) => {
-    const headers = headerParams || {};
-    // eslint-disable-next-line camelcase
-    const token = localStorage.getItem('accessToken');
-    // eslint-disable-next-line camelcase
-    headers.authorization = `bearer ${token}`;
-    return APIService.sendRequest(
-      method,
-      url,
-      params,
-      headers,
-      body,
-      { timeout },
-      responseType
-    );
-  }
 };
 
-export default APIService;
+export default APIService1;

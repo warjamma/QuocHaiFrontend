@@ -16,14 +16,14 @@ function Verify (props) {
   const { query } = router;
 
   useEffect(() => {
-    if (localStorage.getItem('token')) {
+    if (localStorage.getItem('accessToken')) {
       Router.push(query.role === 'employers' ? '/company/job-list' : '/job-list');
     }
   });
 
   const onFinish = async (values) => {
     await dispatch(verifyRequest(query.role, query.id, values));
-    if(localStorage.getItem('token')) {
+    if(localStorage.getItem('accessToken')) {
       success('Login successfully!');
       Router.push(query.role === 'employers' ? '/company/job-list' : '/job-list');
     }

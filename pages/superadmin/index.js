@@ -15,7 +15,7 @@ const success = (mess) => {
 function Login(props) {
   const { dispatch, profile } = props;
   useEffect(() => {
-    if (get(profile, 'data.token', '') && get(profile, 'data.recruiter.role', '') === 'superadmin') {
+    if (get(profile, 'data.accessToken', '') && get(profile, 'data.recruiter.role', '') === 'superadmin') {
       success('Login successfully!');
       Router.push('/superadmin/job-list');
     }

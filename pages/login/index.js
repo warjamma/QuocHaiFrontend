@@ -21,7 +21,7 @@ function Login(props) {
   const [role, setRole] = useState('employers');
 
   useEffect(() => {
-    if (get(profile, 'data.token', '')) {
+    if (get(profile, 'data.accessToken', '')) {
       success('Login successfully!');
       Router.push(get(profile, 'data.employer', '') ? '/company/job-list' : '/job-list');
     }

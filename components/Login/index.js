@@ -21,14 +21,16 @@ function Login(props) {
   const [role, setRole] = useState('employers');
 
   useEffect(() => {
-    if (get(profile, 'data.token', '')) {
+    if (get(profile, 'data.accessToken', '')) {
       success('Login successfully!');
       Router.push(get(profile, 'data.employer', '') ? '/company/job-list' : '/job-list');
     }
   });
 
   const onFinish = async (values) => {
-    await dispatch(loginRequest(values, role));
+    console.log(values);
+    const data = await dispatch(loginRequest(values, role));
+    console.log(data);
   };
 
   function FormLogin() {
@@ -39,17 +41,17 @@ function Login(props) {
         onFinish={onFinish}
       >
         <Form.Item
-          name="email"
-          rules={[
-            {
-              type: 'email',
-              message: 'The input is not valid E-mail!',
-            },
-            {
-              required: true,
-              message: 'Please input your E-mail!',
-            },
-          ]}
+          name="username"
+          // rules={[
+          //   {
+          //     type: 'email',
+          //     message: 'The input is not valid E-mail!',
+          //   },
+          //   {
+          //     required: true,
+          //     message: 'Please input your E-mail!',
+          //   },
+          // ]}
         >
           <Input
             prefix={<UserOutlined className="site-form-item-icon" />}

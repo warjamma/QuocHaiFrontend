@@ -80,7 +80,7 @@ function BasicLayout(props) {
       error(get(profile, 'message', ''));
       dispatch(clearError());
     }
-    // setToken(localStorage.getItem('token'))
+    // setToken(localStorage.getItem('accessToken'))
   });
   const id = get(profile, 'data.employer.company.id', []);
   useEffect(() => {
@@ -154,7 +154,7 @@ function BasicLayout(props) {
       </Menu.Item>
     </Menu>
   );
-  if (get(profile, 'data.token', '')) {
+  if (get(profile, 'data.accessToken', '')) {
     return (
       <Layout className="dashboardPage" >
         <Header className="siteLayoutBackground" >
