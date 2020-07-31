@@ -8,6 +8,8 @@ First, run the development server:
 npm run dev
 # or
 yarn dev
+# change port in packge json
+       "dev": "next" => "dev": "next -p 8080" 
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.

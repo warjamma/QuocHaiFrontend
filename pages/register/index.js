@@ -45,57 +45,6 @@ function Register(props) {
     });
   };
 
-  const prefixSelector = (
-    <Form.Item name="prefix" noStyle>
-      <Select
-        dropdownClassName="dropdownCusstomRegister"
-        showArrow={false}
-        defaultValue={
-          <div className="renderItemSelect">
-            (+82)
-            <span role="img" aria-label="USA">
-              🇺🇸
-            </span>
-          </div>
-        }
-        style={{ width: 80 }}
-      >
-        <Option value="89" label="China">
-          <div className="renderItemSelect">
-            (+89)
-            <span role="img" aria-label="China">
-              🇨🇳
-            </span>
-          </div>
-        </Option>
-        <Option value="82" label="USA">
-          <div className="renderItemSelect">
-            (+82)
-            <span role="img" aria-label="USA">
-              🇺🇸
-            </span>
-          </div>
-        </Option>
-        <Option value="81" label="Japan">
-          <div className="renderItemSelect">
-            (+81)
-            <span role="img" aria-label="Japan">
-              🇯🇵
-            </span>
-          </div>
-        </Option>
-        <Option value="80" label="Korea">
-          <div className="renderItemSelect">
-            (+80)
-            <span role="img" aria-label="Korea">
-              🇰🇷
-            </span>
-          </div>
-        </Option>
-      </Select>
-    </Form.Item>
-  );
-
   function FormRegister() {
     const { children } = props;
     return (
@@ -211,7 +160,7 @@ function Register(props) {
                 ]}
                 hasFeedback
               >
-                <Input addonBefore={prefixSelector} style={{ width: '100%' }} />
+                <Input style={{ width: '100%' }} />
               </Form.Item>
               <Form.Item name="agreement" valuePropName="checked">
                 <Checkbox>I have read the agreement</Checkbox>
@@ -305,7 +254,7 @@ function Register(props) {
               ]}
               hasFeedback
             >
-              <Input addonBefore={prefixSelector} style={{ width: '100%' }} />
+              <Input style={{ width: '100%' }} />
             </Form.Item>
             <Form.Item name="agreement" valuePropName="checked">
               <Checkbox>I have read the agreement</Checkbox>
