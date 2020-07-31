@@ -49,21 +49,38 @@ export const adminSideBar = [
   },
 ];
 
+
 export const referrerSideBar = [
-  // {
-  //   name: 'Công việc',
-  //   url: '/job-list'
-  // },
-  // {
-  //   name: 'Đã giới thiệu',
-  //   url: '/referrer/my-referred'
-  // },
-  // {
-  //   name: 'Thông tin cá nhân',
-  //   url: '/referrer/profile'
-  // },
   {
-    name: 'Thanh Quang',
-    url: '/customer/profile'
-  }
+    name: 'Bảng tin',
+    url: '/home'
+  },
+  {
+    name: 'Tin nhắn',
+    url: '/home'
+  },
+  {
+    name: 'Du lịch',
+    url: '/home'
+  },
+  {
+    name: 'Ăn uống',
+    url: '/home'
+  },
+  {
+    name: 'Mua sắm',
+    url: '/home'
+  },
+  {
+    name: 'Dồ xe độ',
+    url: '/home'
+  },
+  {
+    name: 'Thực phẩm',
+    url: '/home'
+  },
+  {
+    name: 'Thể thao',
+    url: '/home'
+  },
 ];
