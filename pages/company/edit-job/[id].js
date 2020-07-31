@@ -313,7 +313,6 @@ function EditJob(props) {
             >
               <InputNumber
                 style={{ width: '100%' }}
-                // defaultValue={1}
               />
             </Form.Item>
             {/* <Form.Item
@@ -388,7 +387,6 @@ function EditJob(props) {
             >
               <InputNumber
                 style={{ width: '100%' }}
-                // defaultValue={1000}
                 formatter={(value) =>
                   `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
                 }
