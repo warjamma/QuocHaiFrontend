@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
-.menu-top {
+.menu-top-login {
   font-family: 'Noto Sans';
-  position: absolute;
-  top: 0px;
+  position: fixed;
+  top: 0;
   left: 0;
   right: 0;
   z-index: 200;
