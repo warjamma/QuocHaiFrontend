@@ -2,8 +2,10 @@ import React from 'react';
 import MenuLeft from '../../components/AfterLogin/MenuLeft';
 import NewInfo from '../../components/AfterLogin/NewInfo';
 import News from '../../components/AfterLogin/News';
+
 const index = () => {
   return (
+    <div className="container">
     <div className="row">
       <div className="col-sm-2"> <MenuLeft /></div>
       <div className="homepagelogin col-sm-6">
@@ -29,6 +31,7 @@ const index = () => {
         <NewInfo/>
         </div>
       </div>
+    </div>
     </div>
   );
 };

@@ -1,9 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Rate } from 'antd';
 import { connect } from 'react-redux';
-import classNames from 'classnames';
-import Router, { withRouter } from 'next/router';
-import { requireAuthentication } from '../../../lib/auth';
 import {
   LogoutOutlined,
   EyeInvisibleOutlined,
@@ -11,8 +8,8 @@ import {
   EnvironmentOutlined,
   PhoneOutlined,
 } from '@ant-design/icons';
-function NewInfo(props) {
-  const { profile } = props;
+
+function NewInfo() {
   return (
     <div className="info-news" style={{paddingBottom:'30px'}}>
       <div className="row">
@@ -21,7 +18,7 @@ function NewInfo(props) {
             style={{ objectFit: 'cover', width: '100%' , padding: "10px"}}
             src="http://vanhienblog.info/wp-content/uploads/2019/02/anh-gai-xinh-dep-hot-girl-1-00-600x445.jpg"
             alt="#"
-          ></img>
+           />
         </div>
         <div
               className="col-sm-12 user-info"
@@ -84,10 +81,10 @@ function NewInfo(props) {
             style={{ objectFit: 'cover', width: '100%', height:"200px"  }}
             src="https://kenh14cdn.com/2019/3/21/photo-1-1553155372658221231913.jpg"
             alt="#"
-          ></img>
+           />
             </div>
             <div className="col-sm-12" style={{paddingTop:"30px", cursor:"pointer"}} >
-          <div style={{magin:"0px", textAlign:"center", border:"1px solid #d29b9b61",borderRadius:'20px', padding: "10px", }}>Xem chi tiết</div>
+          <div style={{magin:"0px", textAlign:"center", border:"1px solid #d29b9b61",borderRadius:'20px', padding: "10px", }}>Thanh toán ngay</div>
         </div>
           </div>
         </div>

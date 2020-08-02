@@ -131,7 +131,13 @@ function BasicLayout(props) {
   );
   if (get(profile, 'data.accessToken', '')) {
     return (
-      <div className="container admin ">
+      <div className="admin " style={{
+        width: '100%',
+        paddingRight: '1rem',
+        paddingLeft: '1rem',
+        marginRight: 'auto',
+        marginLeft: 'auto',
+      }}>
         <div className="menu">
           <MenuTop  />
         </div>

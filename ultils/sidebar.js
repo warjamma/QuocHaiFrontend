@@ -51,14 +51,22 @@ export const adminSideBar = [
 
 
 export const referrerSideBar = [
+  // {
+  //   name: 'Bảng tin',
+  //   url: '/home'
+  // },
+  // {
+  //   name: 'Tin nhắn',
+  //   url: '/home'
+  // },
   {
-    name: 'Bảng tin',
-    url: '/home'
+    name: 'Search google',
+    url: '/search/search-google'
   },
-  {
-    name: 'Tin nhắn',
-    url: '/home'
-  },
+  // {
+  //   name: 'Search news',
+  //   url: '/search/search-news'
+  // },
   {
     name: 'Du lịch',
     url: '/home'
@@ -81,6 +89,22 @@ export const referrerSideBar = [
   },
   {
     name: 'Thể thao',
+    url: '/home'
+  },
+  {
+    name: 'Xe tải',
+    url: '/home'
+  },
+  {
+    name: 'Dịch vụ',
+    url: '/home'
+  },
+  {
+    name: 'Netflix',
+    url: '/home'
+  },
+  {
+    name: 'Nông sản',
     url: '/home'
   },
 ];

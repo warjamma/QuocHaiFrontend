@@ -1,5 +1,5 @@
 import React from 'react';
-import MenuLeft from '../../components/AfterLogin/MenuLeft';
+import MenuLeft from '../../../components/AfterLogin/MenuLeft';
 const index = () => {
   return (
     <div className="profile">
