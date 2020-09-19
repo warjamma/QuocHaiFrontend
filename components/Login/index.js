@@ -90,12 +90,12 @@ function Login(props) {
       <Tabs defaultActiveKey={role} onChange={(e) => {
         setRole(e);
       }}>
-        <TabPane tab="As Company" key="employers">
+        <TabPane tab="As User" key="employers">
           <FormLogin />
         </TabPane>
-        <TabPane tab="As Referrer" key="recruiters">
+        {/* <TabPane tab="As Referrer" key="recruiters">
           <FormLogin />
-        </TabPane>
+        </TabPane> */}
       </Tabs>
     </div>
   );

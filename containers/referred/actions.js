@@ -252,7 +252,42 @@ export function deleteCandidateOfSuper(payload) {
     }
   };
 }
-
+export function getListDevice(params) {
+  return async dispatch => {
+    try {
+      dispatch({ type: "GET_LIST_REQUEST" });
+      const { data } = await api.sendRequestWithToken('get', `/device?${qs.stringify(params)}`);
+      return dispatch({ type: "GET_LIST_DEVICE_SUCCESS", data });
+    } catch (error) {
+      const { data } = error.response;
+      return dispatch({ type: "GET_LIST_DEVICE_FAILURE", error: data.message });
+    }
+  };
+}
+export function getListNode(params) {
+  return async dispatch => {
+    try {
+      dispatch({ type: "GET_LIST_REQUEST" });
+      const { data } = await api.sendRequestWithToken('get', `/nodeofdevice?${qs.stringify(params)}`);
+      return dispatch({ type: "GET_LIST_NODE_SUCCESS", data });
+    } catch (error) {
+      const { data } = error.response;
+      return dispatch({ type: "GET_LIST_NODE_FAILURE", error: data.message });
+    }
+  };
+}
+export function getListNodeAqua(params) {
+  return async dispatch => {
+    try {
+      dispatch({ type: "GET_LIST_REQUEST" });
+      const { data } = await api.sendRequestWithToken('get', `/nodeofdevice/aqua?${qs.stringify(params)}`);
+      return dispatch({ type: "GET_LIST_NODE_AQUA_SUCCESS", data });
+    } catch (error) {
+      const { data } = error.response;
+      return dispatch({ type: "GET_LIST_NODE_AQUA_FAILURE", error: data.message });
+    }
+  };
+}
 export function uploadRequest(payload, name) {
   const body = { mim_type: "application/pdf" };
   const header = { "Content-Type": "application/json" };
@@ -311,5 +346,7 @@ export function uploadRequestImg(payload, name) {
       return { status: false, error: 'Fail to upload' };;
     }
   };
+
+
 }
 

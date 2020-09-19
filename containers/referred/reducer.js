@@ -10,6 +10,10 @@ export const exampleInitialState = {
   company_detail: null,
   recruiter_detail: null,
   list_count_my_refer:null,
+  // new----
+  list_device:null,
+  list_node:null,
+  list_node_aqua:null,
 };
 
 export default (state = exampleInitialState, action) => {
@@ -118,6 +122,37 @@ export default (state = exampleInitialState, action) => {
       return {
         ...state,
         ...{ recruiter_detail: [] },
+      };
+    // new-----------------------------------------
+    case 'GET_LIST_DEVICE_SUCCESS':
+      return {
+        ...state,
+        ...{ list_device: action.data, is_loading: false },
+      };
+    case 'GET_LIST_DEVICE_FAILURE':
+      return {
+        ...state,
+        ...{ list_device: [], is_loading: false },
+      };
+    case 'GET_LIST_NODE_SUCCESS':
+      return {
+        ...state,
+        ...{ list_node: action.data, is_loading: false },
+      };
+    case 'GET_LIST_NODE_FAILURE':
+      return {
+        ...state,
+        ...{ list_node: [], is_loading: false },
+      };
+    case 'GET_LIST_NODE_AQUA_SUCCESS':
+      return {
+        ...state,
+        ...{ list_node_aqua: action.data, is_loading: false },
+      };
+    case 'GET_LIST_NODE_AQUA_FAILURE':
+      return {
+        ...state,
+        ...{ list_node_aqua: [], is_loading: false },
       };
     default:
       return state;

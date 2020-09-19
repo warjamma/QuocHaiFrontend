@@ -5,8 +5,8 @@ export function loginRequest(user, role) {
   return async dispatch => {
     try {
       const { data } = await api.sendRequest('post', `/auth/signin`, null, {"Content-Type" : "application/json"}, user);
-      localStorage.setItem('accessToken', data.accessToken);
-      return dispatch({ type: "LOGIN_SUCCESS", data: data });
+      localStorage.setItem('accessToken', data.data.accessToken);
+      return dispatch({ type: "LOGIN_SUCCESS", data: data.data });
     } catch (error) {
       const { data } = error.response;
       return dispatch({ type: "LOGIN_FAILURE", error: data.message });

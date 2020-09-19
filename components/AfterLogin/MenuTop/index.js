@@ -16,7 +16,7 @@ function HeaderHome(props) {
 
   return (
     <div className="menu-top-login">
-      <div className="container full-wight">
+      <div className="container-full-wight">
         <div
           className={classNames(
             'topnav',
@@ -28,7 +28,7 @@ function HeaderHome(props) {
           <li
             className="logo"
             role="presentation"
-            onClick={() => Router.push(`/`)}
+            onClick={() => Router.push(`/home`)}
           >
             <img className="name-logo" src="/eface.png" alt="#" />
           </li>
@@ -39,7 +39,7 @@ function HeaderHome(props) {
           </li>
           <div className="child">
             <div className="down">
-              <li
+              {/* <li
                 className="  tag"
                 role="presentation"
                 onClick={() => Router.push(`/profile`)}
@@ -52,7 +52,7 @@ function HeaderHome(props) {
                 className="tag upload"
               >
                 Trang chủ
-              </li>
+              </li> */}
               <li
                 role="presentation"
                 onClick={async () => {

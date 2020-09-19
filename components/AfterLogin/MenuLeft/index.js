@@ -6,12 +6,14 @@ import { Menu } from 'antd';
 import { get } from 'lodash';
 import { requireAuthentication } from '../../../lib/auth';
 import './styles.scss';
+import { PieChartOutlined } from '@ant-design/icons';
 import {
   companySideBar,
   adminSideBar,
   referrerSideBar,
 } from '../../../ultils/sidebar';
-import { PieChartOutlined } from '@ant-design/icons';
+
+
 function HeaderHome(props) {
   const { profile } = props;
   const sidebarMenu = () => {
@@ -38,10 +40,13 @@ function HeaderHome(props) {
           background: 'transparent',
         }}
       >
+        <div className="logo">
+            <img className="logo" src="https://www.rockship.co/images/rs-logo-img.png" alt="avatar" />
+          </div>
         <Menu style={{background: 'transparent'}}>
           {sidebarMenu().map((item, key) => (
             <Menu.Item style={{color:"#1c1e21",fontWeight:'bold'}}  key={key + 1} onClick={() => Router.push(item.url)}>
-              {/* <PieChartOutlined /> */}
+              <PieChartOutlined />
               <span style={{textTransform:'uppercase'}}>{item.name}</span>
             </Menu.Item>
           ))}

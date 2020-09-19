@@ -51,60 +51,17 @@ export const adminSideBar = [
 
 
 export const referrerSideBar = [
-  // {
-  //   name: 'Bảng tin',
-  //   url: '/home'
-  // },
-  // {
-  //   name: 'Tin nhắn',
-  //   url: '/home'
-  // },
   {
-    name: 'Search google',
-    url: '/search/search-google'
-  },
-  // {
-  //   name: 'Search news',
-  //   url: '/search/search-news'
-  // },
-  {
-    name: 'Du lịch',
+    name: 'Dasboard',
     url: '/home'
   },
   {
-    name: 'Ăn uống',
-    url: '/home'
+    name: 'Devices table',
+    url: '/container/devices'
   },
   {
-    name: 'Mua sắm',
-    url: '/home'
+    name: 'Nodes of device',
+    url: '/container/nodes'
   },
-  {
-    name: 'Dồ xe độ',
-    url: '/home'
-  },
-  {
-    name: 'Thực phẩm',
-    url: '/home'
-  },
-  {
-    name: 'Thể thao',
-    url: '/home'
-  },
-  {
-    name: 'Xe tải',
-    url: '/home'
-  },
-  {
-    name: 'Dịch vụ',
-    url: '/home'
-  },
-  {
-    name: 'Netflix',
-    url: '/home'
-  },
-  {
-    name: 'Nông sản',
-    url: '/home'
-  },
+
 ];

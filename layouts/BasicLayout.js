@@ -142,7 +142,8 @@ function BasicLayout(props) {
           <MenuTop  />
         </div>
         <div className="row content" style={{ paddingTop: '80px' }}>
-          <div className="col-sm-12">{props.children}</div>
+          <div className="col-sm-2"> <MenuLeft /></div>
+          <div className="col-sm-10">{props.children}</div>
         </div>
       </div>
     );

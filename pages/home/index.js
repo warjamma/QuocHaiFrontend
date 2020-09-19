@@ -1,39 +1,66 @@
-import React from 'react';
-import MenuLeft from '../../components/AfterLogin/MenuLeft';
-import NewInfo from '../../components/AfterLogin/NewInfo';
-import News from '../../components/AfterLogin/News';
+import React, { Component, useEffect, useState } from 'react';
+import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import NodeTree from '../../components/AfterLogin/NodeTree';
+import NodeAqua from '../../components/AfterLogin/NodeAqua';
+import { get, debounce } from 'lodash';
+import { connect } from 'react-redux';
+import {
+  getListNode,
+  getListNodeAqua,
+  deleteCandidate,
+} from '../../containers/referred/actions';
+const initQuery = {
+  key_word: '',
+  // status: null,
+  offset: 0,
+  limit: 10,
+};
 
-const index = () => {
+const index = (props) => {
+  const [query, setQuery] = useState(initQuery);
+  const { dispatch, referred } = props;
+  setTimeout(() => {
+    dispatch(getListNode(query));
+    dispatch(getListNodeAqua(query));
+  }, 100000);
+  useEffect(() => {
+    dispatch(getListNode(query));
+    dispatch(getListNodeAqua(query));
+  }, []);
   return (
-    <div className="container">
-    <div className="row">
-      <div className="col-sm-2"> <MenuLeft /></div>
-      <div className="homepagelogin col-sm-6">
+    <div >
+      <div className="container-full" style={{  padding: "10px" }}>
         <div className="row">
-          <div className="col-sm-12 create-news" style={{background: "#ffffff", height: "150px"}}>Khối 1 đăng tin</div>
-          <div className="col-sm-12 active-user" style={{background: "#ffffff", height: "70px", marginTop:"10px", borderRadius:"5px"}} >Check acitve</div>
-          <div className="col-sm-12 news" style={{background: "#ffffff" ,marginTop:"10px", borderRadius:"5px"}}>
-            <News/>
-          </div>
-          <div className="col-sm-12 news" style={{background: "#ffffff" ,marginTop:"10px"}}>
-            <News/>
-          </div>
-          <div className="col-sm-12 news" style={{background: "#ffffff" ,marginTop:"10px"}}>
-            <News/>
-          </div>
-          <div className="col-sm-12 news" style={{background: "#ffffff" ,marginTop:"10px"}}>
-            <News/>
-          </div>
+          <div className="col-sm-12" style={{ background: "#fff", fontSize: 20, fontWeight: "bold", padding:"10px" }}>
+            MANAGER TREE LIST
+      </div>
+          {get(referred, 'list_node.data', []).map((index, key) => {
+            return (
+              <div className="col-sm-3" key={index.nodeID} style={{ marginTop: '10px', }}>
+                <NodeTree key={index.nodeID} data={index} />
+              </div>
+            );
+          })}
+        </div>
+        <div className="row" style={{ marginTop: "30px" }}>
+          <div className="col-sm-12" style={{ fontSize: 20, fontWeight: "bold", background: "#fff", padding:"10px" }}>
+            MANAGER AQUA LIST
+      </div>
+          {get(referred, 'list_node_aqua.data', []).map((index, key) => {
+            return (
+              <div className="col-sm-3" key={index.nodeID} style={{ marginTop: '10px'}}>
+                <NodeAqua key={index.nodeID} data={index} />
+              </div>
+            );
+          })}
         </div>
       </div>
-      <div className="col-sm-4 infonews">
-        <div className="padding" style={{background: "#ffffff", borderRadius:"5px"}}>
-        <NewInfo/>
-        </div>
-      </div>
-    </div>
     </div>
   );
 };
+function mapStateToProps(state) {
+  const { referred } = state;
+  return { referred };
+}
 
-export default index;
+export default connect(mapStateToProps, null)(index);

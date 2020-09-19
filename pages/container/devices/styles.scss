@@ -1,0 +1,89 @@
+.my-referred-container {
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    div {
+      font-weight: bold;
+      font-size: 16px;
+    }
+  }
+  .ant-advanced-search-form {
+    background: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0px;
+    .fiter-item {
+      .title {
+        font-weight: 500;
+      }
+    }
+    .filter-button {
+      margin-top: 15px;
+      text-align: right;
+      button {
+        &:first-child {
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+  .tag-refer {
+    margin: 3;
+    cursor: pointer;
+  }
+  .custom-role{
+    b.name-role {
+      color: #3273dc;
+      display: block;
+      text-align: center;
+    }
+    b.name-role:hover {
+      color: hotpink;
+      cursor: pointer;
+    }
+  }
+  .custom-company {
+    display: flex;
+    .logo-company {
+      width: 100px;
+      margin-right: 10px;
+      img {
+        width: 100%;
+        object-fit: cover;
+      }
+    }
+    .info-required {
+      text-align: left;
+      .job-level {
+        .tag-level {
+          margin: 2;
+          cursor: pointer;
+        }
+      }
+      .job-role {
+        margin: 5px 0px;
+      }
+      b.name-company {
+        color: #3273dc;
+        cursor: pointer;
+      }
+      b.name-company:hover {
+        color: hotpink;
+        cursor: pointer;
+      }
+    }
+  }
+  .bold-number {
+    color: #3273dc;
+    display: block;
+    text-align: center;
+  }
+  .bold-number:hover {
+    color: hotpink;
+    cursor: pointer;
+  }
+}
